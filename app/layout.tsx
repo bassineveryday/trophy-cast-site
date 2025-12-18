@@ -11,8 +11,17 @@ const heading = Montserrat({ subsets: ["latin"], weight: ["600", "700"], variabl
 const body = Raleway({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-body" });
 
 export const metadata: Metadata = {
-  title: siteContent.seo.title,
-  description: siteContent.seo.description,
+  title: "Trophy Cast — Where Every Cast Counts",
+  description: "Log your fishing. See patterns. Build confidence. Where Every Cast Counts.",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  openGraph: {
+    title: "Trophy Cast — Where Every Cast Counts",
+    description: "Log your fishing. See patterns. Build confidence. Where Every Cast Counts.",
+    images: ["/og.png"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
