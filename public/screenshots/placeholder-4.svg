@@ -1,0 +1,9 @@
+<svg width="640" height="400" viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <rect width="640" height="400" rx="32" fill="#0C1A23" />
+  <rect x="50" y="60" width="540" height="280" rx="24" fill="#132532" stroke="#D4AF37" stroke-width="2" />
+  <path d="M90 280 L200 180 L310 240 L420 160 L530 220" stroke="#2E6E3D" stroke-width="6" fill="none" />
+  <circle cx="200" cy="180" r="10" fill="#D4AF37" />
+  <circle cx="420" cy="160" r="10" fill="#D4AF37" />
+  <circle cx="310" cy="240" r="10" fill="#D4AF37" />
+  <text x="50%" y="36" fill="#F5F1E6" font-family="Montserrat, sans-serif" font-size="20" text-anchor="middle">Confidence Insights</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg width="640" height="400" viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <rect width="640" height="400" rx="32" fill="#0C1A23" />
+  <rect x="40" y="60" width="560" height="280" rx="24" fill="#132532" stroke="#D4AF37" stroke-width="2" />
+  <line x1="40" y1="150" x2="600" y2="150" stroke="#1A2C3A" stroke-width="4" />
+  <line x1="40" y1="230" x2="600" y2="230" stroke="#1A2C3A" stroke-width="4" />
+  <line x1="40" y1="310" x2="600" y2="310" stroke="#1A2C3A" stroke-width="4" />
+  <circle cx="160" cy="200" r="60" fill="#2E6E3D" opacity="0.5" />
+  <circle cx="320" cy="200" r="60" fill="#D4AF37" opacity="0.35" />
+  <circle cx="480" cy="200" r="60" fill="#2E6E3D" opacity="0.35" />
+  <text x="50%" y="36" fill="#F5F1E6" font-family="Montserrat, sans-serif" font-size="20" text-anchor="middle">Season Stats View</text>
+</svg>

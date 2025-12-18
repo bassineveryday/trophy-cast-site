@@ -1,0 +1,7 @@
+<svg width="640" height="400" viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <rect width="640" height="400" rx="32" fill="#132532" />
+  <rect x="40" y="60" width="560" height="80" rx="16" fill="#1A2C3A" stroke="#2E6E3D" stroke-width="2" />
+  <rect x="40" y="160" width="260" height="180" rx="16" fill="#1A2C3A" stroke="#D4AF37" stroke-width="2" />
+  <rect x="320" y="160" width="280" height="180" rx="16" fill="#1A2C3A" stroke="#2E6E3D" stroke-width="2" />
+  <text x="50%" y="36" fill="#F5F1E6" font-family="Montserrat, sans-serif" font-size="20" text-anchor="middle">Live Log Capture</text>
+</svg>
