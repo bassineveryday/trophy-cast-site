@@ -12,7 +12,7 @@ export default function Page() {
 
   return (
     <>
-      <section id="hero" className="relative overflow-hidden bg-midnight bg-heroMesh py-16 sm:py-24">
+      <section id="hero" className="relative overflow-hidden bg-midnight bg-heroMesh py-20 sm:py-28">
         <Container className="relative grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-8">
             <div className="inline-flex items-center gap-3 rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.35em] text-copyMuted">
@@ -23,6 +23,7 @@ export default function Page() {
               <p className="font-heading text-sm uppercase tracking-[0.5em] text-trophyGold">
                 {siteContent.brand.motto}
               </p>
+              <p className="font-heading text-2xl text-copyLight">{siteContent.brand.tagline}</p>
               <h1 className="font-heading text-4xl font-semibold leading-tight text-copyLight sm:text-5xl lg:text-6xl">
                 {siteContent.hero.title}
               </h1>
@@ -183,6 +184,10 @@ export default function Page() {
                 <p className="mt-3 text-copyMuted">{pillar.description}</p>
               </div>
             ))}
+          </div>
+          <div className="rounded-3xl border border-white/10 bg-deepPanel/70 p-6 sm:flex sm:items-center sm:justify-between">
+            <p className="text-sm text-copyMuted sm:max-w-xl">{siteContent.midCta.message}</p>
+            <CTAButton href={waitlistHref} label={siteContent.waitlist.primaryCta} variant="primary" className="mt-4 w-full sm:mt-0 sm:w-auto" />
           </div>
         </div>
       </Section>

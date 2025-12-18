@@ -11,9 +11,8 @@ const heading = Montserrat({ subsets: ["latin"], weight: ["600", "700"], variabl
 const body = Raleway({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-body" });
 
 export const metadata: Metadata = {
-  title: `${siteContent.brand.name} | Confidence-first fishing log`,
-  description:
-    "Trophy Cast helps anglers log catches with photos and track season stats, with optional behind-the-scenes AI for logging assistance.",
+  title: siteContent.seo.title,
+  description: siteContent.seo.description,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

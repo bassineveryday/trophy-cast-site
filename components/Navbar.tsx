@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { CTAButton } from "./CTAButton";
@@ -15,12 +16,17 @@ export function Navbar({ brand, navItems, waitlistCta }: NavbarProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/5 bg-midnight/70 backdrop-blur-xl">
+    <header id="top" className="sticky top-0 z-50 border-b border-white/5 bg-midnight/70 backdrop-blur-xl">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-10">
-        <Link href="#hero" className="flex items-center gap-3 text-copyLight">
-          <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-bass/30 font-heading text-lg text-trophyGold">
-            {brand.logoText}
-          </span>
+        <Link href="#top" className="flex items-center gap-3 text-copyLight">
+          <Image
+            src="/brand/trophy-cast-logo.png"
+            alt="Trophy Cast logo"
+            width={48}
+            height={48}
+            priority
+            className="h-9 w-auto sm:h-10"
+          />
           <div>
             <p className="font-heading text-base font-semibold tracking-wide">{brand.name}</p>
             <p className="text-xs text-copyMuted">{brand.motto}</p>

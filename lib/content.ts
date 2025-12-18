@@ -3,6 +3,11 @@ export const siteContent = {
     name: "Trophy Cast",
     motto: "Log the day. Trust the water.",
     logoText: "TC",
+    tagline: "Where Every Cast Counts",
+  },
+  seo: {
+    title: "Trophy Cast — Where Every Cast Counts",
+    description: "Log your fishing. See patterns. Build confidence. Where Every Cast Counts.",
   },
   waitlist: {
     email: "hello@trophycast.app",
@@ -189,6 +194,10 @@ export const siteContent = {
       },
     ],
   },
+  midCta: {
+    message:
+      "Join the Trophy Cast waitlist when you want multi-species logging with the same confidence real clubs rely on.",
+  },
   finalCta: {
     id: "waitlist",
     title: "Join the Trophy Cast waitlist",
@@ -198,6 +207,7 @@ export const siteContent = {
   },
   footer: {
     motto: "Log the day. Trust the water.",
+    tagline: "Where Every Cast Counts",
     aiDisclaimer: "AI is optional and only restructures logs—you steer every insight.",
     links: [{ label: "Email", href: "mailto:hello@trophycast.app" }],
   },

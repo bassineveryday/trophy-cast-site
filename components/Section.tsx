@@ -19,7 +19,7 @@ const variantMap: Record<SectionVariant, string> = {
 
 export function Section({ id, variant = "plain", className, children }: SectionProps) {
   return (
-    <section id={id} className={cn("py-16 sm:py-24", className)}>
+    <section id={id} className={cn("py-20 sm:py-28", className)}>
       <Container>
         <div className={cn("relative", variantMap[variant])}>{children}</div>
       </Container>
