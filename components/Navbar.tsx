@@ -19,7 +19,7 @@ export function Navbar({ brand, navItems, waitlistCta }: NavbarProps) {
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-10">
         <Link href="#top" className="flex items-center gap-3 text-copyLight">
           <Image
-            src="/brand/trophy-cast-logo.png"
+            src="/trophy-cast-logo-48.png"
             alt="Trophy Cast logo"
             width={48}
             height={48}
