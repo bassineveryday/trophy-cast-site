@@ -5,6 +5,7 @@ import { Icon } from "@/components/Icon";
 import { ScreenshotGrid } from "@/components/ScreenshotGrid";
 import { Section } from "@/components/Section";
 import { WaitlistForm } from "@/components/WaitlistForm";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import { siteContent } from "@/lib/content";
 import { buildMailtoHref } from "@/lib/utils";
 
@@ -24,43 +25,43 @@ export default function Page() {
               priority
               className="h-24 w-auto sm:h-32"
             />
-            <h1 className="font-heading text-4xl font-semibold text-copyLight sm:text-5xl">Trophy Cast</h1>
-            <p className="text-lg text-copyMuted">Where Every Cast Counts</p>
+            <h1 className="font-heading text-4xl font-semibold text-copyLight sm:text-5xl">{siteContent.brand.name}</h1>
+            <p className="text-lg text-copyMuted">{siteContent.brand.tagline}</p>
           </div>
           <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="space-y-8">
-            <div className="inline-flex items-center gap-3 rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.35em] text-copyMuted">
-              <Icon />
-              <span>{siteContent.hero.eyebrow}</span>
-            </div>
-            <div className="space-y-4">
-              <p className="font-heading text-sm uppercase tracking-[0.5em] text-trophyGold">
-                {siteContent.brand.motto}
-              </p>
+              <div className="inline-flex items-center gap-3 rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.35em] text-copyMuted">
+                <Icon />
+                <span>{siteContent.hero.eyebrow}</span>
+              </div>
+              <div className="space-y-4">
+                <p className="font-heading text-sm uppercase tracking-[0.5em] text-trophyGold">
+                  {siteContent.brand.motto}
+                </p>
                 <h2 className="font-heading text-4xl font-semibold leading-tight text-copyLight sm:text-5xl lg:text-6xl">
                   {siteContent.hero.title}
                 </h2>
-              <p className="max-w-2xl text-lg text-copyMuted">{siteContent.hero.description}</p>
+                <p className="max-w-2xl text-lg text-copyMuted">{siteContent.hero.description}</p>
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <CTAButton href={waitlistHref} label={siteContent.waitlist.primaryCta} variant="primary" />
+                <CTAButton
+                  href={siteContent.waitlist.secondaryHref}
+                  label={siteContent.waitlist.secondaryCta}
+                  variant="secondary"
+                />
+              </div>
+              <div className="grid gap-4 rounded-3xl border border-white/10 bg-deepPanel/60 p-6 text-sm text-copyMuted sm:grid-cols-2">
+                {siteContent.hero.highlights.map((highlight) => (
+                  <div key={highlight.label} className="space-y-1">
+                    <p className="text-xs uppercase tracking-[0.45em] text-trophyGold">
+                      {highlight.label}
+                    </p>
+                    <p className="text-base text-copyLight">{highlight.value}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="flex flex-wrap gap-4">
-              <CTAButton href={waitlistHref} label={siteContent.waitlist.primaryCta} variant="primary" />
-              <CTAButton
-                href={siteContent.waitlist.secondaryHref}
-                label={siteContent.waitlist.secondaryCta}
-                variant="secondary"
-              />
-            </div>
-            <div className="grid gap-4 rounded-3xl border border-white/10 bg-deepPanel/60 p-6 text-sm text-copyMuted sm:grid-cols-2">
-              {siteContent.hero.highlights.map((highlight) => (
-                <div key={highlight.label} className="space-y-1">
-                  <p className="text-xs uppercase tracking-[0.45em] text-trophyGold">
-                    {highlight.label}
-                  </p>
-                  <p className="text-base text-copyLight">{highlight.value}</p>
-                </div>
-              ))}
-            </div>
-          </div>
 
             <div className="section-surface text-grid rounded-3xl border border-white/5 p-8">
               <p className="font-heading text-base text-trophyGold">{siteContent.brand.name}</p>
@@ -213,6 +214,7 @@ export default function Page() {
           <WaitlistForm waitlist={siteContent.waitlist} message={siteContent.finalCta.message} />
         </div>
       </Section>
+      <ScrollToTop />
     </>
   );
 }

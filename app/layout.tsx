@@ -11,15 +11,16 @@ const heading = Montserrat({ subsets: ["latin"], weight: ["600", "700"], variabl
 const body = Raleway({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-body" });
 
 export const metadata: Metadata = {
-  title: "Trophy Cast — Where Every Cast Counts",
-  description: "Log your fishing. See patterns. Build confidence. Where Every Cast Counts.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://trophycast.app"),
+  title: siteContent.seo.title,
+  description: siteContent.seo.description,
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "Trophy Cast — Where Every Cast Counts",
-    description: "Log your fishing. See patterns. Build confidence. Where Every Cast Counts.",
+    title: siteContent.seo.title,
+    description: siteContent.seo.description,
     images: ["/og.png"],
   },
 };
