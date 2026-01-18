@@ -16,9 +16,9 @@ const baseClasses =
 
 const variantClasses: Record<CTAButtonVariant, string> = {
   primary:
-    "bg-bass text-copyLight hover:bg-bass/90 focus-visible:outline-bass px-6 py-3 text-sm sm:text-base",
+    "bg-trophyGold text-midnight hover:bg-white hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] focus-visible:outline-trophyGold px-8 py-4 text-base sm:text-lg font-bold tracking-wide",
   secondary:
-    "bg-transparent text-copyLight border border-copyLight/30 hover:border-trophyGold hover:text-trophyGold focus-visible:outline-copyLight px-6 py-3 text-sm sm:text-base",
+    "bg-white/5 text-copyLight border border-white/10 hover:bg-white/10 hover:border-white/30 focus-visible:outline-copyLight px-8 py-4 text-base sm:text-lg backdrop-blur-sm",
   ghost:
     "text-copyLight/80 hover:text-copyLight focus-visible:outline-copyLight px-4 py-2 text-xs",
 };

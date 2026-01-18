@@ -14,34 +14,41 @@ export default function Page() {
 
   return (
     <>
-      <section id="hero" className="relative overflow-hidden bg-midnight bg-heroMesh py-20 sm:py-28">
-        <Container className="relative space-y-12">
-          <div className="flex flex-col items-center gap-4 text-center">
-            <Image
-              src="/trophy-cast-logo-256.png"
-              alt="Trophy Cast logo"
-              width={256}
-              height={256}
-              priority
-              className="h-24 w-auto sm:h-32"
-            />
-            <h1 className="font-heading text-4xl font-semibold text-copyLight sm:text-5xl">{siteContent.brand.name}</h1>
-            <p className="text-lg text-copyMuted">{siteContent.brand.tagline}</p>
+      <section id="hero" className="relative overflow-hidden bg-midnight bg-heroMesh py-20 sm:py-32">
+        <Container className="relative space-y-16">
+          <div className="flex flex-col items-center gap-6 text-center">
+            <div className="relative">
+              <div className="absolute -inset-4 animate-pulse rounded-full bg-trophyGold/20 blur-2xl" />
+              <Image
+                src="/trophy-cast-logo-256.png"
+                alt="Trophy Cast logo"
+                width={256}
+                height={256}
+                priority
+                className="relative h-28 w-auto drop-shadow-2xl sm:h-40"
+              />
+            </div>
+            <div className="space-y-2">
+              <h1 className="font-heading text-5xl font-bold tracking-tight text-white sm:text-7xl">
+                {siteContent.brand.name}
+              </h1>
+              <p className="text-xl font-medium text-trophyGold sm:text-2xl">{siteContent.brand.tagline}</p>
+            </div>
           </div>
-          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="space-y-8">
-              <div className="inline-flex items-center gap-3 rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.35em] text-copyMuted">
+          <div className="grid gap-16 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="space-y-10">
+              <div className="inline-flex items-center gap-3 rounded-full border border-trophyGold/30 bg-trophyGold/5 px-5 py-2 text-xs font-bold uppercase tracking-[0.2em] text-trophyGold shadow-[0_0_15px_rgba(212,175,55,0.15)] backdrop-blur-sm">
                 <Icon />
                 <span>{siteContent.hero.eyebrow}</span>
               </div>
-              <div className="space-y-4">
-                <p className="font-heading text-sm uppercase tracking-[0.5em] text-trophyGold">
+              <div className="space-y-6">
+                <p className="font-heading text-sm font-bold uppercase tracking-[0.4em] text-copyMuted">
                   {siteContent.brand.motto}
                 </p>
-                <h2 className="font-heading text-4xl font-semibold leading-tight text-copyLight sm:text-5xl lg:text-6xl">
+                <h2 className="font-heading text-5xl font-bold leading-[1.1] text-white sm:text-6xl lg:text-7xl">
                   {siteContent.hero.title}
                 </h2>
-                <p className="max-w-2xl text-lg text-copyMuted">{siteContent.hero.description}</p>
+                <p className="max-w-2xl text-xl leading-relaxed text-copyMuted">{siteContent.hero.description}</p>
               </div>
               <div className="flex flex-wrap gap-4">
                 <CTAButton href={waitlistHref} label={siteContent.waitlist.primaryCta} variant="primary" />
@@ -51,7 +58,7 @@ export default function Page() {
                   variant="secondary"
                 />
               </div>
-              <div className="grid gap-4 rounded-3xl border border-white/10 bg-deepPanel/60 p-6 text-sm text-copyMuted sm:grid-cols-2">
+              <div className="grid gap-4 rounded-3xl border border-white/10 bg-deepPanel/40 p-6 text-sm text-copyMuted backdrop-blur-sm sm:grid-cols-2">
                 {siteContent.hero.highlights.map((highlight) => (
                   <div key={highlight.label} className="space-y-1">
                     <p className="text-xs uppercase tracking-[0.45em] text-trophyGold">
