@@ -1,13 +1,16 @@
 export const siteContent = {
   brand: {
     name: "Trophy Cast",
-    motto: "Log the day. Trust the water.",
+    motto: "Where Every Cast Counts.",
     logoText: "TC",
-    tagline: "Where Every Cast Counts",
+    tagline: "Grow. Connect. Compete.",
+    northStar:
+      "Trophy Cast exists to help people grow, connect, and improve through fishing, learning, and positive competition — grounded in community.",
   },
   seo: {
     title: "Trophy Cast — Where Every Cast Counts",
-    description: "Log your fishing. See patterns. Build confidence. Where Every Cast Counts.",
+    description:
+      "The fishing community app for anglers and clubs. Voice-first catch logging, live tournament management, AOY leaderboards, AI coaching, and weather intelligence. Where Every Cast Counts.",
   },
   waitlist: {
     email: "hello@trophycast.app",
@@ -18,74 +21,79 @@ export const siteContent = {
     secondaryHref: "#how",
   },
   nav: [
-    { label: "What it does", href: "#what" },
+    { label: "Features", href: "#what" },
     { label: "How it works", href: "#how" },
     { label: "For anglers", href: "#anglers" },
-    { label: "Coach insights", href: "#coach" },
+    { label: "AI Coach", href: "#coach" },
     { label: "For clubs", href: "#clubs" },
-    { label: "Club-in-a-Box", href: "#club-in-a-box" },
     { label: "Screenshots", href: "#screenshots" },
     { label: "Trust", href: "#trust" },
   ],
   hero: {
-    eyebrow: "Multi-species logging, cleaned up",
-    title: "Grounded fishing intelligence from your own log",
+    eyebrow: "Grow. Connect. Compete.",
+    title: "Built for anglers. Built for clubs.",
     description:
-      "Trophy Cast helps anglers capture context-rich catches in real time, keep season stats tight, and share credible updates with their club without hype.",
+      "Trophy Cast helps anglers and fishing clubs grow, connect, and compete — with voice-first catch logging, live tournaments, AI insights, and real-time weather intelligence. Grounded in community.",
     highlights: [
       {
-        label: "Real clubs",
-        value: "Denver Bassmasters is already tracking AOY with Trophy Cast.",
+        label: "Live with real clubs",
+        value: "Denver Bassmasters tracks AOY standings, tournaments, and club operations on Trophy Cast today.",
       },
       {
-        label: "Optional AI",
-        value: "Behind-the-scenes assistance only—no coaching, just tidier logs.",
+        label: "Voice-first AI",
+        value: "Log your catch by speaking naturally. AI handles the details so you stay focused on the water.",
       },
     ],
-    statRibbon: "Built alongside anglers who fish rivers, reservoirs, and everything between.",
+    statRibbon: "30+ screens · 6 user roles · Voice AI · Live weather · Tournament management · Built with real anglers.",
   },
   what: {
     id: "what",
     title: "What Trophy Cast does",
     summary:
-      "Everything revolves around confident logging: photo + voice capture, contextual weather data, and season stats that you actually trust.",
+      "Everything an angler and their club needs — voice-first catch logging, real-time weather intelligence, live tournament management, and season-long insights you can trust.",
     items: [
       {
-        title: "Catch logging that fits the moment",
+        emoji: "🎙️",
+        title: "Voice-first catch logging",
         description:
-          "Log live on the water with voice or quick photo uploads, or backfill with past shots when the day settles down.",
+          "Speak naturally and Trophy Cast captures species, weight, lure, and location. Snap a photo and the AI fills in the rest — so you stay on the water, not on your phone.",
       },
       {
-        title: "Season insights from your observations",
+        emoji: "🏆",
+        title: "Live tournament management",
         description:
-          "See confidence-first summaries drawn only from your own history—no borrowed spots, no random tips, just your data.",
+          "Create tournaments, manage registrations, track weigh-ins, and publish results — all from your phone. Your Tournament Director sees every registration in real time.",
       },
       {
-        title: "Club-ready reporting",
+        emoji: "📋",
+        title: "Club operations in your pocket",
         description:
-          "AOY tracking, attendance, and club stats that match how real anglers record contests.",
+          "AOY leaderboards, announcements, member rosters, treasury management, meeting minutes, and committee tools — everything your club board needs to run efficiently.",
       },
     ],
   },
   how: {
     id: "how",
     title: "How it works",
-    tagline: "Log → organize → reflect",
+    tagline: "Log → organize → compete",
     steps: [
       {
+        emoji: "📸",
         title: "Log",
         description:
-          "Snap a photo or add a past catch, speak the story, and Trophy Cast tags species, time, and location context for you.",
+          "Snap a photo, speak your catch details, and Trophy Cast tags species, weight, lure, weather, and GPS location automatically.",
       },
       {
+        emoji: "🤖",
         title: "Organize",
         description:
-          "Optional AI cleans up the voice note so every detail lands in the log without changing your intent.",
+          "AI cleans up your voice notes into structured catch records. Your trophy room, catch map, and season stats update instantly.",
       },
       {
-        title: "Reflect",
+        emoji: "🎯",
+        title: "Compete",
         description:
-          "Dashboards highlight what you already noticed—temperature swings, bait families, partners—so you can fish the next day with clarity.",
+          "Register for club tournaments, track live standings, watch AOY points update in real time, and earn trophies all season long.",
       },
     ],
   },
@@ -93,87 +101,92 @@ export const siteContent = {
     id: "anglers",
     title: "Built for anglers first",
     description:
-      "Cross-species support lets you pivot from bass to walleye to trout without hacking together new templates.",
+      "Whether you fish bass, walleye, trout, or everything in between — Trophy Cast adapts to how you fish, not the other way around.",
     bulletPoints: [
-      "Photo and voice logging honors the pace of real tournament days.",
-      "Profiles show your progression, partners, and confidence cues over the entire season.",
-      "Observational insights stay private until you choose to share.",
+      { emoji: "🎙️", text: "Voice-first logging lets you record catches without putting down your rod. Speak naturally and AI does the rest." },
+      { emoji: "🏅", text: "Your Trophy Room tracks personal bests, fishing streaks, weather warrior achievements, and shareable moment cards." },
+      { emoji: "🌦️", text: "Real-time weather with barometric pressure trends, moon phases, and fishing opportunity scoring — know what the fish know." },
+      { emoji: "🗺️", text: "Interactive catch map shows every fish you've logged, colored by species, with GPS pins on the water." },
     ],
   },
   coachInsights: {
     id: "coach",
-    title: "Coach insights, not coaching",
+    title: "AI Coach — grounded, not gimmicky",
     description:
-      "We call them coach insights because they keep you honest without trying to predict or promise anything.",
+      "Trophy Cast's AI Coach analyzes YOUR fishing data to surface patterns and confidence cues. No generic tips, no borrowed wisdom — just insights from your own catches.",
     bullets: [
-      "Confidence-first summaries surfaced only from your own entries.",
-      "Callouts focus on observation quality, not prescriptive advice.",
-      "No strategy scripts, no guaranteed patterns—just clarity on what you actually logged.",
+      { emoji: "🧠", text: "Seasonal phase detection with weather-aware recommendations drawn from your personal catch history." },
+      { emoji: "📊", text: "Pre-trip prep cards that factor in barometric pressure trends, temperature swings, and moon phase." },
+      { emoji: "🎣", text: "Post-catch coaching feedback that connects your lure choice, conditions, and results across your season." },
+      { emoji: "🔒", text: "Your data stays yours. AI insights are private until you choose to share." },
     ],
   },
   clubs: {
     id: "clubs",
     title: "For fishing clubs",
     lead:
-      "Denver Bassmasters uses Trophy Cast today to keep AOY standings and event recaps aligned with reality.",
+      "Denver Bassmasters runs their entire club on Trophy Cast — tournaments, AOY standings, treasury, announcements, and member management. All from their phones.",
     items: [
       {
-        title: "AOY + roster tracking",
-        description: "Import members, record events, and keep live AOY points updated instantly.",
+        emoji: "🏟️",
+        title: "Tournament lifecycle",
+        description: "Create events, manage registrations, run weigh-ins with photo capture, publish results, and award AOY points — all in one place.",
       },
       {
-        title: "Voice-to-recap",
+        emoji: "📈",
+        title: "AOY leaderboard",
         description:
-          "Optional AI tidies the secretary's voice notes into clean recaps without editorializing.",
+          "Live Angler of the Year standings with best-4 tournament scoring, tie-breaking, and multi-day tournament support. Always current, never manual.",
       },
       {
-        title: "Club transparency",
+        emoji: "⚙️",
+        title: "Club operations",
         description:
-          "Share high-level summaries with anglers without ever exposing spots or sensitive info.",
+          "Officer dashboard, treasury management, meeting minutes, announcements, committee tools, and member compliance tracking. Run your club from your pocket.",
       },
     ],
   },
   clubInABox: {
     id: "club-in-a-box",
-    badge: "Coming",
+    badge: "Now onboarding clubs",
     title: "Club-in-a-Box",
     description:
-      "We are packaging onboarding, bylaws templates, scoring sheets, and live leaderboards so new clubs can launch faster—designed with current clubs before release.",
+      "Everything a fishing club needs to launch and operate — onboarding, tournament templates, scoring, leaderboards, and communication tools. Built with Denver Bassmasters, ready for your club.",
     checklist: [
-      "Guided onboarding built from Denver Bassmasters workflows",
-      "Configurable divisions for multi-species formats",
-      "Sponsor-ready recaps and exportable graphics",
+      "✅ Guided onboarding built from real club workflows",
+      "✅ 6 officer roles with role-specific dashboards (President, VP, Secretary, Treasurer, Tournament Director, Conservation)",
+      "✅ Configurable tournament formats, divisions, and AOY scoring rules",
     ],
   },
   screenshots: {
     id: "screenshots",
-    title: "Screenshots",
+    title: "See the app",
     caption:
-      "Expo web app views showing live logging, season stats, and club dashboards. Real UI built with anglers, placeholders shown here for privacy.",
+      "Real screens from the live Trophy Cast app — built with anglers, tested on the water.",
     images: [
       {
         src: "/screenshots/placeholder-1.svg",
-        alt: "Catch logging screen",
-        label: "Live log capture",
+        alt: "Trophy Cast home dashboard with weather, streak tracking, and trophy carousel",
+        label: "Home dashboard",
         comingSoon: false,
       },
       {
         src: "/screenshots/placeholder-2.svg",
-        alt: "Season stats overview",
-        label: "Season stats",
-        comingSoon: true,
+        alt: "Voice-first AI catch logging with photo capture",
+        label: "Voice AI catch logging",
+        comingSoon: false,
       },
       {
         src: "/screenshots/placeholder-3.svg",
-        alt: "Club AOY board",
-        label: "Club dashboard",
-        comingSoon: true,
+        alt: "Live AOY leaderboard with gold, silver, and bronze rankings",
+        label: "AOY leaderboard",
+        comingSoon: false,
       },
       {
         src: "/screenshots/placeholder-4.svg",
-        alt: "Confidence insights",
-        label: "Confidence insights",
-        comingSoon: true,
+        alt: "Trophy room with achievement plaques and shareable cards",
+        label: "Trophy room",
+        comingSoon: false,
       },
     ],
   },
@@ -182,37 +195,40 @@ export const siteContent = {
     title: "Trust + transparency",
     pillars: [
       {
-        title: "Optional AI only",
+        emoji: "🛡️",
+        title: "Your data, your control",
         description:
-          "AI cleans up your logging language behind the scenes and never offers strategy or spots.",
+          "AI is optional and only processes your own catch data. Your fishing spots, patterns, and insights stay private until you decide to share.",
       },
       {
+        emoji: "📍",
         title: "No spot sharing",
         description:
-          "Your locations stay yours. Clubs control exactly what shows up in shared recaps.",
+          "Your GPS locations are yours alone. Club recaps and shared summaries never expose sensitive spots.",
       },
       {
-        title: "Expo web app today",
+        emoji: "💻",
+        title: "Works on any device",
         description:
-          "Runs as an Expo web app with responsive layouts—no claims of native downloads or offline promises.",
+          "Open Trophy Cast in any browser — phone, tablet, or desktop. No app store download required. You're fishing in seconds.",
       },
     ],
   },
   midCta: {
     message:
-      "Join the Trophy Cast waitlist when you want multi-species logging with the same confidence real clubs rely on.",
+      "Join the Trophy Cast waitlist — we're onboarding clubs and anglers who want real tools built by real fishermen.",
   },
   finalCta: {
     id: "waitlist",
-    title: "Join the Trophy Cast waitlist",
+    title: "Ready to join?",
     description:
-      "We add new clubs and anglers in waves so feedback lands individually. Hop on the list and we will reach out with timing and access details.",
-    message: "Tell us about your club or crew, and we will reply with onboarding steps.",
+      "We're onboarding clubs and anglers now. Join the waitlist and we'll reach out with access details and onboarding support.",
+    message: "Tell us about your club or crew, and we'll get you set up.",
   },
   footer: {
-    motto: "Log the day. Trust the water.",
-    tagline: "Where Every Cast Counts",
-    aiDisclaimer: "AI is optional and only restructures logs—you steer every insight.",
+    motto: "Where Every Cast Counts.",
+    tagline: "Grow. Connect. Compete.",
+    aiDisclaimer: "AI is optional and only processes your own data — you steer every insight.",
     links: [{ label: "Email", href: "mailto:hello@trophycast.app" }],
   },
 };

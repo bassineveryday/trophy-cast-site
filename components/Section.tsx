@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Container } from "./Container";
 
-type SectionVariant = "plain" | "surface" | "accent";
+type SectionVariant = "plain" | "surface" | "surfaceLifted" | "accent";
 
 interface SectionProps {
   id?: string;
@@ -14,6 +14,7 @@ interface SectionProps {
 const variantMap: Record<SectionVariant, string> = {
   plain: "",
   surface: "section-surface rounded-3xl p-10 lg:p-14",
+  surfaceLifted: "section-surface-lifted rounded-3xl p-10 lg:p-14",
   accent: "section-surface section-accent rounded-3xl p-10 lg:p-14",
 };
 
