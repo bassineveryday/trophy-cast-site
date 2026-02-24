@@ -27,7 +27,7 @@ export default function Page() {
                 width={256}
                 height={256}
                 priority
-                className="relative h-32 w-auto drop-shadow-2xl sm:h-44"
+                className="relative h-40 w-auto drop-shadow-2xl sm:h-56 lg:h-64"
               />
             </div>
             <div className="space-y-3">

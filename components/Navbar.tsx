@@ -28,7 +28,6 @@ export function Navbar({ brand, navItems, waitlistCta }: NavbarProps) {
           />
           <div>
             <p className="font-heading text-base font-semibold tracking-wide">{brand.name}</p>
-            <p className="text-xs text-copyMuted">{brand.motto}</p>
           </div>
         </Link>
 
