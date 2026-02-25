@@ -40,7 +40,7 @@ export function waitlistConfirmationHtml(firstName: string): string {
                     <td style="padding:8px 0;font-size:14px;color:#cbd5e1;">🏆 &nbsp; Live tournament management &amp; AOY leaderboards</td>
                   </tr>
                   <tr>
-                    <td style="padding:8px 0;font-size:14px;color:#cbd5e1;">🤖 &nbsp; AI fishing coach that grows with you</td>
+                    <td style="padding:8px 0;font-size:14px;color:#cbd5e1;">🎣 &nbsp; The more you fish, the better it knows your patterns</td>
                   </tr>
                   <tr>
                     <td style="padding:8px 0;font-size:14px;color:#cbd5e1;">🗺️ &nbsp; Catch maps, weather intel &amp; season stats</td>
@@ -48,8 +48,11 @@ export function waitlistConfirmationHtml(firstName: string): string {
                 </table>
               </div>
 
+              <p style="margin:0 0 16px 0;font-size:14px;color:#94a3b8;line-height:1.6;">
+                Honestly — thank you. It means the world that you took the time to check out Trophy Cast and sign up. You'll be one of the first people notified when we open to the public, and I don't take that trust lightly.
+              </p>
               <p style="margin:0 0 28px 0;font-size:14px;color:#94a3b8;line-height:1.6;">
-                We're launching with our first fishing club in March 2026. Spots are limited — you're already ahead of the line.
+                We're launching with our first club in March 2026. You're already ahead of the line.
               </p>
 
               <div style="border-top:1px solid #1e2d40;padding-top:24px;">
@@ -88,8 +91,10 @@ You're on the Trophy Cast waitlist! We'll reach out as soon as we're ready for y
 What to expect:
 - Voice-first catch logging with AI
 - Live tournament management & AOY leaderboards
-- AI fishing coach that grows with you
+- The more you fish, the better it knows your patterns
 - Catch maps, weather intel & season stats
+
+Honestly — thank you. It means the world that you took the time to check out Trophy Cast and sign up. You'll be one of the first people notified when we open to the public.
 
 We're launching with our first club in March 2026. You're already ahead of the line.
 
