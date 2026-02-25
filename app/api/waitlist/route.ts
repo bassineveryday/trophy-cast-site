@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
+import {
+  waitlistConfirmationHtml,
+  waitlistConfirmationText,
+} from "@/lib/emails/waitlistConfirmation";
 
 const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY!;
 const MAILCHIMP_AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID!;
 const MAILCHIMP_SERVER = MAILCHIMP_API_KEY?.split("-")[1]; // e.g. "us18"
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
@@ -49,6 +55,20 @@ export async function POST(request: Request) {
         { error: "Failed to join waitlist. Please try again." },
         { status: 500 }
       );
+    }
+
+    // Send confirmation email via Resend (non-blocking — domain may still be verifying)
+    try {
+      await resend.emails.send({
+        from: "Tai at Trophy Cast <cast@trophycast.app>",
+        to: email,
+        subject: "You're on the Trophy Cast waitlist 🏆",
+        html: waitlistConfirmationHtml(firstName),
+        text: waitlistConfirmationText(firstName),
+      });
+    } catch (emailErr) {
+      // Don't fail the whole request if email sending fails (e.g. domain still verifying)
+      console.warn("Resend email failed (domain may still be verifying):", emailErr);
     }
 
     return NextResponse.json({ success: true });
