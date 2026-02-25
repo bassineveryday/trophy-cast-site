@@ -27,6 +27,7 @@ export default function Page() {
                 height={256}
                 priority
                 className="relative h-40 w-auto drop-shadow-2xl sm:h-56 lg:h-64"
+                style={{ mixBlendMode: 'screen' }}
               />
             </div>
             <div className="space-y-3">

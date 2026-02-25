@@ -15,7 +15,7 @@ export function waitlistConfirmationHtml(firstName: string): string {
           <!-- Header -->
           <tr>
             <td align="center" style="padding:0 0 32px 0;">
-              <img src="https://trophycast.app/trophy-cast-logo-256.png" alt="Trophy Cast" width="100" height="100" style="display:block;margin:0 auto 16px auto;border-radius:16px;" />
+              <img src="https://trophycast.app/trophy-cast-logo-256.png" alt="Trophy Cast" width="120" height="120" style="display:block;margin:0 auto 16px auto;" />
               <div style="font-size:28px;font-weight:900;color:#ffffff;letter-spacing:-0.5px;">Trophy Cast</div>
               <div style="font-size:12px;color:#f5c842;letter-spacing:2px;text-transform:uppercase;margin-top:6px;">Where Every Cast Counts.</div>
             </td>

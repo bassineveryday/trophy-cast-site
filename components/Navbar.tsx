@@ -25,6 +25,7 @@ export function Navbar({ brand, navItems, waitlistCta }: NavbarProps) {
             height={48}
             priority
             className="h-9 w-auto sm:h-10"
+            style={{ mixBlendMode: 'screen' }}
           />
           <div>
             <p className="font-heading text-base font-semibold tracking-wide">{brand.name}</p>
