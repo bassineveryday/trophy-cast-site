@@ -1,13 +1,13 @@
 # Trophy Cast – Website Brief
-_Last Updated: February 23, 2026_
+_Last Updated: February 26, 2026_
 
 ---
 
 ## 🌟 North Star
 
-> **Trophy Cast exists to help people grow, connect, and improve through fishing, learning, and positive competition — grounded in community.**
+> **Trophy Cast exists to get people outside, fishing, and connected — building confidence and community through a sport they love, powered by an app that learns how they fish.**
 
-**Motto:** _"Where Every Cast Counts."_
+**Tagline:** _"The fishing app that gets smarter the more you fish."_
 
 ---
 
