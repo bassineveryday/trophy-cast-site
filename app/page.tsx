@@ -248,7 +248,7 @@ export default function Page() {
         <div className="space-y-8 text-center">
           <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.finalCta.title}</p>
           <p className="mx-auto max-w-2xl text-lg leading-relaxed text-copyLight">{siteContent.finalCta.description}</p>
-          <WaitlistForm waitlist={siteContent.waitlist} message={siteContent.finalCta.message} />
+          <WaitlistForm />
         </div>
       </Section>
       <ScrollToTop />
