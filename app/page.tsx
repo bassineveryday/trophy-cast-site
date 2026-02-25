@@ -7,10 +7,9 @@ import { Section } from "@/components/Section";
 import { WaitlistForm } from "@/components/WaitlistForm";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { siteContent } from "@/lib/content";
-import { buildMailtoHref } from "@/lib/utils";
 
 export default function Page() {
-  const waitlistHref = buildMailtoHref(siteContent.waitlist);
+  const waitlistHref = "#waitlist";
 
   return (
     <>
