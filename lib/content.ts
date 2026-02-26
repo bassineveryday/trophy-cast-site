@@ -118,7 +118,7 @@ export const siteContent = {
       { emoji: "🎯", text: "The more you fish, the better it knows your patterns. Every catch teaches it something new about how you operate on the water." },
       { emoji: "📊", text: "Pre-trip cards that factor in barometric pressure, temperature, wind, and moon phase — matched against YOUR catch history, not someone else's." },
       { emoji: "🔧", text: "Knows the difference between a medium action rod and a heavy — and learns which setups work for your techniques. Small details that took years to learn." },
-      { emoji: "🔒", text: "Your coaching runs in a closed loop — your GPS, your patterns, your spots never leave your account. Not even we can see them." },
+      { emoji: "🔒", text: "Your spots never go anywhere — not to the internet, not to other anglers, not to us. Only you see your coaching." },
     ],
   },
   clubs: {
@@ -228,7 +228,7 @@ export const siteContent = {
   footer: {
     motto: "Where Every Cast Counts.",
     tagline: "Fish more. Learn faster. Connect deeper.",
-    aiDisclaimer: "Your coaching engine is closed-loop — your GPS, patterns, and spots never leave your account.",
+    aiDisclaimer: "Your coaching stays inside your account — your GPS, patterns, and spots never go out to the internet.",
     links: [{ label: "Email", href: "mailto:hello@trophycast.app" }],
   },
 };
