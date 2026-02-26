@@ -195,10 +195,10 @@ export const siteContent = {
     title: "Trust + transparency",
     pillars: [
       {
-        emoji: "�",
-        title: "Closed-loop coaching",
+        emoji: "🔒",
+        title: "Your spots stay yours",
         description:
-          "Your personal coaching engine runs in a closed loop. Your GPS points, your patterns, and your spots never leave your account. It doesn't phone home to ChatGPT. Not even we can look at your data.",
+          "Your coaching stays inside your account — it never goes out to the internet. Your GPS points, your fishing spots, and your patterns are locked to you. Nobody else can see them. Not other users, not us, nobody.",
       },
       {
         emoji: "🌍",
