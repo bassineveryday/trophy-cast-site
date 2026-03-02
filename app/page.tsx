@@ -27,7 +27,6 @@ export default function Page() {
                 height={256}
                 priority
                 className="relative h-40 w-auto drop-shadow-2xl sm:h-56 lg:h-64"
-                style={{ mixBlendMode: 'screen' }}
               />
             </div>
             <div className="space-y-3">
@@ -171,6 +170,29 @@ export default function Page() {
               </li>
             ))}
           </ul>
+        </div>
+      </Section>
+
+      {/* ── THE ENGAGEMENT LOOP ──────────────────────────────── */}
+      <Section id={siteContent.gamificationLoop.id} variant="surface">
+        <div className="space-y-10">
+          <div className="space-y-3 text-center">
+            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.gamificationLoop.title}</p>
+            <h2 className="font-heading text-4xl font-extrabold text-copyLight sm:text-5xl">{siteContent.gamificationLoop.tagline}</h2>
+            <p className="mx-auto max-w-3xl text-lg text-copyMuted">{siteContent.gamificationLoop.description}</p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {siteContent.gamificationLoop.features.map((feature) => (
+              <div key={feature.title} className="card-hover gold-top-bar rounded-2xl border border-white/5 bg-deepPanel/70 p-6 text-center">
+                <span className="text-4xl">{feature.emoji}</span>
+                <p className="mt-3 font-heading text-lg font-bold text-copyLight">{feature.title}</p>
+                <p className="mt-2 text-sm text-copyMuted">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center">
+            <CTAButton href={waitlistHref} label={siteContent.waitlist.primaryCta} variant="primary" />
+          </div>
         </div>
       </Section>
 

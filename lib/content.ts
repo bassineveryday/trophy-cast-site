@@ -23,6 +23,7 @@ export const siteContent = {
   nav: [
     { label: "What's different", href: "#what" },
     { label: "How it works", href: "#how" },
+    { label: "The loop", href: "#loop" },
     { label: "For anglers", href: "#anglers" },
     { label: "Coaching", href: "#coach" },
     { label: "For clubs", href: "#clubs" },
@@ -44,7 +45,7 @@ export const siteContent = {
         value: "Every catch you log teaches the app something. Over time, it knows your techniques, your conditions, your adjustments.",
       },
     ],
-    statRibbon: "30+ screens · Voice logging · Personal coaching · Live weather · Club-in-a-box · Built by fishermen, for fishermen.",
+    statRibbon: "30+ screens · Voice logging · Personal coaching · Live weather · 30 trophies · Daily missions · Club-in-a-box · Built by fishermen, for fishermen.",
   },
   what: {
     id: "what",
@@ -84,16 +85,16 @@ export const siteContent = {
           "Snap a photo, speak your catch details — species, weight, lure, what you were thinking. Trophy Cast captures weather, GPS, barometric pressure, and moon phase automatically.",
       },
       {
-        emoji: "🔍",
-        title: "Patterns emerge",
+        emoji: "🧠",
+        title: "Coach responds",
         description:
-          "The app builds your fishing profile over time. Your best techniques, your strongest conditions, the small things that separate a good day from a great one.",
+          "Your AI coach analyzes this catch against your history, conditions, and trophy progress — then gives you one specific, data-grounded insight. Not generic tips. YOUR patterns.",
       },
       {
-        emoji: "📈",
-        title: "You get better",
+        emoji: "🏆",
+        title: "Unlock & level up",
         description:
-          "Coaching draws from YOUR catches — not generic advice. It reminds you of patterns you might forget, recommends adjustments based on conditions, and helps you fish smarter every trip.",
+          "Every catch moves you closer to trophies, streaks, and daily missions. See your progress instantly — then come back tomorrow to keep the momentum going.",
       },
     ],
   },
@@ -106,7 +107,9 @@ export const siteContent = {
       { emoji: "🎙️", text: "Voice-first logging — record catches without putting down your rod. Speak naturally and it handles the rest." },
       { emoji: "🌦️", text: "Real-time weather with barometric pressure, moon phases, and conditions scoring — know what the fish know before you hit the water." },
       { emoji: "🗺️", text: "Interactive catch map shows every fish you've logged, colored by species, with GPS pins on the water." },
-      { emoji: "🏅", text: "Trophy Room tracks personal bests, fishing streaks, and shareable moment cards — your wins, celebrated." },
+      { emoji: "�", text: "30 trophies to earn — from Photo Pro to Species Slam to Ten Bass Day. Share your unlocks with a screenshot-ready trophy card." },
+      { emoji: "🎯", text: "Daily missions nudge you toward trophies: 'Add a photo (8/10 for 📸 Photo Pro!)' — small actions that build long-term skills." },
+      { emoji: "🔥", text: "Fishing streaks and daily coaching check-ins keep you coming back. Log one catch a day and watch the momentum build." },
     ],
   },
   coachInsights: {
@@ -117,7 +120,8 @@ export const siteContent = {
     bullets: [
       { emoji: "🎯", text: "The more you fish, the better it knows your patterns. Every catch teaches it something new about how you operate on the water." },
       { emoji: "📊", text: "Pre-trip cards that factor in barometric pressure, temperature, wind, and moon phase — matched against YOUR catch history, not someone else's." },
-      { emoji: "🔧", text: "Knows the difference between a medium action rod and a heavy — and learns which setups work for your techniques. Small details that took years to learn." },
+      { emoji: "🏆", text: "Your coach knows your trophy progress. Unlock Photo Pro and it celebrates. One catch away from Species Slam? It'll remind you." },
+      { emoji: "🔧", text: "Backed by 60+ fishing knowledge packs — the science of lure displacement, pressure effects on feeding, seasonal migration. Not guesses. Physics." },
       { emoji: "🔒", text: "Your spots never go anywhere — not to the internet, not to other anglers, not to us. Only you see your coaching." },
     ],
   },
@@ -156,6 +160,39 @@ export const siteContent = {
       "✅ Guided onboarding built from real club workflows",
       "✅ 6 officer roles with role-specific dashboards",
       "✅ Configurable tournament formats, divisions, and AOY scoring",
+    ],
+  },
+  gamificationLoop: {
+    id: "loop",
+    title: "The engagement loop",
+    tagline: "Catch → Log → Learn → Unlock → Repeat",
+    description:
+      "Trophy Cast isn't just a fishing log — it's a system designed to get you outside more. Every catch feeds your coach, moves you toward trophies, and builds your fishing identity. The loop is simple: the more you fish, the more you unlock. The more you unlock, the more you want to fish.",
+    features: [
+      {
+        emoji: "🏆",
+        title: "30 trophies to earn",
+        description:
+          "Photo Pro, Ten Bass Day, Species Slam, Lake Specialist, Skunk Proof — each trophy tracks real angling milestones. Earn them through effort, not luck.",
+      },
+      {
+        emoji: "🎯",
+        title: "Daily missions",
+        description:
+          "Every day brings a new micro-challenge: log a catch, add a photo, write a reflection. Missions link to your closest trophies so every action counts twice.",
+      },
+      {
+        emoji: "🔥",
+        title: "Streaks & momentum",
+        description:
+          "Log catches on consecutive days and your streak grows. Milestone streaks (7, 14, 30 days) unlock coaching trophies and prove you're putting in the work.",
+      },
+      {
+        emoji: "📸",
+        title: "Share your wins",
+        description:
+          "Unlock a trophy? Generate a screenshot-ready share card — your trophy name, your photo, your stats. Show your crew what you earned.",
+      },
     ],
   },
   screenshots: {

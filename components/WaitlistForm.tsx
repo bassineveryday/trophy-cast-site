@@ -58,7 +58,7 @@ export function WaitlistForm() {
   if (status === "success") {
     return (
       <div className="flex flex-col items-center gap-4 py-10 text-center">
-        <Image src="/trophy-cast-logo-256.png" alt="Trophy Cast" width={96} height={96} className="opacity-100" style={{ mixBlendMode: 'screen' }} />
+        <Image src="/trophy-cast-logo-256.png" alt="Trophy Cast" width={96} height={96} />
         <h3 className="font-heading text-2xl font-extrabold text-white">You&apos;re on the list! 🎣</h3>
         <p className="max-w-sm text-copyMuted">
           Welcome to Trophy Cast. We&apos;ll be in touch soon with updates and early access info.
@@ -73,7 +73,7 @@ export function WaitlistForm() {
 
       {/* Logo + tagline */}
       <div className="flex flex-col items-center gap-2 pb-2">
-        <Image src="/trophy-cast-logo-256.png" alt="Trophy Cast" width={80} height={80} className="opacity-100" style={{ mixBlendMode: 'screen' }} />
+        <Image src="/trophy-cast-logo-256.png" alt="Trophy Cast" width={80} height={80} />
         <p className="text-center text-sm text-copyMuted">
           Be among the first anglers and clubs in.
         </p>
