@@ -24,9 +24,16 @@ export async function POST(req: Request) {
   );
 
   // ── Generate magic link ─────────────────────────────────────────────────────
+  // redirectTo must point to the live app, not localhost
+  const appUrl =
+    process.env.SUPPORT_APP_URL ?? "https://app.trophycast.app";
+
   const { data, error } = await supabaseAdmin.auth.admin.generateLink({
     type: "magiclink",
     email,
+    options: {
+      redirectTo: appUrl,
+    },
   });
 
   if (error) {
