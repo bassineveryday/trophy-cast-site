@@ -7,6 +7,31 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
+// Allowed origins — covers local dev, any Vercel preview, and production
+const ALLOWED_ORIGINS = [
+  'http://localhost:8081',
+  'http://localhost:3000',
+  'https://trophycast.app',
+];
+
+function corsHeaders(origin: string | null): Record<string, string> {
+  const allowed =
+    origin && (ALLOWED_ORIGINS.includes(origin) || origin.endsWith('.vercel.app'))
+      ? origin
+      : ALLOWED_ORIGINS[2]; // fallback to production
+  return {
+    'Access-Control-Allow-Origin': allowed,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+}
+
+// Handle CORS preflight
+export async function OPTIONS(request: Request) {
+  const origin = request.headers.get('origin');
+  return new NextResponse(null, { status: 204, headers: corsHeaders(origin) });
+}
+
 // Service-role client — used to INSERT and to bypass RLS for rate-limit check
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -16,34 +41,37 @@ const supabaseAdmin = createClient(
 const NOTIFY_EMAIL = process.env.SUPPORT_ADMIN_EMAIL ?? 'tai@trophycast.app';
 
 export async function POST(request: Request) {
+  const origin = request.headers.get('origin');
+  const cors = corsHeaders(origin);
+
   try {
     // ── 1. Auth — verify JWT from Authorization header ───────────────────────
     const authHeader = request.headers.get('authorization') ?? '';
     const token = authHeader.replace(/^Bearer\s+/i, '').trim();
 
     if (!token) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: cors });
     }
 
     const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
 
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: cors });
     }
 
     // ── 2. Parse + validate body ─────────────────────────────────────────────
     const body = await request.json();
     const { description, memberName, memberEmail, buildTime, deviceInfo, pagePath, clubId } = body;
 
-    if (!description || typeof description !== 'string' || description.trim().length < 15) {
+    if (!description || typeof description !== 'string' || description.trim().length < 10) {
       return NextResponse.json(
-        { error: 'Description must be at least 15 characters.' },
-        { status: 400 }
+        { error: 'Description must be at least 10 characters.' },
+        { status: 400, headers: cors }
       );
     }
 
     if (!memberEmail || !memberName) {
-      return NextResponse.json({ error: 'Missing member info.' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing member info.' }, { status: 400, headers: cors });
     }
 
     // ── 3. Rate limit — 1 report per user per 60 seconds ────────────────────
@@ -57,7 +85,7 @@ export async function POST(request: Request) {
     if ((count ?? 0) > 0) {
       return NextResponse.json(
         { error: 'Please wait 60 seconds before submitting another report.' },
-        { status: 429 }
+        { status: 429, headers: cors }
       );
     }
 
@@ -81,7 +109,7 @@ export async function POST(request: Request) {
 
     if (insertError || !inserted) {
       console.error('[bug-report] Insert error:', insertError);
-      return NextResponse.json({ error: 'Failed to save report.' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to save report.' }, { status: 500, headers: cors });
     }
 
     const reportId: string = inserted.id;
@@ -122,9 +150,9 @@ export async function POST(request: Request) {
       console.warn('[bug-report] RESEND_API_KEY not set — email skipped. Report ID:', reportId);
     }
 
-    return NextResponse.json({ success: true, reportId });
+    return NextResponse.json({ success: true, reportId }, { headers: cors });
   } catch (err) {
     console.error('[bug-report] Unexpected error:', err);
-    return NextResponse.json({ error: 'Something went wrong.' }, { status: 500 });
+    return NextResponse.json({ error: 'Something went wrong.' }, { status: 500, headers: cors });
   }
 }
