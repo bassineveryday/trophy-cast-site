@@ -116,6 +116,9 @@ export async function POST(request: Request) {
     });
 
     // ── 5. Send email via Resend (non-blocking on failure) ───────────────────
+    let emailSent = false;
+    let emailError: string | null = null;
+
     if (resend) {
       const emailData: BugReportData = {
         memberName,
@@ -129,24 +132,28 @@ export async function POST(request: Request) {
         reportId,
       };
 
-      try {
-        await resend.emails.send({
-          from: 'Trophy Cast <cast@trophycast.app>',
-          to: NOTIFY_EMAIL,
-          replyTo: memberEmail,
-          subject: `🐛 Bug Report from ${memberName}`,
-          html: bugReportHtml(emailData),
-          text: bugReportText(emailData),
-        });
-      } catch (emailErr) {
-        // Report is already saved — email failure is non-fatal
-        console.warn('[bug-report] Resend failed (report still saved):', emailErr);
+      const { data: emailResult, error: resendError } = await resend.emails.send({
+        from: 'Trophy Cast <cast@trophycast.app>',
+        to: NOTIFY_EMAIL,
+        replyTo: memberEmail,
+        subject: `🐛 Bug Report from ${memberName}`,
+        html: bugReportHtml(emailData),
+        text: bugReportText(emailData),
+      });
+
+      if (resendError) {
+        emailError = resendError.message ?? JSON.stringify(resendError);
+        console.error('[bug-report] Resend error (report still saved):', resendError);
+      } else {
+        emailSent = true;
+        console.log('[bug-report] Email sent, id:', emailResult?.id);
       }
     } else {
+      emailError = 'RESEND_API_KEY not configured';
       console.warn('[bug-report] RESEND_API_KEY not set — email skipped. Report ID:', reportId);
     }
 
-    return NextResponse.json({ success: true, reportId }, { headers: cors });
+    return NextResponse.json({ success: true, reportId, emailSent, emailError }, { headers: cors });
   } catch (err) {
     console.error('[bug-report] Unexpected error:', err);
     return NextResponse.json({ error: 'Something went wrong.' }, { status: 500, headers: cors });
