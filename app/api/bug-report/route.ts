@@ -7,20 +7,16 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
-// Allowed origins — covers local dev, any Vercel preview, and production
-const ALLOWED_ORIGINS = [
-  'http://localhost:8081',
-  'http://localhost:3000',
-  'https://trophycast.app',
-];
-
 function corsHeaders(origin: string | null): Record<string, string> {
-  const allowed =
-    origin && (ALLOWED_ORIGINS.includes(origin) || origin.endsWith('.vercel.app'))
-      ? origin
-      : ALLOWED_ORIGINS[2]; // fallback to production
+  const isAllowed =
+    origin &&
+    (origin === 'https://trophycast.app' ||
+      origin.endsWith('.vercel.app') ||
+      /^http:\/\/localhost:\d+$/.test(origin));
+
+  const allowedOrigin = isAllowed ? origin : 'https://trophycast.app';
   return {
-    'Access-Control-Allow-Origin': allowed,
+    'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
