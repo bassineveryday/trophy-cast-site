@@ -93,17 +93,17 @@ export default function SupportPage() {
           />
         </div>
 
-        {/* Member email */}
+        {/* Member email or phone */}
         <div className="space-y-1">
           <label className="text-white/70 text-sm font-medium block">
-            Member email
+            Member email or phone
           </label>
           <input
-            type="email"
+            type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/30 text-sm outline-none focus:border-[#C9A646] transition-colors"
-            placeholder="member@example.com"
+            placeholder="member@example.com or (303) 555-1234"
           />
         </div>
 

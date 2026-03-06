@@ -8,13 +8,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { email, reason } = (await req.json()) as {
+  const { email: rawInput, reason } = (await req.json()) as {
     email?: string;
     reason?: string;
   };
 
-  if (!email) {
-    return NextResponse.json({ error: "email is required" }, { status: 400 });
+  if (!rawInput) {
+    return NextResponse.json({ error: "email or phone is required" }, { status: 400 });
   }
 
   // ── Supabase admin client (service role — server only, never in browser) ────
@@ -22,6 +22,32 @@ export async function POST(req: Request) {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
+
+  // ── Resolve input: if it looks like a phone number, look up the email ───────
+  const isPhone = /^[\d().\-\s+]+$/.test(rawInput.trim()) && rawInput.replace(/\D/g, "").length >= 7;
+  let email = rawInput.trim();
+
+  if (isPhone) {
+    const digits = rawInput.replace(/\D/g, "");
+    // Try to find a profile with this phone (check both raw digits and formatted)
+    const { data: match, error: lookupErr } = await supabaseAdmin
+      .from("profiles")
+      .select("id")
+      .or(`mobile_phone.eq.${rawInput.trim()},mobile_phone.eq.(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`)
+      .limit(1)
+      .maybeSingle();
+
+    if (lookupErr || !match) {
+      return NextResponse.json({ error: "No member found with that phone number" }, { status: 404 });
+    }
+
+    // Get the email from auth.users
+    const { data: userData, error: userErr } = await supabaseAdmin.auth.admin.getUserById(match.id);
+    if (userErr || !userData?.user?.email) {
+      return NextResponse.json({ error: "Could not resolve email for that phone number" }, { status: 404 });
+    }
+    email = userData.user.email;
+  }
 
   // ── Generate magic link ─────────────────────────────────────────────────────
   // redirectTo must point to the live app, not localhost
