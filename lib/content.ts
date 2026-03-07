@@ -38,14 +38,18 @@ export const siteContent = {
     highlights: [
       {
         label: "Built with real anglers",
-        value: "Denver Bassmasters runs their entire club on Trophy Cast — tournaments, AOY standings, and member operations.",
+        value: "Denver Bassmasters runs their entire club on Trophy Cast — tournaments, AOY standings, member management, secretary minutes, and board tools.",
       },
       {
         label: "Your patterns, not someone else's",
         value: "Every catch you log teaches the app something. Over time, it knows your techniques, your conditions, your adjustments.",
       },
+      {
+        label: "Video notes & group chats",
+        value: "Record video notes on the water. Chat with your crew, share catch photos, and get SMS alerts for tournaments and announcements.",
+      },
     ],
-    statRibbon: "30+ screens · Voice logging · Personal coaching · Live weather · 30 trophies · Daily missions · Club-in-a-box · Built by fishermen, for fishermen.",
+    statRibbon: "80+ screens · Voice logging · Video notes · Personal coaching · Live weather · 30 trophies · Daily missions · Group chats · SMS alerts · Club-in-a-box · Built by fishermen, for fishermen.",
   },
   what: {
     id: "what",
@@ -110,6 +114,8 @@ export const siteContent = {
       { emoji: "�", text: "30 trophies to earn — from Photo Pro to Species Slam to Ten Bass Day. Share your unlocks with a screenshot-ready trophy card." },
       { emoji: "🎯", text: "Daily missions nudge you toward trophies: 'Add a photo (8/10 for 📸 Photo Pro!)' — small actions that build long-term skills." },
       { emoji: "🔥", text: "Fishing streaks and daily coaching check-ins keep you coming back. Log one catch a day and watch the momentum build." },
+      { emoji: "🎬", text: "Video notes on the water — record a quick clip when you're on a pattern, build a personal library of techniques tied to real catches." },
+      { emoji: "💬", text: "Group chats for your crew — create public or private groups like 'Jig Fishing Crew' or 'Boaters 2026', share catch photos, and get SMS alerts for tournaments and announcements." },
     ],
   },
   coachInsights: {
@@ -122,6 +128,7 @@ export const siteContent = {
       { emoji: "📊", text: "Pre-trip cards that factor in barometric pressure, temperature, wind, and moon phase — matched against YOUR catch history, not someone else's." },
       { emoji: "🏆", text: "Your coach knows your trophy progress. Unlock Photo Pro and it celebrates. One catch away from Species Slam? It'll remind you." },
       { emoji: "🔧", text: "Backed by 60+ fishing knowledge packs — the science of lure displacement, pressure effects on feeding, seasonal migration. Not guesses. Physics." },
+      { emoji: "⚡", text: "Performance Edge full-screen view — see your condition score broken down live: barometric pressure, wind, solunar tide, and temperature, each matched against YOUR historical catch data." },
       { emoji: "🔒", text: "Your spots never go anywhere — not to the internet, not to other anglers, not to us. Only you see your coaching." },
     ],
   },
@@ -143,10 +150,16 @@ export const siteContent = {
           "Angler of the Year standings with best-4 scoring, tie-breaking, and multi-day tournament support. Always current, never manual.",
       },
       {
+        emoji: "📋",
+        title: "Secretary & board tools",
+        description:
+          "Create and publish meeting agendas and minutes. Board back office with task workspaces, compliance dashboard, and role-specific dashboards for every officer.",
+      },
+      {
         emoji: "⚙️",
         title: "Everything else a club needs",
         description:
-          "Officer dashboard, treasury, meeting minutes, announcements, committee tools, member management. Run your club from your pocket — no spreadsheets, no group texts.",
+          "Officer dashboard, treasury, announcements, committee chat, group chats, SMS notifications, and member management. Run your entire club from your pocket — no spreadsheets, no group texts.",
       },
     ],
   },
