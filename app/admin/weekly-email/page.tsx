@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { weeklyUpdates } from '@/lib/weeklyUpdates';
 
 const DEEP_DIVE_OPTIONS = [
@@ -72,12 +72,34 @@ export default function WeeklyEmailAdminPage() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [resultMsg, setResultMsg] = useState('');
 
+  // Subscriber count (fetched after unlock)
+  const [subCount, setSubCount] = useState<number | null>(null);
+
+  // Email preview
+  const [previewing, setPreviewing] = useState(false);
+
+  // Send-now confirmation modal
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
   const handleUnlock = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     if (!password.trim()) return;
     setUnlocked(true);
     setAuthError('');
   }, [password]);
+
+  // Fetch subscriber count once after unlock
+  useEffect(() => {
+    if (!unlocked || !password) return;
+    fetch('/api/admin/subscriber-count', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
+    })
+      .then((r) => r.json())
+      .then((d) => setSubCount(d.count ?? null))
+      .catch(() => {});
+  }, [unlocked, password]);
 
   const toggleVoice = useCallback(() => {
     if (typeof window === 'undefined') return;
@@ -126,11 +148,60 @@ export default function WeeklyEmailAdminPage() {
     }
   }, [roughNotes, password]);
 
+  // The actual API call — called either directly (scheduled) or from confirm modal (send now)
+  const executeSend = useCallback(async () => {
+    setConfirmOpen(false);
+    setStatus('loading');
+    setResultMsg('');
+
+    const bulletList = bullets
+      .split('\n')
+      .map((b) => b.replace(/^[-•*]\s*/, '').trim())
+      .filter(Boolean);
+
+    let isoScheduleTime: string | null = null;
+    if (!sendNow && scheduleTime) {
+      isoScheduleTime = new Date(scheduleTime).toISOString();
+    }
+
+    try {
+      const res = await fetch('/api/admin/weekly-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          password,
+          subject,
+          bullets: bulletList,
+          deepDive,
+          deepDiveNote: deepDiveNote.trim() || undefined,
+          meetingFocus: meetingFocus.trim() || undefined,
+          scheduleTime: isoScheduleTime,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        if (res.status === 401) { setUnlocked(false); setAuthError('Wrong password. Try again.'); }
+        setStatus('error');
+        setResultMsg(data.error ?? 'Something went wrong.');
+        return;
+      }
+
+      setStatus('success');
+      const action =
+        data.action === 'sent'
+          ? 'Campaign sent immediately!'
+          : `Campaign scheduled for ${new Date(data.scheduleTime).toLocaleString()}.`;
+      setResultMsg(`✅ ${action} Mailchimp ID: ${data.campaignId}`);
+    } catch {
+      setStatus('error');
+      setResultMsg('Network error. Check your connection and try again.');
+    }
+  }, [password, subject, bullets, deepDive, deepDiveNote, meetingFocus, sendNow, scheduleTime]);
+
   const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
+    (e: React.FormEvent) => {
       e.preventDefault();
-      setStatus('loading');
-      setResultMsg('');
 
       const bulletList = bullets
         .split('\n')
@@ -143,47 +214,44 @@ export default function WeeklyEmailAdminPage() {
         return;
       }
 
-      let isoScheduleTime: string | null = null;
-      if (!sendNow && scheduleTime) {
-        isoScheduleTime = new Date(scheduleTime).toISOString();
+      // Send Now requires an extra confirmation step
+      if (sendNow) {
+        setConfirmOpen(true);
+        return;
       }
 
-      try {
-        const res = await fetch('/api/admin/weekly-email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            password,
-            subject,
-            bullets: bulletList,
-            deepDive,
-            deepDiveNote: deepDiveNote.trim() || undefined,
-            meetingFocus: meetingFocus.trim() || undefined,
-            scheduleTime: isoScheduleTime,
-          }),
-        });
-
-        const data = await res.json();
-        if (!res.ok) {
-          if (res.status === 401) { setUnlocked(false); setAuthError('Wrong password. Try again.'); }
-          setStatus('error');
-          setResultMsg(data.error ?? 'Something went wrong.');
-          return;
-        }
-
-        setStatus('success');
-        const action =
-          data.action === 'sent'
-            ? 'Campaign sent immediately!'
-            : `Campaign scheduled for ${new Date(data.scheduleTime).toLocaleString()}.`;
-        setResultMsg(`✅ ${action} Mailchimp ID: ${data.campaignId}`);
-      } catch {
-        setStatus('error');
-        setResultMsg('Network error. Check your connection and try again.');
-      }
+      void executeSend();
     },
-    [password, subject, bullets, deepDive, deepDiveNote, meetingFocus, sendNow, scheduleTime]
+    [bullets, sendNow, executeSend]
   );
+
+  const handlePreview = useCallback(async () => {
+    setPreviewing(true);
+    try {
+      const bulletList = bullets
+        .split('\n')
+        .map((b) => b.replace(/^[-•*]\s*/, '').trim())
+        .filter(Boolean);
+      const res = await fetch('/api/admin/preview-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          password, subject,
+          bullets: bulletList.length ? bulletList : ['(No bullets yet)'],
+          deepDive, deepDiveNote, meetingFocus,
+        }),
+      });
+      const html = await res.text();
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } catch {
+      // silently ignore — preview is best-effort
+    } finally {
+      setPreviewing(false);
+    }
+  }, [password, subject, bullets, deepDive, deepDiveNote, meetingFocus]);
 
   // ── Password gate ────────────────────────────────────────────────────────
   if (!unlocked) {
@@ -216,6 +284,7 @@ export default function WeeklyEmailAdminPage() {
 
   // ── Main form ────────────────────────────────────────────────────────────
   return (
+    <>
     <div className="min-h-screen bg-midnight">
       {/* Top bar */}
       <div className="border-b border-liftedPanel bg-deeperPanel px-8 py-5 flex items-center justify-between">
@@ -223,9 +292,15 @@ export default function WeeklyEmailAdminPage() {
           <p className="text-xs font-semibold uppercase tracking-widest text-electric mb-0.5">Admin</p>
           <h1 className="text-2xl font-heading font-bold text-trophyGold">Weekly Email</h1>
         </div>
-        <p className="text-copyMuted text-sm hidden md:block">
-          Sends to all <span className="text-copyLight font-semibold">app-user</span> subscribers
-        </p>
+        <div className="text-right hidden md:block">
+          <p className="text-copyMuted text-sm">
+            Sending to{' '}
+            {subCount === null
+              ? <span className="text-copyMuted/50">loading…</span>
+              : <span className="text-trophyGold font-bold text-base">{subCount.toLocaleString()}</span>}
+            {' '}<span className="text-copyLight font-semibold">app-user</span> subscribers
+          </p>
+        </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-6 py-10">
@@ -406,18 +481,29 @@ export default function WeeklyEmailAdminPage() {
               )}
             </div>
 
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={status === 'loading'}
-              className="w-full bg-bass hover:bg-bassLight text-white font-bold py-5 rounded-2xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-heading text-xl"
-            >
-              {status === 'loading'
-                ? 'Working…'
-              : sendNow
-              ? '🚀 Send Campaign Now'
-              : '📅 Schedule Campaign'}
-            </button>
+            {/* Preview + Submit */}
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={handlePreview}
+                disabled={previewing}
+                className="flex-none bg-deepPanel hover:bg-liftedPanel border border-liftedPanel hover:border-electric text-copyLight hover:text-electric font-bold py-5 px-6 rounded-2xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed font-heading text-base"
+                title="Opens a preview of the email in a new tab"
+              >
+                {previewing ? '⏳' : '👁 Preview'}
+              </button>
+              <button
+                type="submit"
+                disabled={status === 'loading'}
+                className="flex-1 bg-bass hover:bg-bassLight text-white font-bold py-5 rounded-2xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-heading text-xl"
+              >
+                {status === 'loading'
+                  ? 'Working…'
+                : sendNow
+                ? '🚀 Send Campaign Now'
+                : '📅 Schedule Campaign'}
+              </button>
+            </div>
 
             {/* Result messages */}
             {status === 'success' && (
@@ -443,5 +529,40 @@ export default function WeeklyEmailAdminPage() {
         </div>
       </div>
     </div>
+
+    {/* ── Confirm send-now modal ── */}
+    {confirmOpen && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
+        <div className="w-full max-w-sm bg-deepPanel border border-liftedPanel rounded-2xl p-8 shadow-2xl">
+          <p className="text-3xl text-center mb-4">🚀</p>
+          <h2 className="text-xl font-heading font-bold text-trophyGold text-center mb-2">Send right now?</h2>
+          <p className="text-copyMuted text-sm text-center mb-2">
+            This will immediately deliver to{' '}
+            {subCount !== null
+              ? <span className="text-copyLight font-bold">{subCount.toLocaleString()} subscribers</span>
+              : <span className="text-copyLight font-bold">all app-user subscribers</span>}
+            {'.'}
+          </p>
+          <p className="text-copyMuted/60 text-xs text-center mb-7">There&apos;s no undo once it&apos;s sent.</p>
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => setConfirmOpen(false)}
+              className="flex-1 bg-liftedPanel hover:bg-deeperPanel text-copyLight font-bold py-3.5 rounded-xl transition-colors font-heading"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={() => void executeSend()}
+              className="flex-1 bg-bass hover:bg-bassLight text-white font-bold py-3.5 rounded-xl transition-colors font-heading"
+            >
+              Yes, Send Now
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
