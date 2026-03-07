@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { weeklyUpdates } from '@/lib/weeklyUpdates';
 import { useAdminAuth } from '@/lib/useAdminAuth';
+import { buildEmailHtml } from '@/lib/emailTemplate';
 
 const DEEP_DIVE_OPTIONS = [
   'Dock Talk',
@@ -75,9 +76,6 @@ export default function WeeklyEmailAdminPage() {
 
   // Subscriber count (fetched after unlock)
   const [subCount, setSubCount] = useState<number | null>(null);
-
-  // Email preview
-  const [previewing, setPreviewing] = useState(false);
 
   // Send-now confirmation modal
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -225,33 +223,28 @@ export default function WeeklyEmailAdminPage() {
     [bullets, sendNow, executeSend]
   );
 
-  const handlePreview = useCallback(async () => {
-    setPreviewing(true);
-    try {
-      const bulletList = bullets
+  const previewBullets = useMemo(
+    () =>
+      bullets
         .split('\n')
         .map((b) => b.replace(/^[-•*]\s*/, '').trim())
-        .filter(Boolean);
-      const res = await fetch('/api/admin/preview-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          password, subject,
-          bullets: bulletList.length ? bulletList : ['(No bullets yet)'],
-          deepDive, deepDiveNote, meetingFocus,
-        }),
-      });
-      const html = await res.text();
-      const blob = new Blob([html], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      window.open(url, '_blank');
-      setTimeout(() => URL.revokeObjectURL(url), 60_000);
-    } catch {
-      // silently ignore — preview is best-effort
-    } finally {
-      setPreviewing(false);
-    }
-  }, [password, subject, bullets, deepDive, deepDiveNote, meetingFocus]);
+        .filter(Boolean),
+    [bullets]
+  );
+
+  const previewHtml = useMemo(
+    () =>
+      buildEmailHtml({
+        subject,
+        bullets: previewBullets.length
+          ? previewBullets
+          : ['(Start typing bullets above to see them here…)'],
+        deepDive,
+        deepDiveNote,
+        meetingFocus,
+      }),
+    [subject, previewBullets, deepDive, deepDiveNote, meetingFocus]
+  );
 
   // ── Password gate ────────────────────────────────────────────────────────
   if (!unlocked) {
@@ -285,40 +278,149 @@ export default function WeeklyEmailAdminPage() {
   // ── Main form ────────────────────────────────────────────────────────────
   return (
     <>
-    <div className="min-h-screen bg-midnight">
+    <div className="h-screen flex flex-col bg-midnight overflow-hidden">
       {/* Top bar */}
-      <div className="border-b border-liftedPanel bg-deeperPanel px-8 py-5 flex items-center justify-between">
+      <div className="border-b border-liftedPanel bg-deeperPanel px-6 py-3.5 flex items-center justify-between shrink-0">
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-electric mb-0.5">
             <Link href="/admin" className="hover:text-copyLight transition-colors">Admin</Link>
             {' / Weekly Email'}
           </p>
-          <h1 className="text-2xl font-heading font-bold text-trophyGold">Weekly Email</h1>
+          <h1 className="text-xl font-heading font-bold text-trophyGold leading-tight">Weekly Email</h1>
         </div>
-        <div className="text-right hidden md:block">
-          <p className="text-copyMuted text-sm">
-            Sending to{' '}
+        <div className="flex items-center gap-4">
+          <p className="text-copyMuted text-sm hidden md:block">
             {subCount === null
               ? <span className="text-copyMuted/50">loading…</span>
-              : <span className="text-trophyGold font-bold text-base">{subCount.toLocaleString()}</span>}
-            {' '}<span className="text-copyLight font-semibold">app-user</span> subscribers
+              : <><span className="text-trophyGold font-bold">{subCount.toLocaleString()}</span>{' '}subscribers</>}
           </p>
+          <button
+            form="email-form"
+            type="submit"
+            disabled={status === 'loading'}
+            className="bg-bass hover:bg-bassLight text-white font-bold py-2.5 px-6 rounded-xl transition-colors disabled:opacity-50 font-heading text-sm"
+          >
+            {status === 'loading' ? 'Working…' : sendNow ? '🚀 Send Now' : '📅 Schedule'}
+          </button>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      {/* ── Split pane ── */}
+      <div className="flex flex-1 overflow-hidden">
 
-          {/* ── LEFT: Updates + AI Polish ── */}
-          <div className="space-y-8">
+        {/* ── LEFT: Editor panel ── */}
+        <form
+          id="email-form"
+          onSubmit={handleSubmit}
+          className="w-[440px] shrink-0 border-r border-liftedPanel overflow-y-auto bg-deeperPanel"
+        >
+          <div className="p-5 space-y-5 pb-10">
 
-            {/* This Week's Updates */}
+            {/* Subject */}
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-copyMuted mb-2">Subject Line</label>
+              <input
+                type="text"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                required
+                className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
+              />
+            </div>
+
+            {/* What's New */}
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-copyMuted mb-2">
+                What&apos;s New <span className="normal-case font-normal text-copyMuted/60">— one item per line</span>
+              </label>
+              <textarea
+                value={bullets}
+                onChange={(e) => setBullets(e.target.value)}
+                required
+                rows={5}
+                placeholder="New members now get a welcome email&#10;AI coaching now shows live weather&#10;Share catch photos in Dock Talk"
+                className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric placeholder:text-copyMuted/40 resize-none leading-relaxed"
+              />
+            </div>
+
+            {/* ✨ AI Polish */}
+            <div className="bg-deepPanel border border-trophyGold/20 rounded-xl p-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-trophyGold mb-1">✨ AI Polish</p>
+              <p className="text-copyMuted/70 text-xs mb-3">Talk or type rough thoughts — AI fills the bullets above</p>
+              <div className="relative mb-3">
+                <textarea
+                  value={roughNotes}
+                  onChange={(e) => setRoughNotes(e.target.value)}
+                  rows={4}
+                  placeholder="we added chat photos, fixed the standings bug, new members get welcome email..."
+                  className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-trophyGold placeholder:text-copyMuted/30 resize-none leading-relaxed"
+                />
+                <button
+                  type="button"
+                  onClick={toggleVoice}
+                  title={listening ? 'Stop recording' : 'Tap to speak'}
+                  className={`absolute bottom-2.5 right-2.5 w-9 h-9 rounded-full flex items-center justify-center text-base transition-all ${
+                    listening ? 'bg-red-500 animate-pulse text-white' : 'bg-liftedPanel hover:bg-trophyGold/20 text-copyMuted hover:text-trophyGold'
+                  }`}
+                >
+                  {listening ? '⏹' : '🎤'}
+                </button>
+              </div>
+              {listening && <p className="text-red-400 text-xs mb-2 animate-pulse">🔴 Listening…</p>}
+              {polishError && <p className="text-red-400 text-xs mb-2">{polishError}</p>}
+              <button
+                type="button"
+                onClick={handlePolish}
+                disabled={polishing || !roughNotes.trim()}
+                className="w-full bg-trophyGold/10 hover:bg-trophyGold/20 border border-trophyGold/30 text-trophyGold font-bold py-2.5 rounded-lg text-xs transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {polishing ? '✨ Rewriting…' : '✨ Polish with AI →'}
+              </button>
+            </div>
+
+            {/* Monday Night Focus */}
+            <div className="bg-deepPanel border border-liftedPanel rounded-xl p-4 space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-copyMuted">Monday Night Focus</p>
+              <div>
+                <label className="block text-xs font-semibold text-copyMuted mb-1.5">Feature Spotlight</label>
+                <select
+                  value={deepDive}
+                  onChange={(e) => { setDeepDive(e.target.value); setMeetingFocus(MEETING_FOCUS_BY_FEATURE[e.target.value] ?? ''); }}
+                  className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
+                >
+                  {DEEP_DIVE_OPTIONS.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-copyMuted mb-1.5">What you&apos;ll cover live</label>
+                <textarea
+                  value={meetingFocus}
+                  onChange={(e) => setMeetingFocus(e.target.value)}
+                  rows={3}
+                  className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric resize-none leading-relaxed"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-copyMuted mb-1.5">
+                  Custom blurb <span className="font-normal text-copyMuted/60">(optional)</span>
+                </label>
+                <textarea
+                  value={deepDiveNote}
+                  onChange={(e) => setDeepDiveNote(e.target.value)}
+                  rows={2}
+                  placeholder="Leave blank to use the default description."
+                  className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric placeholder:text-copyMuted/30 resize-none"
+                />
+              </div>
+            </div>
+
+            {/* This Week's Suggestions */}
             {latest && (
-              <div className="bg-deepPanel border border-electric/30 rounded-2xl p-7">
-                <div className="flex items-start justify-between mb-5">
+              <div className="bg-deepPanel border border-electric/20 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-3">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-electric mb-1">This Week&apos;s Updates</p>
-                    <p className="text-copyMuted text-sm">{latest.week}</p>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-electric">This Week&apos;s Suggestions</p>
+                    <p className="text-copyMuted/60 text-xs">{latest.week}</p>
                   </div>
                   <button
                     type="button"
@@ -328,15 +430,15 @@ export default function WeeklyEmailAdminPage() {
                       setDeepDive(latest.suggestedDeepDive);
                       setMeetingFocus(latest.suggestedMeetingFocus ?? MEETING_FOCUS_BY_FEATURE[latest.suggestedDeepDive] ?? '');
                     }}
-                    className="shrink-0 ml-4 bg-electric/10 hover:bg-electric/20 text-electric font-bold px-5 py-2.5 rounded-xl transition-colors border border-electric/30 whitespace-nowrap"
+                    className="text-electric text-xs font-bold bg-electric/10 hover:bg-electric/20 px-3 py-1.5 rounded-lg border border-electric/20 transition-colors whitespace-nowrap"
                   >
-                    Use These →
+                    Load All →
                   </button>
                 </div>
-                <ul className="space-y-3">
+                <ul className="space-y-2">
                   {latest.bullets.map((b, i) => (
-                    <li key={i} className="flex gap-3 text-base text-copyLight leading-relaxed">
-                      <span className="text-electric shrink-0 mt-0.5">•</span>
+                    <li key={i} className="flex gap-2 text-xs text-copyLight leading-relaxed">
+                      <span className="text-electric shrink-0">•</span>
                       <span>{b}</span>
                     </li>
                   ))}
@@ -344,192 +446,79 @@ export default function WeeklyEmailAdminPage() {
               </div>
             )}
 
-            {/* AI Polish */}
-            <div className="bg-deepPanel border border-trophyGold/20 rounded-2xl p-7">
-              <p className="text-xs font-semibold uppercase tracking-widest text-trophyGold mb-1">✨ AI Polish</p>
-              <p className="text-copyMuted text-sm mb-5">Talk or type your rough thoughts — AI rewrites them into clean email bullets</p>
-
-              <div className="relative mb-4">
-                <textarea
-                  value={roughNotes}
-                  onChange={(e) => setRoughNotes(e.target.value)}
-                  rows={7}
-                  placeholder="Just dump your thoughts here... e.g. 'we added chat photos this week, members can now send pictures of their catches in dock talk, also fixed the standings bug'"
-                  className="w-full bg-midnight border border-liftedPanel rounded-xl px-5 py-4 text-copyLight text-base focus:outline-none focus:border-trophyGold placeholder:text-copyMuted/40 resize-none leading-relaxed"
-                />
-                <button
-                  type="button"
-                  onClick={toggleVoice}
-                  title={listening ? 'Stop recording' : 'Tap to speak'}
-                  className={`absolute bottom-3 right-3 w-11 h-11 rounded-full flex items-center justify-center text-lg transition-all ${
-                    listening ? 'bg-red-500 animate-pulse text-white' : 'bg-liftedPanel hover:bg-trophyGold/20 text-copyMuted hover:text-trophyGold'
-                  }`}
-                >
-                  {listening ? '⏹' : '🎤'}
-                </button>
-              </div>
-
-              {listening && <p className="text-red-400 text-sm mb-3 animate-pulse">🔴 Listening... tap mic to stop</p>}
-              {polishError && <p className="text-red-400 text-sm mb-3">{polishError}</p>}
-
-              <button
-                type="button"
-                onClick={handlePolish}
-                disabled={polishing || !roughNotes.trim()}
-                className="w-full bg-trophyGold/10 hover:bg-trophyGold/20 border border-trophyGold/40 text-trophyGold font-bold py-4 rounded-xl transition-colors text-base disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                {polishing ? '✨ Rewriting...' : '✨ Polish with AI → fill bullets'}
-              </button>
-              <p className="text-copyMuted/50 text-xs mt-2 text-center">Rewrites your rough notes and drops them into What&apos;s New</p>
-            </div>
-
-          </div>
-
-          {/* ── RIGHT: Campaign form ── */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-
-            {/* Subject */}
-            <div>
-              <label className="block text-sm font-semibold text-copyMuted mb-2">Subject Line</label>
-              <input
-                type="text"
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-                required
-                className="w-full bg-deepPanel border border-liftedPanel rounded-xl px-5 py-4 text-copyLight text-base focus:outline-none focus:border-electric"
-              />
-            </div>
-
-            {/* What's New */}
-            <div>
-              <label className="block text-sm font-semibold text-copyMuted mb-2">
-                What&apos;s New <span className="font-normal text-copyMuted/60">— one item per line, 2–3 bullets</span>
-              </label>
-              <textarea
-                value={bullets}
-                onChange={(e) => setBullets(e.target.value)}
-                required
-                rows={5}
-                placeholder="New members now get a welcome email when they sign up\nTC got smarter — coaching now shows live weather and moon phase\nShare catch photos in Dock Talk chats"
-                className="w-full bg-deepPanel border border-liftedPanel rounded-xl px-5 py-4 text-copyLight text-base focus:outline-none focus:border-electric placeholder:text-copyMuted/40 resize-none leading-relaxed"
-              />
-            </div>
-
-            {/* Monday Night Focus card */}
-            <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6 space-y-5">
-              <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted">Monday Night Focus</p>
-
-              <div>
-                <label className="block text-sm font-semibold text-copyMuted mb-2">
-                  Feature Spotlight <span className="font-normal text-copyMuted/60">— highlighted in email + demo&apos;d live</span>
-                </label>
-                <select
-                  value={deepDive}
-                  onChange={(e) => { setDeepDive(e.target.value); setMeetingFocus(MEETING_FOCUS_BY_FEATURE[e.target.value] ?? ''); }}
-                  className="w-full bg-midnight border border-liftedPanel rounded-xl px-5 py-4 text-copyLight text-base focus:outline-none focus:border-electric"
-                >
-                  {DEEP_DIVE_OPTIONS.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-copyMuted mb-2">
-                  What you&apos;ll cover live <span className="font-normal text-copyMuted/60">— auto-fills, edit if needed</span>
-                </label>
-                <textarea
-                  value={meetingFocus}
-                  onChange={(e) => setMeetingFocus(e.target.value)}
-                  rows={3}
-                  className="w-full bg-midnight border border-liftedPanel rounded-xl px-5 py-4 text-copyLight text-base focus:outline-none focus:border-electric resize-none leading-relaxed"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-copyMuted mb-2">
-                  Custom feature blurb <span className="font-normal text-copyMuted/60">— optional, overrides the auto description in the email</span>
-                </label>
-                <textarea
-                  value={deepDiveNote}
-                  onChange={(e) => setDeepDiveNote(e.target.value)}
-                  rows={2}
-                  placeholder="Leave blank to use the pre-written description."
-                  className="w-full bg-midnight border border-liftedPanel rounded-xl px-5 py-4 text-copyLight text-base focus:outline-none focus:border-electric placeholder:text-copyMuted/40 resize-none"
-                />
-              </div>
-            </div>
-
-            {/* Send options */}
-            <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6 space-y-4">
-              <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted">Send Options</p>
+            {/* Send Options */}
+            <div className="bg-deepPanel border border-liftedPanel rounded-xl p-4 space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-wider text-copyMuted">Send Options</p>
               <label className="flex items-center gap-3 cursor-pointer select-none">
-                <input type="checkbox" checked={sendNow} onChange={(e) => setSendNow(e.target.checked)} className="w-5 h-5 rounded accent-electric shrink-0" />
-                <span className="text-base font-semibold text-copyLight">
-                  Send Now <span className="font-normal text-copyMuted">— skip scheduling, deliver immediately</span>
+                <input type="checkbox" checked={sendNow} onChange={(e) => setSendNow(e.target.checked)} className="w-4 h-4 rounded accent-electric shrink-0" />
+                <span className="text-sm font-semibold text-copyLight">
+                  Send Now <span className="font-normal text-copyMuted text-xs">— skip scheduling</span>
                 </span>
               </label>
               {!sendNow && (
                 <div>
-                  <label className="block text-sm font-semibold text-copyMuted mb-2">
-                    Schedule For <span className="font-normal text-copyMuted/60">— pre-filled: next Sunday 6PM local</span>
-                  </label>
+                  <label className="block text-xs font-semibold text-copyMuted mb-1.5">Schedule For</label>
                   <input
                     type="datetime-local"
                     value={scheduleTime}
                     onChange={(e) => setScheduleTime(e.target.value)}
                     required={!sendNow}
-                    className="w-full bg-midnight border border-liftedPanel rounded-xl px-5 py-4 text-copyLight text-base focus:outline-none focus:border-electric"
+                    className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
                   />
-                  <p className="text-xs text-copyMuted/50 mt-2">Mailchimp requires at least 15 min from now. Converted to UTC automatically.</p>
+                  <p className="text-xs text-copyMuted/40 mt-1.5">Mailchimp requires at least 15 min from now.</p>
                 </div>
               )}
             </div>
 
-            {/* Preview + Submit */}
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={handlePreview}
-                disabled={previewing}
-                className="flex-none bg-deepPanel hover:bg-liftedPanel border border-liftedPanel hover:border-electric text-copyLight hover:text-electric font-bold py-5 px-6 rounded-2xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed font-heading text-base"
-                title="Opens a preview of the email in a new tab"
-              >
-                {previewing ? '⏳' : '👁 Preview'}
-              </button>
-              <button
-                type="submit"
-                disabled={status === 'loading'}
-                className="flex-1 bg-bass hover:bg-bassLight text-white font-bold py-5 rounded-2xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-heading text-xl"
-              >
-                {status === 'loading'
-                  ? 'Working…'
-                : sendNow
-                ? '🚀 Send Campaign Now'
-                : '📅 Schedule Campaign'}
-              </button>
-            </div>
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={status === 'loading'}
+              className="w-full bg-bass hover:bg-bassLight text-white font-bold py-4 rounded-xl transition-colors disabled:opacity-50 font-heading text-base"
+            >
+              {status === 'loading' ? 'Working…' : sendNow ? '🚀 Send Campaign Now' : '📅 Schedule Campaign'}
+            </button>
 
-            {/* Result messages */}
+            {/* Status messages */}
             {status === 'success' && (
-              <div className="bg-bass/20 border border-bass rounded-xl p-5 text-base text-copyLight leading-relaxed">
+              <div className="bg-bass/20 border border-bass rounded-xl p-4 text-sm text-copyLight leading-relaxed">
                 {resultMsg}
               </div>
             )}
             {status === 'error' && (
-              <div className="bg-red-900/20 border border-red-700 rounded-xl p-5 text-base text-red-300 leading-relaxed">
+              <div className="bg-red-900/20 border border-red-700 rounded-xl p-4 text-sm text-red-300 leading-relaxed">
                 {resultMsg}
               </div>
             )}
 
             {/* Reminder */}
-            <div className="bg-deepPanel border border-liftedPanel rounded-xl p-5 text-sm text-copyMuted space-y-1.5">
-              <p className="font-semibold text-copyLight">📌 Reminder</p>
-              <p>Monday meetings: every Monday 7–8PM MT · <a href="https://meet.google.com/kys-cuub-idb" target="_blank" rel="noopener noreferrer" className="text-electric underline">meet.google.com/kys-cuub-idb</a></p>
-              <p>Targets <strong>app-user</strong> segment. Waitlist-only excluded.</p>
-              <p>Verify in <a href="https://mailchimp.com" target="_blank" rel="noopener noreferrer" className="text-electric underline">Mailchimp dashboard</a> after sending.</p>
+            <div className="bg-deepPanel border border-liftedPanel rounded-xl p-4 text-xs text-copyMuted space-y-1.5">
+              <p className="font-semibold text-copyLight text-sm">📌 Reminder</p>
+              <p>Monday 7–8PM MT · <a href="https://meet.google.com/kys-cuub-idb" target="_blank" rel="noopener noreferrer" className="text-electric underline">meet.google.com/kys-cuub-idb</a></p>
+              <p>Targets <strong>app-user</strong> segment. Waitlist excluded.</p>
+              <p>Check <a href="https://mailchimp.com" target="_blank" rel="noopener noreferrer" className="text-electric underline">Mailchimp dashboard</a> after sending.</p>
             </div>
 
-          </form>
+          </div>
+        </form>
+
+        {/* ── RIGHT: Canvas / live preview ── */}
+        <div className="flex-1 flex flex-col overflow-hidden bg-[#111]">
+          <div className="border-b border-liftedPanel px-5 py-2.5 flex items-center gap-2 shrink-0 bg-deeperPanel">
+            <span className="w-2 h-2 rounded-full bg-green-400"></span>
+            <span className="text-xs text-copyMuted/50 font-medium">Live preview · updates as you type</span>
+          </div>
+          <div className="flex-1 overflow-auto p-6 flex justify-center">
+            <iframe
+              srcDoc={previewHtml}
+              title="Email preview canvas"
+              sandbox="allow-same-origin"
+              className="w-full max-w-[640px] rounded-xl border border-liftedPanel/40"
+              style={{ minHeight: '900px' }}
+            />
+          </div>
         </div>
+
       </div>
     </div>
 
