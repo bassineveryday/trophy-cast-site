@@ -32,12 +32,12 @@ export const weeklyUpdates: WeeklyUpdate[] = [
   {
     week: 'March 7, 2026',
     suggestedSubject: 'Trophy Cast Weekly 🎣 — March 7',
-    suggestedDeepDive: 'AI Coaching',
-    suggestedMeetingFocus: 'Live walkthrough of the new AI Coach — we\'ll look at your real catch history and see what the coach says about your patterns',
+    suggestedDeepDive: 'Dock Talk',
+    suggestedMeetingFocus: 'Live walkthrough of Dock Talk — we\'ll set up channels together, send messages, and show how to share catch photos with your crew right from the app',
     bullets: [
       'New members now get a welcome email with Monday meeting info the moment they sign up',
-      'AI Coach got a big upgrade — live score chip tooltips show real pressure, wind, temp, and solunar data',
-      'Send photos in any chat — tap the camera icon in Dock Talk to share catches, maps, or rigging pics',
+      'TC got smarter — your coaching panel now shows live weather, moon phase, and water conditions right alongside your catch history',
+      'Share photos in any chat — tap the camera icon in Dock Talk to send catches, maps, or rigging pics to your crew',
     ],
   },
   // ─── Add new entries above this line ─────────────────────────────────────

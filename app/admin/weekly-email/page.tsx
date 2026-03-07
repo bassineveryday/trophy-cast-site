@@ -16,6 +16,21 @@ const DEEP_DIVE_OPTIONS = [
   'Board & Officer Tools',
 ] as const;
 
+// When you pick a Deep Dive feature, Monday's meeting focus auto-fills to match.
+// Edit any line here to change the default suggestion for that feature.
+const MEETING_FOCUS_BY_FEATURE: Record<string, string> = {
+  'Dock Talk': "Live walkthrough of Dock Talk — set up channels, send messages, and share catch photos with your crew",
+  'Voice Catch Logging': "Live demo of Voice Catch Logging — log a fish hands-free with just your voice, no typing needed",
+  'AI Coaching': "Live walkthrough of TC coaching — review your real catch history and see your pattern insights",
+  'Tournament Dashboard': "Live demo of the Tournament Dashboard — draw pairings, enter weights, and post results in real time",
+  'AOY Standings': "Live look at AOY Standings — see how the leaderboard updates automatically after every tournament",
+  'Trophy Room': "Tour of your Trophy Room — your best fish, season highlights, and personal stats all in one place",
+  'Member Directory': "Browse the Member Directory together — find club members, see profiles, and connect",
+  'Weather & Conditions': "Live look at Weather & Conditions — check the lake forecast and moon phase before your next tournament",
+  'Video Notes': "Live demo of Video Notes — record a quick tip about a technique or spot right inside TC",
+  'Board & Officer Tools': "Live walkthrough of Board Tools — agenda builder, meeting notes, and member management for officers",
+};
+
 function getNextSundayLocal(): string {
   const now = new Date();
   const daysUntilSunday = now.getDay() === 0 ? 7 : 7 - now.getDay();
@@ -137,7 +152,11 @@ export default function WeeklyEmailAdminPage() {
                   setBullets(latest.bullets.join('\n'));
                   setSubject(latest.suggestedSubject);
                   setDeepDive(latest.suggestedDeepDive);
-                  setMeetingFocus(latest.suggestedMeetingFocus ?? '');
+                  setMeetingFocus(
+                    latest.suggestedMeetingFocus ??
+                    MEETING_FOCUS_BY_FEATURE[latest.suggestedDeepDive] ??
+                    ''
+                  );
                 }}
                 className="shrink-0 bg-electric/10 hover:bg-electric/20 text-electric text-sm font-bold px-4 py-2 rounded-lg transition-colors duration-150 border border-electric/30"
               >
@@ -211,7 +230,10 @@ export default function WeeklyEmailAdminPage() {
             </label>
             <select
               value={deepDive}
-              onChange={(e) => setDeepDive(e.target.value)}
+              onChange={(e) => {
+                setDeepDive(e.target.value);
+                setMeetingFocus(MEETING_FOCUS_BY_FEATURE[e.target.value] ?? '');
+              }}
               className="w-full bg-deepPanel border border-liftedPanel rounded-lg px-4 py-3 text-copyLight focus:outline-none focus:border-electric"
             >
               {DEEP_DIVE_OPTIONS.map((opt) => (
