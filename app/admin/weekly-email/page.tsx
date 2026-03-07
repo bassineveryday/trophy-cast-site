@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { weeklyUpdates } from '@/lib/weeklyUpdates';
+import { useAdminAuth } from '@/lib/useAdminAuth';
 
 const DEEP_DIVE_OPTIONS = [
   'Dock Talk',
@@ -50,9 +52,8 @@ export default function WeeklyEmailAdminPage() {
   const latest = weeklyUpdates[0];
 
   // Auth gate
-  const [password, setPassword] = useState('');
-  const [unlocked, setUnlocked] = useState(false);
-  const [authError, setAuthError] = useState('');
+  const { password, unlocked, authError, unlock, lockOut } = useAdminAuth();
+  const [pwInput, setPwInput] = useState('');
 
   // AI polish
   const [roughNotes, setRoughNotes] = useState('');
@@ -83,10 +84,9 @@ export default function WeeklyEmailAdminPage() {
 
   const handleUnlock = useCallback((e: React.FormEvent) => {
     e.preventDefault();
-    if (!password.trim()) return;
-    setUnlocked(true);
-    setAuthError('');
-  }, [password]);
+    if (!pwInput.trim()) return;
+    unlock(pwInput);
+  }, [pwInput, unlock]);
 
   // Fetch subscriber count once after unlock
   useEffect(() => {
@@ -181,7 +181,7 @@ export default function WeeklyEmailAdminPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        if (res.status === 401) { setUnlocked(false); setAuthError('Wrong password. Try again.'); }
+        if (res.status === 401) { lockOut(); }
         setStatus('error');
         setResultMsg(data.error ?? 'Something went wrong.');
         return;
@@ -197,7 +197,7 @@ export default function WeeklyEmailAdminPage() {
       setStatus('error');
       setResultMsg('Network error. Check your connection and try again.');
     }
-  }, [password, subject, bullets, deepDive, deepDiveNote, meetingFocus, sendNow, scheduleTime]);
+  }, [password, subject, bullets, deepDive, deepDiveNote, meetingFocus, sendNow, scheduleTime, lockOut]);
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -266,8 +266,8 @@ export default function WeeklyEmailAdminPage() {
           <form onSubmit={handleUnlock} className="space-y-4">
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={pwInput}
+              onChange={(e) => setPwInput(e.target.value)}
               autoFocus
               placeholder="Admin password"
               className="w-full bg-deepPanel border border-liftedPanel rounded-xl px-5 py-4 text-copyLight text-lg focus:outline-none focus:border-electric placeholder:text-copyMuted/40"
@@ -289,7 +289,10 @@ export default function WeeklyEmailAdminPage() {
       {/* Top bar */}
       <div className="border-b border-liftedPanel bg-deeperPanel px-8 py-5 flex items-center justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-electric mb-0.5">Admin</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-electric mb-0.5">
+            <Link href="/admin" className="hover:text-copyLight transition-colors">Admin</Link>
+            {' / Weekly Email'}
+          </p>
           <h1 className="text-2xl font-heading font-bold text-trophyGold">Weekly Email</h1>
         </div>
         <div className="text-right hidden md:block">
