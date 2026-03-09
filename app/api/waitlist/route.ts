@@ -5,12 +5,8 @@ import {
   waitlistConfirmationText,
 } from "@/lib/emails/waitlistConfirmation";
 
-const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY!;
-const MAILCHIMP_AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID!;
-const MAILCHIMP_SERVER = MAILCHIMP_API_KEY?.split("-")[1]; // e.g. "us18"
-const resend = process.env.RESEND_API_KEY
-  ? new Resend(process.env.RESEND_API_KEY)
-  : null;
+const resend = new Resend(process.env.RESEND_API_KEY!);
+const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID!;
 
 export async function POST(request: Request) {
   try {
@@ -23,56 +19,37 @@ export async function POST(request: Request) {
       );
     }
 
-    // Build tags based on role
-    const tags: string[] = ["waitlist", role];
-    if (clubName) tags.push("has-club");
+    // Add to Resend Audience (void role/clubName — stored in confirmation email context only)
+    const { error: contactError } = await resend.contacts.create({
+      audienceId: RESEND_AUDIENCE_ID,
+      email,
+      firstName,
+      unsubscribed: false,
+    });
 
-    const mcRes = await fetch(
-      `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/members`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `apikey ${MAILCHIMP_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email_address: email,
-          status: "subscribed",
-          merge_fields: {
-            FNAME: firstName,
-            ROLE: role,
-            CLUB: clubName || "",
-          },
-          tags,
-        }),
+    if (contactError) {
+      // Duplicate contacts are fine — already subscribed
+      const isDuplicate = contactError.message?.toLowerCase().includes('already exist');
+      if (!isDuplicate) {
+        console.error("Resend contact error:", contactError);
+        return NextResponse.json(
+          { error: "Failed to join waitlist. Please try again." },
+          { status: 500 }
+        );
       }
-    );
-
-    const mcData = await mcRes.json();
-
-    // "Member Exists" is fine — they're already subscribed
-    if (!mcRes.ok && mcData.title !== "Member Exists") {
-      console.error("Mailchimp error:", mcData);
-      return NextResponse.json(
-        { error: "Failed to join waitlist. Please try again." },
-        { status: 500 }
-      );
     }
 
-    // Send confirmation email via Resend (non-blocking — domain may still be verifying)
+    // Send confirmation email (non-blocking)
     try {
-      if (resend) {
-        await resend.emails.send({
-          from: "Tai at Trophy Cast <cast@trophycast.app>",
-          to: email,
-          subject: "You're on the Trophy Cast waitlist 🏆",
-          html: waitlistConfirmationHtml(firstName),
-          text: waitlistConfirmationText(firstName),
-        });
-      }
+      await resend.emails.send({
+        from: "Tai at Trophy Cast <cast@trophycast.app>",
+        to: email,
+        subject: "You're on the Trophy Cast waitlist 🏆",
+        html: waitlistConfirmationHtml(firstName),
+        text: waitlistConfirmationText(firstName),
+      });
     } catch (emailErr) {
-      // Don't fail the whole request if email sending fails (e.g. domain still verifying)
-      console.warn("Resend email failed (domain may still be verifying):", emailErr);
+      console.warn("Resend confirmation email failed:", emailErr);
     }
 
     return NextResponse.json({ success: true });

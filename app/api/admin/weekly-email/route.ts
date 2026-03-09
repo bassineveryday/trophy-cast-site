@@ -3,10 +3,8 @@ import crypto from 'crypto';
 import { Resend } from 'resend';
 import { buildEmailHtml } from '@/lib/emailTemplate';
 
-const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY!;
-const MAILCHIMP_AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID!;
-const MAILCHIMP_SERVER = MAILCHIMP_API_KEY?.split('-')[1]; // e.g. "us18"
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
+const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID!;
 const resend = new Resend(process.env.RESEND_API_KEY!);
 
 // Timing-safe password comparison using Node.js crypto
@@ -19,33 +17,13 @@ function checkPassword(provided: string, expected: string): boolean {
   return crypto.timingSafeEqual(a, b);
 }
 
-// Fetch all subscribed emails, preferring the 'app-user' segment if it exists
+// Fetch all subscribed emails from Resend Audience
 async function fetchSubscriberEmails(): Promise<string[]> {
-  let segmentId: number | null = null;
-  try {
-    const segRes = await fetch(
-      `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/segments?type=static&count=100`,
-      { headers: { Authorization: `apikey ${MAILCHIMP_API_KEY}` } }
-    );
-    if (segRes.ok) {
-      const data = await segRes.json();
-      const seg = (data.segments ?? []).find((s: { name: string }) => s.name === 'app-user');
-      segmentId = seg?.id ?? null;
-    }
-  } catch { /* fall through to full list */ }
-
-  const url = segmentId
-    ? `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/segments/${segmentId}/members?count=500`
-    : `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/members?status=subscribed&count=500`;
-
-  const res = await fetch(url, {
-    headers: { Authorization: `apikey ${MAILCHIMP_API_KEY}` },
-  });
-  if (!res.ok) throw new Error('Failed to fetch subscribers from Mailchimp');
-
-  const data = await res.json();
-  return (data.members ?? [])
-    .map((m: { email_address?: string }) => m.email_address)
+  const { data, error } = await resend.contacts.list({ audienceId: RESEND_AUDIENCE_ID });
+  if (error || !data) throw new Error('Failed to fetch subscribers from Resend');
+  return (data.data ?? [])
+    .filter((c) => !c.unsubscribed)
+    .map((c) => c.email)
     .filter(Boolean) as string[];
 }
 

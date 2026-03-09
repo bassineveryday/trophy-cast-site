@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
+import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 
-const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY!;
-const MAILCHIMP_AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID!;
-const MAILCHIMP_SERVER = MAILCHIMP_API_KEY?.split('-')[1];
+const resend = new Resend(process.env.RESEND_API_KEY!);
+const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID!;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 
 const supabase = createClient(
@@ -14,8 +14,8 @@ const supabase = createClient(
 
 function checkPassword(provided: string, expected: string): boolean {
   if (!expected || !provided) return false;
-  const a = Buffer.from(provided);
-  const b = Buffer.from(expected);
+  const a = new Uint8Array(Buffer.from(provided));
+  const b = new Uint8Array(Buffer.from(expected));
   if (a.length !== b.length) return false;
   return crypto.timingSafeEqual(a, b);
 }
@@ -32,22 +32,14 @@ export async function POST(request: Request) {
 
     // Fetch everything in parallel
     const [
-      listResult,
-      segResult,
+      contactsResult,
       bugCountResult,
       recentBugsResult,
       totalProfilesResult,
       newSignupsWeekResult,
       newSignupsMonthResult,
     ] = await Promise.allSettled([
-      fetch(
-        `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}`,
-        { headers: { Authorization: `apikey ${MAILCHIMP_API_KEY}` } }
-      ).then((r) => r.json()),
-      fetch(
-        `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/segments?type=static&count=100`,
-        { headers: { Authorization: `apikey ${MAILCHIMP_API_KEY}` } }
-      ).then((r) => r.json()),
+      resend.contacts.list({ audienceId: RESEND_AUDIENCE_ID }),
       supabase
         .from('bug_reports')
         .select('id', { count: 'exact', head: true })
@@ -70,24 +62,12 @@ export async function POST(request: Request) {
         .gte('created_at', since30d),
     ]);
 
-    const listData = listResult.status === 'fulfilled' ? listResult.value : null;
-    const segData = segResult.status === 'fulfilled' ? segResult.value : null;
-    const segs: { name: string; member_count: number }[] = segData?.segments ?? [];
-
-    // Case-insensitive segment matching — handles "app-user", "App Users", "app_user", etc.
-    const appUserSeg = segs.find((s) =>
-      ['app-user', 'app users', 'app_user', 'appuser'].includes(s.name.toLowerCase())
-    );
-    const waitlistSeg = segs.find((s) =>
-      ['waitlist', 'wait list', 'wait-list'].includes(s.name.toLowerCase())
-    );
+    const contactsData = contactsResult.status === 'fulfilled' ? contactsResult.value.data : null;
+    const totalSubscribers = (contactsData?.data ?? []).filter((c) => !c.unsubscribed).length;
 
     return NextResponse.json({
-      mailchimp: {
-        totalMembers: listData?.stats?.member_count ?? null,
-        appUserCount: appUserSeg?.member_count ?? null,
-        waitlistCount: waitlistSeg?.member_count ?? null,
-        allSegments: segs.map((s) => ({ name: s.name, count: s.member_count })),
+      subscribers: {
+        total: totalSubscribers,
       },
       bugs: {
         last30Days:

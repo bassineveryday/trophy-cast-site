@@ -5,11 +5,8 @@ import Link from 'next/link';
 import { useAdminAuth } from '@/lib/useAdminAuth';
 
 interface DashboardStats {
-  mailchimp: {
-    totalMembers: number | null;
-    appUserCount: number | null;
-    waitlistCount: number | null;
-    allSegments: { name: string; count: number }[];
+  subscribers: {
+    total: number | null;
   };
   bugs: {
     last30Days: number | null;
@@ -56,7 +53,7 @@ function timeAgo(isoString: string): string {
 }
 
 const QUICK_LINKS = [
-  { label: 'Mailchimp', href: 'https://mailchimp.com', icon: '📬' },
+  { label: 'Resend', href: 'https://resend.com/emails', icon: '📬' },
   { label: 'Supabase', href: 'https://supabase.com/dashboard/project/pxmffkaiwpvnpfrhfeco', icon: '🗄️' },
   { label: 'Vercel', href: 'https://vercel.com/dashboard', icon: '▲' },
   { label: 'GitHub', href: 'https://github.com/bassineveryday', icon: '🐙' },
@@ -206,24 +203,17 @@ export default function AdminDashboardPage() {
           <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted mb-4">Overview</p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <StatCard
-              label="App Users"
-              value={stats?.mailchimp.appUserCount ?? null}
-              sub="app-user segment"
+              label="Newsletter"
+              value={stats?.subscribers?.total ?? null}
+              sub="Resend subscribers"
               accent="border-electric/30"
               loading={statsLoading}
             />
             <StatCard
-              label="Waitlist"
-              value={stats?.mailchimp.waitlistCount ?? null}
-              sub="waiting to join"
+              label="App Users"
+              value={stats?.supabase?.totalProfiles ?? null}
+              sub="all-time signups"
               accent="border-trophyGold/20"
-              loading={statsLoading}
-            />
-            <StatCard
-              label="Total Audience"
-              value={stats?.mailchimp.totalMembers ?? null}
-              sub="all Mailchimp subscribers"
-              accent="border-liftedPanel"
               loading={statsLoading}
             />
             <StatCard
@@ -262,15 +252,6 @@ export default function AdminDashboardPage() {
               loading={statsLoading}
             />
           </div>
-          {/* Mailchimp segment debug — only shows if segment names don't match */}
-          {!statsLoading && stats?.mailchimp.appUserCount === null && (stats?.mailchimp.allSegments?.length ?? 0) > 0 && (
-            <div className="mt-3 bg-deepPanel border border-yellow-800/30 rounded-xl px-5 py-3">
-              <p className="text-xs text-yellow-600/70 font-semibold mb-1">⚠ Mailchimp segments (no match for &quot;app-user&quot;)</p>
-              <p className="text-xs text-copyMuted/50">
-                {stats.mailchimp.allSegments.map((s) => `"${s.name}" (${s.count})`).join(' · ')}
-              </p>
-            </div>
-          )}
         </section>
 
         {/* Stats — Live App Activity */}
@@ -407,20 +388,20 @@ export default function AdminDashboardPage() {
                     Weekly Email
                   </p>
                   <p className="text-copyMuted text-sm mt-2 leading-relaxed">
-                    Compose, AI-polish, preview, and send or schedule the weekly Mailchimp campaign
+                    Compose, AI-polish, preview, and send or schedule the weekly email campaign
                   </p>
                 </div>
                 <span className="text-copyMuted/30 group-hover:text-electric/50 text-xl transition-colors ml-4 shrink-0">
                   →
                 </span>
               </div>
-              {stats?.mailchimp.appUserCount !== null && stats?.mailchimp.appUserCount !== undefined && (
+              {stats?.subscribers?.total !== null && stats?.subscribers?.total !== undefined && (
                 <p className="text-xs text-copyMuted/50 mt-5 pt-4 border-t border-liftedPanel">
                   Sends to{' '}
                   <span className="text-trophyGold font-bold">
-                    {stats.mailchimp.appUserCount.toLocaleString()}
+                    {stats.subscribers.total.toLocaleString()}
                   </span>{' '}
-                  app-user subscribers
+                  subscribers
                 </p>
               )}
             </Link>
