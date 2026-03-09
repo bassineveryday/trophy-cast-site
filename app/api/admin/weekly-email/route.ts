@@ -1,38 +1,52 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
+import { Resend } from 'resend';
 import { buildEmailHtml } from '@/lib/emailTemplate';
 
 const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY!;
 const MAILCHIMP_AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID!;
 const MAILCHIMP_SERVER = MAILCHIMP_API_KEY?.split('-')[1]; // e.g. "us18"
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
+const resend = new Resend(process.env.RESEND_API_KEY!);
 
 // Timing-safe password comparison using Node.js crypto
 function checkPassword(provided: string, expected: string): boolean {
   if (!expected || !provided) return false;
-  const a = Buffer.from(provided);
-  const b = Buffer.from(expected);
+  const a = new Uint8Array(Buffer.from(provided));
+  const b = new Uint8Array(Buffer.from(expected));
   // must be same byte length for timingSafeEqual; early exit is acceptable here
   if (a.length !== b.length) return false;
   return crypto.timingSafeEqual(a, b);
 }
 
-// Look up the numeric segment ID for the 'app-user' static segment (tag)
-async function getAppUserSegmentId(listId: string): Promise<number | null> {
+// Fetch all subscribed emails, preferring the 'app-user' segment if it exists
+async function fetchSubscriberEmails(): Promise<string[]> {
+  let segmentId: number | null = null;
   try {
-    const res = await fetch(
-      `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/lists/${listId}/segments?type=static&count=100`,
+    const segRes = await fetch(
+      `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/segments?type=static&count=100`,
       { headers: { Authorization: `apikey ${MAILCHIMP_API_KEY}` } }
     );
-    if (!res.ok) return null;
-    const data = await res.json();
-    const seg = (data.segments ?? []).find(
-      (s: { name: string }) => s.name === 'app-user'
-    );
-    return seg?.id ?? null;
-  } catch {
-    return null;
-  }
+    if (segRes.ok) {
+      const data = await segRes.json();
+      const seg = (data.segments ?? []).find((s: { name: string }) => s.name === 'app-user');
+      segmentId = seg?.id ?? null;
+    }
+  } catch { /* fall through to full list */ }
+
+  const url = segmentId
+    ? `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/segments/${segmentId}/members?count=500`
+    : `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/members?status=subscribed&count=500`;
+
+  const res = await fetch(url, {
+    headers: { Authorization: `apikey ${MAILCHIMP_API_KEY}` },
+  });
+  if (!res.ok) throw new Error('Failed to fetch subscribers from Mailchimp');
+
+  const data = await res.json();
+  return (data.members ?? [])
+    .map((m: { email_address?: string }) => m.email_address)
+    .filter(Boolean) as string[];
 }
 
 export async function POST(request: Request) {
@@ -59,49 +73,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Deep dive topic is required.' }, { status: 400 });
     }
 
-    // ── 3. Look up app-user segment ID ───────────────────────────────────────
-    const segmentId = await getAppUserSegmentId(MAILCHIMP_AUDIENCE_ID);
-
-    const recipients: Record<string, unknown> = { list_id: MAILCHIMP_AUDIENCE_ID };
-    if (segmentId) {
-      recipients.segment_opts = { saved_segment_id: segmentId };
+    // ── 3. Fetch subscriber list from Mailchimp ───────────────────────────────
+    let emails: string[];
+    try {
+      emails = await fetchSubscriberEmails();
+    } catch (err) {
+      console.error('[weekly-email] Failed to fetch subscribers:', err);
+      return NextResponse.json({ error: 'Could not fetch subscriber list.' }, { status: 500 });
+    }
+    if (emails.length === 0) {
+      return NextResponse.json({ error: 'No subscribers found.' }, { status: 400 });
     }
 
-    // ── 4. Create campaign ───────────────────────────────────────────────────
-    const createRes = await fetch(
-      `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/campaigns`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `apikey ${MAILCHIMP_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: 'regular',
-          recipients,
-          settings: {
-            subject_line: subject.trim(),
-            preview_text: 'Trophy Cast community update — join us Monday at 7PM MT 🎣',
-            from_name: 'Tai — Trophy Cast',
-            reply_to: 'cast@trophycast.app',
-          },
-        }),
-      }
-    );
-
-    if (!createRes.ok) {
-      const err = await createRes.json();
-      console.error('[weekly-email] Mailchimp campaign create error:', err);
-      return NextResponse.json(
-        { error: 'Failed to create campaign.', detail: err.detail },
-        { status: 500 }
-      );
-    }
-
-    const campaign = await createRes.json();
-    const campaignId: string = campaign.id;
-
-    // ── 5. Set campaign content ──────────────────────────────────────────────
+    // ── 4. Build email HTML ───────────────────────────────────────────────────
     const htmlBody = buildEmailHtml({
       subject: subject.trim(),
       bullets: (bullets as string[]).filter((b: string) => b?.trim()),
@@ -110,80 +94,36 @@ export async function POST(request: Request) {
       meetingFocus,
     });
 
-    const contentRes = await fetch(
-      `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/campaigns/${campaignId}/content`,
-      {
-        method: 'PUT',
-        headers: {
-          Authorization: `apikey ${MAILCHIMP_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ html: htmlBody }),
-      }
-    );
+    // ── 5. Send via Resend batch (max 100 per call) ───────────────────────────
+    const baseEmail = {
+      from: 'Tai — Trophy Cast <cast@trophycast.app>',
+      subject: subject.trim(),
+      html: htmlBody,
+      ...(scheduleTime ? { scheduledAt: scheduleTime as string } : {}),
+    };
 
-    if (!contentRes.ok) {
-      const err = await contentRes.json();
-      console.error('[weekly-email] Mailchimp content error:', err);
-      return NextResponse.json(
-        { error: 'Failed to set campaign content.', detail: err.detail },
-        { status: 500 }
-      );
-    }
-
-    // ── 6. Schedule or send immediately ──────────────────────────────────────
-    if (scheduleTime) {
-      const schedRes = await fetch(
-        `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/campaigns/${campaignId}/actions/schedule`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `apikey ${MAILCHIMP_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ schedule_time: scheduleTime }),
-        }
-      );
-
-      if (!schedRes.ok) {
-        const err = await schedRes.json();
-        console.error('[weekly-email] Mailchimp schedule error:', err);
+    const ids: string[] = [];
+    for (let i = 0; i < emails.length; i += 100) {
+      const chunk = emails.slice(i, i + 100).map((to) => ({ ...baseEmail, to }));
+      const { data, error } = await resend.batch.send(chunk);
+      if (error) {
+        console.error('[weekly-email] Resend batch error:', error);
         return NextResponse.json(
-          {
-            error: 'Campaign created but scheduling failed. Check Mailchimp dashboard.',
-            detail: err.detail,
-            campaignId,
-          },
+          { error: 'Failed to send email.', detail: error.message },
           { status: 500 }
         );
       }
-
-      return NextResponse.json({ ok: true, action: 'scheduled', campaignId, scheduleTime });
+      const sent = (data as { data?: { id: string }[] } | null)?.data ?? [];
+      ids.push(...sent.map((d) => d.id));
     }
 
-    // Send now
-    const sendRes = await fetch(
-      `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/campaigns/${campaignId}/actions/send`,
-      {
-        method: 'POST',
-        headers: { Authorization: `apikey ${MAILCHIMP_API_KEY}` },
-      }
-    );
-
-    if (!sendRes.ok) {
-      const err = await sendRes.json();
-      console.error('[weekly-email] Mailchimp send error:', err);
-      return NextResponse.json(
-        {
-          error: 'Campaign created but send failed. Check Mailchimp dashboard.',
-          detail: err.detail,
-          campaignId,
-        },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json({ ok: true, action: 'sent', campaignId });
+    return NextResponse.json({
+      ok: true,
+      action: scheduleTime ? 'scheduled' : 'sent',
+      recipientCount: emails.length,
+      scheduleTime: scheduleTime ?? null,
+      ids,
+    });
   } catch (error) {
     console.error('[weekly-email] Unexpected error:', error);
     return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });

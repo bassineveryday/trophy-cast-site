@@ -190,7 +190,7 @@ export default function WeeklyEmailAdminPage() {
         data.action === 'sent'
           ? 'Campaign sent immediately!'
           : `Campaign scheduled for ${new Date(data.scheduleTime).toLocaleString()}.`;
-      setResultMsg(`✅ ${action} Mailchimp ID: ${data.campaignId}`);
+      setResultMsg(`✅ ${action} Sent to ${data.recipientCount} subscriber${data.recipientCount === 1 ? '' : 's'}.`);
     } catch {
       setStatus('error');
       setResultMsg('Network error. Check your connection and try again.');

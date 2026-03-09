@@ -90,7 +90,7 @@ export function buildEmailHtml(opts: {
     <div style="text-align:center;padding:24px 0 8px;">
       <p style="color:#546674;font-size:13px;margin:0;">© 2026 Trophy Cast, Inc. &middot; <a href="https://trophycast.app" style="color:#546674;text-decoration:none;">trophycast.app</a></p>
       <p style="color:#546674;font-size:12px;margin:8px 0 0;">
-        <a href="*|UNSUB|*" style="color:#546674;text-decoration:underline;">Unsubscribe from these emails</a>
+        <a href="mailto:cast@trophycast.app?subject=Unsubscribe" style="color:#546674;text-decoration:underline;">Unsubscribe from these emails</a>
       </p>
     </div>
 
