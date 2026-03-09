@@ -278,7 +278,7 @@ export const siteContent = {
   footer: {
     motto: "Where Every Cast Counts.",
     tagline: "Fish more. Learn faster. Connect deeper.",
-    aiDisclaimer: "Your coaching stays inside your account — your GPS, patterns, and spots never go out to the internet.",
+    aiDisclaimer: "© 2026 Trophy Cast, Inc. Your coaching stays inside your account — your GPS, patterns, and spots never go out to the internet.",
     links: [{ label: "Email", href: "mailto:hello@trophycast.app" }],
   },
 };

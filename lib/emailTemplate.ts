@@ -55,7 +55,7 @@ export function buildEmailHtml(opts: {
 
     <!-- Header -->
     <div style="text-align:center;padding:32px 0 24px;">
-      <p style="font-size:36px;margin:0;">🏆</p>
+      <img src="https://trophycast.app/trophy-cast-logo-256.png" alt="Trophy Cast" width="80" height="80" style="display:block;margin:0 auto 8px;">
       <h1 style="color:#D4AF37;font-size:26px;font-weight:700;margin:8px 0 4px;font-family:Georgia,serif;">Trophy Cast</h1>
       <p style="color:#C9D3DA;font-size:14px;margin:0;">Weekly Community Update</p>
     </div>
@@ -88,8 +88,10 @@ export function buildEmailHtml(opts: {
 
     <!-- Footer -->
     <div style="text-align:center;padding:24px 0 8px;">
-      <p style="color:#546674;font-size:13px;margin:0;">© 2026 Trophy Cast &middot; trophycast.app</p>
-      <p style="color:#546674;font-size:12px;margin:8px 0 0;">*|UNSUB|*</p>
+      <p style="color:#546674;font-size:13px;margin:0;">© 2026 Trophy Cast, Inc. &middot; <a href="https://trophycast.app" style="color:#546674;text-decoration:none;">trophycast.app</a></p>
+      <p style="color:#546674;font-size:12px;margin:8px 0 0;">
+        <a href="*|UNSUB|*" style="color:#546674;text-decoration:underline;">Unsubscribe from these emails</a>
+      </p>
     </div>
 
   </div>

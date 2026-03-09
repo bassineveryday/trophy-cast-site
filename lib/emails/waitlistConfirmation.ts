@@ -60,7 +60,7 @@ export function waitlistConfirmationHtml(firstName: string): string {
                 <p style="margin:0;font-size:13px;color:#64748b;line-height:1.6;">
                   Questions? Reply to this email — it goes straight to me.<br/>
                   <span style="color:#94a3b8;font-weight:600;">Tai Hunt</span><br/>
-                  <span style="color:#64748b;">Founder, Trophy Cast</span>
+                  <span style="color:#64748b;">Founder, Trophy Cast, Inc.</span>
                 </p>
               </div>
             </td>
@@ -69,9 +69,13 @@ export function waitlistConfirmationHtml(firstName: string): string {
           <!-- Footer -->
           <tr>
             <td align="center" style="padding:24px 0 0 0;">
-              <p style="margin:0;font-size:12px;color:#334155;">
+              <p style="margin:0 0 8px 0;font-size:12px;color:#334155;">
                 You're receiving this because you joined the Trophy Cast waitlist at
                 <a href="https://trophycast.app" style="color:#f5c842;text-decoration:none;">trophycast.app</a>
+              </p>
+              <p style="margin:0;font-size:11px;color:#1e2d40;">
+                &copy; 2026 Trophy Cast, Inc. &middot;
+                <a href="mailto:cast@trophycast.app?subject=Unsubscribe" style="color:#334155;text-decoration:underline;">Unsubscribe from future emails</a>
               </p>
             </td>
           </tr>
@@ -102,7 +106,10 @@ We're launching with our first club in March 2026. You're already ahead of the l
 Questions? Reply to this email — it goes straight to me.
 
 Tai Hunt
-Founder, Trophy Cast
+Founder, Trophy Cast, Inc.
 trophycast.app
+
+© 2026 Trophy Cast, Inc.
+To unsubscribe from future emails, reply with "Unsubscribe" in the subject line.
 `;
 }
