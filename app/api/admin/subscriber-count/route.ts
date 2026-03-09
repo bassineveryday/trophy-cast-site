@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { Resend } from 'resend';
+import { createClient } from '@supabase/supabase-js';
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
-const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID!;
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 
 function checkPassword(provided: string, expected: string): boolean {
@@ -23,12 +25,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { data, error } = await resend.contacts.list({ audienceId: RESEND_AUDIENCE_ID });
-    if (error || !data) {
-      return NextResponse.json({ count: null }, { status: 200 });
-    }
+    const { count, error } = await supabase
+      .from('waitlist_subscribers')
+      .select('id', { count: 'exact', head: true });
 
-    const count = (data.data ?? []).filter((c) => !c.unsubscribed).length;
+    if (error) return NextResponse.json({ count: null }, { status: 200 });
     return NextResponse.json({ count });
   } catch {
     return NextResponse.json({ count: null }, { status: 200 });

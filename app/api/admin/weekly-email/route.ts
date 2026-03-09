@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { Resend } from 'resend';
+import { createClient } from '@supabase/supabase-js';
 import { buildEmailHtml } from '@/lib/emailTemplate';
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
-const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID!;
 const resend = new Resend(process.env.RESEND_API_KEY!);
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 // Timing-safe password comparison using Node.js crypto
 function checkPassword(provided: string, expected: string): boolean {
@@ -17,14 +21,13 @@ function checkPassword(provided: string, expected: string): boolean {
   return crypto.timingSafeEqual(a, b);
 }
 
-// Fetch all subscribed emails from Resend Audience
+// Fetch all subscribed emails from Supabase
 async function fetchSubscriberEmails(): Promise<string[]> {
-  const { data, error } = await resend.contacts.list({ audienceId: RESEND_AUDIENCE_ID });
-  if (error || !data) throw new Error('Failed to fetch subscribers from Resend');
-  return (data.data ?? [])
-    .filter((c) => !c.unsubscribed)
-    .map((c) => c.email)
-    .filter(Boolean) as string[];
+  const { data, error } = await supabase
+    .from('waitlist_subscribers')
+    .select('email');
+  if (error || !data) throw new Error('Failed to fetch subscribers from Supabase');
+  return data.map((r) => r.email).filter(Boolean) as string[];
 }
 
 export async function POST(request: Request) {

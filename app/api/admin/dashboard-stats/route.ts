@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
-const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID!;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 
 const supabase = createClient(
@@ -39,7 +36,7 @@ export async function POST(request: Request) {
       newSignupsWeekResult,
       newSignupsMonthResult,
     ] = await Promise.allSettled([
-      resend.contacts.list({ audienceId: RESEND_AUDIENCE_ID }),
+      supabase.from('waitlist_subscribers').select('id', { count: 'exact', head: true }),
       supabase
         .from('bug_reports')
         .select('id', { count: 'exact', head: true })
@@ -62,8 +59,8 @@ export async function POST(request: Request) {
         .gte('created_at', since30d),
     ]);
 
-    const contactsData = contactsResult.status === 'fulfilled' ? contactsResult.value.data : null;
-    const totalSubscribers = (contactsData?.data ?? []).filter((c) => !c.unsubscribed).length;
+    const contactsData = contactsResult.status === 'fulfilled' ? contactsResult.value : null;
+    const totalSubscribers = (contactsData as { count?: number | null } | null)?.count ?? null;
 
     return NextResponse.json({
       subscribers: {
