@@ -13,6 +13,32 @@ interface DashboardStats {
   bugs: { last30Days: number | null };
 }
 
+interface ActivityMember {
+  name: string;
+  lastSeenAt: string;
+  lastScreen: string | null;
+}
+
+interface ActivityStats {
+  onlineNow: number;
+  activeToday: number;
+  activeThisWeek: number;
+  memberList: ActivityMember[];
+  avgSessionMinutes: number | null;
+  topScreens: { screen: string; count: number }[];
+}
+
+function timeAgo(isoString: string): string {
+  const seconds = Math.floor((Date.now() - new Date(isoString).getTime()) / 1000);
+  if (seconds < 60) return `${seconds}s ago`;
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+
 const QUICK_LINKS = [
   { label: 'Mailchimp', href: 'https://mailchimp.com', icon: '📬' },
   { label: 'Supabase', href: 'https://supabase.com/dashboard/project/pxmffkaiwpvnpfrhfeco', icon: '🗄️' },
@@ -56,6 +82,8 @@ export default function AdminDashboardPage() {
   const [pwInput, setPwInput] = useState('');
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [statsLoading, setStatsLoading] = useState(false);
+  const [activity, setActivity] = useState<ActivityStats | null>(null);
+  const [activityLoading, setActivityLoading] = useState(false);
 
   const handleUnlock = useCallback(
     (e: React.FormEvent) => {
@@ -65,6 +93,23 @@ export default function AdminDashboardPage() {
     },
     [pwInput, unlock]
   );
+
+  const fetchActivity = useCallback(() => {
+    if (!unlocked || !password) return;
+    setActivityLoading(true);
+    fetch('/api/admin/user-activity', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
+    })
+      .then(async (r) => {
+        if (r.status === 401) { lockOut(); return; }
+        setActivity(await r.json());
+      })
+      .catch(() => {})
+      .finally(() => setActivityLoading(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [unlocked, password]);
 
   useEffect(() => {
     if (!unlocked || !password) return;
@@ -80,6 +125,15 @@ export default function AdminDashboardPage() {
       })
       .catch(() => {})
       .finally(() => setStatsLoading(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [unlocked, password]);
+
+  // Fetch live activity stats on mount, then auto-refresh every 30 seconds
+  useEffect(() => {
+    if (!unlocked || !password) return;
+    fetchActivity();
+    const interval = setInterval(fetchActivity, 30_000);
+    return () => clearInterval(interval);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unlocked, password]);
 
@@ -131,7 +185,7 @@ export default function AdminDashboardPage() {
 
       <div className="max-w-5xl mx-auto px-6 py-10 space-y-12">
 
-        {/* Stats */}
+        {/* Stats — Audience */}
         <section>
           <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted mb-4">Overview</p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -164,6 +218,124 @@ export default function AdminDashboardPage() {
               loading={statsLoading}
             />
           </div>
+        </section>
+
+        {/* Stats — Live App Activity */}
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted">Live App Activity</p>
+            <div className="flex items-center gap-2">
+              {activityLoading && (
+                <span className="text-xs text-copyMuted/40 animate-pulse">refreshing…</span>
+              )}
+              <span className="text-xs text-copyMuted/40">auto-refreshes every 30s</span>
+              <button
+                onClick={fetchActivity}
+                className="text-xs text-electric/60 hover:text-electric transition-colors ml-2"
+              >
+                ↻ refresh
+              </button>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <StatCard
+              label="Online Now"
+              value={activity?.onlineNow ?? null}
+              sub="active in last 5 min"
+              accent="border-green-500/40"
+              loading={activityLoading}
+            />
+            <StatCard
+              label="Active Today"
+              value={activity?.activeToday ?? null}
+              sub="last 24 hours"
+              accent="border-electric/20"
+              loading={activityLoading}
+            />
+            <StatCard
+              label="Active This Week"
+              value={activity?.activeThisWeek ?? null}
+              sub="last 7 days"
+              accent="border-liftedPanel"
+              loading={activityLoading}
+            />
+            <StatCard
+              label="Avg Session"
+              value={activity?.avgSessionMinutes ?? null}
+              sub="minutes (last 30 days)"
+              accent="border-trophyGold/20"
+              loading={activityLoading}
+            />
+          </div>
+
+          {/* Member activity table */}
+          {activity?.memberList && activity.memberList.length > 0 && (
+            <div className="bg-deepPanel border border-liftedPanel rounded-2xl overflow-hidden mb-4">
+              <div className="px-6 py-4 border-b border-liftedPanel">
+                <p className="text-sm font-semibold text-copyLight">Member Activity</p>
+                <p className="text-xs text-copyMuted/50 mt-0.5">most recently active first</p>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-xs text-copyMuted/50 uppercase tracking-wider border-b border-liftedPanel">
+                      <th className="text-left px-6 py-3 font-medium">Member</th>
+                      <th className="text-left px-6 py-3 font-medium">Last Seen</th>
+                      <th className="text-left px-6 py-3 font-medium">Last Screen</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {activity.memberList.map((m, i) => {
+                      const isOnline = Date.now() - new Date(m.lastSeenAt).getTime() < 5 * 60 * 1000;
+                      return (
+                        <tr
+                          key={i}
+                          className="border-b border-liftedPanel/50 hover:bg-liftedPanel/30 transition-colors"
+                        >
+                          <td className="px-6 py-3 text-copyLight font-medium flex items-center gap-2">
+                            {isOnline && (
+                              <span className="w-2 h-2 rounded-full bg-green-400 inline-block shrink-0" />
+                            )}
+                            {m.name}
+                          </td>
+                          <td className="px-6 py-3 text-copyMuted tabular-nums">
+                            {timeAgo(m.lastSeenAt)}
+                          </td>
+                          <td className="px-6 py-3 text-copyMuted/70 font-mono text-xs">
+                            {m.lastScreen ?? '—'}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Top screens */}
+          {activity?.topScreens && activity.topScreens.length > 0 && (
+            <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+              <p className="text-sm font-semibold text-copyLight mb-4">
+                Top Screens <span className="text-xs font-normal text-copyMuted/50 ml-1">(active members this week)</span>
+              </p>
+              <div className="space-y-2">
+                {activity.topScreens.map((s, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <span className="text-xs text-copyMuted/40 w-4 shrink-0">{i + 1}</span>
+                    <div className="flex-1 bg-liftedPanel/50 rounded-full h-1.5 overflow-hidden">
+                      <div
+                        className="bg-electric/60 h-full rounded-full"
+                        style={{ width: `${Math.round((s.count / activity.topScreens[0].count) * 100)}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-copyMuted font-mono min-w-0 truncate">{s.screen}</span>
+                    <span className="text-xs text-copyMuted/50 shrink-0">{s.count}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </section>
 
         {/* Tools */}
