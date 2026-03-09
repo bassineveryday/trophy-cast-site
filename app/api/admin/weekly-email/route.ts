@@ -26,7 +26,8 @@ async function fetchSubscriberEmails(): Promise<string[]> {
   const { data, error } = await supabase
     .from('waitlist_subscribers')
     .select('email');
-  if (error || !data) throw new Error('Failed to fetch subscribers from Supabase');
+  if (error) throw new Error(`Supabase error: ${error.message} (code: ${error.code})`);
+  if (!data) throw new Error('Supabase returned no data');
   return data.map((r) => r.email).filter(Boolean) as string[];
 }
 
@@ -59,8 +60,9 @@ export async function POST(request: Request) {
     try {
       emails = await fetchSubscriberEmails();
     } catch (err) {
-      console.error('[weekly-email] Failed to fetch subscribers:', err);
-      return NextResponse.json({ error: 'Could not fetch subscriber list.' }, { status: 500 });
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error('[weekly-email] Failed to fetch subscribers:', msg);
+      return NextResponse.json({ error: `Could not fetch subscriber list: ${msg}` }, { status: 500 });
     }
     if (emails.length === 0) {
       return NextResponse.json({ error: 'No subscribers found.' }, { status: 400 });
