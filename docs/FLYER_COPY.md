@@ -9,13 +9,13 @@ _For: March 14–15 Tournament/Expo Handout_
 **Front:**
 
 ### 🏆 Trophy Cast
-**The fishing app that gets smarter the more you fish.**
+**Trophy Cast gets smarter the more you fish.**
 
 Not another tracker. Not another social feed.
 Trophy Cast learns your patterns, sharpens your skills,
 and connects you with anglers who actually fish.
 
-- 🎣 Log catches. The app learns YOUR techniques.
+- 🎣 Log catches. Trophy Cast learns YOUR techniques.
 - 📊 Your patterns. Your water. Your insights.
 - 🤝 Real anglers. Real community. No influencers.
 - 🏆 Tournaments, clubs, and leaderboards built in.
@@ -26,7 +26,7 @@ Join the waitlist — be first in.
 
 **Back (or bottom):**
 
-*"Every fishing app tracks your catch. We learn from it."*
+*"Other fishing tools track your catch. We learn from it."*
 
 The more you fish, the more it knows. What you threw.
 What the water looked like. What you changed. Over time,
@@ -41,7 +41,7 @@ your go-to patterns, the adjustments that work for YOU.
 
 ### 🏆 Trophy Cast
 
-**Every fishing app tracks your catch.**
+**Other fishing tools track your catch.**
 **We learn from it.**
 
 Your patterns. Your techniques.
@@ -55,7 +55,7 @@ trophycast.app
 ## FLYER OPTION C: "The One-Liner" (Business Card / Sticker)
 
 **🏆 Trophy Cast**
-The fishing app that gets smarter the more you fish.
+Trophy Cast gets smarter the more you fish.
 
 **trophycast.app**
 **[QR CODE]**
@@ -69,14 +69,14 @@ The fishing app that gets smarter the more you fish.
 - **Logo:** Use transparent version if available, otherwise current logo
 - **Font feel:** Bold, clean, modern. Not outdoorsy/camo. Think tech meets fishing.
 - **Tone:** Confident but warm. Not salesy. Like a friend telling you about something legit.
-- **No mention of:** AI (scares people), mental health (the app does it without saying it), price
+- **No mention of:** AI (scares people), mental health (Trophy Cast does it without saying it), price
 
 ---
 
 ## Key Messages (Pick 2-3 for any material)
 
-1. "The fishing app that gets smarter the more you fish."
-2. "Every fishing app tracks your catch. We learn from it."
+1. "Trophy Cast gets smarter the more you fish."
+2. "Other fishing tools track your catch. We learn from it."
 3. "Built on real anglers. Not influencers."
 4. "Your patterns. Your water. Your insights."
 5. "Tournaments, clubs, and leaderboards — all in your pocket."

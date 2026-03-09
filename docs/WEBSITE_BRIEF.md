@@ -5,9 +5,9 @@ _Last Updated: February 26, 2026_
 
 ## 🌟 North Star
 
-> **Trophy Cast exists to get people outside, fishing, and connected — building confidence and community through a sport they love, powered by an app that learns how they fish.**
+> **Trophy Cast exists to get people outside, fishing, and connected — building confidence and community through a sport they love, and it gets smarter every time they fish.**
 
-**Tagline:** _"The fishing app that gets smarter the more you fish."_
+**Tagline:** _"Trophy Cast gets smarter the more you fish."_
 
 ---
 
@@ -19,7 +19,7 @@ _Last Updated: February 26, 2026_
 | **Club leader / president** | Can this help my club? | Club features, AOY, tournament management, "Club-in-a-Box" |
 | **Angler who got a business card** | What is this? Is it cool? | Hero, screenshots, "How it works", waitlist |
 | **Potential partner / sponsor** | Is this professional? | Clean design, clear value prop, contact |
-| **Curious angler** | What's different from other fishing apps? | Voice AI catch logging, community focus, not just a fish tracker |
+| **Curious angler** | What makes Trophy Cast different? | Voice AI catch logging, community focus, not just a fish tracker |
 
 ---
 
@@ -35,7 +35,7 @@ _Last Updated: February 26, 2026_
 | 6 | **AI Coach** | Differentiator | "Coach insights, not coaching" – honest, personal, private |
 | 7 | **For Clubs** | Club leader value | AOY, tournaments, rosters, announcements, treasury |
 | 8 | **Club-in-a-Box** | Growth / scale story | Any club can launch on Trophy Cast |
-| 9 | **Screenshots** | Show the real app | 4-6 real screenshots from the live app |
+| 9 | **Screenshots** | Show Trophy Cast | 4-6 real screenshots from Trophy Cast |
 | 10 | **Trust** | Address concerns | Optional AI, no spot sharing, your data is yours |
 | 11 | **Waitlist / CTA** | Convert the visitor | Email signup → "Join the waitlist" |
 | 12 | **Footer** | Links, contact, legal | Email, socials (future), motto |
@@ -82,6 +82,7 @@ _Last Updated: February 26, 2026_
 | Your data | Our data |
 | Coach insights | AI predictions |
 | Where Every Cast Counts | #1 fishing app |
+| Trophy Cast (just the name) | "the app" / "the fishing app" |
 
 ---
 
@@ -126,8 +127,8 @@ _Last Updated: February 26, 2026_
 - Scrolls to #how section
 - Low commitment action for curious visitors
 
-### Future CTA (Post March 4): "Open the App"
-- Direct link to the live web app
+### Future CTA (Post March 4): "Open Trophy Cast"
+- Direct link to Trophy Cast
 - Add when ready for open signups
 
 ---
@@ -135,8 +136,8 @@ _Last Updated: February 26, 2026_
 ## 📱 Design Principles
 
 1. **Mobile-first** – Most visitors will come from a phone (business card → website)
-2. **Dark theme** – Matches the app, stands out from generic fishing sites
-3. **Screenshots sell** – Real app images > words
+2. **Dark theme** – Matches Trophy Cast, stands out from generic fishing sites
+3. **Screenshots sell** – Real screenshots > words
 4. **Fast** – Under 3 seconds load time
 5. **One page** – No clicking around, scroll down and see everything
 6. **Every section has a purpose** – If it doesn't convert, cut it
@@ -161,7 +162,7 @@ _Last Updated: February 26, 2026_
 
 ### Content Updates (lib/content.ts)
 - [ ] Update hero messaging to reflect North Star
-- [ ] Update feature descriptions to match real app capabilities
+- [ ] Update feature descriptions to match real Trophy Cast capabilities
 - [ ] Remove "Coming Soon" from screenshots
 - [ ] Update "Club-in-a-Box" – remove "Coming" badge or update messaging
 - [ ] Tighten midCta and finalCta copy
@@ -169,7 +170,7 @@ _Last Updated: February 26, 2026_
 - [ ] Ensure tone matches brand voice guide above
 
 ### Visual Updates
-- [ ] Replace placeholder screenshots with real app images
+- [ ] Replace placeholder screenshots with real Trophy Cast screenshots
 - [ ] Add new logo (256px hero + 48px navbar)
 - [ ] Verify favicon and OG image match new brand
 - [ ] Check mobile responsiveness on all sections
@@ -181,7 +182,7 @@ _Last Updated: February 26, 2026_
 - [ ] Deploy to Vercel
 
 ### Future
-- [ ] Add "Open the App" CTA when ready for open signups
+- [ ] Add "Open Trophy Cast" CTA when ready for open signups
 - [ ] Add video embed (tutorial videos from VIDEO_SCRIPTS.md)
 - [ ] Add social media links to footer
 - [ ] Consider testimonials section after launch
@@ -195,4 +196,4 @@ _Last Updated: February 26, 2026_
 | Onboarding Plan | `Trophy-Cast-MVP-v2-1/docs/MEMBER_ONBOARDING_PLAN.md` |
 | Video Scripts | `Trophy-Cast-MVP-v2-1/docs/VIDEO_SCRIPTS.md` |
 | Tech Checklist | `Trophy-Cast-MVP-v2-1/docs/TECH_CHECKLIST.md` |
-| App PRD | `Trophy-Cast-MVP-v2-1/docs/product/MASTER_PRD.md` |
+| Trophy Cast PRD | `Trophy-Cast-MVP-v2-1/docs/product/MASTER_PRD.md` |

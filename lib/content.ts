@@ -5,10 +5,10 @@ export const siteContent = {
     logoText: "TC",
     tagline: "Fish more. Learn faster. Connect deeper.",
     northStar:
-      "Trophy Cast exists to get people outside, fishing, and connected — building confidence and community through a sport they love, powered by an app that learns how they fish.",
+      "Trophy Cast exists to get people outside, fishing, and connected — building confidence and community through a sport they love, and it gets smarter every time they fish.",
   },
   seo: {
-    title: "Trophy Cast — The Fishing App That Gets Smarter the More You Fish",
+    title: "Trophy Cast — Gets Smarter the More You Fish",
     description:
       "Trophy Cast learns your patterns, sharpens your skills, and connects you with anglers who actually fish. Voice-first catch logging, coaching that knows YOUR water, live tournaments, and club-in-a-box. Where Every Cast Counts.",
   },
@@ -31,8 +31,8 @@ export const siteContent = {
     { label: "Trust", href: "#trust" },
   ],
   hero: {
-    eyebrow: "Not another fishing app.",
-    title: "The fishing app that gets smarter the more you fish.",
+    eyebrow: "Built different. Built for anglers.",
+    title: "Trophy Cast gets smarter the more you fish.",
     description:
       "Trophy Cast learns your patterns, sharpens your skills, and connects you with anglers who actually fish. No generic tips. No sponsored advice. Just insights from your own water.",
     highlights: [
@@ -42,7 +42,7 @@ export const siteContent = {
       },
       {
         label: "Your patterns, not someone else's",
-        value: "Every catch you log teaches the app something. Over time, it knows your techniques, your conditions, your adjustments.",
+        value: "Every catch you log teaches Trophy Cast something. Over time, it knows your techniques, your conditions, your adjustments.",
       },
       {
         label: "Video notes & group chats",
@@ -55,13 +55,13 @@ export const siteContent = {
     id: "what",
     title: "What makes Trophy Cast different",
     summary:
-      "Every fishing app tracks your catch. Trophy Cast learns from it — your patterns, your techniques, the small adjustments that make you better on the water.",
+      "Other fishing tools track your catch. Trophy Cast learns from it — your patterns, your techniques, the small adjustments that make you better on the water.",
     items: [
       {
         emoji: "🧠",
         title: "It learns how YOU fish",
         description:
-          "Log a catch. Tell the app what you were thinking, what you changed, what the water looked like. Over time, it starts connecting dots you'd miss — your best conditions, your go-to patterns, the adjustments that work for YOU.",
+          "Log a catch. Tell Trophy Cast what you were thinking, what you changed, what the water looked like. Over time, it starts connecting dots you'd miss — your best conditions, your go-to patterns, the adjustments that work for YOU.",
       },
       {
         emoji: "🎣",
@@ -73,7 +73,7 @@ export const siteContent = {
         emoji: "🤝",
         title: "Community that gets you outside",
         description:
-          "Start a club with your buddies. Join a local tournament. Five friends can build their own micro-club tomorrow. The point isn't the app — it's getting you on the water.",
+          "Start a club with your buddies. Join a local tournament. Five friends can build their own micro-club tomorrow. The point isn't the screen — it's getting you on the water.",
       },
     ],
   },
@@ -210,9 +210,9 @@ export const siteContent = {
   },
   screenshots: {
     id: "screenshots",
-    title: "See the app",
+    title: "See Trophy Cast",
     caption:
-      "Real screens from the live Trophy Cast app — built with anglers, tested on the water.",
+      "Real screens from Trophy Cast — built with anglers, tested on the water.",
     images: [
       {
         src: "/screenshots/placeholder-1.svg",
@@ -260,7 +260,7 @@ export const siteContent = {
         emoji: "💻",
         title: "Works on any device",
         description:
-          "Open Trophy Cast in any browser — phone, tablet, or desktop. No app store download required. You're fishing in seconds.",
+          "No App Store required. Add Trophy Cast to your home screen in one tap — or open it in any browser on phone, tablet, or desktop. You're fishing in seconds.",
       },
     ],
   },
