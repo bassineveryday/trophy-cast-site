@@ -27,10 +27,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const since7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     const since30d = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
     // Fetch everything in parallel
-    const [listResult, segResult, bugResult] = await Promise.allSettled([
+    const [
+      listResult,
+      segResult,
+      bugCountResult,
+      recentBugsResult,
+      totalProfilesResult,
+      newSignupsWeekResult,
+      newSignupsMonthResult,
+    ] = await Promise.allSettled([
       fetch(
         `https://${MAILCHIMP_SERVER}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}`,
         { headers: { Authorization: `apikey ${MAILCHIMP_API_KEY}` } }
@@ -43,21 +52,62 @@ export async function POST(request: Request) {
         .from('bug_reports')
         .select('id', { count: 'exact', head: true })
         .gte('created_at', since30d),
+      supabase
+        .from('bug_reports')
+        .select('id, created_at, description, member_name, page_path, device_info')
+        .order('created_at', { ascending: false })
+        .limit(5),
+      supabase
+        .from('profiles')
+        .select('id', { count: 'exact', head: true }),
+      supabase
+        .from('profiles')
+        .select('id', { count: 'exact', head: true })
+        .gte('created_at', since7d),
+      supabase
+        .from('profiles')
+        .select('id', { count: 'exact', head: true })
+        .gte('created_at', since30d),
     ]);
 
     const listData = listResult.status === 'fulfilled' ? listResult.value : null;
     const segData = segResult.status === 'fulfilled' ? segResult.value : null;
     const segs: { name: string; member_count: number }[] = segData?.segments ?? [];
 
+    // Case-insensitive segment matching — handles "app-user", "App Users", "app_user", etc.
+    const appUserSeg = segs.find((s) =>
+      ['app-user', 'app users', 'app_user', 'appuser'].includes(s.name.toLowerCase())
+    );
+    const waitlistSeg = segs.find((s) =>
+      ['waitlist', 'wait list', 'wait-list'].includes(s.name.toLowerCase())
+    );
+
     return NextResponse.json({
       mailchimp: {
         totalMembers: listData?.stats?.member_count ?? null,
-        appUserCount: segs.find((s) => s.name === 'app-user')?.member_count ?? null,
-        waitlistCount: segs.find((s) => s.name === 'waitlist')?.member_count ?? null,
+        appUserCount: appUserSeg?.member_count ?? null,
+        waitlistCount: waitlistSeg?.member_count ?? null,
+        allSegments: segs.map((s) => ({ name: s.name, count: s.member_count })),
       },
       bugs: {
         last30Days:
-          bugResult.status === 'fulfilled' ? (bugResult.value.count ?? null) : null,
+          bugCountResult.status === 'fulfilled' ? (bugCountResult.value.count ?? null) : null,
+        recent:
+          recentBugsResult.status === 'fulfilled' ? (recentBugsResult.value.data ?? []) : [],
+      },
+      supabase: {
+        totalProfiles:
+          totalProfilesResult.status === 'fulfilled'
+            ? (totalProfilesResult.value.count ?? null)
+            : null,
+        newSignupsThisWeek:
+          newSignupsWeekResult.status === 'fulfilled'
+            ? (newSignupsWeekResult.value.count ?? null)
+            : null,
+        newSignupsThisMonth:
+          newSignupsMonthResult.status === 'fulfilled'
+            ? (newSignupsMonthResult.value.count ?? null)
+            : null,
       },
     });
   } catch {

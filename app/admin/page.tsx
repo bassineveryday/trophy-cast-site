@@ -9,8 +9,24 @@ interface DashboardStats {
     totalMembers: number | null;
     appUserCount: number | null;
     waitlistCount: number | null;
+    allSegments: { name: string; count: number }[];
   };
-  bugs: { last30Days: number | null };
+  bugs: {
+    last30Days: number | null;
+    recent: {
+      id: string;
+      created_at: string;
+      description: string;
+      member_name: string | null;
+      page_path: string | null;
+      device_info: string | null;
+    }[];
+  };
+  supabase: {
+    totalProfiles: number | null;
+    newSignupsThisWeek: number | null;
+    newSignupsThisMonth: number | null;
+  } | null;
 }
 
 interface ActivityMember {
@@ -220,6 +236,43 @@ export default function AdminDashboardPage() {
           </div>
         </section>
 
+        {/* Stats — App Health (Supabase) */}
+        <section>
+          <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted mb-4">App Health</p>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+            <StatCard
+              label="Total Profiles"
+              value={stats?.supabase?.totalProfiles ?? null}
+              sub="all-time signups"
+              accent="border-electric/30"
+              loading={statsLoading}
+            />
+            <StatCard
+              label="New This Week"
+              value={stats?.supabase?.newSignupsThisWeek ?? null}
+              sub="signups last 7 days"
+              accent="border-bass/30"
+              loading={statsLoading}
+            />
+            <StatCard
+              label="New This Month"
+              value={stats?.supabase?.newSignupsThisMonth ?? null}
+              sub="signups last 30 days"
+              accent="border-liftedPanel"
+              loading={statsLoading}
+            />
+          </div>
+          {/* Mailchimp segment debug — only shows if segment names don't match */}
+          {!statsLoading && stats?.mailchimp.appUserCount === null && (stats?.mailchimp.allSegments?.length ?? 0) > 0 && (
+            <div className="mt-3 bg-deepPanel border border-yellow-800/30 rounded-xl px-5 py-3">
+              <p className="text-xs text-yellow-600/70 font-semibold mb-1">⚠ Mailchimp segments (no match for &quot;app-user&quot;)</p>
+              <p className="text-xs text-copyMuted/50">
+                {stats.mailchimp.allSegments.map((s) => `"${s.name}" (${s.count})`).join(' · ')}
+              </p>
+            </div>
+          )}
+        </section>
+
         {/* Stats — Live App Activity */}
         <section>
           <div className="flex items-center justify-between mb-4">
@@ -402,6 +455,41 @@ export default function AdminDashboardPage() {
 
           </div>
         </section>
+
+        {/* Recent Bug Reports */}
+        {stats?.bugs.recent && stats.bugs.recent.length > 0 && (
+          <section>
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted">Recent Bug Reports</p>
+              <Link href="/admin/bugs" className="text-xs text-electric/60 hover:text-electric transition-colors">
+                view all →
+              </Link>
+            </div>
+            <div className="bg-deepPanel border border-liftedPanel rounded-2xl overflow-hidden">
+              <div className="divide-y divide-liftedPanel/50">
+                {stats.bugs.recent.map((bug) => (
+                  <div key={bug.id} className="px-6 py-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm text-copyLight leading-snug line-clamp-2">{bug.description}</p>
+                        <p className="text-xs text-copyMuted/50 mt-1">
+                          {bug.member_name ?? 'Unknown'}
+                          {bug.page_path ? ` · ${bug.page_path}` : ''}
+                          {' · '}{timeAgo(bug.created_at)}
+                        </p>
+                      </div>
+                      {bug.device_info && (
+                        <span className="text-xs text-copyMuted/30 font-mono shrink-0 max-w-[120px] truncate">
+                          {bug.device_info}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Quick Links */}
         <section>
