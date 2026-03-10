@@ -10,7 +10,7 @@ export const siteContent = {
   seo: {
     title: "Trophy Cast — Gets Smarter the More You Fish",
     description:
-      "Trophy Cast learns your patterns, sharpens your skills, and connects you with anglers who actually fish. Voice-first catch logging, coaching that knows YOUR water, live tournaments, and club-in-a-box. Where Every Cast Counts.",
+      "Trophy Cast learns your patterns, sharpens your skills, and connects you with anglers who actually fish. Voice-first catch logging, TC Coach that knows YOUR water, live tournaments, and club-in-a-box. Where Every Cast Counts.",
   },
   waitlist: {
     email: "hello@trophycast.app",
@@ -25,7 +25,7 @@ export const siteContent = {
     { label: "How it works", href: "#how" },
     { label: "The loop", href: "#loop" },
     { label: "For anglers", href: "#anglers" },
-    { label: "Coaching", href: "#coach" },
+    { label: "TC Coach", href: "#coach" },
     { label: "For clubs", href: "#clubs" },
     { label: "Screenshots", href: "#screenshots" },
     { label: "Trust", href: "#trust" },
@@ -34,7 +34,7 @@ export const siteContent = {
     eyebrow: "Built different. Built for anglers.",
     title: "Trophy Cast gets smarter the more you fish.",
     description:
-      "Trophy Cast learns your patterns, sharpens your skills, and connects you with anglers who actually fish. No generic tips. No sponsored advice. Just insights from your own water.",
+      "Trophy Cast learns your patterns, sharpens your skills, and connects you with anglers who actually fish. No generic tips. No sponsored advice. Just insights from your own water — powered by TC Coach.",
     highlights: [
       {
         label: "Built with real anglers",
@@ -42,26 +42,26 @@ export const siteContent = {
       },
       {
         label: "Your patterns, not someone else's",
-        value: "Every catch you log teaches Trophy Cast something. Over time, it knows your techniques, your conditions, your adjustments.",
+        value: "Every catch you log teaches TC Coach something new. Over time, it knows your techniques, your conditions, your adjustments — and tells you exactly what to change.",
       },
       {
         label: "Video notes & group chats",
         value: "Record video notes on the water. Chat with your crew, share catch photos, and get SMS alerts for tournaments and announcements.",
       },
     ],
-    statRibbon: "80+ screens · Voice logging · Video notes · Personal coaching · Live weather · 30 trophies · Daily missions · Group chats · SMS alerts · Club-in-a-box · Built by fishermen, for fishermen.",
+    statRibbon: "80+ screens · Quick Capture · Video notes · TC Coach · Live weather · 30 trophies · Daily missions · Dock Talk · SMS alerts · Club-in-a-box · Built by fishermen, for fishermen.",
   },
   what: {
     id: "what",
     title: "What makes Trophy Cast different",
     summary:
-      "Other fishing tools track your catch. Trophy Cast learns from it — your patterns, your techniques, the small adjustments that make you better on the water.",
+      "Other fishing apps track your catch. Trophy Cast learns from it — your patterns, your techniques, the small adjustments that make you better on the water.",
     items: [
       {
-        emoji: "🧠",
-        title: "It learns how YOU fish",
+        emoji: "✨",
+        title: "TC Coach learns how YOU fish",
         description:
-          "Log a catch. Tell Trophy Cast what you were thinking, what you changed, what the water looked like. Over time, it starts connecting dots you'd miss — your best conditions, your go-to patterns, the adjustments that work for YOU.",
+          "Log a catch, speak what you were thinking, what you changed, what the water looked like. TC Coach starts connecting dots you'd miss — your best conditions, your go-to patterns, the adjustments that work for YOU.",
       },
       {
         emoji: "🎣",
@@ -83,16 +83,16 @@ export const siteContent = {
     tagline: "Fish → Log → Get better",
     steps: [
       {
-        emoji: "📸",
-        title: "Fish & log",
+        emoji: "🎙️",
+        title: "Quick Capture",
         description:
-          "Snap a photo, speak your catch details — species, weight, lure, what you were thinking. Trophy Cast captures weather, GPS, barometric pressure, and moon phase automatically.",
+          "One tap, speak 15 seconds — species, weight, lure, what you were thinking. Trophy Cast auto-captures GPS, weather, barometric pressure, and moon phase. Keep fishing.",
       },
       {
-        emoji: "🧠",
-        title: "Coach responds",
+        emoji: "✨",
+        title: "TC Coach responds",
         description:
-          "Your AI coach analyzes this catch against your history, conditions, and trophy progress — then gives you one specific, data-grounded insight. Not generic tips. YOUR patterns.",
+          "TC Coach analyzes this catch against your history, conditions, and trophy progress — then gives you one specific, data-grounded insight. Not generic tips. YOUR patterns.",
       },
       {
         emoji: "🏆",
@@ -108,28 +108,75 @@ export const siteContent = {
     description:
       "Whether you fish bass, walleye, trout, or everything in between — Trophy Cast adapts to how you fish, not the other way around. The more you use it, the more it gives back.",
     bulletPoints: [
-      { emoji: "🎙️", text: "Voice-first logging — record catches without putting down your rod. Speak naturally and it handles the rest." },
-      { emoji: "🌦️", text: "Real-time weather with barometric pressure, moon phases, and conditions scoring — know what the fish know before you hit the water." },
+      { emoji: "🎙️", text: "Quick Capture — one tap, speak your catch, keep fishing. Silence auto-stops at 3 seconds. Catch the fish, log it in one breath." },
+      { emoji: "🌦️", text: "Conditions Engine™ with barometric pressure, solunar feeding windows, wind, and temperature — scored 0–10 against YOUR real catch history, not generic averages." },
       { emoji: "🗺️", text: "Interactive catch map shows every fish you've logged, colored by species, with GPS pins on the water." },
-      { emoji: "�", text: "30 trophies to earn — from Photo Pro to Species Slam to Ten Bass Day. Share your unlocks with a screenshot-ready trophy card." },
+      { emoji: "🏆", text: "30 trophies to earn — from Photo Pro to Species Slam to Ten Bass Day. Share your unlocks with a screenshot-ready trophy card." },
       { emoji: "🎯", text: "Daily missions nudge you toward trophies: 'Add a photo (8/10 for 📸 Photo Pro!)' — small actions that build long-term skills." },
-      { emoji: "🔥", text: "Fishing streaks and daily coaching check-ins keep you coming back. Log one catch a day and watch the momentum build." },
+      { emoji: "🔥", text: "Fishing streaks and daily TC Coach check-ins keep you coming back. Log one catch a day and watch the momentum build." },
       { emoji: "🎬", text: "Video notes on the water — record a quick clip when you're on a pattern, build a personal library of techniques tied to real catches." },
-      { emoji: "💬", text: "Group chats for your crew — create public or private groups like 'Jig Fishing Crew' or 'Boaters 2026', share catch photos, and get SMS alerts for tournaments and announcements." },
+      { emoji: "⚙️", text: "Gear Library — rods, reels, rigs, and setups tracked in one place. TC Coach can analyze your equipment and suggest what fits your style." },
+      { emoji: "💬", text: "Dock Talk messaging — 1:1 DMs, group chats, committee channels, and tournament chat in a Discord-style layout. Share catch photos and get SMS tournament alerts." },
+      { emoji: "📊", text: "Pre-trip prep cards — TC Coach builds a personalized playbook before you leave the dock: top lures, techniques, and the windows when fish are most likely to bite." },
     ],
   },
   coachInsights: {
     id: "coach",
-    title: "Coaching that knows your water",
+    title: "TC Coach — Coaching that knows your water",
     description:
-      "Most fishing advice is generic. Trophy Cast's coaching is built from YOUR data — your catches, your patterns, your adjustments. It doesn't tell you how to fish. It shows you how YOU fish, and helps you do it better.",
+      "Most fishing advice is generic. TC Coach is built from YOUR data — your catches, your patterns, your adjustments. It doesn't tell you how to fish. It shows you how YOU fish, and helps you do it better.",
     bullets: [
-      { emoji: "🎯", text: "The more you fish, the better it knows your patterns. Every catch teaches it something new about how you operate on the water." },
-      { emoji: "📊", text: "Pre-trip cards that factor in barometric pressure, temperature, wind, and moon phase — matched against YOUR catch history, not someone else's." },
-      { emoji: "🏆", text: "Your coach knows your trophy progress. Unlock Photo Pro and it celebrates. One catch away from Species Slam? It'll remind you." },
-      { emoji: "🔧", text: "Backed by 60+ fishing knowledge packs — the science of lure displacement, pressure effects on feeding, seasonal migration. Not guesses. Physics." },
-      { emoji: "⚡", text: "Performance Edge full-screen view — see your condition score broken down live: barometric pressure, wind, solunar tide, and temperature, each matched against YOUR historical catch data." },
-      { emoji: "🔒", text: "Your spots never go anywhere — not to the internet, not to other anglers, not to us. Only you see your coaching." },
+      { emoji: "✨", text: "65 fishing knowledge packs powering every answer — the science of lure displacement, pressure effects on feeding, seasonal migration, FFS tactics, and more. Not guesses. Physics." },
+      { emoji: "🎯", text: "The more you fish, the better TC Coach knows your patterns. Every catch teaches it something new about how you operate on the water." },
+      { emoji: "📊", text: "Pre-trip prep cards factor in barometric pressure, temperature, wind, and solunar windows — matched against YOUR catch history, not someone else's." },
+      { emoji: "🏆", text: "TC Coach knows your trophy progress. Unlock Photo Pro and it celebrates. One catch away from Species Slam? It'll remind you." },
+      { emoji: "⚡", text: "Performance Edge full-screen view — live conditions score broken down chip by chip: pressure, wind, solunar feeding window, and temperature, each matched against YOUR historical data." },
+      { emoji: "💬", text: "Inline TC Coach chat on every catch review — talk through what you were thinking before saving. Teaches the coach with every fish you bag." },
+      { emoji: "🔒", text: "Your spots never go anywhere. Your GPS points, patterns, and coaching stay locked to your account — not to the internet, not to other anglers, not to us." },
+    ],
+  },
+  quickCapture: {
+    id: "quick-capture",
+    title: "Quick Capture — voice-first logging",
+    description:
+      "The fastest way to log a catch ever built. One tap, speak 15 seconds, keep fishing. No forms. No menus. TC Coach handles the rest.",
+    features: [
+      {
+        emoji: "🎙️",
+        title: "Speak it. Done.",
+        description:
+          "Say the species, weight, lure, and what you were thinking. Silence auto-stops after 3 seconds. Trophy Cast extracts everything — even 'a 3.5 largemouth' with no unit needed.",
+      },
+      {
+        emoji: "🌤️",
+        title: "Weather auto-captured",
+        description:
+          "8-field weather snapshot auto-filled from your GPS — air temp, water temp, pressure, humidity, wind, cloud cover, moon phase, and conditions. Edit anything before saving.",
+      },
+      {
+        emoji: "✨",
+        title: "TC Coach pre-loaded",
+        description:
+          "Before you save, TC Coach is already reading your catch. Ask a question, get an insight, or just confirm the details — the coach learns something new every time.",
+      },
+      {
+        emoji: "📱",
+        title: "Works everywhere",
+        description:
+          "Bottom sheet on mobile, centered modal card on desktop. Drafts sync across all your devices — start on the water, review at the dock.",
+      },
+    ],
+  },
+  videoNotes: {
+    id: "video-notes",
+    title: "Video notes — your pattern library",
+    description:
+      "Record a 30-second clip when you crack the pattern. TC Coach transcribes it, extracts the key takeaway, and links it to the catch. Your best insights, searchable forever.",
+    bullets: [
+      { emoji: "🎬", text: "Record on the water or import from your camera roll — TC Coach transcribes and summarizes every clip automatically." },
+      { emoji: "🔗", text: "Link clips to specific catches, trips, or tournaments — your pattern library tells the whole story, not just the fish." },
+      { emoji: "💬", text: "\"Ask TC Coach About This\" deep-link pre-loads the transcript into chat — drill deeper into any technique on demand." },
+      { emoji: "🔍", text: "Browse, search, and filter your video library by type, species, technique, or date — your knowledge, organized." },
     ],
   },
   clubs: {
@@ -141,7 +188,7 @@ export const siteContent = {
       {
         emoji: "🏆",
         title: "Tournament lifecycle",
-        description: "Create events, manage registrations, run weigh-ins with photo capture, publish results, and award AOY points — all in one place.",
+        description: "Create events, manage registrations, run live weigh-ins with card capture, publish results, and award AOY points — all in one place. No spreadsheets.",
       },
       {
         emoji: "📈",
@@ -153,13 +200,25 @@ export const siteContent = {
         emoji: "📋",
         title: "Secretary & board tools",
         description:
-          "Create and publish meeting agendas and minutes. Board back office with task workspaces, compliance dashboard, and role-specific dashboards for every officer.",
+          "Create and publish meeting agendas and minutes. Board back office with task tracking, committee channels, compliance dashboard, and role-specific dashboards for every officer.",
+      },
+      {
+        emoji: "💬",
+        title: "Dock Talk built in",
+        description:
+          "Discord-style messaging hub: tournament chat, committee channels, 1:1 DMs, group chats, and board announcements. Everything in one place — no group texts.",
+      },
+      {
+        emoji: "📱",
+        title: "SMS alerts & notifications",
+        description:
+          "Members get SMS alerts for tournament announcements, pairings, and weigh-in reminders. Officers get board notifications with badge counts. Nobody misses a thing.",
       },
       {
         emoji: "⚙️",
         title: "Everything else a club needs",
         description:
-          "Officer dashboard, treasury, announcements, committee chat, group chats, SMS notifications, and member management. Run your entire club from your pocket — no spreadsheets, no group texts.",
+          "Officer dashboard, treasury, committee workspaces, Google Drive sync for minutes, club documents, member directory, and multi-club hierarchy. Run your entire organization from your pocket.",
       },
     ],
   },
@@ -180,7 +239,7 @@ export const siteContent = {
     title: "The engagement loop",
     tagline: "Catch → Log → Learn → Unlock → Repeat",
     description:
-      "Trophy Cast isn't just a fishing log — it's a system designed to get you outside more. Every catch feeds your coach, moves you toward trophies, and builds your fishing identity. The loop is simple: the more you fish, the more you unlock. The more you unlock, the more you want to fish.",
+      "Trophy Cast isn't just a fishing log — it's a system designed to get you outside more. Every catch feeds TC Coach, moves you toward trophies, and builds your fishing identity. The loop is simple: the more you fish, the more you unlock. The more you unlock, the more you want to fish.",
     features: [
       {
         emoji: "🏆",
@@ -208,6 +267,19 @@ export const siteContent = {
       },
     ],
   },
+  conditionsEngine: {
+    id: "conditions",
+    title: "Conditions Engine™",
+    description:
+      "Weather apps tell you the forecast. Trophy Cast tells you if the fish will bite — based on your real catch history.",
+    chips: [
+      { emoji: "📈", label: "Pressure", detail: "3-hour barometric trend matched against YOUR catch patterns. Rising, falling, or stable — TC Coach knows what each means for how you fish." },
+      { emoji: "💨", label: "Wind", detail: "Speed bracket scoring. 8–15 mph = walleye chop sweet spot. TC Coach adjusts recommendations based on your personal wind data." },
+      { emoji: "🌕", label: "Solunar", detail: "Major and minor feeding windows calculated from SunCalc and Meeus lunar algorithms — not guesses, not apps, actual celestial math." },
+      { emoji: "🌡️", label: "Temperature", detail: "Water + air temp correlated against your seasonal catch patterns. Know which temps have put fish in your net before." },
+    ],
+    score: "Alignment Score 0–10 — a single number that tells you whether today is an Opportunity, an Adjustment, or a Challenge. Plus a 7-day spark chart so you can plan your week.",
+  },
   screenshots: {
     id: "screenshots",
     title: "See Trophy Cast",
@@ -222,8 +294,8 @@ export const siteContent = {
       },
       {
         src: "/screenshots/placeholder-2.svg",
-        alt: "Voice-first AI catch logging with photo capture",
-        label: "Voice AI catch logging",
+        alt: "Quick Capture voice logging with TC Coach inline panel",
+        label: "Quick Capture",
         comingSoon: false,
       },
       {

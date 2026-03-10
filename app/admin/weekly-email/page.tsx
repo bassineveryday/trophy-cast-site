@@ -9,7 +9,7 @@ import { buildEmailHtml } from '@/lib/emailTemplate';
 const DEEP_DIVE_OPTIONS = [
   'Dock Talk',
   'Voice Catch Logging',
-  'AI Coaching',
+  'TC Coach',
   'Tournament Dashboard',
   'AOY Standings',
   'Trophy Room',
@@ -24,7 +24,7 @@ const DEEP_DIVE_OPTIONS = [
 const MEETING_FOCUS_BY_FEATURE: Record<string, string> = {
   'Dock Talk': "Live walkthrough of Dock Talk — set up channels, send messages, and share catch photos with your crew",
   'Voice Catch Logging': "Live demo of Voice Catch Logging — log a fish hands-free with just your voice, no typing needed",
-  'AI Coaching': "Live walkthrough of TC coaching — review your real catch history and see your pattern insights",
+  'TC Coach': "Live walkthrough of TC Coach — review your real catch history and see your pattern insights",
   'Tournament Dashboard': "Live demo of the Tournament Dashboard — draw pairings, enter weights, and post results in real time",
   'AOY Standings': "Live look at AOY Standings — see how the leaderboard updates automatically after every tournament",
   'Trophy Room': "Tour of your Trophy Room — your best fish, season highlights, and personal stats all in one place",
@@ -338,15 +338,15 @@ export default function WeeklyEmailAdminPage() {
                 onChange={(e) => setBullets(e.target.value)}
                 required
                 rows={5}
-                placeholder="New members now get a welcome email&#10;AI coaching now shows live weather&#10;Share catch photos in Dock Talk"
+                placeholder="New members now get a welcome email&#10;TC Coach now shows live weather&#10;Share catch photos in Dock Talk"
                 className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric placeholder:text-copyMuted/40 resize-none leading-relaxed"
               />
             </div>
 
             {/* ✨ AI Polish */}
             <div className="bg-deepPanel border border-trophyGold/20 rounded-xl p-4">
-              <p className="text-xs font-semibold uppercase tracking-wider text-trophyGold mb-1">✨ AI Polish</p>
-              <p className="text-copyMuted/70 text-xs mb-3">Talk or type rough thoughts — AI fills the bullets above</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-trophyGold mb-1">✨ TC Coach Polish</p>
+              <p className="text-copyMuted/70 text-xs mb-3">Talk or type rough thoughts — TC Coach fills the bullets above</p>
               <div className="relative mb-3">
                 <textarea
                   value={roughNotes}

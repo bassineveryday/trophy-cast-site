@@ -7,7 +7,7 @@ const MEET_SCHEDULE = 'Every Monday · 7:00–8:00 PM Mountain Time';
 export const DEEP_DIVE_DESCRIPTIONS: Record<string, string> = {
   'Dock Talk': "Team chat built for bass clubs — channels for tournaments, announcements, and your crew. Know what's happening at the lake before you get there.",
   'Voice Catch Logging': 'Log your catches hands-free with your voice. Describe the fish, it gets logged automatically. No more typing with wet hands.',
-  'AI Coaching': 'Get smart feedback on your catches and fishing patterns. Your personal AI coach learns your tendencies and helps you find more fish.',
+  'TC Coach': 'Get smart feedback on your catches and fishing patterns. Your personal TC Coach learns your tendencies and helps you find more fish.',
   'Tournament Dashboard': 'Everything a tournament director needs — draw pairings, track weights, calculate payouts, and post results in real time.',
   'AOY Standings': 'Live Angler of the Year standings that update automatically after every tournament. No manual spreadsheets needed.',
   'Trophy Room': 'Your personal fishing trophy case — best fish, season highlights, and stats that tell the story of your season.',

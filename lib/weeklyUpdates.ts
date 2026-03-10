@@ -7,7 +7,7 @@
  * 3. The admin form at trophycast.app/admin/weekly-email will show the latest entry automatically.
  *
  * Deep Dive options:
- * Dock Talk | Voice Catch Logging | AI Coaching | Tournament Dashboard
+ * Dock Talk | Voice Catch Logging | TC Coach | Tournament Dashboard
  * AOY Standings | Trophy Room | Member Directory | Weather & Conditions
  * Video Notes | Board & Officer Tools
  */
@@ -22,7 +22,7 @@ export interface WeeklyUpdate {
   /**
    * What the Monday meeting will focus on — shown in the email and
    * pre-filled in the admin form. Keep it to one sentence.
-   * E.g. "Live demo of the new AI Coach coaching panel"
+   * E.g. "Live demo of TC Coach's inline catch panel"
    */
   suggestedMeetingFocus: string;
 }

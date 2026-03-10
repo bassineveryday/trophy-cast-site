@@ -155,7 +155,7 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* ── AI COACH ─────────────────────────────────────────── */}
+      {/* ── TC COACH ─────────────────────────────────────────── */}
       <Section id={siteContent.coachInsights.id} variant="surfaceLifted">
         <div className="grid gap-12 lg:grid-cols-2">
           <div className="space-y-5">
@@ -164,6 +164,43 @@ export default function Page() {
           </div>
           <ul className="space-y-4">
             {siteContent.coachInsights.bullets.map((bullet) => (
+              <li key={bullet.text} className="card-hover flex items-start gap-4 rounded-2xl border border-white/5 bg-deepPanel/80 p-5">
+                <span className="emoji-icon shrink-0">{bullet.emoji}</span>
+                <span className="text-copyMuted">{bullet.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+
+      {/* ── QUICK CAPTURE ────────────────────────────────────── */}
+      <Section id={siteContent.quickCapture.id} variant="surface">
+        <div className="space-y-10">
+          <div className="space-y-4 text-center">
+            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.quickCapture.title}</p>
+            <p className="mx-auto max-w-3xl text-lg text-copyMuted">{siteContent.quickCapture.description}</p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {siteContent.quickCapture.features.map((feature) => (
+              <div key={feature.title} className="card-hover gold-top-bar rounded-2xl border border-white/5 bg-deepPanel/70 p-6 text-center">
+                <span className="text-4xl">{feature.emoji}</span>
+                <p className="mt-3 font-heading text-lg font-bold text-copyLight">{feature.title}</p>
+                <p className="mt-2 text-sm text-copyMuted">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* ── VIDEO NOTES ──────────────────────────────────────── */}
+      <Section id={siteContent.videoNotes.id} variant="surfaceLifted">
+        <div className="grid gap-12 lg:grid-cols-2">
+          <div className="space-y-5">
+            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.videoNotes.title}</p>
+            <p className="text-lg leading-relaxed text-copyLight">{siteContent.videoNotes.description}</p>
+          </div>
+          <ul className="space-y-4">
+            {siteContent.videoNotes.bullets.map((bullet) => (
               <li key={bullet.text} className="card-hover flex items-start gap-4 rounded-2xl border border-white/5 bg-deepPanel/80 p-5">
                 <span className="emoji-icon shrink-0">{bullet.emoji}</span>
                 <span className="text-copyMuted">{bullet.text}</span>
@@ -195,6 +232,29 @@ export default function Page() {
           </div>
         </div>
       </Section>
+
+      {/* ── CONDITIONS ENGINE ────────────────────────────────── */}
+      <Section id={siteContent.conditionsEngine.id} variant="surface">
+        <div className="space-y-10">
+          <div className="space-y-4 text-center">
+            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.conditionsEngine.title}</p>
+            <p className="mx-auto max-w-3xl text-lg text-copyMuted">{siteContent.conditionsEngine.description}</p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {siteContent.conditionsEngine.chips.map((chip) => (
+              <div key={chip.label} className="card-hover gold-top-bar rounded-2xl border border-trophyGold/10 bg-deepPanel/70 p-6">
+                <span className="text-3xl">{chip.emoji}</span>
+                <p className="mt-3 font-heading text-lg font-bold text-trophyGold">{chip.label}</p>
+                <p className="mt-2 text-sm text-copyMuted">{chip.detail}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mx-auto max-w-3xl text-center text-base text-copyMuted">{siteContent.conditionsEngine.score}</p>
+        </div>
+      </Section>
+
+      {/* ── Gold divider ─────────────────────────────────────── */}
+      <div className="gold-divider" />
 
       {/* ── FOR CLUBS ────────────────────────────────────────── */}
       <Section id={siteContent.clubs.id} variant="surface">

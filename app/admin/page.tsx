@@ -489,7 +489,7 @@ export default function AdminDashboardPage() {
                     Weekly Email
                   </p>
                   <p className="text-copyMuted text-sm mt-2 leading-relaxed">
-                    Compose, AI-polish, preview, and send or schedule the weekly email campaign
+                    Compose, polish with TC Coach, preview, and send or schedule the weekly email campaign
                   </p>
                 </div>
                 <span className="text-copyMuted/30 group-hover:text-electric/50 text-xl transition-colors ml-4 shrink-0">
