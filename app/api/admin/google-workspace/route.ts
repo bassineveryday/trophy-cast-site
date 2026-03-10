@@ -11,24 +11,22 @@ function checkPassword(provided: string, expected: string): boolean {
   return crypto.timingSafeEqual(a, b);
 }
 
-/** Bassin' Everyday business Drive — root folder with env-var overrides for subfolders */
-const BE_ROOT_FOLDER_ID = '17yVE5tS2G7ySfdIWlrUAkMU6seUCnzGN';
+/** Bassin' Everyday business Drive subfolders — set folder IDs in Vercel env vars */
 
 interface FolderEntry {
   key: string;
   label: string;
   icon: string;
-  folderId?: string;
-  envKey?: string;
+  envKey: string;
 }
 
 const BUSINESS_FOLDERS: FolderEntry[] = [
-  { key: 'root', label: 'Bassin\' Everyday Drive', icon: '🗂️', folderId: BE_ROOT_FOLDER_ID },
-  { key: 'product', label: 'Product & Development', icon: '🛠️', envKey: 'BE_DRIVE_PRODUCT' },
-  { key: 'marketing', label: 'Marketing & Content', icon: '📣', envKey: 'BE_DRIVE_MARKETING' },
-  { key: 'finance', label: 'Finance & Accounting', icon: '💰', envKey: 'BE_DRIVE_FINANCE' },
-  { key: 'operations', label: 'Operations', icon: '⚙️', envKey: 'BE_DRIVE_OPERATIONS' },
-  { key: 'clients', label: 'Clubs & Clients', icon: '🎣', envKey: 'BE_DRIVE_CLIENTS' },
+  { key: 'dev_sync',    label: '00 Dev Sync',             icon: '💻', envKey: 'BE_DRIVE_DEV_SYNC' },
+  { key: 'trophy_cast', label: '01 Trophy Cast Root',     icon: '🏆', envKey: 'BE_DRIVE_TROPHY_CAST' },
+  { key: 'admin_legal', label: '02 Admin & Legal',        icon: '📋', envKey: 'BE_DRIVE_ADMIN_LEGAL' },
+  { key: 'marketing',   label: '03 Marketing Assets',     icon: '📣', envKey: 'BE_DRIVE_MARKETING' },
+  { key: 'research',    label: '04 Research Library',      icon: '📚', envKey: 'BE_DRIVE_RESEARCH' },
+  { key: 'archive',     label: 'Archive – Reference Only', icon: '🗄️', envKey: 'BE_DRIVE_ARCHIVE' },
 ];
 
 export async function POST(request: Request) {
@@ -42,7 +40,7 @@ export async function POST(request: Request) {
       key: f.key,
       label: f.label,
       icon: f.icon,
-      folderId: f.folderId ?? (f.envKey ? process.env[f.envKey] ?? null : null),
+      folderId: process.env[f.envKey] ?? null,
     }));
 
     const configured = folders.some((f) => f.folderId !== null);
