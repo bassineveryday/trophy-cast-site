@@ -11,9 +11,19 @@ function checkPassword(provided: string, expected: string): boolean {
   return crypto.timingSafeEqual(a, b);
 }
 
-/** Bassin' Everyday business Drive folders — set in Vercel env vars */
-const BUSINESS_FOLDERS = [
-  { key: 'root', label: 'Bassin Everyday Drive', icon: '🗂️', envKey: 'BE_DRIVE_ROOT' },
+/** Bassin' Everyday business Drive — root folder with env-var overrides for subfolders */
+const BE_ROOT_FOLDER_ID = '17yVE5tS2G7ySfdIWlrUAkMU6seUCnzGN';
+
+interface FolderEntry {
+  key: string;
+  label: string;
+  icon: string;
+  folderId?: string;
+  envKey?: string;
+}
+
+const BUSINESS_FOLDERS: FolderEntry[] = [
+  { key: 'root', label: 'Bassin\' Everyday Drive', icon: '🗂️', folderId: BE_ROOT_FOLDER_ID },
   { key: 'product', label: 'Product & Development', icon: '🛠️', envKey: 'BE_DRIVE_PRODUCT' },
   { key: 'marketing', label: 'Marketing & Content', icon: '📣', envKey: 'BE_DRIVE_MARKETING' },
   { key: 'finance', label: 'Finance & Accounting', icon: '💰', envKey: 'BE_DRIVE_FINANCE' },
@@ -32,7 +42,7 @@ export async function POST(request: Request) {
       key: f.key,
       label: f.label,
       icon: f.icon,
-      folderId: process.env[f.envKey] ?? null,
+      folderId: f.folderId ?? (f.envKey ? process.env[f.envKey] ?? null : null),
     }));
 
     const configured = folders.some((f) => f.folderId !== null);
