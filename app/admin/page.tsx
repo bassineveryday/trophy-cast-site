@@ -42,30 +42,12 @@ interface ActivityStats {
 }
 
 interface GoogleWorkspaceData {
-  connection: {
-    connected: boolean;
-    updatedAt: string | null;
-    folders: {
-      members: string | null;
-      tournaments: string | null;
-      marketing: string | null;
-      clubDocuments: string | null;
-      minutes: string | null;
-      committees: string | null;
-    } | null;
-  };
-  meetings: {
-    event_id: string;
-    tournament_name: string;
-    event_date: string;
-    is_meeting: boolean;
-  }[];
-  minutesFiles: {
-    id: string;
-    meeting_id: string;
-    name: string;
-    web_view_link: string | null;
-    created_at: string;
+  configured: boolean;
+  folders: {
+    key: string;
+    label: string;
+    icon: string;
+    folderId: string | null;
   }[];
 }
 
@@ -420,155 +402,75 @@ export default function AdminDashboardPage() {
           )}
         </section>
 
-        {/* Google Workspace / Drive Folders */}
+        {/* Bassin' Everyday — Business Drive */}
         <section>
           <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted mb-4">
-            Google Workspace / Drive
+            Bassin&apos; Everyday — Google Drive
           </p>
 
-          {/* Connection Status */}
-          <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6 mb-6">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-3">
-                <span className="text-2xl">📁</span>
+                <span className="text-2xl">🗂️</span>
                 <div>
                   <p className="text-lg font-heading font-bold text-copyLight">
-                    Google Drive
+                    Business Drive
                   </p>
                   {workspaceLoading ? (
                     <p className="text-xs text-copyMuted/40 animate-pulse">checking…</p>
-                  ) : workspace?.connection.connected ? (
-                    <p className="text-xs text-copyMuted">
-                      Connected · last updated{' '}
-                      {workspace.connection.updatedAt
-                        ? timeAgo(workspace.connection.updatedAt)
-                        : 'unknown'}
-                    </p>
+                  ) : workspace?.configured ? (
+                    <p className="text-xs text-copyMuted">Folders configured</p>
                   ) : (
-                    <p className="text-xs text-copyMuted/50">Not connected</p>
+                    <p className="text-xs text-copyMuted/50">
+                      Set BE_DRIVE_* env vars in Vercel to enable
+                    </p>
                   )}
                 </div>
               </div>
               <span
                 className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full ${
-                  workspace?.connection.connected
+                  workspace?.configured
                     ? 'bg-bass/20 text-bass border border-bass/30'
-                    : 'bg-red-900/20 text-red-400 border border-red-900/30'
+                    : 'bg-yellow-900/20 text-yellow-400 border border-yellow-900/30'
                 }`}
               >
-                {workspaceLoading ? '…' : workspace?.connection.connected ? 'Connected' : 'Disconnected'}
+                {workspaceLoading ? '…' : workspace?.configured ? 'Active' : 'Not Set Up'}
               </span>
             </div>
 
             {/* Folder Links Grid */}
-            {workspace?.connection.folders && (
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted mb-3">
-                  Folders
-                </p>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {([
-                    { key: 'members' as const, label: 'Members', icon: '👥' },
-                    { key: 'tournaments' as const, label: 'Tournaments', icon: '🏆' },
-                    { key: 'minutes' as const, label: 'Minutes', icon: '📝' },
-                    { key: 'clubDocuments' as const, label: 'Club Documents', icon: '📋' },
-                    { key: 'marketing' as const, label: 'Marketing', icon: '📣' },
-                    { key: 'committees' as const, label: 'Committees', icon: '👔' },
-                  ] as const).map((folder) => {
-                    const folderId = workspace.connection.folders?.[folder.key];
-                    return folderId ? (
-                      <a
-                        key={folder.key}
-                        href={`https://drive.google.com/drive/folders/${folderId}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 bg-liftedPanel/50 hover:bg-liftedPanel border border-liftedPanel hover:border-electric/30 rounded-xl px-4 py-3 transition-colors group"
-                      >
-                        <span className="text-lg">{folder.icon}</span>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-copyLight group-hover:text-electric transition-colors truncate">
-                            {folder.label}
-                          </p>
-                        </div>
-                        <span className="text-copyMuted/30 group-hover:text-electric/50 transition-colors text-sm">↗</span>
-                      </a>
-                    ) : (
-                      <div
-                        key={folder.key}
-                        className="flex items-center gap-3 bg-liftedPanel/20 border border-liftedPanel/50 rounded-xl px-4 py-3 opacity-50"
-                      >
-                        <span className="text-lg">{folder.icon}</span>
-                        <p className="text-sm text-copyMuted truncate">{folder.label}</p>
+            {workspace?.folders && workspace.folders.length > 0 && (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {workspace.folders.map((folder) =>
+                  folder.folderId ? (
+                    <a
+                      key={folder.key}
+                      href={`https://drive.google.com/drive/folders/${folder.folderId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 bg-liftedPanel/50 hover:bg-liftedPanel border border-liftedPanel hover:border-electric/30 rounded-xl px-4 py-3 transition-colors group"
+                    >
+                      <span className="text-lg">{folder.icon}</span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-copyLight group-hover:text-electric transition-colors truncate">
+                          {folder.label}
+                        </p>
                       </div>
-                    );
-                  })}
-                </div>
+                      <span className="text-copyMuted/30 group-hover:text-electric/50 transition-colors text-sm">↗</span>
+                    </a>
+                  ) : (
+                    <div
+                      key={folder.key}
+                      className="flex items-center gap-3 bg-liftedPanel/20 border border-liftedPanel/50 rounded-xl px-4 py-3 opacity-40"
+                    >
+                      <span className="text-lg">{folder.icon}</span>
+                      <p className="text-sm text-copyMuted truncate">{folder.label}</p>
+                    </div>
+                  )
+                )}
               </div>
             )}
           </div>
-
-          {/* Recent Meetings */}
-          {workspace?.meetings && workspace.meetings.length > 0 && (
-            <div className="bg-deepPanel border border-liftedPanel rounded-2xl overflow-hidden mb-6">
-              <div className="px-6 py-4 border-b border-liftedPanel">
-                <p className="text-sm font-semibold text-copyLight">Recent Meetings</p>
-                <p className="text-xs text-copyMuted/50 mt-0.5">last 10 club meetings</p>
-              </div>
-              <div className="divide-y divide-liftedPanel/50">
-                {workspace.meetings.map((mtg) => (
-                  <div key={mtg.event_id} className="px-6 py-3 flex items-center justify-between">
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm text-copyLight truncate">{mtg.tournament_name}</p>
-                      <p className="text-xs text-copyMuted/50 mt-0.5">
-                        {new Date(mtg.event_date).toLocaleDateString('en-US', {
-                          weekday: 'short',
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric',
-                        })}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Minutes Archive (exported to Drive) */}
-          {workspace?.minutesFiles && workspace.minutesFiles.length > 0 && (
-            <div className="bg-deepPanel border border-liftedPanel rounded-2xl overflow-hidden">
-              <div className="px-6 py-4 border-b border-liftedPanel">
-                <p className="text-sm font-semibold text-copyLight">Minutes Archive</p>
-                <p className="text-xs text-copyMuted/50 mt-0.5">exported to Google Drive</p>
-              </div>
-              <div className="divide-y divide-liftedPanel/50">
-                {workspace.minutesFiles.map((file) => (
-                  <div key={file.id} className="px-6 py-3 flex items-center justify-between gap-4">
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm text-copyLight truncate">{file.name}</p>
-                      <p className="text-xs text-copyMuted/50 mt-0.5">
-                        {new Date(file.created_at).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric',
-                        })}
-                      </p>
-                    </div>
-                    {file.web_view_link && (
-                      <a
-                        href={file.web_view_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-electric/60 hover:text-electric transition-colors shrink-0"
-                      >
-                        Open in Drive ↗
-                      </a>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </section>
 
         {/* Tools */}
