@@ -11,22 +11,21 @@ function checkPassword(provided: string, expected: string): boolean {
   return crypto.timingSafeEqual(a, b);
 }
 
-/** Bassin' Everyday business Drive subfolders — set folder IDs in Vercel env vars */
+/** Bassin' Everyday business Drive subfolders */
 
 interface FolderEntry {
   key: string;
   label: string;
   icon: string;
-  envKey: string;
+  folderId: string;
 }
 
 const BUSINESS_FOLDERS: FolderEntry[] = [
-  { key: 'dev_sync',    label: '00 Dev Sync',             icon: '💻', envKey: 'BE_DRIVE_DEV_SYNC' },
-  { key: 'trophy_cast', label: '01 Trophy Cast Root',     icon: '🏆', envKey: 'BE_DRIVE_TROPHY_CAST' },
-  { key: 'admin_legal', label: '02 Admin & Legal',        icon: '📋', envKey: 'BE_DRIVE_ADMIN_LEGAL' },
-  { key: 'marketing',   label: '03 Marketing Assets',     icon: '📣', envKey: 'BE_DRIVE_MARKETING' },
-  { key: 'research',    label: '04 Research Library',      icon: '📚', envKey: 'BE_DRIVE_RESEARCH' },
-  { key: 'archive',     label: 'Archive – Reference Only', icon: '🗄️', envKey: 'BE_DRIVE_ARCHIVE' },
+  { key: 'dev_sync',    label: '00 Dev Sync',         icon: '💻', folderId: '1NVt31uRG75wxLSbPSLnX93Vs6o1unf0F' },
+  { key: 'trophy_cast', label: '01 Trophy Cast Root', icon: '🏆', folderId: '1vzajKVvAbp8TODIaKcORUIjiV2oQmSsC' },
+  { key: 'admin_legal', label: '02 Admin & Legal',    icon: '📋', folderId: '1xkAjpBG44-lBL3OHK6JQ_Mu_bBvjOyTd' },
+  { key: 'marketing',   label: '03 Marketing Assets', icon: '📣', folderId: '1EjWg99ijdxH6_0VB52l2bxEsXI9qAyQ3' },
+  { key: 'research',    label: '04 Research Library', icon: '📚', folderId: '1cWkr5wbikIenhfRmtcvBtx98D7vaV09e' },
 ];
 
 export async function POST(request: Request) {
@@ -40,10 +39,10 @@ export async function POST(request: Request) {
       key: f.key,
       label: f.label,
       icon: f.icon,
-      folderId: process.env[f.envKey] ?? null,
+      folderId: f.folderId,
     }));
 
-    const configured = folders.some((f) => f.folderId !== null);
+    const configured = true;
 
     return NextResponse.json({ configured, folders });
   } catch {
