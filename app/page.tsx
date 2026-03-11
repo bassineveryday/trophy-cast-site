@@ -14,43 +14,48 @@ export default function Page() {
   return (
     <>
       {/* ── HERO ─────────────────────────────────────────────── */}
-      <section id="hero" className="relative overflow-hidden bg-midnight bg-heroMesh py-24 sm:py-36">
-        <Container className="relative space-y-16">
-          {/* Logo + Name */}
-          <div className="flex flex-col items-center gap-6 text-center">
-            <div className="relative">
-              <div className="absolute -inset-6 animate-pulse-soft rounded-full bg-electric/10 blur-3xl" />
-              <Image
-                src="/trophy-cast-logo-256.png"
-                alt="Trophy Cast logo"
-                width={256}
-                height={256}
-                priority
-                className="relative h-40 w-auto drop-shadow-2xl sm:h-56 lg:h-64"
-              />
-            </div>
-            <div className="space-y-3">
-              <h1 className="font-heading text-5xl font-extrabold tracking-tight text-white sm:text-7xl lg:text-8xl">
-                {siteContent.brand.name}
-              </h1>
-              <p className="text-xl font-semibold text-trophyGold sm:text-2xl">{siteContent.brand.motto}</p>
-            </div>
-          </div>
+      <section id="hero" className="relative overflow-hidden bg-midnight bg-heroMesh py-5 sm:py-8">
+        <Container className="relative">
+          <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
+            {/* Left column */}
+            <div className="space-y-4">
+              {/* Inline logo + brand */}
+              <div className="flex items-center gap-4">
+                <div className="relative shrink-0">
+                  <div className="absolute -inset-3 animate-pulse-soft rounded-full bg-electric/10 blur-2xl" />
+                  <Image
+                    src="/trophy-cast-logo-256.png"
+                    alt="Trophy Cast logo"
+                    width={256}
+                    height={256}
+                    priority
+                    className="relative h-14 w-auto drop-shadow-xl"
+                  />
+                </div>
+                <div>
+                  <h1 className="font-heading text-xl font-extrabold tracking-tight text-white sm:text-2xl">
+                    {siteContent.brand.name}
+                  </h1>
+                  <p className="text-sm font-semibold text-trophyGold">{siteContent.brand.motto}</p>
+                </div>
+              </div>
 
-          {/* Two-column hero body */}
-          <div className="grid gap-16 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="space-y-10">
-              <div className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/5 px-5 py-2 text-xs font-bold uppercase tracking-[0.2em] text-copyLight backdrop-blur-sm">
+              {/* Eyebrow */}
+              <div className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-copyLight backdrop-blur-sm">
                 <Icon />
                 <span>{siteContent.hero.eyebrow}</span>
               </div>
-              <div className="space-y-6">
-                <h2 className="font-heading text-5xl font-extrabold leading-[1.08] text-white sm:text-6xl lg:text-7xl">
+
+              {/* Headline + description */}
+              <div className="space-y-2">
+                <h2 className="font-heading text-2xl font-extrabold leading-[1.1] text-white sm:text-3xl">
                   {siteContent.hero.title}
                 </h2>
-                <p className="max-w-2xl text-xl leading-relaxed text-copyMuted">{siteContent.hero.description}</p>
+                <p className="max-w-xl text-xs leading-relaxed text-copyMuted sm:text-sm">{siteContent.hero.description}</p>
               </div>
-              <div className="flex flex-wrap gap-4">
+
+              {/* CTAs */}
+              <div className="flex flex-wrap gap-3">
                 <CTAButton href={waitlistHref} label={siteContent.waitlist.primaryCta} variant="primary" />
                 <CTAButton
                   href={siteContent.waitlist.secondaryHref}
@@ -58,33 +63,49 @@ export default function Page() {
                   variant="secondary"
                 />
               </div>
-              <div className="grid gap-4 rounded-3xl border border-trophyGold/15 bg-deepPanel/50 p-6 text-sm text-copyMuted backdrop-blur-sm sm:grid-cols-2">
+
+              {/* Highlights grid */}
+              <div className="grid gap-2 rounded-xl border border-trophyGold/15 bg-deepPanel/50 p-4 text-sm text-copyMuted backdrop-blur-sm sm:grid-cols-2">
                 {siteContent.hero.highlights.map((highlight) => (
-                  <div key={highlight.label} className="space-y-1">
-                    <p className="text-xs font-semibold uppercase tracking-[0.45em] text-trophyGold">
+                  <div key={highlight.label} className="space-y-0.5">
+                    <p className="text-xs font-semibold uppercase tracking-[0.35em] text-trophyGold">
                       {highlight.label}
                     </p>
-                    <p className="text-base font-medium text-copyLight">{highlight.value}</p>
+                    <p className="text-xs text-copyLight">{highlight.value}</p>
                   </div>
                 ))}
               </div>
-              <blockquote className="border-l-2 border-white/15 pl-4 text-sm italic text-copyMuted/80">
-                {siteContent.brand.northStar}
-              </blockquote>
             </div>
 
-            {/* Feature preview sidebar */}
-            <div className="rounded-3xl border border-trophyGold/10 bg-liftedPanel/60 p-8 shadow-glow backdrop-blur-sm">
-              <p className="font-heading text-base font-bold text-trophyGold">{siteContent.brand.name}</p>
-              <p className="text-sm text-copyMuted">{siteContent.hero.statRibbon}</p>
-              <div className="mt-8 space-y-5">
-                {siteContent.what.items.map((item) => (
-                  <div key={item.title} className="card-hover rounded-2xl border border-white/5 bg-deepPanel/60 p-5">
-                    <div className="flex items-center gap-3">
-                      <span className="emoji-icon">{item.emoji}</span>
-                      <p className="font-heading text-base font-semibold text-copyLight">{item.title}</p>
+            {/* Right sidebar */}
+            <div className="rounded-3xl border border-trophyGold/10 bg-liftedPanel/60 p-5 shadow-glow backdrop-blur-sm">
+              {/* Stat chips */}
+              <div className="mb-5 flex flex-wrap gap-2">
+                {[
+                  { icon: "🎣", label: "80+ screens" },
+                  { icon: "🏆", label: "30 trophies" },
+                  { icon: "⚡", label: "Voice-first" },
+                  { icon: "✨", label: "65 knowledge packs" },
+                ].map((chip) => (
+                  <span key={chip.label} className="inline-flex items-center gap-1.5 rounded-full border border-trophyGold/20 bg-deepPanel/60 px-3 py-1 text-xs font-semibold text-copyLight">
+                    {chip.icon} {chip.label}
+                  </span>
+                ))}
+              </div>
+              {/* Feature cards */}
+              <div className="space-y-3">
+                {[
+                  { emoji: "🎙️", title: "Log a catch in one breath", desc: "One tap, speak 15 seconds. GPS, weather, and TC Coach auto-fill the rest." },
+                  { emoji: "✨", title: "65 coaching knowledge packs", desc: "Physics-backed answers on lure physics, pressure, feeding windows, and seasonal migration." },
+                  { emoji: "🏆", title: "30 real trophies to earn", desc: "Photo Pro, Species Slam, Ten Bass Day — actual angling milestones." },
+                  { emoji: "🤝", title: "Full club-in-a-box", desc: "Tournaments, AOY standings, board tools, Dock Talk. Denver Bassmasters runs their whole club here." },
+                ].map((item) => (
+                  <div key={item.title} className="card-hover rounded-2xl border border-white/5 bg-deepPanel/60 p-4">
+                    <div className="flex items-center gap-2">
+                      <span className="emoji-icon text-base">{item.emoji}</span>
+                      <p className="font-heading text-sm font-semibold text-copyLight">{item.title}</p>
                     </div>
-                    <p className="mt-2 text-sm text-copyMuted">{item.description}</p>
+                    <p className="mt-1 text-xs text-copyMuted">{item.desc}</p>
                   </div>
                 ))}
               </div>
@@ -98,17 +119,17 @@ export default function Page() {
 
       {/* ── WHAT ─────────────────────────────────────────────── */}
       <Section id={siteContent.what.id} variant="surface">
-        <div className="space-y-10">
-          <div className="space-y-4">
+        <div className="space-y-7">
+          <div className="space-y-3">
             <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.what.title}</p>
-            <h2 className="font-heading text-4xl font-extrabold text-copyLight sm:text-5xl">{siteContent.what.summary}</h2>
+            <h2 className="font-heading text-2xl font-extrabold text-copyLight sm:text-3xl">{siteContent.what.summary}</h2>
           </div>
-          <div className="grid gap-6 lg:grid-cols-3">
+          <div className="grid gap-5 lg:grid-cols-3">
             {siteContent.what.items.map((item) => (
-              <div key={item.title} className="card-hover gold-top-bar rounded-2xl border border-white/5 bg-deepPanel/70 p-6">
-                <span className="emoji-icon-lg">{item.emoji}</span>
-                <p className="mt-3 font-heading text-xl font-bold text-copyLight">{item.title}</p>
-                <p className="mt-3 text-copyMuted">{item.description}</p>
+              <div key={item.title} className="card-hover gold-top-bar rounded-2xl border border-white/5 bg-deepPanel/70 p-5">
+                <span className="emoji-icon">{item.emoji}</span>
+                <p className="mt-2 font-heading text-base font-bold text-copyLight">{item.title}</p>
+                <p className="mt-2 text-sm text-copyMuted">{item.description}</p>
               </div>
             ))}
           </div>
@@ -117,209 +138,69 @@ export default function Page() {
 
       {/* ── HOW IT WORKS ─────────────────────────────────────── */}
       <Section id={siteContent.how.id} variant="surfaceLifted">
-        <div className="space-y-10">
-          <div className="space-y-3 text-center">
+        <div className="space-y-7">
+          <div className="space-y-1">
             <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.how.title}</p>
-            <h2 className="font-heading text-4xl font-extrabold text-copyLight sm:text-5xl">{siteContent.how.tagline}</h2>
+            <h2 className="font-heading text-xl font-extrabold text-copyLight sm:text-2xl">{siteContent.how.tagline}</h2>
           </div>
-          <div className="grid gap-8 lg:grid-cols-3">
+          <div className="grid gap-5 lg:grid-cols-3">
             {siteContent.how.steps.map((step, index) => (
-              <div key={step.title} className="card-hover relative rounded-2xl border border-trophyGold/10 bg-deepPanel/80 p-7 text-center">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-trophyGold/20 font-heading text-lg font-bold text-trophyGold">
+              <div key={step.title} className="card-hover relative rounded-2xl border border-trophyGold/10 bg-deepPanel/80 p-5 text-center">
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-trophyGold/20 font-heading text-sm font-bold text-trophyGold">
                   {index + 1}
                 </span>
-                <span className="mt-4 block text-3xl">{step.emoji}</span>
-                <p className="mt-3 font-heading text-xl font-bold text-copyLight">{step.title}</p>
-                <p className="mt-2 text-copyMuted">{step.description}</p>
+                <span className="mt-3 block text-2xl">{step.emoji}</span>
+                <p className="mt-2 font-heading text-base font-bold text-copyLight">{step.title}</p>
+                <p className="mt-1 text-sm text-copyMuted">{step.description}</p>
               </div>
             ))}
           </div>
-        </div>
-      </Section>
-
-      {/* ── FOR ANGLERS ──────────────────────────────────────── */}
-      <Section id={siteContent.anglers.id} variant="surface">
-        <div className="grid gap-12 lg:grid-cols-2">
-          <div className="space-y-5">
-            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.anglers.title}</p>
-            <p className="text-lg leading-relaxed text-copyLight">{siteContent.anglers.description}</p>
-          </div>
-          <ul className="space-y-4">
-            {siteContent.anglers.bulletPoints.map((point) => (
-              <li key={point.text} className="card-hover flex items-start gap-4 rounded-2xl border border-white/5 bg-deepPanel/70 p-5">
-                <span className="emoji-icon shrink-0">{point.emoji}</span>
-                <span className="text-copyMuted">{point.text}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
-
-      {/* ── TC COACH ─────────────────────────────────────────── */}
-      <Section id={siteContent.coachInsights.id} variant="surfaceLifted">
-        <div className="grid gap-12 lg:grid-cols-2">
-          <div className="space-y-5">
-            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.coachInsights.title}</p>
-            <p className="text-lg leading-relaxed text-copyLight">{siteContent.coachInsights.description}</p>
-          </div>
-          <ul className="space-y-4">
-            {siteContent.coachInsights.bullets.map((bullet) => (
-              <li key={bullet.text} className="card-hover flex items-start gap-4 rounded-2xl border border-white/5 bg-deepPanel/80 p-5">
-                <span className="emoji-icon shrink-0">{bullet.emoji}</span>
-                <span className="text-copyMuted">{bullet.text}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
-
-      {/* ── QUICK CAPTURE ────────────────────────────────────── */}
-      <Section id={siteContent.quickCapture.id} variant="surface">
-        <div className="space-y-10">
-          <div className="space-y-4 text-center">
-            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.quickCapture.title}</p>
-            <p className="mx-auto max-w-3xl text-lg text-copyMuted">{siteContent.quickCapture.description}</p>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {siteContent.quickCapture.features.map((feature) => (
-              <div key={feature.title} className="card-hover gold-top-bar rounded-2xl border border-white/5 bg-deepPanel/70 p-6 text-center">
-                <span className="text-4xl">{feature.emoji}</span>
-                <p className="mt-3 font-heading text-lg font-bold text-copyLight">{feature.title}</p>
-                <p className="mt-2 text-sm text-copyMuted">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* ── VIDEO NOTES ──────────────────────────────────────── */}
-      <Section id={siteContent.videoNotes.id} variant="surfaceLifted">
-        <div className="grid gap-12 lg:grid-cols-2">
-          <div className="space-y-5">
-            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.videoNotes.title}</p>
-            <p className="text-lg leading-relaxed text-copyLight">{siteContent.videoNotes.description}</p>
-          </div>
-          <ul className="space-y-4">
-            {siteContent.videoNotes.bullets.map((bullet) => (
-              <li key={bullet.text} className="card-hover flex items-start gap-4 rounded-2xl border border-white/5 bg-deepPanel/80 p-5">
-                <span className="emoji-icon shrink-0">{bullet.emoji}</span>
-                <span className="text-copyMuted">{bullet.text}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
-
-      {/* ── THE ENGAGEMENT LOOP ──────────────────────────────── */}
-      <Section id={siteContent.gamificationLoop.id} variant="surface">
-        <div className="space-y-10">
-          <div className="space-y-3 text-center">
-            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.gamificationLoop.title}</p>
-            <h2 className="font-heading text-4xl font-extrabold text-copyLight sm:text-5xl">{siteContent.gamificationLoop.tagline}</h2>
-            <p className="mx-auto max-w-3xl text-lg text-copyMuted">{siteContent.gamificationLoop.description}</p>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {siteContent.gamificationLoop.features.map((feature) => (
-              <div key={feature.title} className="card-hover gold-top-bar rounded-2xl border border-white/5 bg-deepPanel/70 p-6 text-center">
-                <span className="text-4xl">{feature.emoji}</span>
-                <p className="mt-3 font-heading text-lg font-bold text-copyLight">{feature.title}</p>
-                <p className="mt-2 text-sm text-copyMuted">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-          <div className="text-center">
-            <CTAButton href={waitlistHref} label={siteContent.waitlist.primaryCta} variant="primary" />
-          </div>
-        </div>
-      </Section>
-
-      {/* ── CONDITIONS ENGINE ────────────────────────────────── */}
-      <Section id={siteContent.conditionsEngine.id} variant="surface">
-        <div className="space-y-10">
-          <div className="space-y-4 text-center">
-            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.conditionsEngine.title}</p>
-            <p className="mx-auto max-w-3xl text-lg text-copyMuted">{siteContent.conditionsEngine.description}</p>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {siteContent.conditionsEngine.chips.map((chip) => (
-              <div key={chip.label} className="card-hover gold-top-bar rounded-2xl border border-trophyGold/10 bg-deepPanel/70 p-6">
-                <span className="text-3xl">{chip.emoji}</span>
-                <p className="mt-3 font-heading text-lg font-bold text-trophyGold">{chip.label}</p>
-                <p className="mt-2 text-sm text-copyMuted">{chip.detail}</p>
-              </div>
-            ))}
-          </div>
-          <p className="mx-auto max-w-3xl text-center text-base text-copyMuted">{siteContent.conditionsEngine.score}</p>
-        </div>
-      </Section>
-
-      {/* ── Gold divider ─────────────────────────────────────── */}
-      <div className="gold-divider" />
-
-      {/* ── FOR CLUBS ────────────────────────────────────────── */}
-      <Section id={siteContent.clubs.id} variant="surface">
-        <div className="space-y-10">
-          <div className="space-y-3">
-            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.clubs.title}</p>
-            <p className="text-lg leading-relaxed text-copyLight">{siteContent.clubs.lead}</p>
-          </div>
-          <div className="grid gap-6 lg:grid-cols-3">
-            {siteContent.clubs.items.map((item) => (
-              <div key={item.title} className="card-hover gold-top-bar rounded-2xl border border-white/5 bg-deepPanel/80 p-6">
-                <span className="emoji-icon-lg">{item.emoji}</span>
-                <p className="mt-3 font-heading text-xl font-bold text-copyLight">{item.title}</p>
-                <p className="mt-2 text-copyMuted">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* ── Gold divider ─────────────────────────────────────── */}
-      <div className="gold-divider" />
-
-      {/* ── CLUB IN A BOX ────────────────────────────────────── */}
-      <Section id={siteContent.clubInABox.id} variant="accent">
-        <div className="space-y-8">
-          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-trophyGold/40 bg-trophyGold/10 px-5 py-1.5 text-xs font-bold uppercase tracking-[0.45em] text-trophyGold shadow-glow">
-            🚀 {siteContent.clubInABox.badge}
-          </span>
-          <h2 className="font-heading text-4xl font-extrabold text-copyLight sm:text-5xl">{siteContent.clubInABox.title}</h2>
-          <p className="max-w-3xl text-lg text-copyMuted">{siteContent.clubInABox.description}</p>
-          <ul className="grid gap-4 sm:grid-cols-3">
-            {siteContent.clubInABox.checklist.map((item) => (
-              <li key={item} className="card-hover rounded-2xl border border-trophyGold/20 bg-deepPanel/70 p-5 text-sm font-medium text-copyLight">
-                {item}
-              </li>
-            ))}
-          </ul>
         </div>
       </Section>
 
       {/* ── SCREENSHOTS ──────────────────────────────────────── */}
       <Section id={siteContent.screenshots.id} variant="surfaceLifted">
-        <div className="space-y-8">
-          <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.screenshots.title}</p>
+        <div className="space-y-7">
+          <div className="space-y-2">
+            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.screenshots.title}</p>
+            <h2 className="font-heading text-2xl font-extrabold text-copyLight sm:text-3xl">{siteContent.screenshots.headline}</h2>
+          </div>
+          {/* Social proof quote */}
+          <div className="rounded-2xl border border-trophyGold/20 bg-deepPanel/60 p-4">
+            <blockquote className="text-sm leading-relaxed text-copyLight italic">
+              &ldquo;{siteContent.socialProof.quote}&rdquo;
+            </blockquote>
+            <div className="mt-4 flex items-center gap-3">
+              <div className="h-8 w-8 rounded-full bg-trophyGold/20 flex items-center justify-center text-xs font-bold text-trophyGold">NM</div>
+              <div>
+                <p className="text-sm font-semibold text-copyLight">{siteContent.socialProof.author}</p>
+                <p className="text-xs text-copyMuted">{siteContent.socialProof.detail}</p>
+              </div>
+              <div className="ml-auto hidden sm:block">
+                <p className="text-xs text-trophyGold font-medium">{siteContent.socialProof.stat}</p>
+              </div>
+            </div>
+          </div>
           <ScreenshotGrid caption={siteContent.screenshots.caption} images={siteContent.screenshots.images} />
         </div>
       </Section>
 
       {/* ── TRUST ────────────────────────────────────────────── */}
       <Section id={siteContent.trust.id} variant="surface">
-        <div className="space-y-10">
+        <div className="space-y-5">
           <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.trust.title}</p>
-          <div className="grid gap-6 lg:grid-cols-3">
+          <div className="grid gap-4 lg:grid-cols-3">
             {siteContent.trust.pillars.map((pillar) => (
-              <div key={pillar.title} className="card-hover gold-top-bar rounded-2xl border border-white/5 bg-deepPanel/80 p-6">
-                <span className="emoji-icon-lg">{pillar.emoji}</span>
-                <p className="mt-3 font-heading text-xl font-bold text-copyLight">{pillar.title}</p>
-                <p className="mt-3 text-copyMuted">{pillar.description}</p>
+              <div key={pillar.title} className="card-hover gold-top-bar rounded-2xl border border-white/5 bg-deepPanel/80 p-4">
+                <span className="emoji-icon">{pillar.emoji}</span>
+                <p className="mt-2 font-heading text-base font-bold text-copyLight">{pillar.title}</p>
+                <p className="mt-2 text-sm text-copyMuted">{pillar.description}</p>
               </div>
             ))}
           </div>
           {/* Mid-page CTA banner */}
-          <div className="rounded-3xl border border-trophyGold/15 bg-liftedPanel/50 p-8 shadow-glow sm:flex sm:items-center sm:justify-between">
-            <p className="text-base text-copyMuted sm:max-w-xl">{siteContent.midCta.message}</p>
+          <div className="rounded-2xl border border-trophyGold/15 bg-liftedPanel/50 p-5 shadow-glow sm:flex sm:items-center sm:justify-between">
+            <p className="text-sm text-copyMuted sm:max-w-xl">{siteContent.midCta.message}</p>
             <CTAButton href={waitlistHref} label={siteContent.waitlist.primaryCta} variant="primary" className="mt-4 w-full sm:mt-0 sm:w-auto" />
           </div>
         </div>

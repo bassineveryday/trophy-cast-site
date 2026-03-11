@@ -6,10 +6,17 @@ import {
   waitlistConfirmationText,
 } from "@/lib/emails/waitlistConfirmation";
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
+export const dynamic = 'force-dynamic';
+
+let _resend: Resend | null = null;
+function getResend() {
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY!);
+  return _resend;
+}
+
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://placeholder.supabase.co',
+  process.env.SUPABASE_SERVICE_ROLE_KEY ?? 'placeholder'
 );
 
 export async function POST(request: Request) {
@@ -41,7 +48,7 @@ export async function POST(request: Request) {
 
     // Send confirmation email (non-blocking)
     try {
-      await resend.emails.send({
+      await getResend().emails.send({
         from: "Tai at Trophy Cast <cast@trophycast.app>",
         to: email,
         subject: "You're on the Trophy Cast waitlist \uD83C\uDFC6",

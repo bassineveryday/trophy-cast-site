@@ -4,11 +4,18 @@ import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 import { buildEmailHtml } from '@/lib/emailTemplate';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
-const resend = new Resend(process.env.RESEND_API_KEY!);
+export const dynamic = 'force-dynamic';
+
+let _resend: Resend | null = null;
+function getResend() {
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY!);
+  return _resend;
+}
+
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? '';
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://placeholder.supabase.co',
+  process.env.SUPABASE_SERVICE_ROLE_KEY ?? 'placeholder'
 );
 
 // Timing-safe password comparison using Node.js crypto
@@ -88,7 +95,7 @@ export async function POST(request: Request) {
     const ids: string[] = [];
     for (let i = 0; i < emails.length; i += 100) {
       const chunk = emails.slice(i, i + 100).map((to) => ({ ...baseEmail, to }));
-      const { data, error } = await resend.batch.send(chunk);
+      const { data, error } = await getResend().batch.send(chunk);
       if (error) {
         console.error('[weekly-email] Resend batch error:', error);
         return NextResponse.json(

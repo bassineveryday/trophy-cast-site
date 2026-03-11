@@ -13,14 +13,14 @@ interface SectionProps {
 
 const variantMap: Record<SectionVariant, string> = {
   plain: "",
-  surface: "section-surface rounded-3xl p-10 lg:p-14",
-  surfaceLifted: "section-surface-lifted rounded-3xl p-10 lg:p-14",
-  accent: "section-surface section-accent rounded-3xl p-10 lg:p-14",
+  surface: "section-surface rounded-3xl p-4 lg:p-6",
+  surfaceLifted: "section-surface-lifted rounded-3xl p-4 lg:p-6",
+  accent: "section-surface section-accent rounded-3xl p-4 lg:p-6",
 };
 
 export function Section({ id, variant = "plain", className, children }: SectionProps) {
   return (
-    <section id={id} className={cn("py-20 sm:py-28", className)}>
+    <section id={id} className={cn("py-4 sm:py-6", className)}>
       <Container>
         <div className={cn("relative", variantMap[variant])}>{children}</div>
       </Container>
