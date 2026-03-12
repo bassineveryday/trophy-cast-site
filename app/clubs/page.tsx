@@ -78,14 +78,45 @@ export default function ClubsPage() {
         </div>
       </Section>
 
+      {/* ── Founding Club ─────────────────────────────────── */}
+      <Section variant="surfaceLifted">
+        <div className="mx-auto max-w-3xl space-y-6">
+          <div className="space-y-3 text-center">
+            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">
+              {siteContent.foundingClub.title}
+            </p>
+            <p className="text-sm text-copyMuted">
+              {siteContent.foundingClub.description}
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {siteContent.foundingClub.orgs.map((org) => (
+              <div
+                key={org.name}
+                className="card-hover rounded-2xl border border-trophyGold/10 bg-deepPanel/70 p-4 text-center"
+              >
+                <span className="text-3xl">{org.emoji}</span>
+                <p className="mt-2 font-heading text-sm font-bold text-trophyGold">
+                  {org.name}
+                </p>
+                <p className="mt-1 text-xs text-copyMuted">{org.detail}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-xs text-copyMuted">
+            {siteContent.foundingClub.closing}
+          </p>
+        </div>
+      </Section>
+
       {/* ── CTA ──────────────────────────────────────────────── */}
       <Section id="waitlist" variant="accent">
         <div className="space-y-6 text-center">
           <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">
-            Ready to organize your crew?
+            Want in?
           </p>
           <p className="mx-auto max-w-2xl text-sm text-copyMuted">
-            Join the waitlist — Trophy Cast is now onboarding clubs.
+            We&apos;re in beta with Denver BassMasters right now. Join the waitlist and we&apos;ll let you know when we&apos;re ready for your crew.
           </p>
           <WaitlistForm />
         </div>

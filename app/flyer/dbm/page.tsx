@@ -122,7 +122,7 @@ export default function DBMFlyerPage() {
             </div>
             <div style={{ marginBottom: 18 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/Loge%20Transparent%20background.png" alt="Denver BassMasters logo" height={88} style={{ display: 'block', margin: '0 auto', objectFit: 'contain' }} />
+              <img src="/trophy-cast-logo-transparent.png?v=clean" alt="Denver BassMasters logo" height={88} style={{ display: 'block', margin: '0 auto', objectFit: 'contain' }} />
             </div>
             <h1 style={{ fontSize: 54, fontWeight: 900, color: '#F5F5EE', margin: '0 0 6px', lineHeight: 1, letterSpacing: '-1.5px', textTransform: 'uppercase' }}>
               Denver{' '}

@@ -138,7 +138,7 @@ function DBMHalfFlyer() {
           <div style={{ width: 40, height: 3, background: '#88AC2E', borderRadius: 2, margin: '0 auto 16px' }} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/Loge%20Transparent%20background.png"
+            src="/trophy-cast-logo-transparent.png?v=clean"
             alt="Denver BassMasters logo"
             height={68}
             style={{ display: 'block', margin: '0 auto 12px', objectFit: 'contain' }}
