@@ -205,16 +205,21 @@ function DBMHalfFlyer() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {[
               { icon: '🚤', title: 'Boater & Co-Angler Tournaments', body: 'DBM runs card tournaments — catch a fish, weigh it, record it on your card, and release it. A boater and co-angler are paired every event. You fish as a team, you compete as individuals.' },
-              { icon: '🏆', title: 'One path, five levels of competition', body: 'Start at the club level. Fish well enough and you qualify for the Colorado Bass Nation (CBN) State Tournament. From there: Regionals → Nationals — and maybe, the Bassmaster Classic.' },
+              { icon: '🏆', title: 'One path, five levels of competition', body: 'Fish club tournaments to build your skills. As a B.A.S.S.-affiliated club, members can enter the Colorado state qualifier. Place high enough and you advance: State → Regionals → Nationals → and the ultimate prize, the Bassmaster Classic. A real competitive ladder — and it all starts right here.' },
               { icon: '🎣', title: 'A club that makes you better', body: 'Monthly guest speakers cover technique, electronics, and seasonal patterns. Away card tournaments include education too. This is a mentorship culture — every angler here, beginner or veteran, is here to get better.' },
               { icon: '📲', title: 'Get connected, get involved', body: 'DBM is building a modern club — group chats, committees, and centralized communication so members stay connected year-round. Join a committee and help shape the direction of the club.' },
-              { icon: '📱', title: 'Official Club App — Trophy Cast', body: 'Card tournament results, AOY standings, your personal stats, club communication — all in the Trophy Cast app. Everything you need to track your season, in your pocket.' },
+              { icon: null, title: 'Official Club App — Trophy Cast', body: 'Card tournament results, AOY standings, your personal stats, club communication — all in the Trophy Cast app. Everything you need to track your season, in your pocket.' },
             ].map((item) => (
               <div key={item.title} style={{
                 display: 'flex', alignItems: 'flex-start', gap: 9, padding: '6px 10px',
                 background: '#F4FAF0', borderLeft: '3px solid #88AC2E', borderRadius: '0 5px 5px 0',
               }}>
-                <span style={{ fontSize: 14, lineHeight: 1, marginTop: 1 }}>{item.icon}</span>
+                <span style={{ fontSize: 14, lineHeight: 1, marginTop: 1, display: 'flex', alignItems: 'center' }}>
+                  {item.icon ?? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src="/Trophy%20cast%20white%20background.png" alt="Trophy Cast" height={16} style={{ objectFit: 'contain', maxWidth: 42, display: 'block', borderRadius: 2 }} />
+                  )}
+                </span>
                 <div>
                   <p style={{ fontSize: 11, fontWeight: 700, color: '#2A4008', margin: '0 0 1px', background: 'rgba(106,144,32,0.16)', display: 'inline-block', borderRadius: 3, padding: '0 5px' }}>{item.title}</p>
                   <p style={{ fontSize: 10, color: '#546654', margin: 0, lineHeight: 1.4 }}>{item.body}</p>
