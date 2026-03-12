@@ -122,12 +122,10 @@ export default function DBMFlyerPage() {
             </div>
             <div style={{ marginBottom: 18 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/trophy-cast-logo-transparent.png?v=clean" alt="Denver BassMasters logo" height={88} style={{ display: 'block', margin: '0 auto', objectFit: 'contain' }} />
+              <img src="/Loge%20Transparent%20background.png" alt="Denver BassMasters logo" height={88} style={{ display: 'block', margin: '0 auto', objectFit: 'contain' }} />
             </div>
-            <h1 style={{ fontSize: 54, fontWeight: 900, color: '#F5F5EE', margin: '0 0 6px', lineHeight: 1, letterSpacing: '-1.5px', textTransform: 'uppercase' }}>
-              Denver{' '}
-              <span style={{ color: G }}>Bass</span>
-              <span style={{ color: '#D4AF37' }}>Masters</span>
+            <h1 style={{ fontSize: 54, fontWeight: 900, color: '#88AC2E', margin: '0 0 6px', lineHeight: 1, letterSpacing: '-1.5px', textTransform: 'uppercase' }}>
+              Denver BassMasters
             </h1>
             <p style={{ fontSize: 13, color: 'rgba(197,213,180,0.5)', margin: '4px 0 0', fontStyle: 'italic', letterSpacing: '0.06em' }}>
               Building better anglers since the early &lsquo;70s
@@ -149,12 +147,11 @@ export default function DBMFlyerPage() {
           {/* FEATURE TILES */}
           <div style={{ padding: '0 64px 34px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 13 }}>
             {[
-              { icon: '🚤', title: 'No boat? No problem.', body: 'Boaters and co-anglers are paired for every event. Just show up ready to fish.' },
-              { icon: '🏆', title: 'Compete at every level', body: 'Local club tournaments to B.A.S.S. Regional, National, and the Bassmaster Classic.' },
-              { icon: '🎣', title: 'Get better on the water', body: "Education on techniques, conditions, and what actually works — from anglers who've been doing it for decades." },
-              { icon: '🌊', title: "Colorado's best fishing network", body: 'Share knowledge, discover new spots, and fish with people who are serious about bass.' },
-              { icon: '👦', title: 'Junior Youth Program', body: "We're growing the next generation of anglers through mentorship and hands-on tournament experience." },
-              { icon: '📱', title: 'Powered by Trophy Cast', body: 'Live weigh-ins, AOY standings, and club chat — all in the official DBM app. Download at trophycast.app.' },
+              { icon: '🚤', title: 'Boater & Co-Angler Tournaments', body: 'DBM runs card tournaments — catch a fish, weigh it, record it on your card, and release it. A boater and co-angler are paired every event. You fish as a team, you compete as individuals — and you always leave with more knowledge than you came with.' },
+              { icon: '🏆', title: 'One path, five levels of competition', body: 'Start at the club level. Fish well enough and you qualify for the Colorado Bass Nation (CBN) State Tournament. From there: Regionals → Nationals → and if you\'re that good, a shot at the Bassmaster Classic. It all starts right here.' },
+              { icon: '🎣', title: 'A club that makes you better', body: 'Every monthly meeting features a guest speaker — technique breakdowns, electronics, seasonal patterns. Away card tournaments include education too. This isn\'t a cutthroat club — it\'s a mentorship culture. We compete, but we grow together.' },
+              { icon: '📲', title: 'Get connected, get involved', body: 'DBM is building a modern club — group chats, committees, and centralized communication so members stay connected year-round. Join a committee and help shape the direction of the club. Your voice matters here.' },
+              { icon: '📱', title: 'Official Club App — Trophy Cast', body: 'Card tournament results, AOY standings, your personal stats, club communication, and a growing knowledge base — all in the Trophy Cast app. Everything you need to track your season and stay tight with the club, in your pocket.' },
             ].map((item) => (
               <div key={item.title} style={{
                 background: 'rgba(18,38,8,0.75)', border: '1px solid rgba(136,172,46,0.25)',
@@ -261,7 +258,7 @@ export default function DBMFlyerPage() {
               ))}
               <div title="Trophy Cast" style={{ background: 'rgba(255,255,255,0.07)', borderRadius: 8, padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, minWidth: 44 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/trophy-cast-logo-transparent.png" alt="Trophy Cast" height={28} style={{ objectFit: 'contain', maxWidth: 80, display: 'block' }} />
+                <img src="/Trophy%20cast%20white%20background.png" alt="Trophy Cast" height={28} style={{ objectFit: 'contain', maxWidth: 80, display: 'block' }} />
               </div>
             </div>
           </div>

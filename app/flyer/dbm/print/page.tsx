@@ -138,15 +138,13 @@ function DBMHalfFlyer() {
           <div style={{ width: 40, height: 3, background: '#88AC2E', borderRadius: 2, margin: '0 auto 16px' }} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/trophy-cast-logo-transparent.png?v=clean"
+            src="/Loge%20Transparent%20background.png"
             alt="Denver BassMasters logo"
             height={68}
             style={{ display: 'block', margin: '0 auto 12px', objectFit: 'contain' }}
           />
-          <h2 style={{ fontSize: 17, fontWeight: 900, color: '#F5F5EE', margin: '0 0 4px', lineHeight: 1.15, textTransform: 'uppercase', letterSpacing: '-0.3px', background: 'rgba(0,0,0,0.28)', borderRadius: 6, padding: '4px 10px', display: 'inline-block' }}>
-            Denver<br />
-            <span style={{ color: '#88AC2E' }}>Bass</span>
-            <span style={{ color: '#D4AF37' }}>Masters</span>
+          <h2 style={{ fontSize: 17, fontWeight: 900, color: '#88AC2E', margin: '0 0 4px', lineHeight: 1.15, textTransform: 'uppercase', letterSpacing: '-0.3px', background: 'rgba(0,0,0,0.28)', borderRadius: 6, padding: '4px 10px', display: 'inline-block' }}>
+            Denver<br />BassMasters
           </h2>
           <p style={{ fontSize: 9, color: 'rgba(255,255,255,0.6)', margin: '5px 0 0', fontStyle: 'italic', letterSpacing: '0.04em' }}>
             Building better anglers<br />since the early &lsquo;70s
@@ -158,7 +156,7 @@ function DBMHalfFlyer() {
             background: 'rgba(0,0,0,0.32)', border: '1px solid rgba(212,175,55,0.55)',
             borderRadius: 8, padding: '7px 10px', fontSize: 9.5, color: '#D4AF37', fontWeight: 700, textAlign: 'center', lineHeight: 1.4,
           }}>
-            🏆 Colorado Bass<br />Club Trophy<br />
+            🏆 Colorado Bass Nation<br />Club Trophy<br />
             <span style={{ fontSize: 8.5, fontWeight: 400, color: 'rgba(212,175,55,0.65)' }}>2024–2025 Champions</span>
           </div>
 
@@ -206,11 +204,11 @@ function DBMHalfFlyer() {
           {/* Bullets */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {[
-              { icon: '🚤', title: 'Boat-optional tournaments', body: 'Boaters and co-anglers are paired together every event.' },
-              { icon: '🏆', title: 'Compete at every level', body: 'Local to B.A.S.S. National — even the Bassmaster Classic.' },
-              { icon: '🎣', title: 'Get better on the water', body: 'Technique education from decades of serious local anglers.' },
-              { icon: '🌊', title: "Colorado's best fishing network", body: 'Real knowledge sharing, real spots, real community.' },
-              { icon: '📱', title: 'Official app — Trophy Cast', body: 'Live weigh-ins, AOY standings & club chat at your fingertips.' },
+              { icon: '🚤', title: 'Boater & Co-Angler Tournaments', body: 'DBM runs card tournaments — catch a fish, weigh it, record it on your card, and release it. A boater and co-angler are paired every event. You fish as a team, you compete as individuals.' },
+              { icon: '🏆', title: 'One path, five levels of competition', body: 'Start at the club level. Fish well enough and you qualify for the Colorado Bass Nation (CBN) State Tournament. From there: Regionals → Nationals — and maybe, the Bassmaster Classic.' },
+              { icon: '🎣', title: 'A club that makes you better', body: 'Monthly guest speakers cover technique, electronics, and seasonal patterns. Away card tournaments include education too. This is a mentorship culture — every angler here, beginner or veteran, is here to get better.' },
+              { icon: '📲', title: 'Get connected, get involved', body: 'DBM is building a modern club — group chats, committees, and centralized communication so members stay connected year-round. Join a committee and help shape the direction of the club.' },
+              { icon: '📱', title: 'Official Club App — Trophy Cast', body: 'Card tournament results, AOY standings, your personal stats, club communication — all in the Trophy Cast app. Everything you need to track your season, in your pocket.' },
             ].map((item) => (
               <div key={item.title} style={{
                 display: 'flex', alignItems: 'flex-start', gap: 9, padding: '6px 10px',
@@ -229,7 +227,7 @@ function DBMHalfFlyer() {
         {/* Bottom: meeting info + sponsors */}
         <div>
           <div style={{
-            marginTop: 10, padding: '8px 12px',
+            marginTop: 6, padding: '8px 12px',
             background: '#0C0F08', borderRadius: 6,
             display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
           }}>
@@ -237,25 +235,21 @@ function DBMHalfFlyer() {
             <span style={{ fontSize: 10, color: '#C9D3CA' }}>First Wednesday · 7:00 PM</span>
             <span style={{ fontSize: 10, color: '#8A9E6A' }}>Bass Pro Shops Denver (Conference Room)</span>
           </div>
-          <div style={{ marginTop: 7, display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
-            <span style={{ fontSize: 8.5, color: '#a8b898', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginRight: 2 }}>Sponsors:</span>
+          <div style={{ marginTop: 18, display: 'flex', gap: 0, justifyContent: 'space-around', alignItems: 'center', width: '100%' }}>
             {[
-              { name: 'AA Toppers',    src: '/Topper%20Sales.png' },
-              { name: 'Bass Pro Shops', src: '/BassproShop.png' },
-              { name: 'Eagle Claw',    src: '/Eagle%20Claw.png' },
-              { name: 'Milicia Marine', src: '/Milicia%20Marine.png' },
+              { name: 'Bass Pro Shops',          src: '/BassproShop.png' },
+              { name: 'JJ Bass Jigs',            src: '/JJ%20Bass%20Jigs.png' },
+              { name: 'Trophy Cast',             src: '/Trophy%20cast%20white%20background.png' },
+              { name: 'Eagle Claw',              src: '/Eagle%20Claw.png' },
+              { name: 'Milicia Marine',          src: '/Milicia%20Marine.png' },
+              { name: 'AA Toppers',              src: '/Topper%20Sales.png' },
               { name: 'Discount Fishing Denver', src: '/Discount%20Fishing%20Tackle.png' },
-              { name: 'JJ Bass Jigs',  src: '/JJ%20Bass%20Jigs.png' },
             ].map((s) => (
               <div key={s.name} title={s.name} style={{ background: '#fff', borderRadius: 4, padding: '2px 5px', display: 'flex', alignItems: 'center', height: 22 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={s.src} alt={s.name} height={16} style={{ objectFit: 'contain', maxWidth: 50, display: 'block' }} onError={(e) => { (e.currentTarget.parentElement as HTMLDivElement).style.display = 'none'; }} />
               </div>
             ))}
-            <div title="Trophy Cast" style={{ background: '#fff', borderRadius: 4, padding: '2px 5px', display: 'flex', alignItems: 'center', height: 22 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/trophy-cast-logo-256.png" alt="Trophy Cast" height={16} style={{ objectFit: 'contain', maxWidth: 50, display: 'block' }} />
-            </div>
           </div>
         </div>
       </div>
