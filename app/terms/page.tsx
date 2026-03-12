@@ -213,9 +213,12 @@ export default function TermsPage() {
               </li>
             </ul>
             <p>
-              We never send marketing SMS messages. Message and data rates may apply. To opt out,
-              toggle SMS Notifications off in Settings → Trust Center, or reply{" "}
-              <strong className="text-copyLight">STOP</strong> to any Trophy Cast message.
+              We never send marketing SMS messages. Message frequency varies based on tournament
+              schedules and club activity. Message and data rates may apply. To opt out, toggle SMS
+              Notifications off in Settings → Trust Center, or reply{" "}
+              <strong className="text-copyLight">STOP</strong> to any Trophy Cast message. Reply{" "}
+              <strong className="text-copyLight">HELP</strong> for support or contact us at{" "}
+              hello@trophycast.app.
             </p>
           </div>
 
