@@ -184,7 +184,7 @@ export const siteContent = {
     id: "clubs",
     title: "Club-in-a-box",
     lead:
-      "Five friends can start a fishing club tomorrow. Or run a 50-member organization with tournaments, AOY standings, treasury, and announcements — all from their phones. Denver Bassmasters does exactly that.",
+      "Run a 50-member bass club or a family fishing crew — tournaments, leaderboards, chat, and catch logs for any size group. We're in beta with Denver BassMasters and opening up soon.",
     items: [
       {
         emoji: "🏆",
@@ -225,15 +225,28 @@ export const siteContent = {
   },
   clubInABox: {
     id: "club-in-a-box",
-    badge: "Now onboarding clubs",
-    title: "Start your club today",
+    badge: "Beta — Denver BassMasters onboarding now",
+    title: "A club for any crew",
     description:
-      "Everything a fishing club needs to launch — onboarding, tournament templates, scoring, leaderboards, and communication tools. Built with Denver Bassmasters, ready for your crew.",
+      "Trophy Cast works for a 50-member bass club — or a family of four who wants to fish together. Set up a \"club\" for your family and suddenly everyone's logging catches, competing on the leaderboard, and actually getting outside more. We're currently in beta with Denver BassMasters and building toward open access. Join the waitlist to get in line.",
     checklist: [
-      "✅ Guided onboarding built from real club workflows",
-      "✅ 6 officer roles with role-specific dashboards",
-      "✅ Configurable tournament formats, divisions, and AOY scoring",
+      "✅ Works for clubs, families, and friend groups of any size",
+      "✅ Tournaments, leaderboards, and chat — even for a crew of 3",
+      "✅ Built with Denver BassMasters, stress-tested with real anglers",
+      "✅ Open access coming soon — join the waitlist to reserve your spot",
     ],
+  },
+  foundingClub: {
+    id: "founding-club",
+    title: "Be one of the first",
+    description:
+      "Denver BassMasters is our founding club \u2014 the first organization to run on Trophy Cast. If you join DBM, you\u2019ll be among the first anglers in the world using the app in beta. That means direct input on features, early access to everything we build, and a lifetime Founding Member badge on your profile.",
+    orgs: [
+      { emoji: "\uD83C\uDFA3", name: "Denver BassMasters", detail: "Adult club \u2014 tournaments, AOY, full platform" },
+      { emoji: "\uD83E\uDDD2", name: "Denver BassMasters Juniors", detail: "Youth division \u2014 same tools, family-friendly" },
+      { emoji: "\uD83C\uDF93", name: "Front Range Bass Club for High School Anglers", detail: "School-sanctioned fishing team with dedicated director" },
+    ],
+    closing: "Founding clubs get a permanent badge, priority support, and a seat at the table as Trophy Cast grows. This window won\u2019t last forever.",
   },
   gamificationLoop: {
     id: "loop",
@@ -392,7 +405,11 @@ export const siteContent = {
     motto: "Where Every Cast Counts.",
     tagline: "Fish more. Learn faster. Connect deeper.",
     aiDisclaimer: "© 2026 Trophy Cast, Inc. Your coaching stays inside your account — your GPS, patterns, and spots never go out to the internet.",
-    links: [{ label: "Email", href: "mailto:hello@trophycast.app" }],
+    links: [
+      { label: "Email", href: "mailto:hello@trophycast.app" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms", href: "/terms" },
+    ],
   },
 };
 
