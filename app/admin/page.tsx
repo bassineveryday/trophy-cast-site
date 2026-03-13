@@ -4,6 +4,10 @@ import { useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { useAdminAuth } from '@/lib/useAdminAuth';
 
+const FEATURE_RANGE_OPTIONS = [7, 14, 30, 90] as const;
+
+type FeatureRangeDays = (typeof FEATURE_RANGE_OPTIONS)[number];
+
 interface DashboardStats {
   subscribers: {
     total: number | null;
@@ -42,6 +46,99 @@ interface ActivityStats {
   topScreens: { screen: string; count: number }[];
 }
 
+interface GrowthMember {
+  id: string;
+  name: string;
+  joinedAt: string;
+  lastSeenAt: string | null;
+}
+
+interface GrowthFollowUpMember extends GrowthMember {
+  sessions: number;
+}
+
+interface GrowthStats {
+  trackingStartedAt: string;
+  signupsToday: number;
+  signups7d: number;
+  signups30d: number;
+  active30d: number;
+  trackedNewUsers: number;
+  returnedAfterSignup: number;
+  returnRate: number | null;
+  eligible7d: number;
+  retained7d: number;
+  retention7dRate: number | null;
+  eligible30d: number;
+  retained30d: number;
+  retention30dRate: number | null;
+  inactive7d: number;
+  inactive30d: number;
+  newestMembers: GrowthMember[];
+  followUpMembers: GrowthFollowUpMember[];
+  dormantMembers: GrowthMember[];
+}
+
+interface FeatureAnalytics {
+  rangeDays: number;
+  catches: {
+    logs: number;
+    activeAnglers: number;
+    photoRate: number | null;
+    avgLogsPerDay: number;
+    trend: { date: string; count: number }[];
+    topSpecies: { species: string; count: number }[];
+    topLakes: { lake: string; count: number }[];
+  };
+  coach: {
+    askCoach: number;
+    catchFeedback: number;
+    patternRuns: number;
+    voiceConversations: number;
+    avgConversationTurns: number | null;
+    trend: { date: string; count: number }[];
+    topTopics: { topic: string; count: number }[];
+  };
+  tournaments: {
+    registrations: number;
+    paidEntries: number;
+    boaters: number;
+    coAnglers: number;
+    trend: { date: string; count: number }[];
+    upcomingEvents: {
+      eventId: string;
+      tournamentName: string;
+      eventDate: string;
+      registrations: number;
+      paid: number;
+    }[];
+    topChannels: {
+      eventId: string;
+      tournamentName: string;
+      eventDate: string;
+      totalMessages: number;
+      opsMessages: number;
+      chatMessages: number;
+    }[];
+  };
+  inbox: {
+    messages: number;
+    activeThreads: number;
+    announcements: number;
+    avgMessagesPerDay: number;
+    trend: { date: string; count: number }[];
+    breakdown: {
+      direct_message: number;
+      pairing_chat: number;
+      tournament_ops: number;
+      tournament_chat: number;
+      club_announcement: number;
+      board_message: number;
+      group_chat: number;
+    };
+  };
+}
+
 interface GoogleWorkspaceData {
   configured: boolean;
   folders: {
@@ -76,6 +173,21 @@ function memberSince(isoString: string | null): string {
   return years === 1 ? '1 year' : `${years} years`;
 }
 
+function formatShortDate(isoString: string): string {
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+  }).format(new Date(isoString));
+}
+
+function formatPercent(value: number | null): string {
+  return value === null ? '—' : `${value}%`;
+}
+
+function rangeSummary(days: number): string {
+  return `last ${days} days`;
+}
+
 const QUICK_LINKS = [
   { label: 'Resend', href: 'https://resend.com/emails', icon: '📬' },
   { label: 'Supabase', href: 'https://supabase.com/dashboard/project/pxmffkaiwpvnpfrhfeco', icon: '🗄️' },
@@ -92,7 +204,7 @@ function StatCard({
   loading,
 }: {
   label: string;
-  value: number | null;
+  value: number | string | null;
   sub?: string;
   accent: string;
   loading: boolean;
@@ -106,10 +218,68 @@ function StatCard({
         ) : value === null ? (
           <span className="text-copyMuted/40 text-xl">—</span>
         ) : (
-          value.toLocaleString()
+          typeof value === 'number' ? value.toLocaleString() : value
         )}
       </p>
       {sub && <p className="text-xs text-copyMuted/50 mt-2">{sub}</p>}
+    </div>
+  );
+}
+
+function StatusPill({
+  label,
+  value,
+  tone,
+}: {
+  label: string;
+  value: string;
+  tone: 'neutral' | 'good' | 'warn' | 'alert';
+}) {
+  const toneClass = {
+    neutral: 'border-liftedPanel text-copyMuted bg-liftedPanel/20',
+    good: 'border-bass/30 text-bass bg-bass/10',
+    warn: 'border-trophyGold/30 text-trophyGold bg-trophyGold/10',
+    alert: 'border-red-500/30 text-red-300 bg-red-500/10',
+  }[tone];
+
+  return (
+    <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs ${toneClass}`}>
+      <span className="uppercase tracking-wider text-[10px] opacity-70">{label}</span>
+      <span className="font-semibold">{value}</span>
+    </div>
+  );
+}
+
+function TrendBars({
+  data,
+  accent,
+}: {
+  data: { date: string; count: number }[];
+  accent: string;
+}) {
+  const peak = Math.max(...data.map((point) => point.count), 0);
+
+  return (
+    <div>
+      <div className="flex items-end gap-1 h-16">
+        {data.map((point) => {
+          const height = peak === 0 ? 6 : Math.max(8, Math.round((point.count / peak) * 100));
+          return (
+            <div key={point.date} className="flex-1 h-full flex items-end">
+              <div className="w-full h-full rounded-sm bg-liftedPanel/40 overflow-hidden flex items-end">
+                <div className={`${accent} w-full rounded-sm`} style={{ height: `${height}%` }} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {data.length > 0 && (
+        <div className="flex items-center justify-between mt-2 text-[10px] text-copyMuted/30 uppercase tracking-wider">
+          <span>{formatShortDate(data[0].date)}</span>
+          <span>{peak} peak</span>
+          <span>{formatShortDate(data[data.length - 1].date)}</span>
+        </div>
+      )}
     </div>
   );
 }
@@ -121,10 +291,16 @@ export default function AdminDashboardPage() {
   const [statsLoading, setStatsLoading] = useState(false);
   const [activity, setActivity] = useState<ActivityStats | null>(null);
   const [activityLoading, setActivityLoading] = useState(false);
+  const [growth, setGrowth] = useState<GrowthStats | null>(null);
+  const [growthLoading, setGrowthLoading] = useState(false);
+  const [features, setFeatures] = useState<FeatureAnalytics | null>(null);
+  const [featuresLoading, setFeaturesLoading] = useState(false);
+  const [featureRangeDays, setFeatureRangeDays] = useState<FeatureRangeDays>(30);
   const [workspace, setWorkspace] = useState<GoogleWorkspaceData | null>(null);
   const [workspaceLoading, setWorkspaceLoading] = useState(false);
   const [showAllMembers, setShowAllMembers] = useState(false);
   const [showAllScreens, setShowAllScreens] = useState(false);
+  const [lastUpdatedAt, setLastUpdatedAt] = useState<string | null>(null);
 
   const handleUnlock = useCallback(
     (e: React.FormEvent) => {
@@ -135,66 +311,130 @@ export default function AdminDashboardPage() {
     [pwInput, unlock]
   );
 
-  const fetchActivity = useCallback(() => {
-    if (!unlocked || !password) return;
-    setActivityLoading(true);
-    fetch('/api/admin/user-activity', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
-    })
-      .then(async (r) => {
-        if (r.status === 401) { lockOut(); return; }
-        setActivity(await r.json());
-      })
-      .catch(() => {})
-      .finally(() => setActivityLoading(false));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unlocked, password]);
-
-  useEffect(() => {
+  const fetchStats = useCallback(async () => {
     if (!unlocked || !password) return;
     setStatsLoading(true);
-    fetch('/api/admin/dashboard-stats', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
-    })
-      .then(async (r) => {
-        if (r.status === 401) { lockOut(); return; }
-        setStats(await r.json());
-      })
-      .catch(() => {})
-      .finally(() => setStatsLoading(false));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unlocked, password]);
+    try {
+      const r = await fetch('/api/admin/dashboard-stats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      if (r.status === 401) {
+        lockOut();
+        return;
+      }
+      setStats(await r.json());
+    } catch {
+    } finally {
+      setStatsLoading(false);
+    }
+  }, [unlocked, password, lockOut]);
 
-  // Fetch live activity stats on mount, then auto-refresh every 30 seconds
-  useEffect(() => {
+  const fetchActivity = useCallback(async (silent = false) => {
     if (!unlocked || !password) return;
-    fetchActivity();
-    const interval = setInterval(fetchActivity, 30_000);
-    return () => clearInterval(interval);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unlocked, password]);
+    if (!silent) setActivityLoading(true);
+    try {
+      const r = await fetch('/api/admin/user-activity', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      if (r.status === 401) {
+        lockOut();
+        return;
+      }
+      setActivity(await r.json());
+    } catch {
+    } finally {
+      if (!silent) setActivityLoading(false);
+    }
+  }, [unlocked, password, lockOut]);
 
-  // Fetch Google Workspace connection & folder data
-  useEffect(() => {
+  const fetchGrowth = useCallback(async () => {
+    if (!unlocked || !password) return;
+    setGrowthLoading(true);
+    try {
+      const r = await fetch('/api/admin/growth-metrics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      if (r.status === 401) {
+        lockOut();
+        return;
+      }
+      setGrowth(await r.json());
+    } catch {
+    } finally {
+      setGrowthLoading(false);
+    }
+  }, [unlocked, password, lockOut]);
+
+  const fetchFeatures = useCallback(async () => {
+    if (!unlocked || !password) return;
+    setFeaturesLoading(true);
+    try {
+      const r = await fetch('/api/admin/feature-analytics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, rangeDays: featureRangeDays }),
+      });
+      if (r.status === 401) {
+        lockOut();
+        return;
+      }
+      setFeatures(await r.json());
+    } catch {
+    } finally {
+      setFeaturesLoading(false);
+    }
+  }, [unlocked, password, lockOut, featureRangeDays]);
+
+  const fetchWorkspace = useCallback(async () => {
     if (!unlocked || !password) return;
     setWorkspaceLoading(true);
-    fetch('/api/admin/google-workspace', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
-    })
-      .then(async (r) => {
-        if (r.status === 401) { lockOut(); return; }
-        setWorkspace(await r.json());
-      })
-      .catch(() => {})
-      .finally(() => setWorkspaceLoading(false));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unlocked, password]);
+    try {
+      const r = await fetch('/api/admin/google-workspace', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      if (r.status === 401) {
+        lockOut();
+        return;
+      }
+      setWorkspace(await r.json());
+    } catch {
+    } finally {
+      setWorkspaceLoading(false);
+    }
+  }, [unlocked, password, lockOut]);
+
+  const refreshAll = useCallback(async () => {
+    if (!unlocked || !password) return;
+    await Promise.all([
+      fetchStats(),
+      fetchActivity(),
+      fetchGrowth(),
+      fetchFeatures(),
+      fetchWorkspace(),
+    ]);
+    setLastUpdatedAt(new Date().toISOString());
+  }, [unlocked, password, fetchStats, fetchActivity, fetchGrowth, fetchFeatures, fetchWorkspace]);
+
+  useEffect(() => {
+    if (!unlocked || !password) return;
+    void refreshAll();
+  }, [unlocked, password, refreshAll]);
+
+  useEffect(() => {
+    if (!unlocked || !password) return;
+    const interval = setInterval(() => {
+      void fetchActivity(true);
+    }, 30_000);
+    return () => clearInterval(interval);
+  }, [unlocked, password, fetchActivity]);
 
   // ── Password gate ──────────────────────────────────────────────────────────
   if (!unlocked) {
@@ -228,6 +468,39 @@ export default function AdminDashboardPage() {
     );
   }
 
+  const dashboardRefreshing = statsLoading || activityLoading || growthLoading || featuresLoading || workspaceLoading;
+  const displayedFeatureRange = features?.rangeDays ?? featureRangeDays;
+  const attentionItems = [
+    !workspaceLoading && !workspace?.configured
+      ? {
+          title: 'Business Drive needs setup',
+          detail: 'Folder links and sync oversight are unavailable until the Drive env vars are configured.',
+          tone: 'warn' as const,
+        }
+      : null,
+    stats?.bugs.last30Days && stats.bugs.last30Days > 0
+      ? {
+          title: `${stats.bugs.last30Days} bug reports waiting`,
+          detail: 'Review the newest app issues before they pile up across releases.',
+          tone: 'alert' as const,
+        }
+      : null,
+    growth?.followUpMembers.length
+      ? {
+          title: `${growth.followUpMembers.length} new members need follow-up`,
+          detail: 'These recent signups have not shown a clear return session yet.',
+          tone: 'warn' as const,
+        }
+      : null,
+    growth?.inactive30d
+      ? {
+          title: `${growth.inactive30d} members inactive 30+ days`,
+          detail: 'Use this to spot reactivation opportunities before members drift away.',
+          tone: 'neutral' as const,
+        }
+      : null,
+  ].filter(Boolean) as { title: string; detail: string; tone: 'neutral' | 'warn' | 'alert' }[];
+
   // ── Dashboard ──────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-midnight">
@@ -239,64 +512,556 @@ export default function AdminDashboardPage() {
           </p>
           <h1 className="text-2xl font-heading font-bold text-trophyGold">Admin Dashboard</h1>
         </div>
-        <p className="text-copyMuted/40 text-xs hidden md:block">trophycast.app</p>
+        <div className="hidden md:flex items-center gap-3 text-xs">
+          {lastUpdatedAt && (
+            <span className="text-copyMuted/40">updated {timeAgo(lastUpdatedAt)}</span>
+          )}
+          {dashboardRefreshing && (
+            <span className="text-copyMuted/40 animate-pulse">refreshing…</span>
+          )}
+          <button
+            onClick={refreshAll}
+            className="text-electric/70 hover:text-electric transition-colors"
+          >
+            ↻ refresh all
+          </button>
+        </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-10 space-y-12">
+      <div className="max-w-6xl mx-auto px-6 py-10 space-y-12">
 
-        {/* Stats — Audience */}
+        {/* Command Center */}
+        <section className="grid lg:grid-cols-[1.35fr_0.65fr] gap-4">
+          <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+            <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted mb-3">Command Center</p>
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+              <div>
+                <h2 className="text-3xl font-heading font-bold text-copyLight">Everything that matters, fast</h2>
+                <p className="text-sm text-copyMuted mt-2 max-w-2xl">
+                  Growth, retention, live usage, bugs, and ops health in one place.
+                </p>
+              </div>
+              {growth?.trackingStartedAt && (
+                <p className="text-xs text-copyMuted/40">
+                  session tracking live since {formatShortDate(growth.trackingStartedAt)}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2 mt-5">
+              <StatusPill
+                label="Drive"
+                value={workspaceLoading ? 'Checking' : workspace?.configured ? 'Connected' : 'Needs setup'}
+                tone={workspace?.configured ? 'good' : 'warn'}
+              />
+              <StatusPill
+                label="Bugs"
+                value={statsLoading ? 'Checking' : `${stats?.bugs.last30Days ?? 0} in 30d`}
+                tone={stats?.bugs.last30Days ? 'alert' : 'good'}
+              />
+              <StatusPill
+                label="Live"
+                value={activityLoading ? 'Refreshing' : `${activity?.onlineNow ?? 0} online now`}
+                tone={(activity?.onlineNow ?? 0) > 0 ? 'good' : 'neutral'}
+              />
+              <StatusPill
+                label="Return"
+                value={growthLoading ? 'Calculating' : growth?.returnRate === null ? 'Building history' : `${growth.returnRate}% tracked`}
+                tone={growth?.returnRate && growth.returnRate >= 50 ? 'good' : growth?.returnRate === null ? 'neutral' : 'warn'}
+              />
+            </div>
+          </div>
+
+          <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+            <div className="flex items-center justify-between gap-4 mb-4">
+              <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted">Attention Queue</p>
+              <button
+                onClick={refreshAll}
+                className="text-xs text-electric/60 hover:text-electric transition-colors"
+              >
+                ↻ refresh all
+              </button>
+            </div>
+            <div className="space-y-3">
+              {attentionItems.length > 0 ? (
+                attentionItems.map((item) => (
+                  <div key={item.title} className="rounded-xl border border-liftedPanel bg-liftedPanel/10 px-4 py-3">
+                    <p className={`text-sm font-semibold ${item.tone === 'alert' ? 'text-red-300' : item.tone === 'warn' ? 'text-trophyGold' : 'text-copyLight'}`}>
+                      {item.title}
+                    </p>
+                    <p className="text-xs text-copyMuted/60 mt-1 leading-relaxed">{item.detail}</p>
+                  </div>
+                ))
+              ) : (
+                <div className="rounded-xl border border-bass/20 bg-bass/10 px-4 py-4">
+                  <p className="text-sm font-semibold text-bass">Nothing urgent right now</p>
+                  <p className="text-xs text-copyMuted/60 mt-1">Drive is configured, bugs are quiet, and no obvious follow-up queue is forming.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* At a glance */}
         <section>
-          <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted mb-4">Overview</p>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted mb-4">At A Glance</p>
+          <div className="grid grid-cols-2 lg:grid-cols-6 gap-4">
             <StatCard
-              label="Newsletter"
+              label="Waitlist"
               value={stats?.subscribers?.total ?? null}
               sub="Resend subscribers"
               accent="border-electric/30"
               loading={statsLoading}
             />
             <StatCard
-              label="App Users"
+              label="Profiles"
               value={stats?.supabase?.totalProfiles ?? null}
-              sub="all-time signups"
+              sub="all-time accounts"
               accent="border-trophyGold/20"
               loading={statsLoading}
             />
             <StatCard
-              label="Bug Reports"
+              label="New 7d"
+              value={growth?.signups7d ?? null}
+              sub="new signups this week"
+              accent="border-bass/30"
+              loading={growthLoading}
+            />
+            <StatCard
+              label="Active 30d"
+              value={growth?.active30d ?? null}
+              sub="monthly active members"
+              accent="border-liftedPanel"
+              loading={growthLoading}
+            />
+            <StatCard
+              label="Bugs 30d"
               value={stats?.bugs.last30Days ?? null}
-              sub="last 30 days"
+              sub="recent app issues"
               accent="border-red-900/40"
               loading={statsLoading}
+            />
+            <StatCard
+              label="Avg Session"
+              value={activity?.avgSessionMinutes ?? null}
+              sub="minutes across sessions"
+              accent="border-electric/20"
+              loading={activityLoading}
             />
           </div>
         </section>
 
-        {/* Stats — App Health (Supabase) */}
+        {/* Growth & retention */}
         <section>
-          <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted mb-4">App Health</p>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted">Growth & Retention</p>
+            {growth && growth.eligible7d === 0 && growth.eligible30d === 0 && (
+              <p className="text-xs text-copyMuted/40">retention cohorts will populate as tracking history builds</p>
+            )}
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-6 gap-4">
             <StatCard
-              label="Total Profiles"
-              value={stats?.supabase?.totalProfiles ?? null}
-              sub="all-time signups"
+              label="New Today"
+              value={growth?.signupsToday ?? null}
+              sub="signups in last 24 hours"
               accent="border-electric/30"
-              loading={statsLoading}
+              loading={growthLoading}
             />
             <StatCard
-              label="New This Week"
-              value={stats?.supabase?.newSignupsThisWeek ?? null}
-              sub="signups last 7 days"
+              label="New 30d"
+              value={growth?.signups30d ?? null}
+              sub="signups in last 30 days"
+              accent="border-trophyGold/20"
+              loading={growthLoading}
+            />
+            <StatCard
+              label="Returned"
+              value={growth?.returnRate === null ? null : `${growth.returnRate}%`}
+              sub={growth ? `${growth.returnedAfterSignup} of ${growth.trackedNewUsers} tracked signups came back` : 'tracked signups only'}
               accent="border-bass/30"
-              loading={statsLoading}
+              loading={growthLoading}
             />
             <StatCard
-              label="New This Month"
-              value={stats?.supabase?.newSignupsThisMonth ?? null}
-              sub="signups last 30 days"
-              accent="border-liftedPanel"
-              loading={statsLoading}
+              label="7d Retention"
+              value={growth?.retention7dRate === null ? null : `${growth.retention7dRate}%`}
+              sub={growth?.eligible7d ? `${growth.retained7d} of ${growth.eligible7d} eligible` : 'awaiting enough history'}
+              accent="border-electric/20"
+              loading={growthLoading}
             />
+            <StatCard
+              label="30d Retention"
+              value={growth?.retention30dRate === null ? null : `${growth.retention30dRate}%`}
+              sub={growth?.eligible30d ? `${growth.retained30d} of ${growth.eligible30d} eligible` : 'awaiting enough history'}
+              accent="border-liftedPanel"
+              loading={growthLoading}
+            />
+            <StatCard
+              label="Inactive 30d"
+              value={growth?.inactive30d ?? null}
+              sub="members not seen recently"
+              accent="border-red-900/40"
+              loading={growthLoading}
+            />
+          </div>
+        </section>
+
+        {/* Member watchlists */}
+        <section>
+          <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted mb-4">Member Watchlists</p>
+          <div className="grid lg:grid-cols-3 gap-4">
+            <div className="bg-deepPanel border border-liftedPanel rounded-2xl overflow-hidden">
+              <div className="px-6 py-4 border-b border-liftedPanel">
+                <p className="text-sm font-semibold text-copyLight">Newest Signups</p>
+                <p className="text-xs text-copyMuted/50 mt-0.5">who joined most recently</p>
+              </div>
+              <div className="divide-y divide-liftedPanel/50">
+                {growth?.newestMembers?.length ? (
+                  growth.newestMembers.map((member) => (
+                    <div key={member.id} className="px-6 py-4">
+                      <p className="text-sm font-medium text-copyLight">{member.name}</p>
+                      <p className="text-xs text-copyMuted/50 mt-1">
+                        joined {formatShortDate(member.joinedAt)}
+                        {member.lastSeenAt ? ` · seen ${timeAgo(member.lastSeenAt)}` : ' · not active yet'}
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="px-6 py-6 text-sm text-copyMuted/50">No signup activity yet.</p>
+                )}
+              </div>
+            </div>
+
+            <div className="bg-deepPanel border border-liftedPanel rounded-2xl overflow-hidden">
+              <div className="px-6 py-4 border-b border-liftedPanel">
+                <p className="text-sm font-semibold text-copyLight">Needs Follow-Up</p>
+                <p className="text-xs text-copyMuted/50 mt-0.5">tracked signups without a clear return visit</p>
+              </div>
+              <div className="divide-y divide-liftedPanel/50">
+                {growth?.followUpMembers?.length ? (
+                  growth.followUpMembers.map((member) => (
+                    <div key={member.id} className="px-6 py-4">
+                      <p className="text-sm font-medium text-copyLight">{member.name}</p>
+                      <p className="text-xs text-copyMuted/50 mt-1">
+                        joined {formatShortDate(member.joinedAt)} · {member.sessions} tracked {member.sessions === 1 ? 'session' : 'sessions'}
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="px-6 py-6 text-sm text-copyMuted/50">No follow-up queue right now.</p>
+                )}
+              </div>
+            </div>
+
+            <div className="bg-deepPanel border border-liftedPanel rounded-2xl overflow-hidden">
+              <div className="px-6 py-4 border-b border-liftedPanel">
+                <p className="text-sm font-semibold text-copyLight">Inactive 30+ Days</p>
+                <p className="text-xs text-copyMuted/50 mt-0.5">members who have drifted away</p>
+              </div>
+              <div className="divide-y divide-liftedPanel/50">
+                {growth?.dormantMembers?.length ? (
+                  growth.dormantMembers.map((member) => (
+                    <div key={member.id} className="px-6 py-4">
+                      <p className="text-sm font-medium text-copyLight">{member.name}</p>
+                      <p className="text-xs text-copyMuted/50 mt-1">
+                        joined {formatShortDate(member.joinedAt)}
+                        {member.lastSeenAt ? ` · last seen ${timeAgo(member.lastSeenAt)}` : ' · never tracked as active'}
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="px-6 py-6 text-sm text-copyMuted/50">Nobody is currently in the 30-day inactive bucket.</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Feature analytics */}
+        <section>
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted">Feature Analytics</p>
+              <p className="text-xs text-copyMuted/40 mt-1">showing {rangeSummary(displayedFeatureRange)}</p>
+            </div>
+            <div className="inline-flex items-center rounded-full border border-liftedPanel bg-deepPanel/60 p-1">
+              {FEATURE_RANGE_OPTIONS.map((option) => {
+                const isActive = featureRangeDays === option;
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => setFeatureRangeDays(option)}
+                    className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                      isActive
+                        ? 'bg-electric text-midnight'
+                        : 'text-copyMuted/70 hover:text-copyLight'
+                    }`}
+                  >
+                    {option}d
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-4">
+            <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+              <div className="flex items-center justify-between gap-4 mb-5">
+                <div>
+                  <p className="text-sm font-semibold text-copyLight">Catch Logging</p>
+                  <p className="text-xs text-copyMuted/50 mt-0.5">who is logging fish and how complete the logs are</p>
+                </div>
+                <span className="text-2xl">🎣</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4 mb-5">
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.catches.logs?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">logs in {displayedFeatureRange} days</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.catches.avgLogsPerDay?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">avg logs per day</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.catches.activeAnglers?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">active anglers</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : formatPercent(features?.catches.photoRate ?? null)}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">with photos</p>
+                </div>
+              </div>
+              <div className="border-t border-liftedPanel/50 pt-4 space-y-4">
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-copyMuted/40 mb-3">{displayedFeatureRange}-Day Trend</p>
+                  <TrendBars data={features?.catches.trend ?? []} accent="bg-electric/60" />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-wider text-copyMuted/40 mb-3">Top Species</p>
+                    <div className="space-y-2">
+                      {features?.catches.topSpecies?.length ? (
+                        features.catches.topSpecies.map((species) => (
+                          <div key={species.species} className="flex items-center justify-between gap-4 text-sm">
+                            <span className="text-copyLight">{species.species}</span>
+                            <span className="text-copyMuted/60">{species.count}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-sm text-copyMuted/50">No catch activity yet.</p>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-wider text-copyMuted/40 mb-3">Top Lakes</p>
+                    <div className="space-y-2">
+                      {features?.catches.topLakes?.length ? (
+                        features.catches.topLakes.map((lake) => (
+                          <div key={lake.lake} className="flex items-center justify-between gap-4 text-sm">
+                            <span className="text-copyLight truncate">{lake.lake}</span>
+                            <span className="text-copyMuted/60">{lake.count}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-sm text-copyMuted/50">No named lakes in recent catch logs.</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+              <div className="flex items-center justify-between gap-4 mb-5">
+                <div>
+                  <p className="text-sm font-semibold text-copyLight">TC Coach</p>
+                  <p className="text-xs text-copyMuted/50 mt-0.5">chat prompts, post-catch coaching, and voice conversation flow</p>
+                </div>
+                <span className="text-2xl">✨</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4 mb-5">
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.coach.askCoach?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">Ask TC Coach in {displayedFeatureRange} days</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.coach.catchFeedback?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">post-catch responses</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.coach.patternRuns?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">pattern runs</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.coach.voiceConversations?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">voice conversations saved</p>
+                </div>
+              </div>
+              <div className="border-t border-liftedPanel/50 pt-4 space-y-4">
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-copyMuted/40 mb-3">{displayedFeatureRange}-Day Trend</p>
+                  <TrendBars data={features?.coach.trend ?? []} accent="bg-trophyGold/70" />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <p className="text-copyLight font-medium">{featuresLoading ? '—' : features?.coach.avgConversationTurns?.toLocaleString() ?? '—'}</p>
+                      <p className="text-xs text-copyMuted/50 mt-1">avg turns per voice conversation</p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-wider text-copyMuted/40 mb-3">Top Coach Topics</p>
+                    <div className="space-y-2">
+                      {features?.coach.topTopics?.length ? (
+                        features.coach.topTopics.map((topic) => (
+                          <div key={topic.topic} className="flex items-center justify-between gap-4 text-sm">
+                            <span className="text-copyLight">{topic.topic}</span>
+                            <span className="text-copyMuted/60">{topic.count}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-sm text-copyMuted/50">No TC Coach prompts yet.</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+              <div className="flex items-center justify-between gap-4 mb-5">
+                <div>
+                  <p className="text-sm font-semibold text-copyLight">Tournaments</p>
+                  <p className="text-xs text-copyMuted/50 mt-0.5">registration flow and what is coming up next</p>
+                </div>
+                <span className="text-2xl">🏁</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4 mb-5">
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.tournaments.registrations?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">registrations in {displayedFeatureRange} days</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.tournaments.paidEntries?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">paid entries</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.tournaments.boaters?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">boater signups</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.tournaments.coAnglers?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">co-angler signups</p>
+                </div>
+              </div>
+              <div className="border-t border-liftedPanel/50 pt-4 space-y-4">
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-copyMuted/40 mb-3">{displayedFeatureRange}-Day Trend</p>
+                  <TrendBars data={features?.tournaments.trend ?? []} accent="bg-bass/70" />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-wider text-copyMuted/40 mb-3">Upcoming Registered Events</p>
+                    <div className="space-y-3">
+                      {features?.tournaments.upcomingEvents?.length ? (
+                        features.tournaments.upcomingEvents.slice(0, 4).map((event) => (
+                          <div key={event.eventId} className="flex items-center justify-between gap-4 text-sm">
+                            <div className="min-w-0 flex-1">
+                              <p className="text-copyLight truncate">{event.tournamentName}</p>
+                              <p className="text-xs text-copyMuted/50 mt-1">{formatShortDate(event.eventDate)}</p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-copyLight">{event.registrations}</p>
+                              <p className="text-xs text-copyMuted/50 mt-1">{event.paid} paid</p>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-sm text-copyMuted/50">No upcoming registered events found.</p>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-wider text-copyMuted/40 mb-3">Most Active Tournament Channels</p>
+                    <div className="space-y-3">
+                      {features?.tournaments.topChannels?.length ? (
+                        features.tournaments.topChannels.map((channel) => (
+                          <div key={channel.eventId} className="flex items-center justify-between gap-4 text-sm">
+                            <div className="min-w-0 flex-1">
+                              <p className="text-copyLight truncate">{channel.tournamentName}</p>
+                              <p className="text-xs text-copyMuted/50 mt-1">
+                                {channel.opsMessages} ops · {channel.chatMessages} chat
+                              </p>
+                            </div>
+                            <span className="text-copyMuted/60">{channel.totalMessages}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-sm text-copyMuted/50">No tournament channel traffic yet.</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+              <div className="flex items-center justify-between gap-4 mb-5">
+                <div>
+                  <p className="text-sm font-semibold text-copyLight">Inbox Activity</p>
+                  <p className="text-xs text-copyMuted/50 mt-0.5">chat traffic across DMs, tournament channels, groups, and announcements</p>
+                </div>
+                <span className="text-2xl">💬</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4 mb-5">
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.inbox.messages?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">messages in {displayedFeatureRange} days</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.inbox.avgMessagesPerDay?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">avg messages per day</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.inbox.activeThreads?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">active DM threads</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-heading font-bold text-copyLight">{featuresLoading ? '—' : features?.inbox.announcements?.toLocaleString() ?? '—'}</p>
+                  <p className="text-xs text-copyMuted/50 mt-1">announcements posted</p>
+                </div>
+              </div>
+              <div className="border-t border-liftedPanel/50 pt-4 space-y-4">
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-copyMuted/40 mb-3">{displayedFeatureRange}-Day Trend</p>
+                  <TrendBars data={features?.inbox.trend ?? []} accent="bg-electric/70" />
+                </div>
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-copyMuted/70">Direct</span>
+                    <span className="text-copyLight">{features?.inbox.breakdown.direct_message ?? 0}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-copyMuted/70">Pairing</span>
+                    <span className="text-copyLight">{features?.inbox.breakdown.pairing_chat ?? 0}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-copyMuted/70">Tournament Ops</span>
+                    <span className="text-copyLight">{features?.inbox.breakdown.tournament_ops ?? 0}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-copyMuted/70">Tournament Chat</span>
+                    <span className="text-copyLight">{features?.inbox.breakdown.tournament_chat ?? 0}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-copyMuted/70">Group Chat</span>
+                    <span className="text-copyLight">{features?.inbox.breakdown.group_chat ?? 0}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-copyMuted/70">Announcement Msgs</span>
+                    <span className="text-copyLight">{features?.inbox.breakdown.club_announcement ?? 0}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -310,7 +1075,9 @@ export default function AdminDashboardPage() {
               )}
               <span className="text-xs text-copyMuted/40">auto-refreshes every 30s</span>
               <button
-                onClick={fetchActivity}
+                onClick={() => {
+                  void fetchActivity();
+                }}
                 className="text-xs text-electric/60 hover:text-electric transition-colors ml-2"
               >
                 ↻ refresh
