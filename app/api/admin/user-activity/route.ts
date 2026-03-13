@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
     // Fetch all stats in parallel
-    const [onlineRes, todayRes, weekRes, memberListRes, avgSessionRes, topScreensRes] =
+    const [onlineRes, todayRes, weekRes, memberListRes, sessionsRes, screenNavRes] =
       await Promise.allSettled([
         // Online now (last_seen_at within 5 min)
         supabase
@@ -54,19 +54,21 @@ export async function POST(request: Request) {
         // Member list — last 50 seen, most recent first
         supabase
           .from('profiles')
-          .select('name, last_seen_at, last_active_screen, created_at')
+          .select('id, name, last_seen_at, last_active_screen, created_at')
           .not('last_seen_at', 'is', null)
           .order('last_seen_at', { ascending: false })
           .limit(50),
 
-        // Average session length (last 30 days, completed sessions only)
+        // All completed sessions (last 30 days) — we'll compute per-member stats
         supabase
           .from('user_sessions')
-          .select('duration_seconds')
+          .select('user_id, duration_seconds, created_at')
           .not('duration_seconds', 'is', null)
-          .gte('created_at', thirtyDaysAgo),
+          .gte('created_at', thirtyDaysAgo)
+          .order('created_at', { ascending: false })
+          .limit(2000),
 
-        // Top screens by active member count
+        // Top screens by active member count (last 7 days)
         supabase
           .from('profiles')
           .select('last_active_screen')
@@ -85,28 +87,66 @@ export async function POST(request: Request) {
     const activeThisWeek =
       weekRes.status === 'fulfilled' ? (weekRes.value.count ?? 0) : 0;
 
+    // --- Build per-member session stats ---
+    interface SessionRow { user_id: string; duration_seconds: number; created_at: string }
+    const allSessions: SessionRow[] =
+      sessionsRes.status === 'fulfilled' ? (sessionsRes.value.data ?? []) : [];
+
+    // Group sessions by user_id
+    const userSessionMap = new Map<string, SessionRow[]>();
+    let totalDuration = 0;
+    let totalSessionCount = 0;
+    for (const s of allSessions) {
+      totalDuration += s.duration_seconds ?? 0;
+      totalSessionCount++;
+      const existing = userSessionMap.get(s.user_id);
+      if (existing) {
+        existing.push(s);
+      } else {
+        userSessionMap.set(s.user_id, [s]);
+      }
+    }
+
+    const avgSessionMinutes =
+      totalSessionCount > 0 ? Math.round(totalDuration / totalSessionCount / 60) : null;
+
+    // Build member list with session data
     const memberList =
       memberListRes.status === 'fulfilled'
-        ? (memberListRes.value.data ?? []).map((m: any) => ({
-            name: m.name ?? 'Unknown',
-            lastSeenAt: m.last_seen_at,
-            lastScreen: m.last_active_screen ?? null,
-            joinedAt: m.created_at ?? null,
-          }))
-        : [];
+        ? (memberListRes.value.data ?? []).map((m: any) => {
+            const sessions = userSessionMap.get(m.id) ?? [];
+            const sessionCount = sessions.length;
+            // Last session = most recent by created_at (sessions already sorted desc)
+            const lastSessionSeconds = sessions.length > 0 ? (sessions[0].duration_seconds ?? 0) : null;
+            // Avg session for this member
+            const avgSeconds =
+              sessionCount > 0
+                ? Math.round(sessions.reduce((sum, s) => sum + (s.duration_seconds ?? 0), 0) / sessionCount)
+                : null;
+            // Engagement tier
+            let tier: 'power' | 'regular' | 'light' | 'dormant' = 'dormant';
+            const daysSinceSeen = m.last_seen_at
+              ? Math.floor((Date.now() - new Date(m.last_seen_at).getTime()) / (1000 * 60 * 60 * 24))
+              : 999;
+            if (daysSinceSeen <= 3 && sessionCount >= 5) tier = 'power';
+            else if (daysSinceSeen <= 7) tier = 'regular';
+            else if (daysSinceSeen <= 30) tier = 'light';
 
-    // Compute average session length in minutes
-    let avgSessionMinutes: number | null = null;
-    if (avgSessionRes.status === 'fulfilled' && avgSessionRes.value.data?.length) {
-      const sessions = avgSessionRes.value.data as { duration_seconds: number }[];
-      const total = sessions.reduce((sum, s) => sum + (s.duration_seconds ?? 0), 0);
-      avgSessionMinutes = Math.round(total / sessions.length / 60);
-    }
+            return {
+              name: m.name ?? 'Unknown',
+              lastSeenAt: m.last_seen_at,
+              lastSessionMinutes: lastSessionSeconds !== null ? Math.round(lastSessionSeconds / 60) : null,
+              avgSessionMinutes: avgSeconds !== null ? Math.round(avgSeconds / 60) : null,
+              sessionCount,
+              tier,
+            };
+          })
+        : [];
 
     // Tally screen counts
     const screenCounts: Record<string, number> = {};
-    if (topScreensRes.status === 'fulfilled' && topScreensRes.value.data) {
-      for (const row of topScreensRes.value.data as { last_active_screen: string }[]) {
+    if (screenNavRes.status === 'fulfilled' && screenNavRes.value.data) {
+      for (const row of screenNavRes.value.data as { last_active_screen: string }[]) {
         const screen = row.last_active_screen;
         screenCounts[screen] = (screenCounts[screen] ?? 0) + 1;
       }
@@ -116,6 +156,12 @@ export async function POST(request: Request) {
       .slice(0, 10)
       .map(([screen, count]) => ({ screen, count }));
 
+    // Engagement summary
+    const tiers = { power: 0, regular: 0, light: 0, dormant: 0 };
+    for (const m of memberList) {
+      tiers[m.tier as keyof typeof tiers]++;
+    }
+
     return NextResponse.json({
       onlineNow,
       activeToday,
@@ -123,6 +169,7 @@ export async function POST(request: Request) {
       memberList,
       avgSessionMinutes,
       topScreens,
+      engagement: tiers,
     });
   } catch {
     return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });

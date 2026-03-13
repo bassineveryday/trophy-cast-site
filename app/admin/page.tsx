@@ -33,8 +33,10 @@ interface DashboardStats {
 interface ActivityMember {
   name: string;
   lastSeenAt: string;
-  lastScreen: string | null;
-  joinedAt: string | null;
+  lastSessionMinutes: number | null;
+  avgSessionMinutes: number | null;
+  sessionCount: number;
+  tier: 'power' | 'regular' | 'light' | 'dormant';
 }
 
 interface ActivityStats {
@@ -44,6 +46,14 @@ interface ActivityStats {
   memberList: ActivityMember[];
   avgSessionMinutes: number | null;
   topScreens: { screen: string; count: number }[];
+  engagement: { power: number; regular: number; light: number; dormant: number };
+}
+
+interface UsageInsight {
+  icon: string;
+  title: string;
+  detail: string;
+  tone: 'good' | 'warn' | 'info' | 'idea';
 }
 
 interface GrowthMember {
@@ -300,6 +310,8 @@ export default function AdminDashboardPage() {
   const [workspaceLoading, setWorkspaceLoading] = useState(false);
   const [showAllMembers, setShowAllMembers] = useState(false);
   const [showAllScreens, setShowAllScreens] = useState(false);
+  const [insights, setInsights] = useState<UsageInsight[]>([]);
+  const [insightsLoading, setInsightsLoading] = useState(false);
   const [lastUpdatedAt, setLastUpdatedAt] = useState<string | null>(null);
 
   const handleUnlock = useCallback(
@@ -414,6 +426,27 @@ export default function AdminDashboardPage() {
     }
   }, [unlocked, password, lockOut]);
 
+  const fetchInsights = useCallback(async () => {
+    if (!unlocked || !password) return;
+    setInsightsLoading(true);
+    try {
+      const r = await fetch('/api/admin/usage-insights', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      if (r.status === 401) {
+        lockOut();
+        return;
+      }
+      const json = await r.json();
+      setInsights(json.insights ?? []);
+    } catch {
+    } finally {
+      setInsightsLoading(false);
+    }
+  }, [unlocked, password, lockOut]);
+
   const refreshAll = useCallback(async () => {
     if (!unlocked || !password) return;
     await Promise.all([
@@ -422,9 +455,10 @@ export default function AdminDashboardPage() {
       fetchGrowth(),
       fetchFeatures(),
       fetchWorkspace(),
+      fetchInsights(),
     ]);
     setLastUpdatedAt(new Date().toISOString());
-  }, [unlocked, password, fetchStats, fetchActivity, fetchGrowth, fetchFeatures, fetchWorkspace]);
+  }, [unlocked, password, fetchStats, fetchActivity, fetchGrowth, fetchFeatures, fetchWorkspace, fetchInsights]);
 
   // Fetch everything once when the dashboard is unlocked
   const didInitRef = useRef(false);
@@ -486,7 +520,7 @@ export default function AdminDashboardPage() {
     );
   }
 
-  const dashboardRefreshing = statsLoading || activityLoading || growthLoading || featuresLoading || workspaceLoading;
+  const dashboardRefreshing = statsLoading || activityLoading || growthLoading || featuresLoading || workspaceLoading || insightsLoading;
   const displayedFeatureRange = features?.rangeDays ?? featureRangeDays;
   const growthReturnRate = growth?.returnRate ?? null;
   const growthRetention7dRate = growth?.retention7dRate ?? null;
@@ -1147,6 +1181,21 @@ export default function AdminDashboardPage() {
             const hiddenCount = showAllMembers
               ? 0
               : allMembers.length - Math.min(recentMembers.length, 5);
+
+            const tierBadge = (tier: string) => {
+              const styles: Record<string, string> = {
+                power: 'bg-bass/20 text-bass border-bass/30',
+                regular: 'bg-electric/20 text-electric border-electric/30',
+                light: 'bg-trophyGold/20 text-trophyGold border-trophyGold/30',
+                dormant: 'bg-liftedPanel text-copyMuted/50 border-liftedPanel',
+              };
+              return (
+                <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full border ${styles[tier] ?? styles.dormant}`}>
+                  {tier}
+                </span>
+              );
+            };
+
             return (
               <div className="bg-deepPanel border border-liftedPanel rounded-2xl overflow-hidden mb-4">
                 <div className="px-6 py-4 border-b border-liftedPanel flex items-center justify-between">
@@ -1156,14 +1205,27 @@ export default function AdminDashboardPage() {
                       {showAllMembers ? 'all members, most recent first' : 'active in last 24 hours'}
                     </p>
                   </div>
-                  {(allMembers.length > 5 || recentMembers.length > 5) && (
-                    <button
-                      onClick={() => setShowAllMembers((v) => !v)}
-                      className="text-xs text-electric/60 hover:text-electric transition-colors"
-                    >
-                      {showAllMembers ? '▲ show less' : `▼ show all ${allMembers.length}`}
-                    </button>
-                  )}
+                  <div className="flex items-center gap-3">
+                    {activity.engagement && (
+                      <div className="hidden md:flex items-center gap-2 text-[10px]">
+                        <span className="text-bass">{activity.engagement.power} power</span>
+                        <span className="text-copyMuted/30">·</span>
+                        <span className="text-electric">{activity.engagement.regular} regular</span>
+                        <span className="text-copyMuted/30">·</span>
+                        <span className="text-trophyGold">{activity.engagement.light} light</span>
+                        <span className="text-copyMuted/30">·</span>
+                        <span className="text-copyMuted/50">{activity.engagement.dormant} dormant</span>
+                      </div>
+                    )}
+                    {(allMembers.length > 5 || recentMembers.length > 5) && (
+                      <button
+                        onClick={() => setShowAllMembers((v) => !v)}
+                        className="text-xs text-electric/60 hover:text-electric transition-colors"
+                      >
+                        {showAllMembers ? '▲ show less' : `▼ show all ${allMembers.length}`}
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
@@ -1171,8 +1233,10 @@ export default function AdminDashboardPage() {
                       <tr className="text-xs text-copyMuted/50 uppercase tracking-wider border-b border-liftedPanel">
                         <th className="text-left px-6 py-3 font-medium">Member</th>
                         <th className="text-left px-6 py-3 font-medium">Last Seen</th>
-                        <th className="text-left px-6 py-3 font-medium">Last Screen</th>
-                        <th className="text-left px-6 py-3 font-medium">In App</th>
+                        <th className="text-left px-6 py-3 font-medium">Last Session</th>
+                        <th className="text-left px-6 py-3 font-medium">Avg Session</th>
+                        <th className="text-left px-6 py-3 font-medium">Sessions</th>
+                        <th className="text-left px-6 py-3 font-medium">Tier</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1183,21 +1247,27 @@ export default function AdminDashboardPage() {
                             key={i}
                             className="border-b border-liftedPanel/50 hover:bg-liftedPanel/30 transition-colors"
                           >
-                            <td className="px-6 py-3 text-copyLight font-medium flex items-center gap-2">
-                              {isOnline && (
-                                <span className="w-2 h-2 rounded-full bg-green-400 inline-block shrink-0" />
-                              )}
-                              {m.name}
+                            <td className="px-6 py-3 text-copyLight font-medium">
+                              <span className="flex items-center gap-2">
+                                {isOnline && (
+                                  <span className="w-2 h-2 rounded-full bg-green-400 inline-block shrink-0" />
+                                )}
+                                {m.name}
+                              </span>
                             </td>
                             <td className="px-6 py-3 text-copyMuted tabular-nums">
                               {timeAgo(m.lastSeenAt)}
                             </td>
-                            <td className="px-6 py-3 text-copyMuted/70 font-mono text-xs">
-                              {m.lastScreen ?? '—'}
+                            <td className="px-6 py-3 text-copyMuted tabular-nums">
+                              {m.lastSessionMinutes !== null ? `${m.lastSessionMinutes} min` : '—'}
                             </td>
-                            <td className="px-6 py-3 text-copyMuted/50 tabular-nums text-xs">
-                              {memberSince(m.joinedAt)}
+                            <td className="px-6 py-3 text-copyMuted tabular-nums">
+                              {m.avgSessionMinutes !== null ? `${m.avgSessionMinutes} min` : '—'}
                             </td>
+                            <td className="px-6 py-3 text-copyMuted/60 tabular-nums text-xs">
+                              {m.sessionCount > 0 ? m.sessionCount : '—'}
+                            </td>
+                            <td className="px-6 py-3">{tierBadge(m.tier)}</td>
                           </tr>
                         );
                       })}
@@ -1263,6 +1333,63 @@ export default function AdminDashboardPage() {
               </div>
             );
           })()}
+        </section>
+
+        {/* AI Usage Insights */}
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted">
+              AI Usage Insights
+            </p>
+            <button
+              onClick={() => { void fetchInsights(); }}
+              className="text-xs text-electric/60 hover:text-electric transition-colors"
+            >
+              ↻ refresh insights
+            </button>
+          </div>
+
+          {insightsLoading ? (
+            <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-8 text-center">
+              <p className="text-copyMuted/50 animate-pulse">Analyzing usage patterns…</p>
+            </div>
+          ) : insights.length === 0 ? (
+            <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-8 text-center">
+              <p className="text-copyMuted/50">No insights yet — data is still accumulating.</p>
+            </div>
+          ) : (
+            <div className="grid gap-3 md:grid-cols-2">
+              {insights.map((insight, i) => {
+                const toneBorder: Record<string, string> = {
+                  good: 'border-bass/30',
+                  warn: 'border-red-500/30',
+                  info: 'border-liftedPanel',
+                  idea: 'border-trophyGold/30',
+                };
+                const toneAccent: Record<string, string> = {
+                  good: 'text-bass',
+                  warn: 'text-red-300',
+                  info: 'text-copyLight',
+                  idea: 'text-trophyGold',
+                };
+                return (
+                  <div key={i} className={`bg-deepPanel border rounded-2xl p-5 ${toneBorder[insight.tone] ?? toneBorder.info}`}>
+                    <div className="flex items-start gap-3">
+                      <span className="text-xl shrink-0">{insight.icon}</span>
+                      <div>
+                        <p className={`text-sm font-semibold ${toneAccent[insight.tone] ?? toneAccent.info}`}>
+                          {insight.title}
+                        </p>
+                        <p className="text-xs text-copyMuted/60 mt-1.5 leading-relaxed">
+                          {insight.detail}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </section>
 
         {/* Bassin' Everyday — Business Drive */}
