@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useAdminAuth } from '@/lib/useAdminAuth';
 
@@ -13,6 +13,13 @@ interface BugReport {
   page_path: string | null;
   device_info: string | null;
   club_id: string | null;
+}
+
+interface MagicLinkState {
+  loading: boolean;
+  link: string | null;
+  error: string | null;
+  expiresAt: number | null;
 }
 
 function formatDate(iso: string) {
@@ -31,6 +38,51 @@ export default function BugReportsPage() {
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [fetchError, setFetchError] = useState('');
+  const [supportSecret, setSupportSecret] = useState('');
+  const [magicLinks, setMagicLinks] = useState<Record<string, MagicLinkState>>({});
+  const timersRef = useRef<Record<string, ReturnType<typeof setInterval>>>({});
+
+  // Clean up countdown timers on unmount
+  useEffect(() => {
+    const timers = timersRef.current;
+    return () => {
+      Object.values(timers).forEach(clearInterval);
+    };
+  }, []);
+
+  const generateMagicLink = useCallback(async (bugId: string, email: string) => {
+    const secret = supportSecret.trim();
+    if (!secret) {
+      setMagicLinks((prev) => ({ ...prev, [bugId]: { loading: false, link: null, error: 'Enter the support secret first', expiresAt: null } }));
+      return;
+    }
+    setMagicLinks((prev) => ({ ...prev, [bugId]: { loading: true, link: null, error: null, expiresAt: null } }));
+    try {
+      const res = await fetch('/api/support/magic-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-secret': secret },
+        body: JSON.stringify({ email, reason: `Debug bug report ${bugId}` }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setMagicLinks((prev) => ({ ...prev, [bugId]: { loading: false, link: null, error: json.error ?? 'Failed', expiresAt: null } }));
+        return;
+      }
+      const expiresAt = Date.now() + 60_000;
+      setMagicLinks((prev) => ({ ...prev, [bugId]: { loading: false, link: json.action_link, error: null, expiresAt } }));
+      // Expire after 60s
+      if (timersRef.current[bugId]) clearInterval(timersRef.current[bugId]);
+      timersRef.current[bugId] = setInterval(() => {
+        if (Date.now() >= expiresAt) {
+          clearInterval(timersRef.current[bugId]);
+          delete timersRef.current[bugId];
+          setMagicLinks((prev) => ({ ...prev, [bugId]: { loading: false, link: null, error: null, expiresAt: null } }));
+        }
+      }, 1_000);
+    } catch {
+      setMagicLinks((prev) => ({ ...prev, [bugId]: { loading: false, link: null, error: 'Network error', expiresAt: null } }));
+    }
+  }, [supportSecret]);
 
   const handleUnlock = useCallback(
     (e: React.FormEvent) => {
@@ -204,6 +256,67 @@ export default function BugReportsPage() {
                         >
                           {r.member_email}
                         </a>
+                      </div>
+                    )}
+
+                    {/* ── Login as Member (magic link) ──────────────── */}
+                    {r.member_email && (
+                      <div className="rounded-xl border border-liftedPanel bg-liftedPanel/10 px-5 py-4 space-y-3">
+                        <p className="text-xs font-semibold text-copyMuted/50 uppercase tracking-wider">
+                          Debug — Login as Member
+                        </p>
+                        {(() => {
+                          const ml = magicLinks[r.id];
+                          if (ml?.link) {
+                            const secsLeft = ml.expiresAt ? Math.max(0, Math.ceil((ml.expiresAt - Date.now()) / 1000)) : 0;
+                            return (
+                              <div className="space-y-2">
+                                <a
+                                  href={ml.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-block bg-electric/20 border border-electric/40 text-electric font-semibold text-sm px-4 py-2.5 rounded-lg hover:bg-electric/30 transition-colors"
+                                >
+                                  Open Magic Link →
+                                </a>
+                                <p className="text-xs text-copyMuted/40">
+                                  {secsLeft > 0 ? `Expires in ${secsLeft}s` : 'Expired — generate a new one'}
+                                </p>
+                              </div>
+                            );
+                          }
+                          return (
+                            <div className="space-y-2">
+                              {!supportSecret && (
+                                <input
+                                  type="password"
+                                  value={supportSecret}
+                                  onChange={(e) => setSupportSecret(e.target.value)}
+                                  placeholder="Support admin secret"
+                                  className="w-full max-w-xs bg-deepPanel border border-liftedPanel rounded-lg px-3 py-2 text-copyLight text-sm focus:outline-none focus:border-electric placeholder:text-copyMuted/40"
+                                />
+                              )}
+                              <div className="flex items-center gap-3">
+                                <button
+                                  onClick={() => generateMagicLink(r.id, r.member_email!)}
+                                  disabled={ml?.loading}
+                                  className="bg-bass/20 border border-bass/40 text-bass font-semibold text-xs px-4 py-2 rounded-lg hover:bg-bass/30 transition-colors disabled:opacity-40"
+                                >
+                                  {ml?.loading ? 'Generating…' : `Login as ${r.member_name ?? r.member_email}`}
+                                </button>
+                                {supportSecret && (
+                                  <button
+                                    onClick={() => setSupportSecret('')}
+                                    className="text-xs text-copyMuted/30 hover:text-copyMuted/60 transition-colors"
+                                  >
+                                    change secret
+                                  </button>
+                                )}
+                              </div>
+                              {ml?.error && <p className="text-red-400 text-xs">{ml.error}</p>}
+                            </div>
+                          );
+                        })()}
                       </div>
                     )}
 
