@@ -38,7 +38,6 @@ export default function BugReportsPage() {
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [fetchError, setFetchError] = useState('');
-  const [supportSecret, setSupportSecret] = useState('');
   const [magicLinks, setMagicLinks] = useState<Record<string, MagicLinkState>>({});
   const timersRef = useRef<Record<string, ReturnType<typeof setInterval>>>({});
 
@@ -51,17 +50,13 @@ export default function BugReportsPage() {
   }, []);
 
   const generateMagicLink = useCallback(async (bugId: string, email: string) => {
-    const secret = supportSecret.trim();
-    if (!secret) {
-      setMagicLinks((prev) => ({ ...prev, [bugId]: { loading: false, link: null, error: 'Enter the support secret first', expiresAt: null } }));
-      return;
-    }
+    if (!password) return;
     setMagicLinks((prev) => ({ ...prev, [bugId]: { loading: true, link: null, error: null, expiresAt: null } }));
     try {
-      const res = await fetch('/api/support/magic-link', {
+      const res = await fetch('/api/admin/magic-link', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': secret },
-        body: JSON.stringify({ email, reason: `Debug bug report ${bugId}` }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, email, reason: `Debug bug report ${bugId}` }),
       });
       const json = await res.json();
       if (!res.ok) {
@@ -82,7 +77,7 @@ export default function BugReportsPage() {
     } catch {
       setMagicLinks((prev) => ({ ...prev, [bugId]: { loading: false, link: null, error: 'Network error', expiresAt: null } }));
     }
-  }, [supportSecret]);
+  }, [password]);
 
   const handleUnlock = useCallback(
     (e: React.FormEvent) => {
@@ -287,15 +282,6 @@ export default function BugReportsPage() {
                           }
                           return (
                             <div className="space-y-2">
-                              {!supportSecret && (
-                                <input
-                                  type="password"
-                                  value={supportSecret}
-                                  onChange={(e) => setSupportSecret(e.target.value)}
-                                  placeholder="Support admin secret"
-                                  className="w-full max-w-xs bg-deepPanel border border-liftedPanel rounded-lg px-3 py-2 text-copyLight text-sm focus:outline-none focus:border-electric placeholder:text-copyMuted/40"
-                                />
-                              )}
                               <div className="flex items-center gap-3">
                                 <button
                                   onClick={() => generateMagicLink(r.id, r.member_email!)}
@@ -304,14 +290,6 @@ export default function BugReportsPage() {
                                 >
                                   {ml?.loading ? 'Generating…' : `Login as ${r.member_name ?? r.member_email}`}
                                 </button>
-                                {supportSecret && (
-                                  <button
-                                    onClick={() => setSupportSecret('')}
-                                    className="text-xs text-copyMuted/30 hover:text-copyMuted/60 transition-colors"
-                                  >
-                                    change secret
-                                  </button>
-                                )}
                               </div>
                               {ml?.error && <p className="text-red-400 text-xs">{ml.error}</p>}
                             </div>
