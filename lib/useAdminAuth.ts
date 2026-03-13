@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const SESSION_KEY = 'tc_admin_pw';
 
@@ -22,19 +22,19 @@ export function useAdminAuth() {
     } catch {}
   }, []);
 
-  const unlock = (pw: string) => {
+  const unlock = useCallback((pw: string) => {
     setPassword(pw);
     setUnlocked(true);
     setAuthError('');
     try { sessionStorage.setItem(SESSION_KEY, pw); } catch {}
-  };
+  }, []);
 
-  const lockOut = (msg = 'Wrong password. Try again.') => {
+  const lockOut = useCallback((msg = 'Wrong password. Try again.') => {
     setUnlocked(false);
     setPassword('');
     setAuthError(msg);
     try { sessionStorage.removeItem(SESSION_KEY); } catch {}
-  };
+  }, []);
 
   return { password, unlocked, authError, setAuthError, unlock, lockOut };
 }

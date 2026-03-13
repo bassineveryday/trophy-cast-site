@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useAdminAuth } from '@/lib/useAdminAuth';
 
@@ -371,14 +371,17 @@ export default function AdminDashboardPage() {
     }
   }, [unlocked, password, lockOut]);
 
-  const fetchFeatures = useCallback(async () => {
+  const featureRangeDaysRef = useRef(featureRangeDays);
+  featureRangeDaysRef.current = featureRangeDays;
+
+  const fetchFeatures = useCallback(async (rangeDays?: FeatureRangeDays) => {
     if (!unlocked || !password) return;
     setFeaturesLoading(true);
     try {
       const r = await fetch('/api/admin/feature-analytics', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password, rangeDays: featureRangeDays }),
+        body: JSON.stringify({ password, rangeDays: rangeDays ?? featureRangeDaysRef.current }),
       });
       if (r.status === 401) {
         lockOut();
@@ -389,7 +392,7 @@ export default function AdminDashboardPage() {
     } finally {
       setFeaturesLoading(false);
     }
-  }, [unlocked, password, lockOut, featureRangeDays]);
+  }, [unlocked, password, lockOut]);
 
   const fetchWorkspace = useCallback(async () => {
     if (!unlocked || !password) return;
@@ -423,10 +426,25 @@ export default function AdminDashboardPage() {
     setLastUpdatedAt(new Date().toISOString());
   }, [unlocked, password, fetchStats, fetchActivity, fetchGrowth, fetchFeatures, fetchWorkspace]);
 
+  // Fetch everything once when the dashboard is unlocked
+  const didInitRef = useRef(false);
   useEffect(() => {
-    if (!unlocked || !password) return;
+    if (!unlocked || !password) {
+      didInitRef.current = false;
+      return;
+    }
+    if (didInitRef.current) return;
+    didInitRef.current = true;
     void refreshAll();
   }, [unlocked, password, refreshAll]);
+
+  // Re-fetch only features when range selector changes (skip initial mount)
+  const prevRangeRef = useRef(featureRangeDays);
+  useEffect(() => {
+    if (prevRangeRef.current === featureRangeDays) return;
+    prevRangeRef.current = featureRangeDays;
+    void fetchFeatures(featureRangeDays);
+  }, [featureRangeDays, fetchFeatures]);
 
   useEffect(() => {
     if (!unlocked || !password) return;
