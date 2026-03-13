@@ -149,6 +149,25 @@ function DBMHalfFlyer() {
           <p style={{ fontSize: 9, color: 'rgba(255,255,255,0.6)', margin: '5px 0 0', fontStyle: 'italic', letterSpacing: '0.04em' }}>
             Building better anglers<br />since the early &lsquo;70s
           </p>
+
+          {/* DBM Family */}
+          <div style={{ margin: '12px 0 0', textAlign: 'center' }}>
+            <p style={{ fontSize: 7, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(136,172,46,0.55)', margin: '0 0 6px' }}>DBM Family</p>
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', alignItems: 'flex-end' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/Denver%20Bassmaster%20Junior's%20logo%20transparent..png" alt="DBM Juniors" height={28} style={{ objectFit: 'contain', maxWidth: 56 }} />
+                <span style={{ fontSize: 6.5, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.06em' }}>Juniors Program</span>
+              </div>
+              <div style={{ width: 1, height: 24, background: 'rgba(136,172,46,0.25)', marginBottom: 10 }} />
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/FRBC%20Logo.png" alt="FRBC" height={28} style={{ objectFit: 'contain', maxWidth: 56 }} />
+                <span style={{ fontSize: 6.5, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.06em' }}>Front Range Bass Club</span>
+              </div>
+            </div>
+          </div>
+
           <div style={{ width: 32, height: 1, background: 'rgba(136,172,46,0.35)', margin: '12px auto' }} />
 
           {/* Champion badge */}
@@ -193,8 +212,8 @@ function DBMHalfFlyer() {
 
         <div>
           {/* Headline */}
-          <h1 style={{ fontSize: 27, fontWeight: 900, color: '#0C0F08', margin: '0 0 3px', lineHeight: 1.15, letterSpacing: '-0.5px' }}>
-            You Don&rsquo;t Need<br />a Boat.
+          <h1 style={{ fontSize: 26, fontWeight: 900, color: '#0C0F08', margin: '0 0 4px', lineHeight: 1.1, letterSpacing: '-0.5px', whiteSpace: 'nowrap' }}>
+            You Don&rsquo;t Need <span style={{ color: '#88AC2E', background: 'rgba(136,172,46,0.12)', borderRadius: 5, padding: '0 6px', display: 'inline-block' }}>a Boat.</span>
           </h1>
           <p style={{ fontSize: 12.5, fontWeight: 700, color: '#5D6D24', margin: '0 0 3px' }}>Just a love for bass fishing.</p>
           <p style={{ fontSize: 9.5, fontWeight: 800, color: '#3A5C12', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '10px 0 7px', background: '#D0F0A0', display: 'inline-block', borderRadius: 4, padding: '2px 8px' }}>
@@ -242,17 +261,18 @@ function DBMHalfFlyer() {
           </div>
           <div style={{ marginTop: 18, display: 'flex', gap: 0, justifyContent: 'space-around', alignItems: 'center', width: '100%' }}>
             {[
-              { name: 'Bass Pro Shops',          src: '/BassproShop.png' },
-              { name: 'JJ Bass Jigs',            src: '/JJ%20Bass%20Jigs.png' },
+              { name: 'Bass Pro Shops',          src: '/bass-pro-logo-2x.png' },
+              { name: 'JJ Bass Jigs',            src: '/JJ-logo-trim%20(2).png' },
               { name: 'Trophy Cast',             src: '/Trophy%20cast%20white%20background.png' },
-              { name: 'Eagle Claw',              src: '/Eagle%20Claw.png' },
-              { name: 'Milicia Marine',          src: '/Milicia%20Marine.png' },
+              { name: 'Eagle Claw',              src: '/Eagle%20Claw%20logo%20transparent..png' },
+              { name: 'Militia Marine',          src: '/Militia%20Marine%20logo.%20Transparent..png' },
               { name: 'AA Toppers',              src: '/Topper%20Sales.png' },
-              { name: 'Discount Fishing Denver', src: '/Discount%20Fishing%20Tackle.png' },
+              { name: 'Rapala',                  src: '/Rapala%20logo%20transparent..png' },
+              { name: 'Discount Fishing Denver', src: '/Discount%20fishing%20tackle.%20Logo.%20Transparent..png' },
             ].map((s) => (
               <div key={s.name} title={s.name} style={{ background: '#fff', borderRadius: 4, padding: '2px 5px', display: 'flex', alignItems: 'center', height: 22 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={s.src} alt={s.name} height={16} style={{ objectFit: 'contain', maxWidth: 50, display: 'block' }} onError={(e) => { (e.currentTarget.parentElement as HTMLDivElement).style.display = 'none'; }} />
+                <img src={s.src} alt={s.name} height={16} style={{ objectFit: 'contain', maxWidth: 50, display: 'block', mixBlendMode: 'multiply' }} onError={(e) => { (e.currentTarget.parentElement as HTMLDivElement).style.display = 'none'; }} />
               </div>
             ))}
           </div>
