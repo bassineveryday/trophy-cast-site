@@ -84,9 +84,9 @@ export async function POST(request: Request) {
         sessionMap.set(session.user_id, [time]);
       }
     }
-    for (const entry of sessionMap.values()) {
+    Array.from(sessionMap.values()).forEach((entry) => {
       entry.sort((a, b) => a - b);
-    }
+    });
 
     const nowMs = Date.now();
     const since1dMs = nowMs - DAY_MS;

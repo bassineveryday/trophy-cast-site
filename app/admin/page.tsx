@@ -470,6 +470,9 @@ export default function AdminDashboardPage() {
 
   const dashboardRefreshing = statsLoading || activityLoading || growthLoading || featuresLoading || workspaceLoading;
   const displayedFeatureRange = features?.rangeDays ?? featureRangeDays;
+  const growthReturnRate = growth?.returnRate ?? null;
+  const growthRetention7dRate = growth?.retention7dRate ?? null;
+  const growthRetention30dRate = growth?.retention30dRate ?? null;
   const attentionItems = [
     !workspaceLoading && !workspace?.configured
       ? {
@@ -565,8 +568,8 @@ export default function AdminDashboardPage() {
               />
               <StatusPill
                 label="Return"
-                value={growthLoading ? 'Calculating' : growth?.returnRate === null ? 'Building history' : `${growth.returnRate}% tracked`}
-                tone={growth?.returnRate && growth.returnRate >= 50 ? 'good' : growth?.returnRate === null ? 'neutral' : 'warn'}
+                value={growthLoading ? 'Calculating' : growthReturnRate === null ? 'Building history' : `${growthReturnRate}% tracked`}
+                tone={growthReturnRate === null ? 'neutral' : growthReturnRate >= 50 ? 'good' : 'warn'}
               />
             </div>
           </div>
@@ -675,21 +678,21 @@ export default function AdminDashboardPage() {
             />
             <StatCard
               label="Returned"
-              value={growth?.returnRate === null ? null : `${growth.returnRate}%`}
+              value={growthReturnRate === null ? null : `${growthReturnRate}%`}
               sub={growth ? `${growth.returnedAfterSignup} of ${growth.trackedNewUsers} tracked signups came back` : 'tracked signups only'}
               accent="border-bass/30"
               loading={growthLoading}
             />
             <StatCard
               label="7d Retention"
-              value={growth?.retention7dRate === null ? null : `${growth.retention7dRate}%`}
+              value={growthRetention7dRate === null ? null : `${growthRetention7dRate}%`}
               sub={growth?.eligible7d ? `${growth.retained7d} of ${growth.eligible7d} eligible` : 'awaiting enough history'}
               accent="border-electric/20"
               loading={growthLoading}
             />
             <StatCard
               label="30d Retention"
-              value={growth?.retention30dRate === null ? null : `${growth.retention30dRate}%`}
+              value={growthRetention30dRate === null ? null : `${growthRetention30dRate}%`}
               sub={growth?.eligible30d ? `${growth.retained30d} of ${growth.eligible30d} eligible` : 'awaiting enough history'}
               accent="border-liftedPanel"
               loading={growthLoading}
