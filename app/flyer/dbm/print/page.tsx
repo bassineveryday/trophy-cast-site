@@ -369,14 +369,14 @@ function PortraitHalfFlyer() {
         <img
           src="/Loge%20Transparent%20background.png"
           alt="Denver BassMasters logo"
-          height={158}
-          style={{ display: 'block', height: 158, width: 'auto', maxWidth: '100%', margin: '0 auto -38px', objectFit: 'contain' }}
+          height={130}
+          style={{ display: 'block', height: 130, width: 'auto', maxWidth: '100%', margin: '0 auto -28px', objectFit: 'contain' }}
         />
-        <div style={{ marginTop: '0.3in' }}>
-          <h1 style={{ fontSize: 33.3, lineHeight: 0.93, margin: '0 0 5px', color: COLORS.ink, fontWeight: 900, letterSpacing: '-0.05em' }}>
+        <div style={{ marginTop: '0.18in' }}>
+          <h1 style={{ fontSize: 30, lineHeight: 0.93, margin: '0 0 4px', color: COLORS.ink, fontWeight: 900, letterSpacing: '-0.05em' }}>
             You Don&rsquo;t Need <span style={{ color: COLORS.greenDark }}>a Boat.</span>
           </h1>
-          <p style={{ fontSize: 15.5, lineHeight: 1.08, margin: '8px 0 10px', color: COLORS.text, fontWeight: 600, fontStyle: 'italic' }}>
+          <p style={{ fontSize: 14, lineHeight: 1.08, margin: '6px 0 8px', color: COLORS.text, fontWeight: 600, fontStyle: 'italic' }}>
             Just a love for bass fishing.
           </p>
           <div
@@ -410,7 +410,7 @@ function PortraitHalfFlyer() {
         </div>
       </div>
 
-      <div style={{ height: 1, background: COLORS.line, margin: '7px 20px 0', borderRadius: 1 }} />
+      <div style={{ height: 1, background: COLORS.line, margin: '4px 20px 0', borderRadius: 1 }} />
 
       <div
         style={{
@@ -428,7 +428,7 @@ function PortraitHalfFlyer() {
         <div style={{ flex: 1, textAlign: 'right', color: COLORS.blue, fontSize: 10.8, fontWeight: 700 }}>Bass Pro Shops Denver</div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 4, rowGap: 2, marginTop: 7, alignContent: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 4, rowGap: 1, marginTop: 5, alignContent: 'start' }}>
         {INFO_CARDS.map((point) => (
           <div
             key={point.title}
@@ -436,18 +436,18 @@ function PortraitHalfFlyer() {
               background: `linear-gradient(180deg, ${COLORS.greenCard} 0%, ${COLORS.greenCardSoft} 100%)`,
               border: `1px solid #C7D9AE`,
               borderRadius: 7,
-              padding: '4px 7px 5px',
+              padding: '3px 6px 4px',
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.72), 0 0 0 1px rgba(136,172,46,0.08)',
               boxSizing: 'border-box',
             }}
           >
-            <div style={{ fontSize: 12.6, lineHeight: 1.1, marginBottom: 1, color: COLORS.greenDark, fontWeight: 900 }}>{point.title}</div>
-            <div style={{ fontSize: 10.2, lineHeight: 1.2, color: COLORS.text }}>{point.body}</div>
+            <div style={{ fontSize: 11.4, lineHeight: 1.1, marginBottom: 1, color: COLORS.greenDark, fontWeight: 900 }}>{point.title}</div>
+            <div style={{ fontSize: 9.4, lineHeight: 1.2, color: COLORS.text }}>{point.body}</div>
           </div>
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 104px', gap: 8, marginTop: 2, alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 104px', gap: 8, marginTop: 1, alignItems: 'start' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <div style={{ background: COLORS.greenSoft, border: `1px solid ${COLORS.line}`, borderRadius: 10, padding: '4px 8px', textAlign: 'center' }}>
             <div style={{ fontSize: 10.0, color: COLORS.greenMuted, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 2 }}>
@@ -519,7 +519,7 @@ function PortraitHalfFlyer() {
         </div>
       </div>
 
-      <div style={{ marginTop: 3, paddingTop: 3, borderTop: `1px solid ${COLORS.line}` }}>
+      <div style={{ marginTop: 2, paddingTop: 2, borderTop: `1px solid ${COLORS.line}` }}>
         <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '100%' }}>
           {SPONSORS.map((sponsor) => (
             <div
