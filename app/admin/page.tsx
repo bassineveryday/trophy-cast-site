@@ -30,6 +30,7 @@ interface ActivityMember {
   name: string;
   lastSeenAt: string;
   lastScreen: string | null;
+  joinedAt: string | null;
 }
 
 interface ActivityStats {
@@ -60,6 +61,19 @@ function timeAgo(isoString: string): string {
   if (hours < 24) return `${hours}h ago`;
   const days = Math.floor(hours / 24);
   return `${days}d ago`;
+}
+
+function memberSince(isoString: string | null): string {
+  if (!isoString) return '—';
+  const days = Math.floor((Date.now() - new Date(isoString).getTime()) / (1000 * 60 * 60 * 24));
+  if (days === 0) return 'today';
+  if (days === 1) return '1 day';
+  if (days < 30) return `${days} days`;
+  const months = Math.floor(days / 30);
+  if (months === 1) return '1 month';
+  if (months < 12) return `${months} months`;
+  const years = Math.floor(days / 365);
+  return years === 1 ? '1 year' : `${years} years`;
 }
 
 const QUICK_LINKS = [
@@ -109,6 +123,8 @@ export default function AdminDashboardPage() {
   const [activityLoading, setActivityLoading] = useState(false);
   const [workspace, setWorkspace] = useState<GoogleWorkspaceData | null>(null);
   const [workspaceLoading, setWorkspaceLoading] = useState(false);
+  const [showAllMembers, setShowAllMembers] = useState(false);
+  const [showAllScreens, setShowAllScreens] = useState(false);
 
   const handleUnlock = useCallback(
     (e: React.FormEvent) => {
@@ -333,73 +349,132 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* Member activity table */}
-          {activity?.memberList && activity.memberList.length > 0 && (
-            <div className="bg-deepPanel border border-liftedPanel rounded-2xl overflow-hidden mb-4">
-              <div className="px-6 py-4 border-b border-liftedPanel">
-                <p className="text-sm font-semibold text-copyLight">Member Activity</p>
-                <p className="text-xs text-copyMuted/50 mt-0.5">most recently active first</p>
+          {activity?.memberList && activity.memberList.length > 0 && (() => {
+            const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+            const recentMembers = activity.memberList.filter(
+              (m) => new Date(m.lastSeenAt).getTime() >= oneDayAgo
+            );
+            const allMembers = activity.memberList;
+            const listToShow = showAllMembers ? allMembers : recentMembers.slice(0, 5);
+            const hiddenCount = showAllMembers
+              ? 0
+              : allMembers.length - Math.min(recentMembers.length, 5);
+            return (
+              <div className="bg-deepPanel border border-liftedPanel rounded-2xl overflow-hidden mb-4">
+                <div className="px-6 py-4 border-b border-liftedPanel flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-copyLight">Member Activity</p>
+                    <p className="text-xs text-copyMuted/50 mt-0.5">
+                      {showAllMembers ? 'all members, most recent first' : 'active in last 24 hours'}
+                    </p>
+                  </div>
+                  {(allMembers.length > 5 || recentMembers.length > 5) && (
+                    <button
+                      onClick={() => setShowAllMembers((v) => !v)}
+                      className="text-xs text-electric/60 hover:text-electric transition-colors"
+                    >
+                      {showAllMembers ? '▲ show less' : `▼ show all ${allMembers.length}`}
+                    </button>
+                  )}
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-xs text-copyMuted/50 uppercase tracking-wider border-b border-liftedPanel">
+                        <th className="text-left px-6 py-3 font-medium">Member</th>
+                        <th className="text-left px-6 py-3 font-medium">Last Seen</th>
+                        <th className="text-left px-6 py-3 font-medium">Last Screen</th>
+                        <th className="text-left px-6 py-3 font-medium">In App</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {listToShow.map((m, i) => {
+                        const isOnline = Date.now() - new Date(m.lastSeenAt).getTime() < 5 * 60 * 1000;
+                        return (
+                          <tr
+                            key={i}
+                            className="border-b border-liftedPanel/50 hover:bg-liftedPanel/30 transition-colors"
+                          >
+                            <td className="px-6 py-3 text-copyLight font-medium flex items-center gap-2">
+                              {isOnline && (
+                                <span className="w-2 h-2 rounded-full bg-green-400 inline-block shrink-0" />
+                              )}
+                              {m.name}
+                            </td>
+                            <td className="px-6 py-3 text-copyMuted tabular-nums">
+                              {timeAgo(m.lastSeenAt)}
+                            </td>
+                            <td className="px-6 py-3 text-copyMuted/70 font-mono text-xs">
+                              {m.lastScreen ?? '—'}
+                            </td>
+                            <td className="px-6 py-3 text-copyMuted/50 tabular-nums text-xs">
+                              {memberSince(m.joinedAt)}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+                {!showAllMembers && hiddenCount > 0 && (
+                  <button
+                    onClick={() => setShowAllMembers(true)}
+                    className="w-full px-6 py-3 text-xs text-copyMuted/50 hover:text-electric hover:bg-liftedPanel/20 transition-colors text-center border-t border-liftedPanel/50"
+                  >
+                    + {hiddenCount} more — tap to expand
+                  </button>
+                )}
               </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="text-xs text-copyMuted/50 uppercase tracking-wider border-b border-liftedPanel">
-                      <th className="text-left px-6 py-3 font-medium">Member</th>
-                      <th className="text-left px-6 py-3 font-medium">Last Seen</th>
-                      <th className="text-left px-6 py-3 font-medium">Last Screen</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {activity.memberList.map((m, i) => {
-                      const isOnline = Date.now() - new Date(m.lastSeenAt).getTime() < 5 * 60 * 1000;
-                      return (
-                        <tr
-                          key={i}
-                          className="border-b border-liftedPanel/50 hover:bg-liftedPanel/30 transition-colors"
-                        >
-                          <td className="px-6 py-3 text-copyLight font-medium flex items-center gap-2">
-                            {isOnline && (
-                              <span className="w-2 h-2 rounded-full bg-green-400 inline-block shrink-0" />
-                            )}
-                            {m.name}
-                          </td>
-                          <td className="px-6 py-3 text-copyMuted tabular-nums">
-                            {timeAgo(m.lastSeenAt)}
-                          </td>
-                          <td className="px-6 py-3 text-copyMuted/70 font-mono text-xs">
-                            {m.lastScreen ?? '—'}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* Top screens */}
-          {activity?.topScreens && activity.topScreens.length > 0 && (
-            <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
-              <p className="text-sm font-semibold text-copyLight mb-4">
-                Top Screens <span className="text-xs font-normal text-copyMuted/50 ml-1">(active members this week)</span>
-              </p>
-              <div className="space-y-2">
-                {activity.topScreens.map((s, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <span className="text-xs text-copyMuted/40 w-4 shrink-0">{i + 1}</span>
-                    <div className="flex-1 bg-liftedPanel/50 rounded-full h-1.5 overflow-hidden">
-                      <div
-                        className="bg-electric/60 h-full rounded-full"
-                        style={{ width: `${Math.round((s.count / activity.topScreens[0].count) * 100)}%` }}
-                      />
+          {activity?.topScreens && activity.topScreens.length > 0 && (() => {
+            const screensToShow = showAllScreens
+              ? activity.topScreens
+              : activity.topScreens.slice(0, 5);
+            const hiddenScreens = activity.topScreens.length - 5;
+            return (
+              <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-sm font-semibold text-copyLight">
+                    Top Screens <span className="text-xs font-normal text-copyMuted/50 ml-1">(active members this week)</span>
+                  </p>
+                  {activity.topScreens.length > 5 && (
+                    <button
+                      onClick={() => setShowAllScreens((v) => !v)}
+                      className="text-xs text-electric/60 hover:text-electric transition-colors"
+                    >
+                      {showAllScreens ? '▲ show less' : `▼ show all ${activity.topScreens.length}`}
+                    </button>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  {screensToShow.map((s, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <span className="text-xs text-copyMuted/40 w-4 shrink-0">{i + 1}</span>
+                      <div className="flex-1 bg-liftedPanel/50 rounded-full h-1.5 overflow-hidden">
+                        <div
+                          className="bg-electric/60 h-full rounded-full"
+                          style={{ width: `${Math.round((s.count / activity.topScreens[0].count) * 100)}%` }}
+                        />
+                      </div>
+                      <span className="text-xs text-copyMuted font-mono min-w-0 truncate">{s.screen}</span>
+                      <span className="text-xs text-copyMuted/50 shrink-0">{s.count}</span>
                     </div>
-                    <span className="text-xs text-copyMuted font-mono min-w-0 truncate">{s.screen}</span>
-                    <span className="text-xs text-copyMuted/50 shrink-0">{s.count}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                {!showAllScreens && hiddenScreens > 0 && (
+                  <button
+                    onClick={() => setShowAllScreens(true)}
+                    className="w-full mt-3 pt-3 text-xs text-copyMuted/50 hover:text-electric transition-colors text-center border-t border-liftedPanel/50"
+                  >
+                    + {hiddenScreens} more — tap to expand
+                  </button>
+                )}
               </div>
-            </div>
-          )}
+            );
+          })()}
         </section>
 
         {/* Bassin' Everyday — Business Drive */}

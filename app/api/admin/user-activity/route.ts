@@ -54,7 +54,7 @@ export async function POST(request: Request) {
         // Member list — last 50 seen, most recent first
         supabase
           .from('profiles')
-          .select('name, last_seen_at, last_active_screen')
+          .select('name, last_seen_at, last_active_screen, created_at')
           .not('last_seen_at', 'is', null)
           .order('last_seen_at', { ascending: false })
           .limit(50),
@@ -91,6 +91,7 @@ export async function POST(request: Request) {
             name: m.name ?? 'Unknown',
             lastSeenAt: m.last_seen_at,
             lastScreen: m.last_active_screen ?? null,
+            joinedAt: m.created_at ?? null,
           }))
         : [];
 

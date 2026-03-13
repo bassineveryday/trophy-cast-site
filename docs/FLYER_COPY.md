@@ -42,11 +42,17 @@ your go-to patterns, the adjustments that work for YOU.
 ### 🏆 Trophy Cast
 
 **Your water. Your coach.**
-**Teach your personal coach. Fish with confidence.**
+**Log it fast. Learn from it later.**
 
-TC Coach learns how you fish.
-Real angler signal helps show what tends to
-work where you fish.
+Teach your personal coach with every catch.
+Phone on the water. Computer when you want
+to review and learn.
+
+- One-breath logging: say species, weight, lure, color, temp.
+- Log now. Finish later: capture it on the water, clean it up later.
+- Teach your personal coach: every catch trains TC Coach around your patterns.
+- Research what works: review trips and patterns faster on a bigger screen.
+- Club tools built in: tournaments, AOY, chat, members, board tools.
 
 **[QR CODE]**
 trophycast.app

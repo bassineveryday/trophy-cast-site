@@ -4,14 +4,13 @@ import { useState } from 'react';
 import { toPng } from 'html-to-image';
 
 /**
- * Trophy Cast — Home Printer Flyer (2-up on letter)
+ * Trophy Cast — Home Printer Flyer (2-up landscape)
  * ──────────────────────────────────────────────────
  * White background, dark navy text, gold accents.
- * Designed for Epson ET-2800 / any home printer with standard margins.
+ * Designed for home printers with standard margins.
  *
- * Two half-pages per sheet (8.5" × 5.5" each).
- * Use Ctrl+P → set margins to "None" or "Minimum" → Save as PDF or print.
- * Cut along the dashed line for two separate flyers.
+ * Two portrait flyers per landscape sheet.
+ * Fold on center, then cut on the center guide.
  */
 
 export default function PrintFlyerPage() {
@@ -26,12 +25,20 @@ export default function PrintFlyerPage() {
           padding-top: 0 !important;
         }
         @media print {
+          html,
+          body,
+          .sheet,
+          .sheet * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            forced-color-adjust: none !important;
+          }
           .no-print { display: none !important; }
           body { background: #fff !important; margin: 0; padding: 0; }
           .print-wrap { padding: 0 !important; background: #fff !important; }
           .sheet { box-shadow: none !important; border: none !important; }
         }
-        @page { size: letter portrait; margin: 0.25in; }
+        @page { size: letter landscape; margin: 0.25in; }
       `;
 
   const handlePrint = () => window.print();
@@ -71,7 +78,7 @@ export default function PrintFlyerPage() {
         <div>
           <span style={{ color: '#F5F1E6', fontWeight: 700, fontSize: 14 }}>🖨 Print-Ready Flyer</span>
           <span style={{ color: '#8BA3B5', fontSize: 12, marginLeft: 10 }}>
-            White background · 2 half-pages per sheet · Cut on the dashed line
+            White background · two portrait flyers side by side · centered fold/cut guide
           </span>
         </div>
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -138,7 +145,7 @@ export default function PrintFlyerPage() {
         }}
       >
         💡 <strong style={{ color: '#C9D3DA' }}>Print tip:</strong> Ctrl+P → Margins: Minimum →
-        Scale: 100% → Print. Then cut along the dashed line for 2 flyers.
+        Scale: 100% → Background graphics: On → Fold the page in half and cut on the center guide.
       </div>
 
       {/* ── Page wrapper ── */}
@@ -156,41 +163,41 @@ export default function PrintFlyerPage() {
         }}
       >
 
-        {/* ── Sheet — letter size approx at 96dpi ── */}
+        {/* ── Sheet — printable landscape letter area at 96dpi ── */}
         <div
           id="print-sheet"
           className="sheet"
           style={{
-            width: 816,
+            width: 1008,
+            minHeight: 768,
             background: '#ffffff',
             border: '1px solid #e0ddd6',
             borderRadius: 4,
             boxShadow: '0 8px 40px rgba(0,0,0,0.15)',
             overflow: 'hidden',
+            position: 'relative',
+            padding: 24,
+            boxSizing: 'border-box',
           }}
         >
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: 18,
+              bottom: 18,
+              transform: 'translateX(-50%)',
+              borderLeft: '2px dashed #B0B8C0',
+              zIndex: 2,
+            }}
+          />
 
-          {/* ══ FLYER 1 (top half) ══ */}
-          <HalfFlyer />
-
-          {/* ── CUT LINE ── */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            height: '0.45in',
-            gap: 12,
-            padding: '0 24px',
-            background: '#fff',
-          }}>
-            <div style={{ flex: 1, borderTop: '2px dashed #b0b8c0' }} />
-            <span style={{ fontSize: 10, color: '#b0b8c0', fontWeight: 600, letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>
-              ✂ CUT HERE
-            </span>
-            <div style={{ flex: 1, borderTop: '2px dashed #b0b8c0' }} />
+          <div style={{ display: 'grid', gridTemplateColumns: '468px 24px 468px', gap: 0, alignItems: 'stretch' }}>
+            <FlyerCard />
+            <div aria-hidden="true" />
+            <FlyerCard />
           </div>
-
-          {/* ══ FLYER 2 (bottom half) ══ */}
-          <HalfFlyer />
 
         </div>
 
@@ -208,14 +215,14 @@ export default function PrintFlyerPage() {
           }}
         >
           <p style={{ color: '#D4AF37', fontWeight: 700, fontSize: 13, margin: '0 0 8px' }}>
-            📸 Workflow: Print → Cut → Hand out
+            📸 Workflow: Print → Fold → Cut → Hand out
           </p>
           <ol style={{ color: '#8BA3B5', fontSize: 13, margin: 0, paddingLeft: 18, lineHeight: 2.1 }}>
             <li>Click <strong style={{ color: '#F5F1E6' }}>&ldquo;Print / Save PDF&rdquo;</strong> above</li>
-            <li>Set margins to <strong style={{ color: '#F5F1E6' }}>Minimum</strong>, scale <strong style={{ color: '#F5F1E6' }}>100%</strong></li>
+            <li>Set margins to <strong style={{ color: '#F5F1E6' }}>Minimum</strong>, scale <strong style={{ color: '#F5F1E6' }}>100%</strong>, and turn <strong style={{ color: '#F5F1E6' }}>Background graphics</strong> on</li>
             <li>Print on regular white letter paper</li>
-            <li>Cut along the dashed line — you get <strong style={{ color: '#F5F1E6' }}>2 flyers per sheet</strong></li>
-            <li>30 flyers = 15 sheets of paper 🎉</li>
+            <li>Fold the sheet in half to verify the center line is even on both sides</li>
+            <li>Cut directly on the dashed center guide for <strong style={{ color: '#F5F1E6' }}>2 portrait flyers per sheet</strong></li>
           </ol>
         </div>
 
@@ -224,217 +231,220 @@ export default function PrintFlyerPage() {
   );
 }
 
-function HalfFlyer() {
+function FlyerCard() {
+  const cardHeader = '#E7EFF2';
+  const cardHero = '#DCE8ED';
+  const cardDarkText = '#16303B';
+  const cardMutedText = '#56717D';
+  const cardAccent = '#C29A2C';
+
+  const features = [
+    { label: '01', title: 'One-breath logging', body: 'Say species, weight, lure, color, temp.' },
+    { label: '02', title: 'Finish later', body: 'Capture it on the water. Clean it up when you have time.' },
+    { label: '03', title: 'Teach your personal coach', body: 'Every catch trains TC Coach around your own patterns.' },
+    { label: '04', title: 'Research on a bigger screen', body: 'Review trips, baits, weather, and what is working faster on desktop.' },
+  ];
+
   return (
-    <div style={{ width: '100%', height: '5.25in', background: '#ffffff', display: 'flex', flexDirection: 'column' }}>
-      {/* == NAVY HEADER == */}
+    <div style={{ width: 468, minHeight: 720, background: '#ffffff', display: 'flex', flexDirection: 'column', border: '1px solid #DCE3E8', boxSizing: 'border-box' }}>
       <div style={{
-        background: '#10212B',
-        padding: '8px 28px',
+        background: cardHeader,
+        padding: '14px 18px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
+        gap: 12,
       }}>
-
-        {/* Logo + wordmark */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/trophy-cast-logo-256.png"
             alt="Trophy Cast"
-            width={88}
-            height={88}
+            width={56}
+            height={56}
             style={{ display: 'block', flexShrink: 0 }}
           />
           <div>
-            <h1 style={{ fontSize: 38, fontWeight: 900, color: '#F5F1E6', margin: 0, lineHeight: 1, letterSpacing: '-0.5px' }}>
-              Trophy <span style={{ color: '#D4AF37' }}>Cast</span>
+            <h1 style={{ fontSize: 28, fontWeight: 900, color: cardDarkText, margin: 0, lineHeight: 1, letterSpacing: '-0.8px' }}>
+              Trophy <span style={{ color: cardAccent }}>Cast</span>
             </h1>
-            <p style={{ fontSize: 13, color: '#D4AF37', fontWeight: 700, margin: '2px 0 0', letterSpacing: '0.05em', fontStyle: 'italic' }}>
+            <p style={{ fontSize: 10.5, color: '#8C6D18', fontWeight: 700, margin: '3px 0 0', letterSpacing: '0.05em', fontStyle: 'italic' }}>
               Where Every Cast Counts.
             </p>
           </div>
         </div>
 
-        {/* Waitlist badge */}
         <div style={{
-          background: '#ffffff',
-          border: '1px solid #D4AF37',
-          borderRadius: 10,
-          padding: '9px 18px',
+          background: '#FFFDF8',
+          border: `1px solid ${cardAccent}`,
+          borderRadius: 999,
+          padding: '7px 12px',
           textAlign: 'center',
+          flexShrink: 0,
         }}>
-          <p style={{ color: '#7A6020', fontSize: 8.5, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 2px' }}>
+          <p style={{ color: cardDarkText, fontSize: 11, fontWeight: 800, margin: 0, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             Early Access
           </p>
-          <p style={{ color: '#0C1A23', fontSize: 13, fontWeight: 800, margin: '0 0 1px' }}>Join the Waitlist</p>
-          <p style={{ color: '#7A6020', fontSize: 10, fontWeight: 700, margin: 0 }}>trophycast.app</p>
         </div>
-
       </div>
 
-      {/* ── Gold accent rule ── */}
-      <div style={{ height: 2, background: '#D4AF37' }} />
+      <div style={{ height: 3, background: cardAccent }} />
 
-      {/* ══ BODY — 3-column grid ══ */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'minmax(214px, 1.28fr) 1px 1.42fr 1px auto',
-        gap: 0,
-        padding: '24px 28px 20px',
-        alignItems: 'stretch',
-        flex: 1,
-      }}>
+      <div style={{ padding: '16px 18px 14px', display: 'flex', flexDirection: 'column', gap: 14, flex: 1 }}>
+        <div style={{
+          background: cardHero,
+          border: `2px solid ${cardAccent}`,
+          borderRadius: 16,
+          padding: '16px 16px 15px',
+          boxSizing: 'border-box',
+        }}>
+          <h3 style={{ fontSize: 9, fontWeight: 800, color: '#5B7885', margin: '0 0 10px', lineHeight: 1.04, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            <span style={{ display: 'block', marginBottom: 2 }}>Your water.</span>
+            <span style={{ display: 'block' }}>Your coach.</span>
+          </h3>
+          <p style={{
+            fontSize: 32,
+            fontWeight: 900,
+            color: cardDarkText,
+            margin: '0 0 2px',
+            lineHeight: 0.96,
+            letterSpacing: '-0.045em',
+          }}>
+            <span style={{ display: 'block' }}>Log it fast.</span>
+          </p>
+          <p style={{
+            fontSize: 37,
+            fontWeight: 900,
+            color: cardAccent,
+            margin: 0,
+            lineHeight: 0.96,
+            letterSpacing: '-0.05em',
+          }}>
+            Learn from it later.
+          </p>
+          <div style={{ height: 1, background: 'rgba(22, 48, 59, 0.14)', margin: '14px 0 12px' }} />
+          <p style={{ fontSize: 13.6, color: cardDarkText, margin: '0 0 6px', fontWeight: 800, lineHeight: 1.24, letterSpacing: '-0.01em' }}>
+            Teach your personal coach with every catch.
+          </p>
+          <p style={{ fontSize: 12.2, color: cardMutedText, margin: 0, lineHeight: 1.3 }}>
+            Phone on the water. Computer when you want to review and learn.
+          </p>
+        </div>
 
-        {/* COL 1: Main Hook */}
-        <div style={{ paddingRight: 20, display: 'flex', flexDirection: 'column', paddingBottom: 10 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px', gap: 14, alignItems: 'stretch' }}>
           <div style={{
-            background: '#10212B',
-            border: '1.5px solid #D4AF37',
+            background: '#FBFBF8',
+            border: '1px solid #E3E8EC',
             borderRadius: 14,
-            padding: '18px 20px 18px',
+            padding: '14px 14px 12px',
           }}>
-            <h3 style={{ fontSize: 8.5, fontWeight: 800, color: '#C9D3DA', margin: '0 0 11px', lineHeight: 1.04, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              <span style={{ display: 'block', marginBottom: 2 }}>Your water.</span>
-              <span style={{ display: 'block' }}>Your coach.</span>
-            </h3>
-            <p style={{ 
-              fontSize: 24,
-              fontWeight: 900,
-              color: '#ffffff', 
-              margin: '0 0 3px',
-              lineHeight: 0.98,
-              letterSpacing: '-0.045em'
-            }}>
-              Teach your personal coach.
+            <p style={{ fontSize: 9.5, fontWeight: 800, color: '#7A6020', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 10px' }}>
+              Why it feels different
             </p>
-            <p style={{ 
-              fontSize: 28,
-              fontWeight: 900,
-              color: '#D4AF37', 
-              margin: 0, 
-              lineHeight: 0.98,
-              letterSpacing: '-0.05em'
-            }}>
-              Fish with confidence.
-            </p>
-            <div style={{ height: 1, background: 'rgba(245, 241, 230, 0.16)', margin: '15px 0 12px' }} />
-            <p style={{ fontSize: 12.1, color: '#F5F1E6', margin: '0 0 5px', fontWeight: 800, lineHeight: 1.28, letterSpacing: '-0.01em' }}>
-              TC Coach learns how you fish.
-            </p>
-            <p style={{ fontSize: 10.9, color: 'rgba(245, 241, 230, 0.74)', margin: 0, lineHeight: 1.42 }}>
-              Real angler signal helps show<br />
-              what tends to work where<br />
-              you fish.
-            </p>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div style={{ background: 'linear-gradient(to bottom, transparent, #ebeff2, transparent)' }} />
-
-        {/* COL 2: Feature bullets */}
-        <div style={{ paddingLeft: 20, paddingRight: 20 }}>
-          <div style={{ marginBottom: 12 }}>
-            <p style={{ fontSize: 10.5, fontWeight: 800, color: '#0C1A23', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 4px' }}>
-              What makes it different
-            </p>
-            <div style={{ height: 2, background: '#D4AF37', width: 40, borderRadius: 2 }} />
-          </div>
-          
-          {[
-            { label: '01', title: 'One-breath logging', body: 'Log catches before the details fade.' },
-            { label: '02', title: 'Teach your personal coach', body: 'Every catch teaches your personal coach.' },
-            { label: '03', title: 'Real angler signal', body: 'See what tends to work where you fish.' },
-            { label: '04', title: 'Local anglers, real clubs', body: 'Chat and learn with anglers who actually fish.' },
-            { label: '05', title: 'Club tools built in', body: 'Tournaments, AOY, members, and board tools.' },
-          ].map((item) => (
-            <div key={item.title} style={{
-              display: 'flex', alignItems: 'flex-start', gap: 10,
-              background: '#ffffff',
-              border: '1px solid #edf1f4',
-              borderRadius: 8,
-              padding: '9px 11px',
-              marginBottom: 7,
-            }}>
-              <span style={{
-                minWidth: 24,
-                height: 24,
-                borderRadius: 999,
-                border: '1px solid rgba(212, 175, 55, 0.5)',
-                color: '#7A6020',
-                fontSize: 9,
-                fontWeight: 800,
-                lineHeight: '22px',
-                textAlign: 'center',
-                letterSpacing: '0.08em',
-                flexShrink: 0,
-              }}>{item.label}</span>
-              <div>
-                <p style={{ fontSize: 11.5, fontWeight: 800, color: '#0C1A23', margin: '0 0 2px', letterSpacing: '-0.01em' }}>{item.title}</p>
-                <p style={{ fontSize: 10.5, color: '#546674', margin: 0, lineHeight: 1.32 }}>{item.body}</p>
-              </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {features.map((item, index) => (
+                <div
+                  key={item.title}
+                  style={{
+                    display: 'flex',
+                    gap: 10,
+                    paddingBottom: index === features.length - 1 ? 0 : 10,
+                    borderBottom: index === features.length - 1 ? 'none' : '1px solid rgba(12,26,35,0.08)',
+                  }}
+                >
+                  <span style={{
+                    minWidth: 22,
+                    height: 22,
+                    borderRadius: 999,
+                    background: '#FFFFFF',
+                    border: `1px solid ${cardAccent}`,
+                    color: cardDarkText,
+                    fontSize: 8,
+                    fontWeight: 800,
+                    lineHeight: '20px',
+                    textAlign: 'center',
+                    letterSpacing: '0.08em',
+                    flexShrink: 0,
+                  }}>{item.label}</span>
+                  <div>
+                    <p style={{ fontSize: 12.2, fontWeight: 800, color: '#0C1A23', margin: '0 0 2px', letterSpacing: '-0.01em' }}>{item.title}</p>
+                    <p style={{ fontSize: 10.6, color: '#445866', margin: 0, lineHeight: 1.3 }}>{item.body}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
 
-        {/* Divider */}
-        <div style={{ background: 'linear-gradient(to bottom, transparent, #ebeff2, transparent)' }} />
-
-        {/* COL 3: QR code */}
-        <div style={{ paddingLeft: 24, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://trophycast.app&color=0C1A23&bgcolor=FFFFFF&qzone=2"
-            alt="QR — trophycast.app"
-            width={124}
-            height={124}
-            style={{
-              display: 'block',
-              border: '2px solid #D4AF37',
-              borderRadius: 10,
-              marginBottom: 10,
-            }}
-          />
-          <p style={{ fontSize: 14, fontWeight: 800, color: '#0C1A23', margin: '0 0 2px', textAlign: 'center', letterSpacing: '-0.3px' }}>
-            trophycast.app
-          </p>
-          <p style={{ fontSize: 10.5, color: '#7A6020', fontWeight: 700, margin: '0 0 16px', textAlign: 'center', lineHeight: 1.25, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-            Scan for early<br />access
-          </p>
           <div style={{
-            background: '#ffffff',
-            border: '1px solid rgba(212,175,55,0.55)',
-            borderRadius: 8,
-            padding: '8px 12px',
+            background: '#FFF9ED',
+            border: '1px solid rgba(212,175,55,0.45)',
+            borderRadius: 14,
+            padding: '12px 10px 12px',
             textAlign: 'center',
-            width: '100%'
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
           }}>
-            <p style={{ fontSize: 9.5, color: '#7A6020', margin: 0, lineHeight: 1.4, fontWeight: 500 }}>
-              <strong style={{ color: '#0C1A23', fontWeight: 800 }}>Denver BassMasters</strong><br />
-              runs their whole club<br />on Trophy Cast.
+            <p style={{ fontSize: 8.5, color: '#7A6020', fontWeight: 800, margin: 0, lineHeight: 1.2, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Scan to join
+            </p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://trophycast.app&color=0C1A23&bgcolor=FFFFFF&qzone=2"
+              alt="QR — trophycast.app"
+              width={96}
+              height={96}
+              style={{
+                display: 'block',
+                border: '2px solid #D4AF37',
+                borderRadius: 10,
+                margin: '0 auto 8px',
+              }}
+            />
+            <p style={{ fontSize: 13, fontWeight: 800, color: '#0C1A23', margin: '0 0 2px', letterSpacing: '-0.2px' }}>
+              trophycast.app
+            </p>
+            <p style={{ fontSize: 9, color: '#7A6020', fontWeight: 800, margin: 0, lineHeight: 1.2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Early access<br />waitlist
             </p>
           </div>
         </div>
 
+        <div style={{
+          background: '#F4F6F8',
+          borderRadius: 12,
+          padding: '11px 12px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 12,
+        }}>
+          <div>
+            <p style={{ fontSize: 9.5, fontWeight: 800, color: '#7A6020', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 3px' }}>
+              Real club proof
+            </p>
+            <p style={{ fontSize: 11.2, color: '#445866', margin: 0, lineHeight: 1.3 }}>
+              <strong style={{ color: '#0C1A23', fontWeight: 800 }}>Denver BassMasters</strong> runs tournaments, AOY, chat, members, and board tools on Trophy Cast.
+            </p>
+          </div>
+          <div style={{ color: '#D4AF37', fontSize: 24, lineHeight: 1, flexShrink: 0 }}>TC</div>
+        </div>
       </div>
 
-      {/* ── Gold accent rule ── */}
-      <div style={{ height: 2, background: '#D4AF37' }} />
+      <div style={{ height: 3, background: '#D4AF37' }} />
 
-      {/* ══ NAVY FOOTER ══ */}
       <div style={{
-        background: '#10212B',
-        padding: '8px 28px',
+        background: cardHeader,
+        padding: '10px 18px',
+        borderTop: '1px solid rgba(22, 48, 59, 0.08)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-        <span style={{ color: '#D4AF37', fontSize: 10, fontWeight: 800, letterSpacing: '0.06em' }}>TROPHY CAST</span>
-        <span style={{ color: 'rgba(245,241,230,0.4)', fontSize: 10, fontStyle: 'italic' }}>Currently in beta · Built with real anglers.</span>
-        <span style={{ color: '#F5F1E6', fontSize: 10, fontWeight: 700 }}>trophycast.app</span>
+        <span style={{ color: cardAccent, fontSize: 10, fontWeight: 800, letterSpacing: '0.06em' }}>TROPHY CAST</span>
+        <span style={{ color: cardMutedText, fontSize: 9.5, fontStyle: 'italic' }}>Currently in beta · Built with real anglers.</span>
+        <span style={{ color: cardDarkText, fontSize: 10, fontWeight: 700 }}>trophycast.app</span>
       </div>
-
     </div>
   );
 }

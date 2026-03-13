@@ -1,284 +1,408 @@
 ﻿'use client';
 
-import { useState } from 'react';
-import { toPng } from 'html-to-image';
+const QR_URL = 'https://www.denverbassmasters.com/join-now';
+const QR_IMAGE = `https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=${encodeURIComponent(QR_URL)}&color=2A4008&bgcolor=FFFFFF&qzone=1`;
 
-/**
- * Denver BassMasters — Home Printer Flyer (2-up on letter)
- * ─────────────────────────────────────────────────────────
- * Brand palette: #88AC2E (lime green), #000000 (black), #FFFFFF
- * Dark left panel, white right column with recruitment bullets.
- * QR code → https://www.denverbassmasters.com/join-now
- */
+const COLORS = {
+  green: '#88AC2E',
+  greenDark: '#3A5C12',
+  greenSoft: '#F4FAF0',
+  greenMuted: '#6B7F35',
+  ink: '#0C0F08',
+  text: '#425242',
+  paper: '#FFFFFF',
+  line: '#D8E6C4',
+};
+
+const INFO_CARDS = [
+  {
+    title: 'Boater or Co-Angler',
+    body: 'Fish club events with or without your own boat. No boat required.',
+  },
+  {
+    title: 'Competition Path',
+    body: 'Club events can lead to Colorado State, Regionals, Nationals, and the Bassmaster Classic.',
+  },
+  {
+    title: 'New Anglers Welcome',
+    body: 'Monthly meetings, speakers, and anglers who actually want to help you improve.',
+  },
+  {
+    title: 'Trophy Cast Club App',
+    body: 'Results, standings, communication, and season tracking all in one place.',
+  },
+];
+
+const SPONSORS = [
+  { name: 'Bass Pro Shops', src: '/bass-pro-logo-2x.png' },
+  { name: 'JJ Bass Jigs', src: '/JJ-logo-trim%20(2).png' },
+  { name: 'Trophy Cast', src: '/Trophy%20cast%20white%20background.png' },
+  { name: 'Eagle Claw', src: '/Eagle%20Claw%20logo%20transparent..png' },
+  { name: 'Militia Marine', src: '/Militia%20Marine%20logo.%20Transparent..png' },
+  { name: 'AA Toppers', src: '/Topper%20Sales.png' },
+  { name: 'Rapala', src: '/Rapala%20logo%20transparent..png' },
+  { name: 'Discount Fishing Denver', src: '/Discount%20fishing%20tackle.%20Logo.%20Transparent..png' },
+];
+
+const FAMILY_LOGOS = [
+  {
+    name: 'DBM Juniors',
+    label: 'Juniors Program',
+    src: "/Denver%20Bassmaster%20Junior's%20logo%20transparent..png",
+    height: 32,
+    maxWidth: 80,
+  },
+  {
+    name: 'FRBC',
+    label: 'Front Range Bass Club',
+    src: '/FRBC%20Logo.png',
+    height: 32,
+    maxWidth: 62,
+  },
+];
 
 export default function DBMPrintFlyerPage() {
-  const [downloading, setDownloading] = useState(false);
-
   const pageStyles = `
-        body > header,
-        body > footer {
-          display: none !important;
-        }
-        body > main {
-          padding-top: 0 !important;
-        }
-        @media print {
-          .no-print { display: none !important; }
-          body { background: #fff !important; margin: 0; padding: 0; }
-          .print-wrap { padding: 0 !important; background: #fff !important; }
-          .sheet { box-shadow: none !important; border: none !important; }
-        }
-        @page { size: letter portrait; margin: 0.25in; }
-      `;
-
-  const handlePrint = () => window.print();
-
-  const handleDownloadPng = async () => {
-    const node = document.getElementById('dbm-print-sheet');
-    if (!node) return;
-    setDownloading(true);
-    try {
-      const dataUrl = await toPng(node, { pixelRatio: 3, cacheBust: true });
-      const link = document.createElement('a');
-      link.download = 'denver-bassmasters-flyer-print.png';
-      link.href = dataUrl;
-      link.click();
-    } finally {
-      setDownloading(false);
+    body > header,
+    body > footer {
+      display: none !important;
     }
-  };
+    body > main {
+      padding-top: 0 !important;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff !important; margin: 0; padding: 0; }
+      .print-wrap { padding: 0 !important; background: #fff !important; }
+      .sheet {
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+      }
+    }
+    @page { size: letter landscape; margin: 0.25in; }
+  `;
 
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: pageStyles }} />
 
-      {/* Controls bar */}
-      <div className="no-print" style={{
-        background: '#0C0F08', borderBottom: '1px solid rgba(136,172,46,0.2)',
-        padding: '12px 24px', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
-      }}>
+      <div
+        className="no-print"
+        style={{
+          background: COLORS.ink,
+          borderBottom: `1px solid ${COLORS.greenDark}`,
+          padding: '12px 24px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          flexWrap: 'wrap',
+          color: '#F1F5E8',
+          fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        }}
+      >
         <div>
-          <span style={{ color: '#F5F5EE', fontWeight: 700, fontSize: 14 }}>🖨 DBM Print-Ready Flyer</span>
-          <span style={{ color: '#8A9E6A', fontSize: 12, marginLeft: 10 }}>Dark green + white · 2 half-pages · Cut on dashed line</span>
+          <div style={{ fontWeight: 800, fontSize: 14 }}>Denver BassMasters Print Flyer</div>
+          <div style={{ fontSize: 12, color: '#B5C79B' }}>1 landscape page · 2 portrait flyers side by side</div>
         </div>
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
-          <a href="/flyer/dbm" style={{
-            background: 'rgba(136,172,46,0.1)', border: '1px solid rgba(136,172,46,0.35)',
-            borderRadius: 8, color: '#B5D45A', padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none',
-          }}>← Dark version</a>
-          <button onClick={handleDownloadPng} disabled={downloading} style={{
-            background: '#5D6D24', border: 'none', borderRadius: 8, color: '#fff',
-            padding: '6px 18px', fontSize: 12, cursor: downloading ? 'wait' : 'pointer', fontWeight: 800, opacity: downloading ? 0.7 : 1,
-          }}>{downloading ? '⏳ Generating...' : '⬇ Download PNG'}</button>
-          <button onClick={handlePrint} style={{
-            background: '#88AC2E', border: 'none', borderRadius: 8, color: '#000',
-            padding: '6px 18px', fontSize: 12, cursor: 'pointer', fontWeight: 800,
-          }}>🖨 Print / Save PDF</button>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <a
+            href="/flyer/dbm"
+            style={{
+              background: 'rgba(136,172,46,0.12)',
+              border: `1px solid ${COLORS.greenDark}`,
+              borderRadius: 8,
+              color: '#D7E6B9',
+              padding: '7px 14px',
+              fontSize: 12,
+              fontWeight: 700,
+              textDecoration: 'none',
+            }}
+          >
+            Dark version
+          </a>
+          <button
+            onClick={() => window.print()}
+            style={{
+              background: COLORS.green,
+              border: 'none',
+              borderRadius: 8,
+              color: COLORS.ink,
+              padding: '7px 16px',
+              fontSize: 12,
+              fontWeight: 800,
+              cursor: 'pointer',
+            }}
+          >
+            Print / Save PDF
+          </button>
         </div>
       </div>
 
-      <div className="no-print" style={{
-        background: 'rgba(136,172,46,0.07)', borderBottom: '1px solid rgba(136,172,46,0.12)',
-        padding: '8px 24px', fontSize: 12, color: '#8A9E6A',
-      }}>
-        💡 <strong style={{ color: '#C9D3CA' }}>Print tip:</strong> Ctrl+P → Margins: Minimum → Scale: 100% → Print. Cut on dashed line for 2 flyers per sheet.
+      <div
+        className="no-print"
+        style={{
+          background: '#EDF5E5',
+          borderBottom: `1px solid ${COLORS.line}`,
+          padding: '10px 24px',
+          fontSize: 12,
+          color: COLORS.greenDark,
+          fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        }}
+      >
+        Print one landscape page at 100% scale. Use actual size, then cut once down the center.
       </div>
 
-      {/* Page wrapper */}
-      <div className="print-wrap" style={{
-        minHeight: '100vh', background: '#d8ddd0',
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
-        justifyContent: 'flex-start', padding: '32px 16px 64px',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-      }}>
-        <div id="dbm-print-sheet" className="sheet" style={{
-          width: 816, background: '#ffffff',
-          border: '1px solid #c8d4b8', borderRadius: 4,
-          boxShadow: '0 8px 40px rgba(0,0,0,0.15)', overflow: 'hidden',
-        }}>
-          <DBMHalfFlyer />
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '0 24px', background: '#fff' }}>
-            <div style={{ flex: 1, borderTop: '2px dashed #a8b898' }} />
-            <span style={{ fontSize: 10, color: '#a8b898', fontWeight: 600, letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>✂ CUT HERE</span>
-            <div style={{ flex: 1, borderTop: '2px dashed #a8b898' }} />
+      <div
+        className="print-wrap"
+        style={{
+          minHeight: '100vh',
+          background: '#D9DED1',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 22,
+          padding: '28px 16px 56px',
+          fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        }}
+      >
+        <SheetPreview label="Single-sided · 2 portrait flyers side by side">
+          <PortraitHalfFlyer />
+          <CutGuide />
+          <PortraitHalfFlyer />
+        </SheetPreview>
+
+        <div
+          className="no-print"
+          style={{
+            width: '8in',
+            maxWidth: '100%',
+            background: 'rgba(12,15,8,0.9)',
+            border: `1px solid ${COLORS.greenDark}`,
+            borderRadius: 10,
+            padding: '16px 20px',
+            color: '#D7E6B9',
+          }}
+        >
+          <div style={{ color: COLORS.green, fontWeight: 800, fontSize: 13, marginBottom: 8 }}>Print workflow</div>
+          <div style={{ fontSize: 12, lineHeight: 1.7 }}>
+            1. Print one landscape page.
+            <br />
+            2. Keep scale at 100% or Actual Size.
+            <br />
+            3. Cut once down the center to make two portrait half-sheet flyers.
           </div>
-          <DBMHalfFlyer />
-        </div>
-
-        <div className="no-print" style={{
-          marginTop: 24, maxWidth: 816, width: '100%',
-          background: 'rgba(12,15,8,0.88)', border: '1px solid rgba(136,172,46,0.18)',
-          borderRadius: 10, padding: '18px 24px',
-        }}>
-          <p style={{ color: '#88AC2E', fontWeight: 700, fontSize: 13, margin: '0 0 8px' }}>
-            📸 Workflow: Print → Cut → Hand out at meetings &amp; events
-          </p>
-          <ol style={{ color: '#8A9E6A', fontSize: 13, margin: 0, paddingLeft: 18, lineHeight: 2.1 }}>
-            <li>Click <strong style={{ color: '#F5F5EE' }}>&ldquo;Print / Save PDF&rdquo;</strong> above</li>
-            <li>Set margins to <strong style={{ color: '#F5F5EE' }}>Minimum</strong>, scale <strong style={{ color: '#F5F5EE' }}>100%</strong></li>
-            <li>Print on regular white letter paper</li>
-            <li>Cut along the dashed line — <strong style={{ color: '#F5F5EE' }}>2 flyers per sheet</strong></li>
-            <li>30 flyers = 15 sheets 🎉</li>
-          </ol>
         </div>
       </div>
     </>
   );
 }
 
-function DBMHalfFlyer() {
+function SheetPreview({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div style={{
-      width: '100%', minHeight: 504, background: '#ffffff',
-      display: 'flex', flexDirection: 'row', position: 'relative', overflow: 'hidden',
-    }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center', width: '100%' }}>
+      <div
+        className="no-print"
+        style={{
+          width: '10.5in',
+          maxWidth: '100%',
+          fontSize: 12,
+          fontWeight: 800,
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          color: COLORS.greenDark,
+        }}
+      >
+        {label}
+      </div>
+      <div
+        className="sheet"
+        style={{
+          width: '10.5in',
+          height: '8in',
+          maxWidth: '100%',
+          background: COLORS.paper,
+          display: 'grid',
+          gridTemplateColumns: '1fr 22px 1fr',
+          border: `1px solid ${COLORS.line}`,
+          borderRadius: 4,
+          overflow: 'hidden',
+          boxShadow: '0 10px 36px rgba(0,0,0,0.14)',
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
 
-      {/* LEFT PANEL — print-friendly white panel */}
-      <div style={{
-        width: 224, flexShrink: 0,
-        background: '#ffffff',
-        borderLeft: '5px solid #88AC2E',
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
-        justifyContent: 'space-between', padding: '20px 18px 20px', position: 'relative',
-      }}>
+function CutGuide() {
+  return (
+    <div
+      style={{
+        width: 22,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 12,
+        padding: '24px 0',
+        background: '#FFFFFF',
+        boxSizing: 'border-box',
+      }}
+    >
+      <div style={{ flex: 1, borderLeft: '2px dashed #A7B58C' }} />
+      <span style={{ fontSize: 10, color: '#8E9C76', fontWeight: 700, letterSpacing: '0.08em', whiteSpace: 'nowrap', writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
+        CUT HERE
+      </span>
+      <div style={{ flex: 1, borderLeft: '2px dashed #A7B58C' }} />
+    </div>
+  );
+}
 
-        {/* Top section */}
-        <div style={{ textAlign: 'center', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ width: 44, height: 3, background: '#88AC2E', borderRadius: 2, margin: '0 auto 8px' }} />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/dbm-logo-transparent.png"
-            alt="Denver BassMasters logo"
-            height={110}
-            style={{ display: 'block', margin: '0 0 1px', objectFit: 'contain' }}
-          />
-          <p style={{ fontSize: 10, color: '#3A5C12', margin: '0', fontStyle: 'italic', fontWeight: 600, letterSpacing: '0.02em', lineHeight: 1.35, textAlign: 'center' }}>
-            Building better anglers<br />since the early &lsquo;70s
-          </p>
+function PortraitHalfFlyer() {
+  return (
+    <div
+      style={{
+        height: '100%',
+        background: COLORS.paper,
+        padding: '16px 22px 12px',
+        display: 'flex',
+        flexDirection: 'column',
+        boxSizing: 'border-box',
+      }}
+    >
+      <div style={{ height: 4, width: '100%', background: COLORS.green, borderRadius: 999, marginBottom: 10 }} />
 
-          {/* DBM Family */}
-          <div style={{ margin: '6px 0 0', textAlign: 'center', width: '100%' }}>
-            <p style={{ fontSize: 8, fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#6B8E23', margin: '0 0 8px' }}>DBM Family</p>
-            <div style={{ display: 'flex', gap: 10, justifyContent: 'center', alignItems: 'flex-start' }}>
-              <div style={{ width: 78, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-                <div style={{ height: 46, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/Denver%20Bassmaster%20Junior's%20logo%20transparent..png" alt="DBM Juniors" height={42} style={{ objectFit: 'contain', maxWidth: 88, display: 'block' }} />
-                </div>
-                <span style={{ fontSize: 6.1, color: '#6B7F35', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>Juniors Program</span>
-              </div>
-              <div style={{ width: 1, height: 30, background: '#d4e4b0', marginTop: 8 }} />
-              <div style={{ width: 78, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-                <div style={{ height: 46, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/FRBC%20Logo.png" alt="FRBC" height={40} style={{ objectFit: 'contain', maxWidth: 70, display: 'block' }} />
-                </div>
-                <span style={{ fontSize: 5.8, color: '#6B7F35', letterSpacing: '0.03em', whiteSpace: 'nowrap' }}>Front Range Bass Club</span>
-              </div>
-            </div>
+      <div style={{ textAlign: 'center' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/dbm-logo-transparent.png"
+          alt="Denver BassMasters logo"
+          height={68}
+          style={{ display: 'block', margin: '0 auto 6px', objectFit: 'contain' }}
+        />
+        <h1 style={{ fontSize: 25, lineHeight: 1.02, margin: '0 0 4px', color: COLORS.ink, fontWeight: 900, letterSpacing: '-0.04em' }}>
+          You Don&rsquo;t Need <span style={{ color: COLORS.greenDark }}>a Boat.</span>
+        </h1>
+        <p style={{ fontSize: 12.8, lineHeight: 1.2, margin: 0, color: COLORS.greenDark, fontWeight: 700 }}>
+          Just a love for bass fishing.
+        </p>
+      </div>
+
+      <div
+        style={{
+          marginTop: 10,
+          background: COLORS.ink,
+          borderRadius: 9,
+          padding: '7px 10px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 8,
+          flexWrap: 'wrap',
+        }}
+      >
+        <div style={{ color: COLORS.green, fontSize: 10.6, fontWeight: 800 }}>Meetings</div>
+        <div style={{ color: '#E8EFE0', fontSize: 9.2 }}>First Wednesday · 7:00 PM</div>
+        <div style={{ color: '#B2C296', fontSize: 9.2 }}>Bass Pro Shops Denver</div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 10 }}>
+        {INFO_CARDS.map((point) => (
+          <div
+            key={point.title}
+            style={{
+              background: COLORS.greenSoft,
+              border: `1px solid ${COLORS.line}`,
+              borderRadius: 10,
+              padding: '8px 10px',
+              minHeight: 82,
+              boxSizing: 'border-box',
+            }}
+          >
+            <div style={{ fontSize: 12.4, lineHeight: 1.15, marginBottom: 3, color: COLORS.ink, fontWeight: 900 }}>{point.title}</div>
+            <div style={{ fontSize: 10, lineHeight: 1.28, color: COLORS.text }}>{point.body}</div>
           </div>
+        ))}
+      </div>
 
-          <div style={{ width: '100%', height: 1, background: '#e8f0d8', margin: '10px 0 0' }} />
+      <div style={{ display: 'grid', gridTemplateColumns: '1.05fr auto', gap: 10, marginTop: 10, alignItems: 'stretch' }}>
+        <div style={{ background: COLORS.greenSoft, border: `1px solid ${COLORS.line}`, borderRadius: 10, padding: '9px 10px', textAlign: 'center' }}>
+          <div style={{ fontSize: 7.8, color: COLORS.greenMuted, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 4 }}>
+            DBM Family
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', gap: 10 }}>
+            {FAMILY_LOGOS.map((logo) => (
+              <div key={logo.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, width: 86 }}>
+                <div style={{ height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={logo.src}
+                    alt={logo.name}
+                    height={logo.height}
+                    style={{ objectFit: 'contain', maxWidth: logo.maxWidth, display: 'block' }}
+                  />
+                </div>
+                <div style={{ fontSize: 6.1, lineHeight: 1.15, color: COLORS.greenMuted, letterSpacing: '0.03em', whiteSpace: 'nowrap' }}>{logo.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Champion badge */}
-        <div style={{ width: '100%', marginTop: 'auto', marginBottom: 'auto' }}>
-          <div style={{
-            background: 'linear-gradient(180deg, #FFF9E8 0%, #FDF1CC 100%)', border: '1.5px solid #D4AF37',
-            borderRadius: 10, padding: '10px 12px', fontSize: 10.5, color: '#7A5810', fontWeight: 800, textAlign: 'center', lineHeight: 1.35,
-            boxShadow: '0 3px 8px rgba(212,175,55,0.18)',
-          }}>
-            🏆 Colorado Bass Nation<br />Club Trophy<br />
-            <span style={{ fontSize: 9, fontWeight: 600, color: '#A97A13' }}>2024–2025 Champions</span>
-          </div>
-        </div>
-
-        {/* QR code */}
         <div style={{ textAlign: 'center' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=https%3A%2F%2Fwww.denverbassmasters.com%2Fjoin-now&color=2A4008&bgcolor=FFFFFF&qzone=1"
+            src={QR_IMAGE}
             alt="QR code — denverbassmasters.com/join-now"
-            width={108} height={108}
-            style={{ display: 'block', margin: '0 auto 6px', border: '2px solid #88AC2E', borderRadius: 6, padding: 3, background: '#fff' }}
+            width={86}
+            height={86}
+            style={{
+              display: 'block',
+              border: `2px solid ${COLORS.green}`,
+              borderRadius: 10,
+              padding: 4,
+              background: '#FFFFFF',
+            }}
           />
-          <p style={{ fontSize: 10.5, fontWeight: 800, color: '#2A4008', margin: '0 0 2px' }}>Join Today</p>
-          <p style={{ fontSize: 8.5, color: '#8A9E6A', margin: 0 }}>Scan or visit<br />denverbassmasters.com</p>
+          <div style={{ fontSize: 10.2, color: COLORS.ink, fontWeight: 800, marginTop: 4 }}>Join Today</div>
+          <div style={{ fontSize: 8.4, color: COLORS.greenDark, fontWeight: 700 }}>{QR_URL.replace('https://www.', '')}</div>
         </div>
       </div>
 
-      {/* VERTICAL DIVIDER */}
-      <div style={{ width: 1, background: 'linear-gradient(to bottom, transparent, #88AC2E 20%, #88AC2E 80%, transparent)', flexShrink: 0 }} />
-
-      {/* RIGHT COLUMN */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '26px 30px 18px' }}>
-
-        <div>
-          {/* Headline */}
-          <h1 style={{ fontSize: 26, fontWeight: 900, color: '#0C0F08', margin: '0 0 4px', lineHeight: 1.1, letterSpacing: '-0.5px', whiteSpace: 'nowrap' }}>
-            You Don&rsquo;t Need <span style={{ color: '#88AC2E', background: 'rgba(136,172,46,0.12)', borderRadius: 5, padding: '0 6px', display: 'inline-block' }}>a Boat.</span>
-          </h1>
-          <p style={{ fontSize: 12.5, fontWeight: 700, color: '#5D6D24', margin: '0 0 3px' }}>Just a love for bass fishing.</p>
-          <p style={{ fontSize: 9.5, fontWeight: 800, color: '#3A5C12', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '10px 0 7px', background: '#D0F0A0', display: 'inline-block', borderRadius: 4, padding: '2px 8px' }}>
-            Why anglers join Denver BassMasters
-          </p>
-
-          {/* Bullets */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {[
-              { icon: '🚤', title: 'Boater & Co-Angler Tournaments', body: 'DBM runs card tournaments — catch a fish, weigh it, record it on your card, and release it. A boater and co-angler are paired every event. You fish as a team, you compete as individuals.' },
-              { icon: '🏆', title: 'One path, five levels of competition', body: 'Fish club tournaments to build your skills. As a B.A.S.S.-affiliated club, members can enter the Colorado state qualifier. Place high enough and you advance: State → Regionals → Nationals → and the ultimate prize, the Bassmaster Classic. A real competitive ladder — and it all starts right here.' },
-              { icon: '🎣', title: 'A club that makes you better', body: 'Monthly guest speakers cover technique, electronics, and seasonal patterns. Away card tournaments include education too. This is a mentorship culture — every angler here, beginner or veteran, is here to get better.' },
-              { icon: '📲', title: 'Get connected, get involved', body: 'DBM is building a modern club — group chats, committees, and centralized communication so members stay connected year-round. Join a committee and help shape the direction of the club.' },
-              { icon: null, title: 'Official Club App — Trophy Cast', body: 'Card tournament results, AOY standings, your personal stats, club communication — all in the Trophy Cast app. Everything you need to track your season, in your pocket.' },
-            ].map((item) => (
-              <div key={item.title} style={{
-                display: 'flex', alignItems: 'flex-start', gap: 9, padding: '6px 10px',
-                background: '#F4FAF0', borderLeft: '3px solid #88AC2E', borderRadius: '0 5px 5px 0',
-              }}>
-                <span style={{ fontSize: 14, lineHeight: 1, marginTop: 1, display: 'flex', alignItems: 'center' }}>
-                  {item.icon ?? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src="/Trophy%20cast%20white%20background.png" alt="Trophy Cast" height={16} style={{ objectFit: 'contain', maxWidth: 42, display: 'block', borderRadius: 2 }} />
-                  )}
-                </span>
-                <div>
-                  <p style={{ fontSize: 11, fontWeight: 700, color: '#2A4008', margin: '0 0 1px', background: 'rgba(106,144,32,0.16)', display: 'inline-block', borderRadius: 3, padding: '0 5px' }}>{item.title}</p>
-                  <p style={{ fontSize: 10, color: '#546654', margin: 0, lineHeight: 1.4 }}>{item.body}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+      <div style={{ marginTop: 'auto' }}>
+        <div style={{ fontSize: 7.9, color: COLORS.greenMuted, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', textAlign: 'center', marginBottom: 5 }}>
+          Tournament Sponsors
         </div>
-
-        {/* Bottom: meeting info + sponsors */}
-        <div>
-          <div style={{
-            marginTop: 6, padding: '8px 12px',
-            background: '#0C0F08', borderRadius: 6,
-            display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
-          }}>
-            <span style={{ fontSize: 11.5, color: '#88AC2E', fontWeight: 800 }}>📅 Meetings</span>
-            <span style={{ fontSize: 10, color: '#C9D3CA' }}>First Wednesday · 7:00 PM</span>
-            <span style={{ fontSize: 10, color: '#8A9E6A' }}>Bass Pro Shops Denver (Conference Room)</span>
-          </div>
-          <div style={{ marginTop: 18, display: 'flex', gap: 0, justifyContent: 'space-around', alignItems: 'center', width: '100%' }}>
-            {[
-              { name: 'Bass Pro Shops',          src: '/bass-pro-logo-2x.png' },
-              { name: 'JJ Bass Jigs',            src: '/JJ-logo-trim%20(2).png' },
-              { name: 'Trophy Cast',             src: '/Trophy%20cast%20white%20background.png' },
-              { name: 'Eagle Claw',              src: '/Eagle%20Claw%20logo%20transparent..png' },
-              { name: 'Militia Marine',          src: '/Militia%20Marine%20logo.%20Transparent..png' },
-              { name: 'AA Toppers',              src: '/Topper%20Sales.png' },
-              { name: 'Rapala',                  src: '/Rapala%20logo%20transparent..png' },
-              { name: 'Discount Fishing Denver', src: '/Discount%20fishing%20tackle.%20Logo.%20Transparent..png' },
-            ].map((s) => (
-              <div key={s.name} title={s.name} style={{ background: '#fff', borderRadius: 4, padding: '2px 5px', display: 'flex', alignItems: 'center', height: 22 }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={s.src} alt={s.name} height={16} style={{ objectFit: 'contain', maxWidth: 50, display: 'block', mixBlendMode: 'multiply' }} onError={(e) => { (e.currentTarget.parentElement as HTMLDivElement).style.display = 'none'; }} />
-              </div>
-            ))}
-          </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 5, width: '100%' }}>
+          {SPONSORS.map((sponsor) => (
+            <div
+              key={sponsor.name}
+              title={sponsor.name}
+              style={{
+                background: '#FFFFFF',
+                borderRadius: 4,
+                padding: '1px 3px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 18,
+                minWidth: 18,
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={sponsor.src}
+                alt={sponsor.name}
+                height={13}
+                style={{ objectFit: 'contain', maxWidth: 42, display: 'block', mixBlendMode: 'multiply' }}
+                onError={(e) => {
+                  (e.currentTarget.parentElement as HTMLDivElement).style.display = 'none';
+                }}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
