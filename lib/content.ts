@@ -366,27 +366,50 @@ export const siteContent = {
       },
     ],
   },
+  creed: {
+    id: "creed",
+    eyebrow: "Built by a tournament angler.",
+    title: "Three rules we'll never break.",
+    subtitle: "Not policies. Not fine print. These are the product's bones.",
+    principles: [
+      {
+        rule: "The Grind is Yours.",
+        detail:
+          "Your practice routes. Your sweet spots. Your milk run. The spots you burned three days pre-fishing to find — nobody gets those. Not other users. Not us.",
+      },
+      {
+        rule: "The Coach is Yours.",
+        detail:
+          "TC Coach learns from YOUR catches, YOUR adjustments, YOUR patterns on YOUR water. You're not contributing data to train someone else's app. The work you put in stays with you.",
+      },
+      {
+        rule: "The Vault is Sealed.",
+        detail:
+          "The platform gets smarter at recognizing stumps, laydowns, and pressure pattern shifts. It never learns where YOUR stump is. Your private strategy — route order, waypoint notes, practice conclusions — stays sealed.",
+      },
+    ],
+  },
   trust: {
     id: "trust",
     title: "Trust + transparency",
     pillars: [
       {
         emoji: "🔒",
-        title: "Your spots stay yours",
+        title: "Your vault. Your spots.",
         description:
-          "Your coaching stays inside your account — it never goes out to the internet. Your GPS points, your fishing spots, and your patterns are locked to you. Nobody else can see them. Not other users, not us, nobody.",
+          "Your GPS coordinates, scouting marks, fishing patterns, and tournament prep are sealed inside your account. Nobody else can see them — not other users, not us. The Vault is Sealed.",
       },
       {
-        emoji: "🌍",
-        title: "Community patterns, not your secrets",
+        emoji: "🧠",
+        title: "The platform learns. Not your spots.",
         description:
-          "Regional insights come from anonymized, aggregated data across all anglers. You might learn that green pumpkin is hot in Colorado this week — but nobody learns where you threw it.",
+          "TC Coach gets smarter across thousands of anglers — what lures work in rising pressure, what structure holds fish in fall. It learns what a laydown looks like. It never learns where yours is.",
       },
       {
         emoji: "💻",
         title: "Works on any device",
         description:
-          "Log catches by voice on your phone at the lake. Pull it up on your laptop at home to edit notes, review stats, and research with TC Coach. No app store required — just open your browser.",
+          "Log catches by voice at the lake. Review stats and chat with TC Coach on your laptop at home. No app store required — Trophy Cast runs in your browser on any device.",
       },
     ],
   },
@@ -404,7 +427,7 @@ export const siteContent = {
   footer: {
     motto: "Where Every Cast Counts.",
     tagline: "Fish more. Learn faster. Connect deeper.",
-    aiDisclaimer: "© 2026 Trophy Cast, Inc. Your coaching stays inside your account — your GPS, patterns, and spots never go out to the internet.",
+    aiDisclaimer: "© 2026 Trophy Cast, Inc. The Vault is Sealed — your GPS, spots, and strategy never leave your account.",
     links: [
       { label: "Email", href: "mailto:hello@trophycast.app" },
       { label: "Privacy Policy", href: "/privacy" },

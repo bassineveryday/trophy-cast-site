@@ -36,6 +36,17 @@ export default function PrivacyPage() {
             </div>
           </div>
 
+          {/* Angler Intro */}
+          <div className="rounded-2xl border border-trophyGold/20 bg-deepPanel/60 p-5 space-y-3">
+            <p className="font-heading text-xs font-bold uppercase tracking-[0.3em] text-trophyGold">From the team</p>
+            <p className="text-copyLight leading-relaxed">
+              This app was built by a tournament angler who knows exactly what it costs when your practice gets out. We&rsquo;ve pre-fished the night before weigh-in. We know what it means to protect water. Your spots, your routes, your strategy — that&rsquo;s not our data to share. The Vault is Sealed.
+            </p>
+            <p className="text-sm text-copyMuted">
+              The legal sections below say the same thing in terms lawyers approved. But the commitment above is the one we actually mean.
+            </p>
+          </div>
+
           {/* Short Version */}
           <div>
             <h2 className="font-heading text-lg font-bold text-trophyGold mb-3">
@@ -46,7 +57,9 @@ export default function PrivacyPage() {
                 "We never sell your personal information. Ever.",
                 "We never share your email, phone number, name, or fishing data with third parties for marketing purposes.",
                 "Your GPS locations and fishing spots stay inside your account.",
+                "Your tournament prep, scouting marks, and private strategy are sealed in your vault — never shared with other users or contributed to any public map.",
                 "Your catch patterns are never shared with other users without your explicit consent.",
+                "TC Coach gets smarter from anonymized patterns (what conditions work, which lures are trending). It never learns where your spots are.",
                 "You own your catch data. You can request deletion at any time.",
                 "SMS alerts are opt-in only — you control whether you receive them.",
               ].map((item, i) => (
@@ -56,6 +69,36 @@ export default function PrivacyPage() {
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Your Vault */}
+          <div>
+            <h2 className="font-heading text-lg font-bold text-trophyGold mb-3">
+              Your Vault
+            </h2>
+            <p className="mb-4">
+              Some data in Trophy Cast is more sensitive than a password. We treat it that way.
+            </p>
+            <div className="space-y-4">
+              <div>
+                <p className="font-semibold text-copyLight mb-1">What&rsquo;s in the Vault</p>
+                <p>
+                  Your GPS coordinates, fishing spots, scouting marks, private notes, waypoint names, tournament prep, and the order you plan to fish your water. This is your private strategy — the product of your hours on the water. It never leaves your account.
+                </p>
+              </div>
+              <div>
+                <p className="font-semibold text-copyLight mb-1">The Vault is Sealed</p>
+                <p>
+                  Vault contents are never shared with other users, never contributed to any public fishing map, never sold, and never used in any way that exposes your location data. Full stop.
+                </p>
+              </div>
+              <div>
+                <p className="font-semibold text-copyLight mb-1">How TC Coach gets smarter without opening the Vault</p>
+                <p>
+                  TC Coach runs on two layers. Your Personal Coach sees your exact catches, conditions, and patterns — all private, sealed in your account. The platform layer learns from anonymized, aggregated signals: which lure categories are trending in a region, how pressure affects bite rates, which techniques work in fall turnover. No coordinates. No strategy. Never you individually. The platform learns what a laydown looks like. It never learns where yours is.
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* What We Collect */}

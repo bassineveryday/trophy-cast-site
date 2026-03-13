@@ -185,6 +185,32 @@ export default function Page() {
         </div>
       </Section>
 
+      {/* ── THE CREED ────────────────────────────────────────── */}
+      <Section id={siteContent.creed.id} variant="surfaceLifted">
+        <div className="space-y-7">
+          <div className="space-y-2">
+            <p className="font-heading text-xs font-bold uppercase tracking-[0.35em] text-trophyGold">
+              {siteContent.creed.eyebrow}
+            </p>
+            <h2 className="font-heading text-2xl font-extrabold text-copyLight sm:text-3xl">
+              {siteContent.creed.title}
+            </h2>
+            <p className="text-sm text-copyMuted">{siteContent.creed.subtitle}</p>
+          </div>
+          <div className="grid gap-5 lg:grid-cols-3">
+            {siteContent.creed.principles.map((principle) => (
+              <div
+                key={principle.rule}
+                className="rounded-2xl border border-trophyGold/25 bg-deepPanel/90 p-6"
+              >
+                <p className="font-heading text-lg font-extrabold text-trophyGold">{principle.rule}</p>
+                <p className="mt-3 text-sm leading-relaxed text-copyMuted">{principle.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
       {/* ── TRUST ────────────────────────────────────────────── */}
       <Section id={siteContent.trust.id} variant="surface">
         <div className="space-y-5">
