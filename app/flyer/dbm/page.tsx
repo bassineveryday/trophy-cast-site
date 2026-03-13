@@ -122,39 +122,72 @@ export default function DBMFlyerPage() {
             </div>
             <div style={{ marginBottom: 18 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/trophy-cast-logo-transparent.png?v=clean" alt="Denver BassMasters logo" height={88} style={{ display: 'block', margin: '0 auto', objectFit: 'contain' }} />
+              <img src="/Loge%20Transparent%20background.png" alt="Denver BassMasters logo" height={88} style={{ display: 'block', margin: '0 auto', objectFit: 'contain' }} />
             </div>
-            <h1 style={{ fontSize: 54, fontWeight: 900, color: '#F5F5EE', margin: '0 0 6px', lineHeight: 1, letterSpacing: '-1.5px', textTransform: 'uppercase' }}>
-              Denver{' '}
-              <span style={{ color: G }}>Bass</span>
-              <span style={{ color: '#D4AF37' }}>Masters</span>
+            <h1 style={{ fontSize: 54, fontWeight: 900, margin: '0 0 6px', lineHeight: 1, letterSpacing: '-1.5px', textTransform: 'uppercase', background: 'linear-gradient(90deg, #D4AF37 0%, #88AC2E 45%, #B5D45A 75%, #D4AF37 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              Denver BassMasters
             </h1>
-            <p style={{ fontSize: 13, color: 'rgba(197,213,180,0.5)', margin: '4px 0 0', fontStyle: 'italic', letterSpacing: '0.06em' }}>
+            <p style={{ fontSize: 13, color: 'rgba(197,213,180,0.5)', margin: '4px 0 8px', fontStyle: 'italic', letterSpacing: '0.06em' }}>
               Building better anglers since the early &lsquo;70s
             </p>
+            {/* DBM Family */}
+            <div style={{ marginTop: 6, textAlign: 'center' }}>
+              <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(136,172,46,0.5)', margin: '0 0 8px' }}>DBM Family</p>
+              <div style={{ display: 'flex', gap: 18, justifyContent: 'center', alignItems: 'flex-end' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/Denver%20Bassmaster%20Junior's%20logo%20transparent..png" alt="DBM Juniors" height={36} style={{ objectFit: 'contain', maxWidth: 80 }} />
+                  <span style={{ fontSize: 9, color: 'rgba(197,213,180,0.4)', letterSpacing: '0.06em' }}>Juniors Program</span>
+                </div>
+                <div style={{ width: 1, height: 30, background: 'rgba(136,172,46,0.25)', marginBottom: 14 }} />
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/FRBC%20Logo.png" alt="FRBC" height={36} style={{ objectFit: 'contain', maxWidth: 80 }} />
+                  <span style={{ fontSize: 9, color: 'rgba(197,213,180,0.4)', letterSpacing: '0.06em' }}>Front Range Bass Club</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Divider */}
           <div style={{ margin: '0 64px', height: 1, background: 'linear-gradient(90deg, transparent, rgba(136,172,46,0.4), transparent)' }} />
 
-          {/* HERO STATEMENT */}
-          <div style={{ padding: '34px 64px 28px', textAlign: 'center' }}>
-            <p style={{ fontSize: 32, fontWeight: 800, color: '#F5F5EE', margin: '0 0 8px', lineHeight: 1.3 }}>You Don&rsquo;t Need a Boat.</p>
-            <p style={{ fontSize: 21, fontWeight: 700, color: '#1A3208', margin: '0 0 10px', lineHeight: 1.4, background: '#B5D45A', display: 'inline-block', borderRadius: 8, padding: '2px 18px' }}>Just a love for bass fishing.</p>
-            <p style={{ fontSize: 13.5, color: '#8A9E6A', margin: '0 auto', lineHeight: 1.65, maxWidth: 540 }}>
-              Boaters and non-boaters are paired for every tournament. Whether you own a bass boat or just a rod and reel, you belong here.
-            </p>
+          {/* HERO STATEMENT — side-by-side */}
+          <div style={{ padding: '28px 64px 24px', display: 'flex', alignItems: 'center', gap: 44 }}>
+            {/* Left: Hook */}
+            <div style={{ flex: 1 }}>
+              <h2 style={{ fontSize: 44, fontWeight: 900, color: '#F5F5EE', margin: '0 0 12px', lineHeight: 1.05, letterSpacing: '-1px' }}>
+                You Don&rsquo;t Need{' '}
+                <span style={{ color: '#88AC2E', background: 'rgba(136,172,46,0.15)', borderRadius: 8, padding: '0 12px', display: 'inline-block' }}>a Boat.</span>
+              </h2>
+              <p style={{ fontSize: 18, fontWeight: 700, color: '#1A3208', margin: '0 0 14px', lineHeight: 1.4, background: '#B5D45A', display: 'inline-block', borderRadius: 8, padding: '2px 18px' }}>Just a love for bass fishing.</p>
+              <p style={{ fontSize: 13, color: '#8A9E6A', margin: 0, lineHeight: 1.65, maxWidth: 380 }}>
+                Boaters and non-boaters are paired for every tournament. Whether you own a bass boat or just a rod and reel, you belong here.
+              </p>
+            </div>
+            {/* Right: QR */}
+            <div style={{ flexShrink: 0, textAlign: 'center' }}>
+              <div style={{ background: G, borderRadius: 16, padding: 12, display: 'inline-block', boxShadow: '0 8px 40px rgba(136,172,46,0.4)' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fwww.denverbassmasters.com%2Fjoin-now&color=0C0F08&bgcolor=88AC2E&qzone=1"
+                  alt="QR code — denverbassmasters.com/join-now"
+                  width={148} height={148} style={{ display: 'block', borderRadius: 8 }}
+                />
+              </div>
+              <p style={{ color: '#8A9E6A', fontSize: 11, margin: '8px 0 3px', textAlign: 'center' }}>Scan to join</p>
+              <p style={{ color: GL, fontWeight: 800, fontSize: 12, margin: 0 }}>denverbassmasters.com</p>
+            </div>
           </div>
 
           {/* FEATURE TILES */}
           <div style={{ padding: '0 64px 34px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 13 }}>
             {[
-              { icon: '🚤', title: 'No boat? No problem.', body: 'Boaters and co-anglers are paired for every event. Just show up ready to fish.' },
-              { icon: '🏆', title: 'Compete at every level', body: 'Local club tournaments to B.A.S.S. Regional, National, and the Bassmaster Classic.' },
-              { icon: '🎣', title: 'Get better on the water', body: "Education on techniques, conditions, and what actually works — from anglers who've been doing it for decades." },
-              { icon: '🌊', title: "Colorado's best fishing network", body: 'Share knowledge, discover new spots, and fish with people who are serious about bass.' },
-              { icon: '👦', title: 'Junior Youth Program', body: "We're growing the next generation of anglers through mentorship and hands-on tournament experience." },
-              { icon: '📱', title: 'Powered by Trophy Cast', body: 'Live weigh-ins, AOY standings, and club chat — all in the official DBM app. Download at trophycast.app.' },
+              { icon: '🚤', title: 'Boater & Co-Angler Tournaments', body: 'DBM runs card tournaments — catch a fish, weigh it, record it on your card, and release it. A boater and co-angler are paired every event. You fish as a team, you compete as individuals — and you always leave with more knowledge than you came with.' },
+              { icon: '🏆', title: 'One path, five levels of competition', body: 'Start at the club level. Fish well enough and you qualify for the Colorado Bass Nation (CBN) State Tournament. From there: Regionals → Nationals → and if you\'re that good, a shot at the Bassmaster Classic. It all starts right here.' },
+              { icon: '🎣', title: 'A club that makes you better', body: 'Every monthly meeting features a guest speaker — technique breakdowns, electronics, seasonal patterns. Away card tournaments include education too. This isn\'t a cutthroat club — it\'s a mentorship culture. We compete, but we grow together.' },
+              { icon: '📲', title: 'Get connected, get involved', body: 'DBM is building a modern club — group chats, committees, and centralized communication so members stay connected year-round. Join a committee and help shape the direction of the club. Your voice matters here.' },
+              { icon: '📱', title: 'Official Club App — Trophy Cast', body: 'Card tournament results, AOY standings, your personal stats, club communication, and a growing knowledge base — all in the Trophy Cast app. Everything you need to track your season and stay tight with the club, in your pocket.' },
             ].map((item) => (
               <div key={item.title} style={{
                 background: 'rgba(18,38,8,0.75)', border: '1px solid rgba(136,172,46,0.25)',
@@ -174,47 +207,34 @@ export default function DBMFlyerPage() {
           <div style={{ margin: '0 64px', height: 1, background: 'linear-gradient(90deg, transparent, rgba(212,175,55,0.35), transparent)' }} />
 
           {/* CTA SECTION */}
-          <div style={{ padding: '34px 64px 28px', display: 'flex', alignItems: 'center', gap: 44 }}>
-            <div style={{ flexShrink: 0, textAlign: 'center' }}>
-              <div style={{ background: G, borderRadius: 16, padding: 12, display: 'inline-block', boxShadow: '0 8px 32px rgba(136,172,46,0.35)' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fwww.denverbassmasters.com%2Fjoin-now&color=0C0F08&bgcolor=88AC2E&qzone=1"
-                  alt="QR code — denverbassmasters.com/join-now"
-                  width={160} height={160} style={{ display: 'block', borderRadius: 8 }}
-                />
-              </div>
-              <p style={{ color: '#8A9E6A', fontSize: 11, margin: '8px 0 0', textAlign: 'center' }}>Scan to join</p>
+          <div style={{ padding: '28px 64px 28px' }}>
+            <p style={{ fontSize: 12, color: '#D4AF37', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px' }}>Join Denver BassMasters</p>
+            <h2 style={{ fontSize: 33, fontWeight: 900, color: '#F5F5EE', margin: '0 0 12px', lineHeight: 1.15, letterSpacing: '-0.5px' }}>
+              Ready to fish <span style={{ color: '#D4AF37' }}>with us?</span>
+            </h2>
+            <p style={{ color: '#8A9E6A', fontSize: 13, margin: '0 0 16px', lineHeight: 1.65, maxWidth: 560 }}>
+              Meetings are open to everyone. Come check us out — no commitment required.
+              Visit <strong style={{ color: '#F5F5EE' }}>denverbassmasters.com</strong> to learn more and sign up.
+            </p>
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              background: 'rgba(136,172,46,0.12)', border: '1.5px solid rgba(136,172,46,0.45)',
+              borderRadius: 100, padding: '10px 22px', marginBottom: 14,
+            }}>
+              <span style={{ fontSize: 16 }}>🎣</span>
+              <span style={{ color: GL, fontWeight: 800, fontSize: 15.5 }}>denverbassmasters.com/join-now</span>
             </div>
-            <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 12, color: '#D4AF37', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 10px' }}>Join Denver BassMasters</p>
-              <h2 style={{ fontSize: 33, fontWeight: 900, color: '#F5F5EE', margin: '0 0 12px', lineHeight: 1.15, letterSpacing: '-0.5px' }}>
-                Ready to fish <span style={{ color: '#D4AF37' }}>with us?</span>
-              </h2>
-              <p style={{ color: '#8A9E6A', fontSize: 13, margin: '0 0 16px', lineHeight: 1.65 }}>
-                Meetings are open to everyone. Come check us out — no commitment required.
-                Visit <strong style={{ color: '#F5F5EE' }}>denverbassmasters.com</strong> to learn more and sign up.
-              </p>
-              <div style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8,
-                background: 'rgba(136,172,46,0.12)', border: '1.5px solid rgba(136,172,46,0.45)',
-                borderRadius: 100, padding: '10px 22px', marginBottom: 14,
-              }}>
-                <span style={{ fontSize: 16 }}>🎣</span>
-                <span style={{ color: GL, fontWeight: 800, fontSize: 15.5 }}>denverbassmasters.com/join-now</span>
-              </div>
-              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-                {[
-                  { icon: '📅', text: 'First Wednesday of the month' },
-                  { icon: '🕕', text: '7:00 PM' },
-                  { icon: '📍', text: 'Bass Pro Shops Denver' },
-                ].map((m) => (
-                  <div key={m.text} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                    <span style={{ fontSize: 12 }}>{m.icon}</span>
-                    <span style={{ color: 'rgba(181,212,90,0.55)', fontSize: 11 }}>{m.text}</span>
-                  </div>
-                ))}
-              </div>
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              {[
+                { icon: '📅', text: 'First Wednesday of the month' },
+                { icon: '🕕', text: '7:00 PM' },
+                { icon: '📍', text: 'Bass Pro Shops Denver' },
+              ].map((m) => (
+                <div key={m.text} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <span style={{ fontSize: 12 }}>{m.icon}</span>
+                  <span style={{ color: 'rgba(181,212,90,0.55)', fontSize: 11 }}>{m.text}</span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -247,22 +267,20 @@ export default function DBMFlyerPage() {
             </p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
               {[
-                { name: 'AA Toppers',             src: '/Topper%20Sales.png' },
-                { name: 'Bass Pro Shops',          src: '/BassproShop.png' },
-                { name: 'Eagle Claw',              src: '/Eagle%20Claw.png' },
-                { name: 'Milicia Marine',           src: '/Milicia%20Marine.png' },
-                { name: 'Discount Fishing Denver', src: '/Discount%20Fishing%20Tackle.png' },
-                { name: 'JJ Bass Jigs',            src: '/JJ%20Bass%20Jigs.png' },
+                { name: 'Bass Pro Shops',          src: '/bass-pro-logo-2x.png' },
+                { name: 'JJ Bass Jigs',            src: '/JJ-logo-trim%20(2).png' },
+                { name: 'Eagle Claw',              src: '/Eagle%20Claw%20logo%20transparent..png' },
+                { name: 'Militia Marine',          src: '/Militia%20Marine%20logo.%20Transparent..png' },
+                { name: 'Rapala',                  src: '/Rapala%20logo%20transparent..png' },
+                { name: 'AA Toppers',              src: '/Topper%20Sales.png' },
+                { name: 'Discount Fishing Denver', src: '/Discount%20fishing%20tackle.%20Logo.%20Transparent..png' },
+                { name: 'Trophy Cast',             src: '/Trophy%20cast%20white%20background.png' },
               ].map((s) => (
-                <div key={s.name} title={s.name} style={{ background: 'rgba(255,255,255,0.07)', borderRadius: 8, padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, minWidth: 44 }}>
+                <div key={s.name} title={s.name} style={{ background: '#fff', borderRadius: 8, padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, minWidth: 44 }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={s.src} alt={s.name} height={28} style={{ objectFit: 'contain', maxWidth: 80, display: 'block' }} onError={(e) => { (e.currentTarget.parentElement as HTMLDivElement).style.display = 'none'; }} />
+                  <img src={s.src} alt={s.name} height={28} style={{ objectFit: 'contain', maxWidth: 80, display: 'block', mixBlendMode: 'multiply' }} onError={(e) => { (e.currentTarget.parentElement as HTMLDivElement).style.display = 'none'; }} />
                 </div>
               ))}
-              <div title="Trophy Cast" style={{ background: 'rgba(255,255,255,0.07)', borderRadius: 8, padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, minWidth: 44 }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/trophy-cast-logo-transparent.png" alt="Trophy Cast" height={28} style={{ objectFit: 'contain', maxWidth: 80, display: 'block' }} />
-              </div>
             </div>
           </div>
 

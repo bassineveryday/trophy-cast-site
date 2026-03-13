@@ -41,11 +41,12 @@ your go-to patterns, the adjustments that work for YOU.
 
 ### 🏆 Trophy Cast
 
-**Other fishing tools track your catch.**
-**We learn from it.**
+**Your water. Your coach.**
+**Teach your personal coach. Fish with confidence.**
 
-Your patterns. Your techniques.
-The more you fish, the smarter it gets.
+TC Coach learns how you fish.
+Real angler signal helps show what tends to
+work where you fish.
 
 **[QR CODE]**
 trophycast.app
@@ -76,9 +77,9 @@ Trophy Cast gets smarter the more you fish.
 ## Key Messages (Pick 2-3 for any material)
 
 1. "Trophy Cast gets smarter the more you fish."
-2. "Other fishing tools track your catch. We learn from it."
-3. "Built on real anglers. Not influencers."
-4. "Your patterns. Your water. Your insights."
+2. "Your water. Your coach."
+3. "TC Coach learns how you fish."
+4. "Built on real anglers. Not influencers."
 5. "Tournaments, clubs, and leaderboards — all in your pocket."
 6. "Start a club with your buddies. Or join one near you."
 7. "Where Every Cast Counts."

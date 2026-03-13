@@ -210,8 +210,8 @@ export default function FlyerPage() {
               <img
                 src="/trophy-cast-logo-256.png"
                 alt="Trophy Cast Logo"
-                width={80}
-                height={80}
+                width={110}
+                height={110}
                 style={{ display: 'block', flexShrink: 0 }}
               />
               <h1 style={{
