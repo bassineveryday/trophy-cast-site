@@ -3,6 +3,19 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useAdminAuth } from '@/lib/useAdminAuth';
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ComposedChart,
+  Area,
+} from 'recharts';
 
 const FEATURE_RANGE_OPTIONS = [7, 14, 30, 90] as const;
 
@@ -54,6 +67,21 @@ interface UsageInsight {
   title: string;
   detail: string;
   tone: 'good' | 'warn' | 'info' | 'idea';
+}
+
+interface AnalyticsTrends {
+  dauTrend: { date: string; users: number }[];
+  sessionsTrend: { date: string; sessions: number; avgMinutes: number }[];
+  peakHours: { hour: number; label: string; sessions: number }[];
+  screenTime: { screen: string; members: number; percentage: number }[];
+  stickiness: { dau: number; wau: number; ratio: number };
+  weekOverWeek: {
+    thisWeek: { users: number; sessions: number; avgMinutes: number };
+    lastWeek: { users: number; sessions: number; avgMinutes: number };
+    change: { users: number; sessions: number; avgMinutes: number };
+  };
+  durationDistribution: { label: string; count: number }[];
+  today: string;
 }
 
 interface GrowthMember {
@@ -312,6 +340,8 @@ export default function AdminDashboardPage() {
   const [showAllScreens, setShowAllScreens] = useState(false);
   const [insights, setInsights] = useState<UsageInsight[]>([]);
   const [insightsLoading, setInsightsLoading] = useState(false);
+  const [trends, setTrends] = useState<AnalyticsTrends | null>(null);
+  const [trendsLoading, setTrendsLoading] = useState(false);
   const [lastUpdatedAt, setLastUpdatedAt] = useState<string | null>(null);
 
   const handleUnlock = useCallback(
@@ -447,6 +477,26 @@ export default function AdminDashboardPage() {
     }
   }, [unlocked, password, lockOut]);
 
+  const fetchTrends = useCallback(async () => {
+    if (!unlocked || !password) return;
+    setTrendsLoading(true);
+    try {
+      const r = await fetch('/api/admin/analytics-trends', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      if (r.status === 401) {
+        lockOut();
+        return;
+      }
+      setTrends(await r.json());
+    } catch {
+    } finally {
+      setTrendsLoading(false);
+    }
+  }, [unlocked, password, lockOut]);
+
   const refreshAll = useCallback(async () => {
     if (!unlocked || !password) return;
     await Promise.all([
@@ -456,9 +506,10 @@ export default function AdminDashboardPage() {
       fetchFeatures(),
       fetchWorkspace(),
       fetchInsights(),
+      fetchTrends(),
     ]);
     setLastUpdatedAt(new Date().toISOString());
-  }, [unlocked, password, fetchStats, fetchActivity, fetchGrowth, fetchFeatures, fetchWorkspace, fetchInsights]);
+  }, [unlocked, password, fetchStats, fetchActivity, fetchGrowth, fetchFeatures, fetchWorkspace, fetchInsights, fetchTrends]);
 
   // Fetch everything once when the dashboard is unlocked
   const didInitRef = useRef(false);
@@ -520,7 +571,7 @@ export default function AdminDashboardPage() {
     );
   }
 
-  const dashboardRefreshing = statsLoading || activityLoading || growthLoading || featuresLoading || workspaceLoading || insightsLoading;
+  const dashboardRefreshing = statsLoading || activityLoading || growthLoading || featuresLoading || workspaceLoading || insightsLoading || trendsLoading;
   const displayedFeatureRange = features?.rangeDays ?? featureRangeDays;
   const growthReturnRate = growth?.returnRate ?? null;
   const growthRetention7dRate = growth?.retention7dRate ?? null;
@@ -1390,6 +1441,287 @@ export default function AdminDashboardPage() {
               })}
             </div>
           )}
+        </section>
+
+        {/* Usage Analytics — Charts */}
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted">Usage Analytics</p>
+              <p className="text-xs text-copyMuted/40 mt-1">30-day trends, patterns, and breakdowns</p>
+            </div>
+            <button
+              onClick={() => { void fetchTrends(); }}
+              className="text-xs text-electric/60 hover:text-electric transition-colors"
+            >
+              ↻ refresh charts
+            </button>
+          </div>
+
+          {trendsLoading && !trends ? (
+            <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-8 text-center">
+              <p className="text-copyMuted/50 animate-pulse">Loading analytics…</p>
+            </div>
+          ) : trends ? (
+            <div className="space-y-4">
+              {/* Week-over-Week Comparison Cards */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {(() => {
+                  const wow = trends.weekOverWeek;
+                  const items: { label: string; value: number | string; prev: number | null; change: number | null }[] = [
+                    { label: 'Active Users', value: wow.thisWeek.users, prev: wow.lastWeek.users, change: wow.change.users },
+                    { label: 'Sessions', value: wow.thisWeek.sessions, prev: wow.lastWeek.sessions, change: wow.change.sessions },
+                    { label: 'Avg Session (min)', value: wow.thisWeek.avgMinutes, prev: wow.lastWeek.avgMinutes, change: wow.change.avgMinutes },
+                    { label: 'Stickiness (DAU/WAU)', value: `${trends.stickiness.ratio}%`, prev: null, change: null },
+                  ];
+                  return items.map((item) => (
+                    <div key={item.label} className="bg-deepPanel border border-liftedPanel rounded-2xl p-5">
+                      <p className="text-[10px] font-semibold uppercase tracking-widest text-copyMuted/60 mb-2">{item.label}</p>
+                      <p className="text-3xl font-heading font-bold text-copyLight">
+                        {typeof item.value === 'number' ? item.value.toLocaleString() : item.value}
+                      </p>
+                      {item.change !== null && (
+                        <div className="flex items-center gap-1.5 mt-2">
+                          <span className={`text-xs font-semibold ${item.change > 0 ? 'text-bass' : item.change < 0 ? 'text-red-400' : 'text-copyMuted/50'}`}>
+                            {item.change > 0 ? '↑' : item.change < 0 ? '↓' : '→'} {Math.abs(item.change)}%
+                          </span>
+                          <span className="text-[10px] text-copyMuted/40">vs last week</span>
+                        </div>
+                      )}
+                      {item.prev !== null && (
+                        <p className="text-[10px] text-copyMuted/30 mt-1">was {typeof item.prev === 'number' ? item.prev.toLocaleString() : item.prev}</p>
+                      )}
+                    </div>
+                  ));
+                })()}
+              </div>
+
+              {/* DAU Trend + Sessions/Duration Combo */}
+              <div className="grid lg:grid-cols-2 gap-4">
+                {/* Daily Active Users */}
+                <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+                  <p className="text-sm font-semibold text-copyLight mb-1">Daily Active Users</p>
+                  <p className="text-xs text-copyMuted/50 mb-5">unique members with sessions per day</p>
+                  <div className="h-52">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={trends.dauTrend}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                        <XAxis
+                          dataKey="date"
+                          tickFormatter={(v: string) => v.slice(5)}
+                          tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }}
+                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                          tickLine={false}
+                          interval="preserveStartEnd"
+                        />
+                        <YAxis
+                          tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }}
+                          axisLine={false}
+                          tickLine={false}
+                          allowDecimals={false}
+                        />
+                        <Tooltip
+                          contentStyle={{ backgroundColor: '#1a1f2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, fontSize: 12 }}
+                          labelStyle={{ color: 'rgba(255,255,255,0.5)' }}
+                          itemStyle={{ color: '#4AE3B5' }}
+                          labelFormatter={(v) => String(v)}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="users"
+                          stroke="#4AE3B5"
+                          strokeWidth={2}
+                          dot={false}
+                          name="Active Users"
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Sessions + Avg Duration Combo */}
+                <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+                  <p className="text-sm font-semibold text-copyLight mb-1">Sessions & Avg Duration</p>
+                  <p className="text-xs text-copyMuted/50 mb-5">daily session count (bars) and avg duration in minutes (line)</p>
+                  <div className="h-52">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <ComposedChart data={trends.sessionsTrend}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                        <XAxis
+                          dataKey="date"
+                          tickFormatter={(v: string) => v.slice(5)}
+                          tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }}
+                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                          tickLine={false}
+                          interval="preserveStartEnd"
+                        />
+                        <YAxis
+                          yAxisId="sessions"
+                          tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }}
+                          axisLine={false}
+                          tickLine={false}
+                          allowDecimals={false}
+                        />
+                        <YAxis
+                          yAxisId="duration"
+                          orientation="right"
+                          tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }}
+                          axisLine={false}
+                          tickLine={false}
+                          unit=" min"
+                        />
+                        <Tooltip
+                          contentStyle={{ backgroundColor: '#1a1f2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, fontSize: 12 }}
+                          labelStyle={{ color: 'rgba(255,255,255,0.5)' }}
+                          labelFormatter={(v) => String(v)}
+                        />
+                        <Bar
+                          yAxisId="sessions"
+                          dataKey="sessions"
+                          fill="rgba(99,102,241,0.4)"
+                          radius={[3, 3, 0, 0]}
+                          name="Sessions"
+                        />
+                        <Line
+                          yAxisId="duration"
+                          type="monotone"
+                          dataKey="avgMinutes"
+                          stroke="#F5C542"
+                          strokeWidth={2}
+                          dot={false}
+                          name="Avg Duration (min)"
+                        />
+                      </ComposedChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+
+              {/* Peak Hours + Session Duration Distribution */}
+              <div className="grid lg:grid-cols-2 gap-4">
+                {/* Peak Hours */}
+                <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+                  <p className="text-sm font-semibold text-copyLight mb-1">Peak Usage Hours</p>
+                  <p className="text-xs text-copyMuted/50 mb-5">when members open the app (MST, last 7 days)</p>
+                  <div className="h-48">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={trends.peakHours}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                        <XAxis
+                          dataKey="label"
+                          tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 9 }}
+                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                          tickLine={false}
+                          interval={2}
+                        />
+                        <YAxis
+                          tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }}
+                          axisLine={false}
+                          tickLine={false}
+                          allowDecimals={false}
+                        />
+                        <Tooltip
+                          contentStyle={{ backgroundColor: '#1a1f2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, fontSize: 12 }}
+                          labelStyle={{ color: 'rgba(255,255,255,0.5)' }}
+                          cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                        />
+                        <Bar
+                          dataKey="sessions"
+                          fill="#4AE3B5"
+                          radius={[3, 3, 0, 0]}
+                          name="Sessions"
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Session Duration Distribution */}
+                <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+                  <p className="text-sm font-semibold text-copyLight mb-1">Session Length Distribution</p>
+                  <p className="text-xs text-copyMuted/50 mb-5">how long members stay per visit (last 30 days)</p>
+                  <div className="h-48">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={trends.durationDistribution} layout="vertical">
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                        <XAxis
+                          type="number"
+                          tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }}
+                          axisLine={false}
+                          tickLine={false}
+                          allowDecimals={false}
+                        />
+                        <YAxis
+                          type="category"
+                          dataKey="label"
+                          tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }}
+                          axisLine={false}
+                          tickLine={false}
+                          width={70}
+                        />
+                        <Tooltip
+                          contentStyle={{ backgroundColor: '#1a1f2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, fontSize: 12 }}
+                          labelStyle={{ color: 'rgba(255,255,255,0.5)' }}
+                          cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                        />
+                        <Bar
+                          dataKey="count"
+                          fill="rgba(245,197,66,0.6)"
+                          radius={[0, 4, 4, 0]}
+                          name="Sessions"
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+
+              {/* Screen Popularity Chart */}
+              {trends.screenTime.length > 0 && (
+                <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
+                  <p className="text-sm font-semibold text-copyLight mb-1">Screen Popularity</p>
+                  <p className="text-xs text-copyMuted/50 mb-5">where active members spend their time (last 7 days)</p>
+                  <div style={{ height: Math.max(200, trends.screenTime.length * 36) }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={trends.screenTime} layout="vertical" margin={{ left: 20 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                        <XAxis
+                          type="number"
+                          tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }}
+                          axisLine={false}
+                          tickLine={false}
+                          allowDecimals={false}
+                        />
+                        <YAxis
+                          type="category"
+                          dataKey="screen"
+                          tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 11 }}
+                          axisLine={false}
+                          tickLine={false}
+                          width={160}
+                        />
+                        <Tooltip
+                          contentStyle={{ backgroundColor: '#1a1f2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, fontSize: 12 }}
+                          labelStyle={{ color: 'rgba(255,255,255,0.5)' }}
+                          cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                          formatter={(value, _name, props) => {
+                            const pct = (props as { payload?: { percentage?: number } }).payload?.percentage ?? 0;
+                            return [`${value} members (${pct}%)`, 'Members'];
+                          }}
+                        />
+                        <Bar
+                          dataKey="members"
+                          fill="rgba(99,102,241,0.6)"
+                          radius={[0, 4, 4, 0]}
+                          name="Members"
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : null}
         </section>
 
         {/* Bassin' Everyday — Business Drive */}

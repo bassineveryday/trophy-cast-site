@@ -256,6 +256,109 @@ export async function POST(request: Request) {
       });
     }
 
+    // --- Analysis 6: Session frequency & consistency ---
+    if (userSessionCounts.size > 0) {
+      const counts = Array.from(userSessionCounts.values());
+      const avgFrequency = counts.reduce((sum, c) => sum + c, 0) / counts.length;
+      const oneTimers = counts.filter(c => c === 1).length;
+      const powerUsers = counts.filter(c => c >= 10).length;
+      const repeatRate = Math.round(((counts.length - oneTimers) / counts.length) * 100);
+
+      if (oneTimers > counts.length * 0.6) {
+        insights.push({
+          icon: '🚨',
+          title: `${Math.round(oneTimers / counts.length * 100)}% of users had only 1 session`,
+          detail: `${oneTimers} of ${counts.length} members came once and didn't return this month. Focus on the first-time experience: onboarding flow, immediate value (today's weather, next tournament), and a follow-up notification within 24 hours.`,
+          tone: 'warn',
+        });
+      } else if (repeatRate >= 70) {
+        insights.push({
+          icon: '🔄',
+          title: `${repeatRate}% repeat visit rate`,
+          detail: `Most members who use the app come back. Avg ${avgFrequency.toFixed(1)} sessions per member this month. Strong habit formation.`,
+          tone: 'good',
+        });
+      }
+
+      if (powerUsers >= 3) {
+        insights.push({
+          icon: '⭐',
+          title: `${powerUsers} power users (10+ sessions/month)`,
+          detail: 'These are your champions. Consider reaching out for feedback, beta testing, or testimonials. They know what works and what\'s missing.',
+          tone: 'idea',
+        });
+      }
+    }
+
+    // --- Analysis 7: Session depth analysis ---
+    if (sessions.length >= 10) {
+      const longSessions = sessions.filter(s => s.duration_seconds >= 300); // 5+ min
+      const deepEngagementRate = Math.round((longSessions.length / sessions.length) * 100);
+
+      if (deepEngagementRate >= 40) {
+        insights.push({
+          icon: '🎯',
+          title: `${deepEngagementRate}% deep engagement (5+ min sessions)`,
+          detail: 'Members are finding enough value to stay 5+ minutes. These are likely using tournaments, catch logging, or the coach — your core features.',
+          tone: 'good',
+        });
+      } else if (deepEngagementRate < 20) {
+        insights.push({
+          icon: '⚡',
+          title: `Only ${deepEngagementRate}% of sessions last 5+ minutes`,
+          detail: 'Most visits are quick check-ins. To deepen engagement: add daily content (fishing tip, weather update), make the home screen a dashboard with personalized data, or surface unread messages prominently.',
+          tone: 'idea',
+        });
+      }
+    }
+
+    // --- Analysis 8: Day-of-week patterns ---
+    if (recentSessions.length >= 14) {
+      const dayCounts = new Array(7).fill(0);
+      for (const s of recentSessions) {
+        const day = new Date(s.created_at).getDay();
+        dayCounts[day]++;
+      }
+      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const peakDayIdx = dayCounts.indexOf(Math.max(...dayCounts));
+      const lowDayIdx = dayCounts.indexOf(Math.min(...dayCounts));
+      const peakDay = dayNames[peakDayIdx];
+      const lowDay = dayNames[lowDayIdx];
+
+      if (dayCounts[peakDayIdx] > dayCounts[lowDayIdx] * 2) {
+        insights.push({
+          icon: '📅',
+          title: `${peakDay}s are your busiest day`,
+          detail: `${dayCounts[peakDayIdx]} sessions on ${peakDay}s vs ${dayCounts[lowDayIdx]} on ${lowDay}s. Time your weekly email, announcements, and tournament updates for ${peakDay} morning to catch peak attention.`,
+          tone: 'idea',
+        });
+      }
+    }
+
+    // --- Analysis 9: New user first-week behavior ---
+    const thirtyDaysAgoDate = new Date(thirtyDaysAgo);
+    const newProfiles = profiles.filter(p => new Date(p.created_at).getTime() >= thirtyDaysAgoDate.getTime());
+    if (newProfiles.length >= 3) {
+      const newWithSessions = newProfiles.filter(p => userSessionCounts.has(p.id));
+      const activationRate = Math.round((newWithSessions.length / newProfiles.length) * 100);
+
+      if (activationRate < 50) {
+        insights.push({
+          icon: '🆕',
+          title: `Only ${activationRate}% of new signups are active`,
+          detail: `${newWithSessions.length} of ${newProfiles.length} recent signups have logged tracked sessions. Is the signup flow leading to immediate value? Consider a "welcome tour" or automated first-day message from a TD.`,
+          tone: 'warn',
+        });
+      } else {
+        insights.push({
+          icon: '🎉',
+          title: `${activationRate}% new user activation rate`,
+          detail: `${newWithSessions.length} of ${newProfiles.length} recent signups are actively using the app. Onboarding is working — keep monitoring to make sure it stays above 50%.`,
+          tone: 'good',
+        });
+      }
+    }
+
     return NextResponse.json({ insights });
   } catch {
     return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
