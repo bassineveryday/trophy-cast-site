@@ -306,7 +306,7 @@ function HalfFlyer() {
               lineHeight: 0.98,
               letterSpacing: '-0.045em'
             }}>
-              Teach TC Coach.
+              Teach your personal coach.
             </p>
             <p style={{ 
               fontSize: 28,
@@ -344,7 +344,7 @@ function HalfFlyer() {
           
           {[
             { label: '01', title: 'One-breath logging', body: 'Log catches before the details fade.' },
-            { label: '02', title: 'Teach TC Coach', body: 'Every catch teaches your personal coach.' },
+            { label: '02', title: 'Teach your personal coach', body: 'Every catch teaches your personal coach.' },
             { label: '03', title: 'Real angler signal', body: 'See what tends to work where you fish.' },
             { label: '04', title: 'Local anglers, real clubs', body: 'Chat and learn with anglers who actually fish.' },
             { label: '05', title: 'Club tools built in', body: 'Tournaments, AOY, members, and board tools.' },

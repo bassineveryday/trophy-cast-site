@@ -42,7 +42,7 @@ your go-to patterns, the adjustments that work for YOU.
 ### 🏆 Trophy Cast
 
 **Your water. Your coach.**
-**Teach TC Coach. Fish with confidence.**
+**Teach your personal coach. Fish with confidence.**
 
 TC Coach learns how you fish.
 Real angler signal helps show what tends to
