@@ -441,7 +441,7 @@ function PortraitHalfFlyer() {
               boxSizing: 'border-box',
             }}
           >
-            <div style={{ fontSize: 12.6, lineHeight: 1.1, marginBottom: 1, color: point.featured ? COLORS.blue : COLORS.greenDark, fontWeight: 900 }}>{point.title}</div>
+            <div style={{ fontSize: 12.6, lineHeight: 1.1, marginBottom: 1, color: COLORS.greenDark, fontWeight: 900 }}>{point.title}</div>
             <div style={{ fontSize: 10.2, lineHeight: 1.2, color: COLORS.text }}>{point.body}</div>
           </div>
         ))}
