@@ -139,52 +139,57 @@ function DBMHalfFlyer() {
         background: '#ffffff',
         borderLeft: '5px solid #88AC2E',
         display: 'flex', flexDirection: 'column', alignItems: 'center',
-        justifyContent: 'space-between', padding: '26px 18px 22px', position: 'relative',
+        justifyContent: 'space-between', padding: '20px 18px 20px', position: 'relative',
       }}>
 
         {/* Top section */}
         <div style={{ textAlign: 'center', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ width: 40, height: 3, background: '#88AC2E', borderRadius: 2, margin: '0 auto 16px' }} />
+          <div style={{ width: 44, height: 3, background: '#88AC2E', borderRadius: 2, margin: '0 auto 8px' }} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/dbm-logo-transparent.png"
             alt="Denver BassMasters logo"
             height={110}
-            style={{ display: 'block', margin: '0 0 4px', objectFit: 'contain' }}
+            style={{ display: 'block', margin: '0 0 1px', objectFit: 'contain' }}
           />
-          <p style={{ fontSize: 9.5, color: '#5D6D24', margin: '0', fontStyle: 'italic', fontWeight: 500, letterSpacing: '0.03em', lineHeight: 1.45, textAlign: 'center' }}>
+          <p style={{ fontSize: 10, color: '#3A5C12', margin: '0', fontStyle: 'italic', fontWeight: 600, letterSpacing: '0.02em', lineHeight: 1.35, textAlign: 'center' }}>
             Building better anglers<br />since the early &lsquo;70s
           </p>
 
           {/* DBM Family */}
-          <div style={{ margin: '10px 0 0', textAlign: 'center', width: '100%' }}>
-            <p style={{ fontSize: 7.5, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#88AC2E', margin: '0 0 10px' }}>DBM Family</p>
-            <div style={{ display: 'flex', gap: 14, justifyContent: 'center', alignItems: 'center' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+          <div style={{ margin: '6px 0 0', textAlign: 'center', width: '100%' }}>
+            <p style={{ fontSize: 8, fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#6B8E23', margin: '0 0 8px' }}>DBM Family</p>
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'center', alignItems: 'flex-start' }}>
+              <div style={{ width: 78, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                <div style={{ height: 46, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/Denver%20Bassmaster%20Junior's%20logo%20transparent..png" alt="DBM Juniors" height={38} style={{ objectFit: 'contain', maxWidth: 82, display: 'block' }} />
-                <span style={{ fontSize: 6.5, color: '#6B7F35', letterSpacing: '0.06em' }}>Juniors Program</span>
+                  <img src="/Denver%20Bassmaster%20Junior's%20logo%20transparent..png" alt="DBM Juniors" height={42} style={{ objectFit: 'contain', maxWidth: 88, display: 'block' }} />
+                </div>
+                <span style={{ fontSize: 6.1, color: '#6B7F35', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>Juniors Program</span>
               </div>
-              <div style={{ width: 1, height: 24, background: '#d4e4b0' }} />
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+              <div style={{ width: 1, height: 30, background: '#d4e4b0', marginTop: 8 }} />
+              <div style={{ width: 78, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                <div style={{ height: 46, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/FRBC%20Logo.png" alt="FRBC" height={32} style={{ objectFit: 'contain', maxWidth: 64, display: 'block' }} />
-                <span style={{ fontSize: 6.5, color: '#6B7F35', letterSpacing: '0.06em' }}>Front Range Bass Club</span>
+                  <img src="/FRBC%20Logo.png" alt="FRBC" height={40} style={{ objectFit: 'contain', maxWidth: 70, display: 'block' }} />
+                </div>
+                <span style={{ fontSize: 5.8, color: '#6B7F35', letterSpacing: '0.03em', whiteSpace: 'nowrap' }}>Front Range Bass Club</span>
               </div>
             </div>
           </div>
 
-          <div style={{ width: '100%', height: 1, background: '#e8f0d8', margin: '12px 0 0' }} />
+          <div style={{ width: '100%', height: 1, background: '#e8f0d8', margin: '10px 0 0' }} />
         </div>
 
         {/* Champion badge */}
         <div style={{ width: '100%', marginTop: 'auto', marginBottom: 'auto' }}>
           <div style={{
-            background: '#FFFBF0', border: '1px solid #D4AF37',
-            borderRadius: 8, padding: '7px 10px', fontSize: 9.5, color: '#8B6914', fontWeight: 700, textAlign: 'center', lineHeight: 1.4,
+            background: 'linear-gradient(180deg, #FFF9E8 0%, #FDF1CC 100%)', border: '1.5px solid #D4AF37',
+            borderRadius: 10, padding: '10px 12px', fontSize: 10.5, color: '#7A5810', fontWeight: 800, textAlign: 'center', lineHeight: 1.35,
+            boxShadow: '0 3px 8px rgba(212,175,55,0.18)',
           }}>
             🏆 Colorado Bass Nation<br />Club Trophy<br />
-            <span style={{ fontSize: 8.5, fontWeight: 400, color: '#B8902A' }}>2024–2025 Champions</span>
+            <span style={{ fontSize: 9, fontWeight: 600, color: '#A97A13' }}>2024–2025 Champions</span>
           </div>
         </div>
 
