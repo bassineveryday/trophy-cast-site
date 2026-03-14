@@ -126,25 +126,45 @@ export default function DBMPrintFlyerPage() {
       color-adjust: exact !important;
     }
     @media print {
+      body > main > * { display: none !important; }
+      body > main > .print-wrap { display: block !important; }
       .no-print { display: none !important; }
       .sheet-frame {
-        overflow: visible !important;
+        width: 11in !important;
+        height: 8.5in !important;
+        overflow: hidden !important;
         display: block !important;
-        padding-bottom: 0 !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
       }
       .sheet-shell {
-        width: auto !important;
-        height: auto !important;
+        width: 11in !important;
+        height: 8.5in !important;
+        margin: 0 auto !important;
+        position: relative !important;
       }
       body { background: #fff !important; margin: 0; padding: 0; }
-      .print-wrap { padding: 0 !important; background: #fff !important; }
+      .print-wrap {
+        width: 11in !important;
+        height: 8.5in !important;
+        min-height: 0 !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        gap: 0 !important;
+        display: block !important;
+        overflow: hidden !important;
+        background: #fff !important;
+      }
       .sheet {
         width: 11in !important;
         min-width: 11in !important;
         height: 8.5in !important;
         margin: 0 !important;
         position: static !important;
+        left: auto !important;
+        top: auto !important;
         transform: none !important;
+        zoom: 0.82 !important;
         box-shadow: none !important;
         border: none !important;
         border-radius: 0 !important;
