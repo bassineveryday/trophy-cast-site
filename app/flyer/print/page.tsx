@@ -26,10 +26,10 @@ const CSS_DPI = 96;
 const PAGE_WIDTH_IN = 11;
 const PAGE_HEIGHT_IN = 8.5;
 const PAGE_FRAME_SIDE_IN = 0.13;
-const PAGE_FRAME_TOP_IN = 0.13;
-const PAGE_FRAME_BOTTOM_IN = 0.13;
+const PAGE_FRAME_TOP_IN = 0.06;
+const PAGE_FRAME_BOTTOM_IN = 0.06;
 const CENTER_GAP_IN = 0.5;
-const SCREEN_PAGE_FRAME_SIDE_PX = Math.round(PAGE_FRAME_SIDE_IN * CSS_DPI);
+const SCREEN_PAGE_FRAME_SIDE_PX = Math.ceil(PAGE_FRAME_SIDE_IN * CSS_DPI);
 const SCREEN_PAGE_FRAME_TOP_PX = Math.round(PAGE_FRAME_TOP_IN * CSS_DPI);
 const SCREEN_PAGE_FRAME_BOTTOM_PX = Math.round(PAGE_FRAME_BOTTOM_IN * CSS_DPI);
 const SCREEN_CENTER_GAP_PX = Math.round(CENTER_GAP_IN * CSS_DPI);
@@ -47,6 +47,9 @@ const HOW_IT_WORKS_STEPS: HowItWorksStep[] = [
   { icon: '✨', title: 'TC Coach', detail: 'Learns your water, gear, and how you fish' },
   { imageSrc: '/TrophyCast_FishMark_transparent.png', imageAlt: 'Trophy Cast fish mark', title: 'Level Up', detail: 'Build confidence, fish smarter, become a better angler' },
 ];
+
+const JOIN_URL = 'https://eepurl.com/jAjfYY';
+const JOIN_LABEL = 'eepurl.com/jAjfYY';
 
 export default function PrintFlyerPage() {
   const [downloading, setDownloading] = useState(false);
@@ -279,8 +282,7 @@ function FlyerCard() {
       width: '100%', height: '100%',
       display: 'flex', flexDirection: 'column',
       boxSizing: 'border-box',
-      outline: `3px solid ${TEAL}`,
-      outlineOffset: '-3px',
+      border: `3px solid ${TEAL}`,
       overflow: 'hidden',
     }}>
 
@@ -290,10 +292,10 @@ function FlyerCard() {
       {/* Header + hero */}
       <div style={{
         background: `linear-gradient(180deg, ${LIGHT_TEAL} 0%, ${MID_TEAL} 40%, ${LIGHT_TEAL} 100%)`,
-        padding: '14px 20px 12px',
+        padding: '12px 18px 10px',
         flexShrink: 0,
       }}>
-        <div style={{ paddingBottom: 8 }}>
+        <div style={{ paddingBottom: 6 }}>
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12 }}>
             <div style={{ width: 62, height: 78, flexShrink: 0, overflow: 'hidden' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -327,27 +329,27 @@ function FlyerCard() {
         </div>
 
         <div style={{
-          paddingTop: 12,
+          paddingTop: 10,
           display: 'grid',
-          gridTemplateColumns: '1fr 184px',
-          gap: 16,
+          gridTemplateColumns: '1fr 180px',
+          gap: 14,
           alignItems: 'stretch',
         }}>
           <div>
             <p style={{ fontSize: 8, fontWeight: 800, color: TEAL, margin: '0 0 3px', letterSpacing: '0.16em', textTransform: 'uppercase' }}>
               Your water. Your patterns. Your coach.
             </p>
-            <p style={{ fontSize: 27, fontWeight: 900, color: NAVY, margin: 0, lineHeight: 1.05, letterSpacing: '-1px' }}>
+            <p style={{ fontSize: 26, fontWeight: 900, color: NAVY, margin: 0, lineHeight: 1.03, letterSpacing: '-1px' }}>
               It gets smarter
             </p>
-            <p style={{ fontSize: 27, fontWeight: 900, color: GOLD, margin: '1px 0 0', lineHeight: 1.05, letterSpacing: '-1px' }}>
+            <p style={{ fontSize: 26, fontWeight: 900, color: GOLD, margin: '1px 0 0', lineHeight: 1.03, letterSpacing: '-1px' }}>
               the more you fish.
             </p>
-            <div style={{ marginTop: 8 }}>
-              <p style={{ fontSize: 10.5, fontWeight: 800, color: NAVY, margin: '0 0 3px' }}>
+            <div style={{ marginTop: 6 }}>
+              <p style={{ fontSize: 10.2, fontWeight: 800, color: NAVY, margin: '0 0 2px' }}>
                 Not another fishing app.
               </p>
-              <p style={{ fontSize: 9.5, color: TEXT_SECONDARY, margin: 0, lineHeight: 1.34, fontWeight: 500, fontFamily: "'Raleway', sans-serif" }}>
+              <p style={{ fontSize: 9, color: TEXT_SECONDARY, margin: 0, lineHeight: 1.28, fontWeight: 500, fontFamily: "'Raleway', sans-serif" }}>
                 Trophy Cast learns your patterns, sharpens your skills, and coaches you to catch more fish.
               </p>
             </div>
@@ -359,35 +361,35 @@ function FlyerCard() {
               background: 'rgba(255,255,255,0.84)',
               border: '1px solid rgba(46,110,61,0.18)',
               borderRadius: 14,
-              padding: '10px 12px',
+              padding: '8px 10px',
               boxShadow: '0 10px 22px rgba(12,26,35,0.08)',
               display: 'flex',
               flexDirection: 'column',
-              gap: 8,
+              gap: 6,
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{
-                  width: 24,
-                  height: 24,
+                  width: 22,
+                  height: 22,
                   borderRadius: 999,
                   background: 'rgba(46,110,61,0.12)',
                   color: GREEN,
-                  fontSize: 13,
+                  fontSize: 12,
                   fontWeight: 900,
-                  lineHeight: '24px',
+                  lineHeight: '22px',
                   textAlign: 'center',
                   flexShrink: 0,
                 }}>✨</span>
                 <div>
-                  <p style={{ fontSize: 12, fontWeight: 800, color: NAVY, margin: 0 }}>
+                  <p style={{ fontSize: 11.5, fontWeight: 800, color: NAVY, margin: 0 }}>
                     TC Coach
                   </p>
-                  <p style={{ fontSize: 7.5, color: GREEN, fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', margin: '1px 0 0' }}>
+                  <p style={{ fontSize: 7.1, color: GREEN, fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', margin: '1px 0 0' }}>
                     Powered by your catch history
                   </p>
                 </div>
               </div>
-              <p style={{ fontSize: 9.5, color: NAVY, margin: 0, lineHeight: 1.34, fontFamily: "'Raleway', sans-serif" }}>
+              <p style={{ fontSize: 9.1, color: NAVY, margin: 0, lineHeight: 1.28, fontFamily: "'Raleway', sans-serif" }}>
                 Learns your water, conditions, and adjustments instead of giving generic tips.
               </p>
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
@@ -397,8 +399,8 @@ function FlyerCard() {
                     border: '1px solid rgba(59,140,127,0.22)',
                     borderRadius: 999,
                     color: NAVY,
-                    padding: '4px 8px',
-                    fontSize: 7.5,
+                    padding: '3px 7px',
+                    fontSize: 7,
                     fontWeight: 800,
                     letterSpacing: '0.02em',
                     whiteSpace: 'nowrap',
@@ -415,36 +417,36 @@ function FlyerCard() {
 
       {/* How it works strip */}
       <div style={{
-        background: NAVY_LIGHT, padding: '9px 20px 10px',
-        display: 'flex', flexDirection: 'column', gap: 8,
+        background: NAVY_LIGHT, padding: '7px 18px 8px',
+        display: 'flex', flexDirection: 'column', gap: 6,
         flexShrink: 0,
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontSize: 9.5, fontWeight: 900, color: GOLD, letterSpacing: '0.16em', textTransform: 'uppercase' }}>How it works</span>
-          <span style={{ fontSize: 8, color: CREAM, opacity: 0.78, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Log fast → Learn your water → Level up</span>
+          <span style={{ fontSize: 9, fontWeight: 900, color: GOLD, letterSpacing: '0.16em', textTransform: 'uppercase' }}>How it works</span>
+          <span style={{ fontSize: 7.2, color: CREAM, opacity: 0.78, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Log fast → Learn your water → Level up</span>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
           {HOW_IT_WORKS_STEPS.map((step) => (
             <div key={step.title} style={{
               background: 'rgba(245,241,230,0.08)',
               border: '1px solid rgba(212,175,55,0.18)',
-              borderRadius: 12,
-              padding: '8px 8px 7px',
-              minHeight: 58,
+              borderRadius: 10,
+              padding: '6px 7px 6px',
+              minHeight: 52,
               display: 'flex',
               flexDirection: 'column',
-              gap: 4,
+              gap: 3,
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span style={{
-                  width: 20,
-                  height: 20,
+                  width: 18,
+                  height: 18,
                   borderRadius: 999,
                   background: 'rgba(212,175,55,0.18)',
                   display: 'inline-flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 10,
+                  fontSize: 9,
                   flexShrink: 0,
                 }}>
                   {step.imageSrc ? (
@@ -453,17 +455,17 @@ function FlyerCard() {
                       src={step.imageSrc}
                       alt={step.imageAlt ?? step.title}
                       style={{
-                        width: 13,
-                        height: 13,
+                        width: 12,
+                        height: 12,
                         objectFit: 'contain',
                         display: 'block',
                       }}
                     />
                   ) : step.icon}
                 </span>
-                <span style={{ fontSize: 9, color: CREAM, fontWeight: 800, letterSpacing: '0.02em' }}>{step.title}</span>
+                <span style={{ fontSize: 8.4, color: CREAM, fontWeight: 800, letterSpacing: '0.02em' }}>{step.title}</span>
               </div>
-              <span style={{ fontSize: 7.5, color: '#C9D3DA', lineHeight: 1.25, fontWeight: 600, fontFamily: "'Raleway', sans-serif" }}>{step.detail}</span>
+              <span style={{ fontSize: 7, color: '#C9D3DA', lineHeight: 1.2, fontWeight: 600, fontFamily: "'Raleway', sans-serif" }}>{step.detail}</span>
             </div>
           ))}
         </div>
@@ -477,8 +479,8 @@ function FlyerCard() {
       }}>
 
         {/* Feature list */}
-        <div style={{ padding: '7px 20px 12px', display: 'flex', flexDirection: 'column', background: `linear-gradient(180deg, ${CREAM} 0%, #FBF8F0 100%)` }}>
-          <p style={{ fontSize: 11, fontWeight: 900, color: NAVY, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 4px', borderBottom: `2px solid ${GOLD}`, paddingBottom: 3 }}>
+        <div style={{ padding: '6px 18px 8px', display: 'flex', flexDirection: 'column', background: `linear-gradient(180deg, ${CREAM} 0%, #FBF8F0 100%)`, minHeight: 0, overflow: 'hidden' }}>
+          <p style={{ fontSize: 10.5, fontWeight: 900, color: NAVY, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 3px', borderBottom: `2px solid ${GOLD}`, paddingBottom: 2 }}>
             No other app does this.
           </p>
           {[
@@ -490,20 +492,20 @@ function FlyerCard() {
             { num: '06', title: 'Built by anglers. Your grind stays yours.', desc: 'Trained by real fishermen. Not algorithms. Not influencers. And your GPS locations, sweet spots, practice routes? They live on your phone. Only.' },
           ].map((f, i, arr) => (
             <div key={f.num} style={{
-              display: 'flex', gap: 6, alignItems: 'flex-start',
-              paddingBottom: i < arr.length - 1 ? 6 : 0,
-              marginBottom: i < arr.length - 1 ? 6 : 0,
+              display: 'flex', gap: 5, alignItems: 'flex-start',
+              paddingBottom: i < arr.length - 1 ? 4 : 0,
+              marginBottom: i < arr.length - 1 ? 4 : 0,
               borderBottom: i < arr.length - 1 ? '1px solid rgba(59,140,127,0.35)' : 'none',
             }}>
               <span style={{
-                minWidth: 19, height: 19, borderRadius: 999,
+                minWidth: 17, height: 17, borderRadius: 999,
                 background: parseInt(f.num) % 2 === 1 ? GOLD : NAVY,
-                color: parseInt(f.num) % 2 === 1 ? NAVY : GOLD, fontSize: 8.5, fontWeight: 900,
-                lineHeight: '19px', textAlign: 'center', flexShrink: 0,
+                color: parseInt(f.num) % 2 === 1 ? NAVY : GOLD, fontSize: 7.8, fontWeight: 900,
+                lineHeight: '17px', textAlign: 'center', flexShrink: 0,
               }}>{f.num}</span>
               <div>
-                <p style={{ fontSize: 11, fontWeight: 800, color: NAVY, margin: 0 }}>{f.title}</p>
-                <p style={{ fontSize: 9.5, color: '#3a4a55', margin: 0, lineHeight: 1.3, fontWeight: 600, fontFamily: "'Raleway', sans-serif" }}>{f.desc}</p>
+                <p style={{ fontSize: 10.2, fontWeight: 800, color: NAVY, margin: 0 }}>{f.title}</p>
+                <p style={{ fontSize: 8.6, color: '#3a4a55', margin: 0, lineHeight: 1.22, fontWeight: 600, fontFamily: "'Raleway', sans-serif" }}>{f.desc}</p>
               </div>
             </div>
           ))}
@@ -514,45 +516,47 @@ function FlyerCard() {
         <div style={{
           background: 'linear-gradient(180deg, #FFFFFF 0%, #F6FBF8 100%)',
           borderLeft: `2px solid ${TEAL}`,
-          padding: '10px 8px',
+          padding: '8px 7px',
           display: 'flex', flexDirection: 'column',
           alignItems: 'center', justifyContent: 'flex-start',
           textAlign: 'center',
+          minHeight: 0,
+          overflow: 'hidden',
         }}>
-          <p style={{ fontSize: 9, fontWeight: 900, color: TEAL, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
+          <p style={{ fontSize: 8.5, fontWeight: 900, color: TEAL, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 5px' }}>
             Scan to join
           </p>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://trophycast.app&color=0C1A23&bgcolor=FFFFFF&qzone=2"
-            alt="QR — trophycast.app"
-            width={84}
-            height={84}
+            src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Feepurl.com%2FjAjfYY&color=0C1A23&bgcolor=FFFFFF&qzone=2"
+            alt="QR — eepurl.com/jAjfYY"
+            width={80}
+            height={80}
             style={{
               display: 'block', border: `2.5px solid ${GOLD}`,
-              borderRadius: 8, marginBottom: 6,
+              borderRadius: 8, marginBottom: 5,
             }}
           />
-          <p style={{ fontSize: 13, fontWeight: 800, color: NAVY, margin: '0 0 2px' }}>
-            trophycast.app
+          <p style={{ fontSize: 9.8, fontWeight: 800, color: NAVY, margin: '0 0 1px', lineHeight: 1.15, overflowWrap: 'anywhere' }}>
+            {JOIN_LABEL}
           </p>
-          <p style={{ fontSize: 9, color: GOLD, fontWeight: 700, margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <p style={{ fontSize: 8.4, color: GOLD, fontWeight: 700, margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Free early access
           </p>
 
           {/* Clubs running on TC */}
-          <div style={{ borderTop: `1px solid ${MID_TEAL}`, paddingTop: 5, width: '100%', marginBottom: 6 }}>
-            <p style={{ fontSize: 8, fontWeight: 900, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 3px' }}>Clubs on Trophy Cast</p>
-            <p style={{ fontSize: 8.5, fontWeight: 800, color: NAVY, margin: '0 0 1px', fontFamily: "'Montserrat', sans-serif" }}>Denver BassMasters</p>
-            <p style={{ fontSize: 8.5, fontWeight: 800, color: NAVY, margin: '0 0 1px', fontFamily: "'Montserrat', sans-serif" }}>DBM Juniors</p>
-            <p style={{ fontSize: 8.5, fontWeight: 800, color: NAVY, margin: 0, fontFamily: "'Montserrat', sans-serif" }}>Front Range Bass Club</p>
+          <div style={{ borderTop: `1px solid ${MID_TEAL}`, paddingTop: 4, width: '100%', marginBottom: 4 }}>
+            <p style={{ fontSize: 7.6, fontWeight: 900, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 2px' }}>Clubs on Trophy Cast</p>
+            <p style={{ fontSize: 8, fontWeight: 800, color: NAVY, margin: '0 0 1px', fontFamily: "'Montserrat', sans-serif" }}>Denver BassMasters</p>
+            <p style={{ fontSize: 8, fontWeight: 800, color: NAVY, margin: '0 0 1px', fontFamily: "'Montserrat', sans-serif" }}>DBM Juniors</p>
+            <p style={{ fontSize: 8, fontWeight: 800, color: NAVY, margin: 0, fontFamily: "'Montserrat', sans-serif" }}>Front Range Bass Club</p>
           </div>
 
-          <div style={{ borderTop: `1px solid #eee`, paddingTop: 6, width: '100%' }}>
-            <p style={{ fontSize: 8, fontWeight: 800, color: NAVY, margin: '0 0 3px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <div style={{ borderTop: `1px solid #eee`, paddingTop: 5, width: '100%' }}>
+            <p style={{ fontSize: 7.8, fontWeight: 800, color: NAVY, margin: '0 0 2px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               Works everywhere
             </p>
-            <p style={{ fontSize: 8, color: '#5a6a75', margin: 0, lineHeight: 1.3, fontFamily: "'Raleway', sans-serif" }}>
+            <p style={{ fontSize: 7.6, color: '#5a6a75', margin: 0, lineHeight: 1.2, fontFamily: "'Raleway', sans-serif" }}>
               iPhone · Android · Desktop
             </p>
           </div>
@@ -560,28 +564,28 @@ function FlyerCard() {
           {/* Creed strip */}
           <div style={{
             marginTop: 'auto',
-            marginLeft: -8, marginRight: -8, marginBottom: 12,
+            marginLeft: -7, marginRight: -7, marginBottom: 6,
             background: NAVY_LIGHT,
             borderTop: `1px solid ${MID_TEAL}`,
             borderRadius: 6,
-            padding: '6px 8px',
+            padding: '5px 7px',
             textAlign: 'center',
           }}>
-            <p style={{ fontSize: 8.5, fontWeight: 900, color: GOLD, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 2px' }}>The Grind is Yours.</p>
-            <p style={{ fontSize: 8, color: CREAM, margin: 0, lineHeight: 1.3, fontFamily: "'Raleway', sans-serif" }}>Your spots. Your data. Sealed.</p>
+            <p style={{ fontSize: 8, fontWeight: 900, color: GOLD, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 1px' }}>The Grind is Yours.</p>
+            <p style={{ fontSize: 7.5, color: CREAM, margin: 0, lineHeight: 1.2, fontFamily: "'Raleway', sans-serif" }}>Your spots. Your data. Sealed.</p>
           </div>
         </div>
       </div>
 
       {/* Footer */}
       <div style={{
-        background: NAVY_LIGHT, padding: '6px 20px',
+        background: NAVY_LIGHT, padding: '5px 18px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         flexShrink: 0,
       }}>
-        <span style={{ color: GOLD, fontSize: 9.5, fontWeight: 800, letterSpacing: '0.08em' }}>Trophy Cast, Inc.</span>
-        <span style={{ color: CREAM, fontSize: 8.5, opacity: 0.6, fontFamily: "'Raleway', sans-serif" }}>© 2026 · Built for anglers, by anglers.</span>
-        <span style={{ color: GOLD, fontSize: 9.5, fontWeight: 800 }}>www.trophycast.app</span>
+        <span style={{ color: GOLD, fontSize: 9, fontWeight: 800, letterSpacing: '0.08em' }}>Trophy Cast, Inc.</span>
+        <span style={{ color: CREAM, fontSize: 8, opacity: 0.6, fontFamily: "'Raleway', sans-serif" }}>© 2026 · Built for anglers, by anglers.</span>
+        <span style={{ color: GOLD, fontSize: 9, fontWeight: 800 }}>www.trophycast.app</span>
       </div>
     </div>
   );
