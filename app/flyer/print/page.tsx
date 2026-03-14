@@ -312,8 +312,8 @@ function FlyerCard() {
       }}>
 
         {/* Feature list */}
-        <div style={{ padding: '6px 20px 4px', display: 'flex', flexDirection: 'column', background: CREAM }}>
-          <p style={{ fontSize: 10, fontWeight: 900, color: NAVY, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 5px', borderBottom: `2px solid ${GOLD}`, paddingBottom: 3 }}>
+        <div style={{ padding: '8px 20px 6px', display: 'flex', flexDirection: 'column', background: CREAM }}>
+          <p style={{ fontSize: 11, fontWeight: 900, color: NAVY, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 8px', borderBottom: `2px solid ${GOLD}`, paddingBottom: 4 }}>
             No other app does this.
           </p>
           {[
@@ -326,19 +326,19 @@ function FlyerCard() {
           ].map((f, i, arr) => (
             <div key={f.num} style={{
               display: 'flex', gap: 6, alignItems: 'flex-start',
-              paddingBottom: i < arr.length - 1 ? 4 : 0,
-              marginBottom: i < arr.length - 1 ? 4 : 0,
+              paddingBottom: i < arr.length - 1 ? 6 : 0,
+              marginBottom: i < arr.length - 1 ? 6 : 0,
               borderBottom: i < arr.length - 1 ? `1px solid ${MID_TEAL}` : 'none',
             }}>
               <span style={{
-                minWidth: 18, height: 18, borderRadius: 999,
+                minWidth: 20, height: 20, borderRadius: 999,
                 background: parseInt(f.num) % 2 === 1 ? GOLD : NAVY,
-                color: parseInt(f.num) % 2 === 1 ? NAVY : GOLD, fontSize: 8, fontWeight: 900,
-                lineHeight: '18px', textAlign: 'center', flexShrink: 0,
+                color: parseInt(f.num) % 2 === 1 ? NAVY : GOLD, fontSize: 9, fontWeight: 900,
+                lineHeight: '20px', textAlign: 'center', flexShrink: 0,
               }}>{f.num}</span>
               <div>
-                <p style={{ fontSize: 10, fontWeight: 800, color: NAVY, margin: 0 }}>{f.title}</p>
-                <p style={{ fontSize: 9, color: '#5a6a75', margin: 0, lineHeight: 1.25, fontFamily: "'Raleway', sans-serif" }}>{f.desc}</p>
+                <p style={{ fontSize: 11, fontWeight: 800, color: NAVY, margin: 0 }}>{f.title}</p>
+                <p style={{ fontSize: 9.5, color: '#5a6a75', margin: '1px 0 0', lineHeight: 1.3, fontFamily: "'Raleway', sans-serif" }}>{f.desc}</p>
               </div>
             </div>
           ))}
@@ -347,13 +347,13 @@ function FlyerCard() {
           <div style={{ flex: 1 }} />
           <div style={{
             borderTop: `1.5px solid ${GOLD}`,
-            marginTop: 8,
-            paddingTop: 6,
+            paddingTop: 8,
+            paddingBottom: 4,
           }}>
-            <p style={{ fontSize: 8, fontWeight: 900, color: NAVY, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 5px' }}>
+            <p style={{ fontSize: 9, fontWeight: 900, color: NAVY, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 6px' }}>
               Also built in
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3px 14px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 14px' }}>
               {[
                 '30 trophies & daily missions',
                 'TC Coach — smarter every trip',
@@ -363,8 +363,8 @@ function FlyerCard() {
                 'Works on any device — no app store',
               ].map((item) => (
                 <div key={item} style={{ display: 'flex', gap: 4, alignItems: 'flex-start' }}>
-                  <span style={{ color: GOLD, fontSize: 6, lineHeight: '12px', flexShrink: 0 }}>●</span>
-                  <span style={{ fontSize: 8.5, color: '#5a6a75', lineHeight: 1.3, fontFamily: "'Raleway', sans-serif" }}>{item}</span>
+                  <span style={{ color: GOLD, fontSize: 7, lineHeight: '13px', flexShrink: 0 }}>●</span>
+                  <span style={{ fontSize: 9, color: '#5a6a75', lineHeight: 1.3, fontFamily: "'Raleway', sans-serif" }}>{item}</span>
                 </div>
               ))}
             </div>
