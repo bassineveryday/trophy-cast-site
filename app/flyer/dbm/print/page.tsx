@@ -9,7 +9,7 @@ const SHEET_HEIGHT_IN = 8;
 const CSS_DPI = 96;
 const SHEET_WIDTH_PX = SHEET_WIDTH_IN * CSS_DPI;
 const SHEET_HEIGHT_PX = SHEET_HEIGHT_IN * CSS_DPI;
-const PRINT_SCALE = 0.82;
+const PRINT_SCALE = 0.79;
 
 const COLORS = {
   green: '#88AC2E',
@@ -178,10 +178,18 @@ export default function DBMPrintFlyerPage() {
         padding-right: 0.2in !important;
       }
       .cut-guide {
-        width: 0 !important;
-        border-left: 1px dashed #A7B58C !important;
+        width: 0.5in !important;
+        border-left: none !important;
         padding: 0 !important;
         overflow: hidden !important;
+        background: #fff !important;
+        position: relative !important;
+      }
+      .cut-guide::after {
+        content: '';
+        position: absolute;
+        top: 0; bottom: 0; left: 50%;
+        border-left: 1px dashed #A7B58C;
       }
       .cut-guide * { display: none !important; }
     }
@@ -338,7 +346,7 @@ function SheetPreview({ label, children, previewScale }: { label: string; childr
               transformOrigin: 'top center',
               background: COLORS.paper,
               display: 'grid',
-              gridTemplateColumns: '1fr 0px 1fr',
+              gridTemplateColumns: '1fr 0.5in 1fr',
               border: 'none',
               borderRadius: 0,
               overflow: 'hidden',
@@ -358,7 +366,7 @@ function CutGuide() {
     <div
       className="cut-guide"
       style={{
-        width: 1,
+        width: '0.5in',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -366,9 +374,15 @@ function CutGuide() {
         justifyContent: 'center',
         background: '#FFFFFF',
         boxSizing: 'border-box',
-        borderLeft: '1px dashed #A7B58C',
+        position: 'relative',
       }}
-    />
+    >
+      <div style={{
+        position: 'absolute', top: 0, bottom: 0, left: '50%',
+        borderLeft: '1px dashed #A7B58C',
+        pointerEvents: 'none',
+      }} />
+    </div>
   );
 }
 
