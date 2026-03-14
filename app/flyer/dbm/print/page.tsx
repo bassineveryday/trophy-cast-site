@@ -9,7 +9,7 @@ const SHEET_HEIGHT_IN = 8;
 const CSS_DPI = 96;
 const SHEET_WIDTH_PX = SHEET_WIDTH_IN * CSS_DPI;
 const SHEET_HEIGHT_PX = SHEET_HEIGHT_IN * CSS_DPI;
-const PRINT_SCALE = 0.76;
+const PRINT_SCALE = 0.74;
 
 const COLORS = {
   green: '#88AC2E',
@@ -159,41 +159,42 @@ export default function DBMPrintFlyerPage() {
         background: #fff !important;
       }
       .sheet-frame {
-        width: auto !important;
-        height: auto !important;
-        overflow: visible !important;
+        width: 11in !important;
+        height: 8.5in !important;
+        overflow: hidden !important;
         display: block !important;
         padding: 0 !important;
         margin: 0 !important;
       }
       .sheet-shell {
-        width: auto !important;
-        height: auto !important;
+        width: 11in !important;
+        height: 8.5in !important;
         margin: 0 !important;
         position: static !important;
-        overflow: visible !important;
+        overflow: hidden !important;
       }
       .sheet {
-        width: calc(11in / ${PRINT_SCALE}) !important;
-        min-width: calc(11in / ${PRINT_SCALE}) !important;
-        height: auto !important;
-        min-height: calc(8.5in / ${PRINT_SCALE}) !important;
+        width: 11in !important;
+        min-width: 11in !important;
+        height: 8.5in !important;
         margin: 0 !important;
         position: static !important;
         left: auto !important;
         top: auto !important;
         transform: none !important;
-        zoom: ${PRINT_SCALE} !important;
         box-shadow: none !important;
         border: none !important;
         border-radius: 0 !important;
-        overflow: visible !important;
+        overflow: hidden !important;
         display: grid !important;
         grid-template-columns: 1fr 0px 1fr !important;
+        align-items: start !important;
       }
       .portrait-half {
         width: auto !important;
         height: auto !important;
+        align-self: start !important;
+        zoom: ${PRINT_SCALE} !important;
         padding-left: 0.2in !important;
         padding-right: 0.2in !important;
       }
@@ -504,8 +505,8 @@ function PortraitHalfFlyer() {
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 104px', gap: 6, marginTop: 1, alignItems: 'start' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 104px', gap: 6, marginTop: 1, flex: 1, alignItems: 'stretch' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 3, justifyContent: 'space-between' }}>
           <div style={{ background: COLORS.greenSoft, border: `1px solid ${COLORS.line}`, borderRadius: 10, padding: '4px 8px', textAlign: 'center' }}>
             <div style={{ fontSize: 11, color: COLORS.greenMuted, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 2 }}>
               DBM Family
@@ -536,7 +537,7 @@ function PortraitHalfFlyer() {
           </div>
         </div>
 
-        <div style={{ width: 104, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center', gap: 4 }}>
+        <div style={{ width: 104, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 6 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={QR_IMAGE}
