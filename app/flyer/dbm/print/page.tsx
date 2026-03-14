@@ -9,7 +9,7 @@ const SHEET_HEIGHT_IN = 8;
 const CSS_DPI = 96;
 const SHEET_WIDTH_PX = SHEET_WIDTH_IN * CSS_DPI;
 const SHEET_HEIGHT_PX = SHEET_HEIGHT_IN * CSS_DPI;
-const PRINT_SCALE = 0.79;
+const PRINT_SCALE = 0.76;
 
 const COLORS = {
   green: '#88AC2E',
@@ -127,6 +127,22 @@ export default function DBMPrintFlyerPage() {
       color-adjust: exact !important;
     }
     @media print {
+      body > header,
+      body > footer,
+      body > script,
+      nav {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+      }
+      body {
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      body > main {
+        padding: 0 !important;
+        margin: 0 !important;
+      }
       body > main > * { display: none !important; }
       body > main > .print-wrap { display: block !important; }
       .no-print { display: none !important; }
