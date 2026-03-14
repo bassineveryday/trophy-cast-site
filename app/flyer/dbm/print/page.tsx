@@ -28,27 +28,35 @@ const COLORS = {
 const INFO_CARDS = [
   {
     title: 'Boater & Co-Angler Events',
-    body: 'Every tournament pairs a boater and co-angler — no boat required. Fish competitively from day one.',
+    body: 'Every tournament pairs a boater and co-angler — no boat required. Fish competitively from day one and learn on the water.',
   },
   {
     title: 'One Path, Five Levels',
-    body: 'DBM → State Qualifier → Regionals → Nationals → a shot at the Bassmaster Classic.',
+    body: 'DBM → Colorado State Qualifier → Regionals → Nationals → a shot at the Bassmaster Classic.',
   },
   {
     title: 'Juniors to Adults',
-    body: 'Start in our Juniors program, move to high school, then step into adult DBM — we grow with you.',
+    body: 'Start in our Juniors program, move to high school competition, then step into adult DBM — we help you grow every step of the way.',
   },
   {
     title: 'Conservation & Community',
-    body: 'Member-led committees drive lake conservation, youth outreach, and club growth.',
+    body: 'Member-led committees drive lake conservation, youth outreach, and club growth — your voice helps shape the future.',
+  },
+  {
+    title: 'A Club That Makes You Better',
+    body: 'Monthly speakers, seasonal strategy, electronics tips, and mentorship help anglers improve faster.',
   },
   {
     title: 'Angler of the Year Race',
-    body: 'Every tournament earns AOY points. Compete all season — your rank updates after every event.',
+    body: 'Every tournament earns AOY points. Compete all season for the top spot — your rank updates after every event.',
+  },
+  {
+    title: 'Official Club App',
+    body: 'Trophy Cast gives members pairings, AOY standings, stats, messages, and club communication in one place.',
   },
   {
     title: 'More Than a Club',
-    body: 'Monthly speakers, mentorship, lifelong friendships, and a crew that shows up on and off the water.',
+    body: 'Lifelong friendships, fishing partners, and a crew that shows up for each other — on and off the water.',
   },
 ];
 
@@ -145,6 +153,8 @@ export default function DBMPrintFlyerPage() {
         width: 50% !important;
         padding-left: 0.2in !important;
         padding-right: 0.2in !important;
+        transform: scale(0.88) !important;
+        transform-origin: top center !important;
       }
       .cut-guide {
         width: 0 !important;
@@ -348,27 +358,27 @@ function PortraitHalfFlyer() {
       style={{
         height: '100%',
         background: COLORS.paper,
-        padding: '4px 18px 4px',
+        padding: '8px 20px 8px',
         display: 'flex',
         flexDirection: 'column',
         boxSizing: 'border-box',
       }}
     >
-      <div style={{ height: 3, width: '100%', background: COLORS.green, borderRadius: 999, marginBottom: 2 }} />
+      <div style={{ height: 4, width: '100%', background: COLORS.green, borderRadius: 999, marginBottom: 4 }} />
 
       <div style={{ textAlign: 'center' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/Loge%20Transparent%20background.png"
           alt="Denver BassMasters logo"
-          height={90}
-          style={{ display: 'block', height: 90, width: 'auto', maxWidth: '100%', margin: '0 auto -18px', objectFit: 'contain' }}
+          height={158}
+          style={{ display: 'block', height: 158, width: 'auto', maxWidth: '100%', margin: '0 auto -38px', objectFit: 'contain' }}
         />
-        <div style={{ marginTop: '0.06in' }}>
-          <h1 style={{ fontSize: 25, lineHeight: 0.93, margin: '0 0 2px', color: COLORS.ink, fontWeight: 900, letterSpacing: '-0.05em' }}>
+        <div style={{ marginTop: '0.3in' }}>
+          <h1 style={{ fontSize: 33.3, lineHeight: 0.93, margin: '0 0 5px', color: COLORS.ink, fontWeight: 900, letterSpacing: '-0.05em' }}>
             You Don&rsquo;t Need <span style={{ color: COLORS.greenDark }}>a Boat.</span>
           </h1>
-          <p style={{ fontSize: 12, lineHeight: 1.08, margin: '3px 0 5px', color: COLORS.text, fontWeight: 600, fontStyle: 'italic' }}>
+          <p style={{ fontSize: 15.5, lineHeight: 1.08, margin: '8px 0 10px', color: COLORS.text, fontWeight: 600, fontStyle: 'italic' }}>
             Just a love for bass fishing.
           </p>
           <div
@@ -402,15 +412,15 @@ function PortraitHalfFlyer() {
         </div>
       </div>
 
-      <div style={{ height: 1, background: COLORS.line, margin: '3px 20px 0', borderRadius: 1 }} />
+      <div style={{ height: 1, background: COLORS.line, margin: '7px 20px 0', borderRadius: 1 }} />
 
       <div
         style={{
-          marginTop: 3,
+          marginTop: 5,
           background: COLORS.blueSoft,
           border: `1.5px solid ${COLORS.blue}`,
           borderRadius: 9,
-          padding: '3px 9px',
+          padding: '5px 9px',
           display: 'flex',
           alignItems: 'center',
         }}
@@ -420,7 +430,7 @@ function PortraitHalfFlyer() {
         <div style={{ flex: 1, textAlign: 'right', color: COLORS.blue, fontSize: 10.8, fontWeight: 700 }}>Bass Pro Shops Denver</div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 3, rowGap: 1, marginTop: 3, alignContent: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 4, rowGap: 2, marginTop: 7, alignContent: 'start' }}>
         {INFO_CARDS.map((point) => (
           <div
             key={point.title}
@@ -428,18 +438,18 @@ function PortraitHalfFlyer() {
               background: `linear-gradient(180deg, ${COLORS.greenCard} 0%, ${COLORS.greenCardSoft} 100%)`,
               border: `1px solid #C7D9AE`,
               borderRadius: 7,
-              padding: '2px 5px 3px',
+              padding: '4px 7px 5px',
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.72), 0 0 0 1px rgba(136,172,46,0.08)',
               boxSizing: 'border-box',
             }}
           >
-            <div style={{ fontSize: 10, lineHeight: 1.05, marginBottom: 0, color: COLORS.greenDark, fontWeight: 900 }}>{point.title}</div>
-            <div style={{ fontSize: 8.2, lineHeight: 1.12, color: COLORS.text }}>{point.body}</div>
+            <div style={{ fontSize: 12.6, lineHeight: 1.1, marginBottom: 1, color: COLORS.greenDark, fontWeight: 900 }}>{point.title}</div>
+            <div style={{ fontSize: 10.2, lineHeight: 1.2, color: COLORS.text }}>{point.body}</div>
           </div>
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 96px', gap: 6, marginTop: 1, alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 104px', gap: 8, marginTop: 2, alignItems: 'start' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <div style={{ background: COLORS.greenSoft, border: `1px solid ${COLORS.line}`, borderRadius: 10, padding: '4px 8px', textAlign: 'center' }}>
             <div style={{ fontSize: 10.0, color: COLORS.greenMuted, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 2 }}>
@@ -511,7 +521,7 @@ function PortraitHalfFlyer() {
         </div>
       </div>
 
-      <div style={{ marginTop: 2, paddingTop: 2, borderTop: `1px solid ${COLORS.line}` }}>
+      <div style={{ marginTop: 3, paddingTop: 3, borderTop: `1px solid ${COLORS.line}` }}>
         <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '100%' }}>
           {SPONSORS.map((sponsor) => (
             <div
@@ -540,7 +550,7 @@ function PortraitHalfFlyer() {
         </div>
       </div>
 
-      <div style={{ height: 3, width: '100%', background: COLORS.green, borderRadius: 999, marginTop: 2 }} />
+      <div style={{ height: 4, width: '100%', background: COLORS.green, borderRadius: 999, marginTop: 3 }} />
     </div>
   );
 }
