@@ -326,8 +326,8 @@ function FlyerCard() {
           ].map((f, i, arr) => (
             <div key={f.num} style={{
               display: 'flex', gap: 6, alignItems: 'flex-start',
-              paddingBottom: i < arr.length - 1 ? 2 : 0,
-              marginBottom: i < arr.length - 1 ? 2 : 0,
+              paddingBottom: i < arr.length - 1 ? 4 : 0,
+              marginBottom: i < arr.length - 1 ? 4 : 0,
               borderBottom: i < arr.length - 1 ? `1px solid ${MID_TEAL}` : 'none',
             }}>
               <span style={{
@@ -343,6 +343,32 @@ function FlyerCard() {
             </div>
           ))}
 
+          {/* Also built in — light version */}
+          <div style={{ flex: 1 }} />
+          <div style={{
+            borderTop: `1.5px solid ${GOLD}`,
+            marginTop: 8,
+            paddingTop: 6,
+          }}>
+            <p style={{ fontSize: 8, fontWeight: 900, color: NAVY, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 5px' }}>
+              Also built in
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3px 14px' }}>
+              {[
+                '30 trophies & daily missions',
+                'TC Coach — smarter every trip',
+                'Catch map with GPS pins',
+                'Gear library — coach picks your setup',
+                'Multi-species: bass, walleye & more',
+                'Works on any device — no app store',
+              ].map((item) => (
+                <div key={item} style={{ display: 'flex', gap: 4, alignItems: 'flex-start' }}>
+                  <span style={{ color: GOLD, fontSize: 6, lineHeight: '12px', flexShrink: 0 }}>●</span>
+                  <span style={{ fontSize: 8.5, color: '#5a6a75', lineHeight: 1.3, fontFamily: "'Raleway', sans-serif" }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
 
         </div>
 

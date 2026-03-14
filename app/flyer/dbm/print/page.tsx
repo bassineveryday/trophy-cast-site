@@ -28,35 +28,27 @@ const COLORS = {
 const INFO_CARDS = [
   {
     title: 'Boater & Co-Angler Events',
-    body: 'Every tournament pairs a boater and co-angler — no boat required. Fish competitively from day one and learn on the water.',
+    body: 'Every tournament pairs a boater and co-angler — no boat required. Fish competitively from day one.',
   },
   {
     title: 'One Path, Five Levels',
-    body: 'DBM → Colorado State Qualifier → Regionals → Nationals → a shot at the Bassmaster Classic.',
+    body: 'DBM → State Qualifier → Regionals → Nationals → a shot at the Bassmaster Classic.',
   },
   {
     title: 'Juniors to Adults',
-    body: 'Start in our Juniors program, move to high school competition, then step into adult DBM — we help you grow every step of the way.',
+    body: 'Start in our Juniors program, move to high school, then step into adult DBM — we grow with you.',
   },
   {
     title: 'Conservation & Community',
-    body: 'Member-led committees drive lake conservation, youth outreach, and club growth — your voice helps shape the future.',
-  },
-  {
-    title: 'A Club That Makes You Better',
-    body: 'Monthly speakers, seasonal strategy, electronics tips, and mentorship help anglers improve faster.',
+    body: 'Member-led committees drive lake conservation, youth outreach, and club growth.',
   },
   {
     title: 'Angler of the Year Race',
-    body: 'Every tournament earns AOY points. Compete all season for the top spot — your rank updates after every event.',
-  },
-  {
-    title: 'Official Club App',
-    body: 'Trophy Cast gives members pairings, AOY standings, stats, messages, and club communication in one place.',
+    body: 'Every tournament earns AOY points. Compete all season — your rank updates after every event.',
   },
   {
     title: 'More Than a Club',
-    body: 'Lifelong friendships, fishing partners, and a crew that shows up for each other — on and off the water.',
+    body: 'Monthly speakers, mentorship, lifelong friendships, and a crew that shows up on and off the water.',
   },
 ];
 
@@ -369,14 +361,14 @@ function PortraitHalfFlyer() {
         <img
           src="/Loge%20Transparent%20background.png"
           alt="Denver BassMasters logo"
-          height={130}
-          style={{ display: 'block', height: 130, width: 'auto', maxWidth: '100%', margin: '0 auto -28px', objectFit: 'contain' }}
+          height={105}
+          style={{ display: 'block', height: 105, width: 'auto', maxWidth: '100%', margin: '0 auto -22px', objectFit: 'contain' }}
         />
-        <div style={{ marginTop: '0.18in' }}>
-          <h1 style={{ fontSize: 30, lineHeight: 0.93, margin: '0 0 4px', color: COLORS.ink, fontWeight: 900, letterSpacing: '-0.05em' }}>
+        <div style={{ marginTop: '0.1in' }}>
+          <h1 style={{ fontSize: 27, lineHeight: 0.93, margin: '0 0 3px', color: COLORS.ink, fontWeight: 900, letterSpacing: '-0.05em' }}>
             You Don&rsquo;t Need <span style={{ color: COLORS.greenDark }}>a Boat.</span>
           </h1>
-          <p style={{ fontSize: 14, lineHeight: 1.08, margin: '6px 0 8px', color: COLORS.text, fontWeight: 600, fontStyle: 'italic' }}>
+          <p style={{ fontSize: 13, lineHeight: 1.08, margin: '4px 0 6px', color: COLORS.text, fontWeight: 600, fontStyle: 'italic' }}>
             Just a love for bass fishing.
           </p>
           <div
@@ -418,7 +410,7 @@ function PortraitHalfFlyer() {
           background: COLORS.blueSoft,
           border: `1.5px solid ${COLORS.blue}`,
           borderRadius: 9,
-          padding: '5px 9px',
+          padding: '4px 9px',
           display: 'flex',
           alignItems: 'center',
         }}
@@ -441,8 +433,8 @@ function PortraitHalfFlyer() {
               boxSizing: 'border-box',
             }}
           >
-            <div style={{ fontSize: 11.4, lineHeight: 1.1, marginBottom: 1, color: COLORS.greenDark, fontWeight: 900 }}>{point.title}</div>
-            <div style={{ fontSize: 9.4, lineHeight: 1.2, color: COLORS.text }}>{point.body}</div>
+            <div style={{ fontSize: 10.8, lineHeight: 1.05, marginBottom: 1, color: COLORS.greenDark, fontWeight: 900 }}>{point.title}</div>
+            <div style={{ fontSize: 8.8, lineHeight: 1.15, color: COLORS.text }}>{point.body}</div>
           </div>
         ))}
       </div>
