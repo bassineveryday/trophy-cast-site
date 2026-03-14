@@ -139,22 +139,21 @@ export default function DBMPrintFlyerPage() {
       body { background: #fff !important; margin: 0; padding: 0; }
       .print-wrap { padding: 0 !important; background: #fff !important; }
       .sheet {
-        width: ${SHEET_WIDTH_IN}in !important;
-        min-width: ${SHEET_WIDTH_IN}in !important;
-        height: ${SHEET_HEIGHT_IN}in !important;
+        width: 11in !important;
+        min-width: 11in !important;
+        height: 8.5in !important;
         margin: 0 !important;
         position: static !important;
         transform: none !important;
         box-shadow: none !important;
         border: none !important;
         border-radius: 0 !important;
-        overflow: visible !important;
+        overflow: hidden !important;
       }
       .portrait-half {
         width: 50% !important;
         padding-left: 0.2in !important;
         padding-right: 0.2in !important;
-        zoom: 0.85 !important;
       }
       .cut-guide {
         width: 0 !important;
@@ -164,7 +163,7 @@ export default function DBMPrintFlyerPage() {
       }
       .cut-guide * { display: none !important; }
     }
-    @page { size: letter landscape; margin: 0.25in; }
+    @page { size: letter landscape; margin: 0; }
   `;
 
   return (
