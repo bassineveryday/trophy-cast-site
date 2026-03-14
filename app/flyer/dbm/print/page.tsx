@@ -130,50 +130,54 @@ export default function DBMPrintFlyerPage() {
       body > main > * { display: none !important; }
       body > main > .print-wrap { display: block !important; }
       .no-print { display: none !important; }
-      .sheet-frame {
-        width: 11in !important;
-        height: 8.5in !important;
-        overflow: hidden !important;
-        display: block !important;
-        padding: 0 !important;
-        margin: 0 auto !important;
-      }
-      .sheet-shell {
-        width: 11in !important;
-        height: 8.5in !important;
-        margin: 0 auto !important;
-        position: relative !important;
-        overflow: hidden !important;
-      }
       body { background: #fff !important; margin: 0; padding: 0; }
       .print-wrap {
         width: 11in !important;
         height: 8.5in !important;
         min-height: 0 !important;
-        margin: 0 auto !important;
+        margin: 0 !important;
         padding: 0 !important;
         gap: 0 !important;
         display: block !important;
         overflow: hidden !important;
         background: #fff !important;
       }
+      .sheet-frame {
+        width: auto !important;
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .sheet-shell {
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+        position: static !important;
+        overflow: visible !important;
+      }
       .sheet {
         width: calc(11in / ${PRINT_SCALE}) !important;
         min-width: calc(11in / ${PRINT_SCALE}) !important;
-        height: calc(8.5in / ${PRINT_SCALE}) !important;
+        height: auto !important;
+        min-height: calc(8.5in / ${PRINT_SCALE}) !important;
         margin: 0 !important;
         position: static !important;
         left: auto !important;
         top: auto !important;
-        transform: scale(${PRINT_SCALE}) !important;
-        transform-origin: top left !important;
+        transform: none !important;
+        zoom: ${PRINT_SCALE} !important;
         box-shadow: none !important;
         border: none !important;
         border-radius: 0 !important;
-        overflow: hidden !important;
+        overflow: visible !important;
+        display: grid !important;
+        grid-template-columns: 1fr 0px 1fr !important;
       }
       .portrait-half {
-        width: 50% !important;
+        width: auto !important;
+        height: auto !important;
         padding-left: 0.2in !important;
         padding-right: 0.2in !important;
       }
