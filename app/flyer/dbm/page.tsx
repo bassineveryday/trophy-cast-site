@@ -1,7 +1,6 @@
 ﻿'use client';
 
 import { useState } from 'react';
-import { toPng } from 'html-to-image';
 
 /**
  * Denver BassMasters — Recruitment Flyer (Dark Digital)
@@ -16,6 +15,11 @@ import { toPng } from 'html-to-image';
 const G = '#88AC2E';   // DBM lime green (primary)
 const GL = '#B5D45A';  // light lime
 const GD = '#5D6D24';  // deep olive green
+const JOIN_URL = 'https://www.denverbassmasters.com/join-now';
+const JOIN_HOST = 'denverbassmasters.com';
+const JOIN_LABEL = 'denverbassmasters.com/join-now';
+const QR_IMAGE = '/dbm-join-qr.svg';
+const DBM_JUNIORS_LOGO = '/Denver%20Bassmaster%20Junior%27s%20logo%20transparent..png';
 
 export default function DBMFlyerPage() {
   const [copied, setCopied] = useState(false);
@@ -28,6 +32,7 @@ export default function DBMFlyerPage() {
     if (!node) return;
     setDownloading(true);
     try {
+      const { toPng } = await import('html-to-image');
       const dataUrl = await toPng(node, { pixelRatio: 3, cacheBust: true });
       const link = document.createElement('a');
       link.download = 'denver-bassmasters-flyer.png';
@@ -39,7 +44,7 @@ export default function DBMFlyerPage() {
   };
 
   const handleCopyUrl = async () => {
-    await navigator.clipboard.writeText('https://www.denverbassmasters.com/join-now');
+    await navigator.clipboard.writeText(JOIN_URL);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -136,7 +141,7 @@ export default function DBMFlyerPage() {
               <div style={{ display: 'flex', gap: 18, justifyContent: 'center', alignItems: 'flex-end' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/Denver%20Bassmaster%20Junior's%20logo%20transparent..png" alt="DBM Juniors" height={36} style={{ objectFit: 'contain', maxWidth: 80 }} />
+                    <img src={DBM_JUNIORS_LOGO} alt="DBM Juniors" height={36} style={{ objectFit: 'contain', maxWidth: 80 }} />
                   <span style={{ fontSize: 9, color: 'rgba(197,213,180,0.4)', letterSpacing: '0.06em' }}>Juniors Program</span>
                 </div>
                 <div style={{ width: 1, height: 30, background: 'rgba(136,172,46,0.25)', marginBottom: 14 }} />
@@ -170,13 +175,13 @@ export default function DBMFlyerPage() {
               <div style={{ background: G, borderRadius: 16, padding: 12, display: 'inline-block', boxShadow: '0 8px 40px rgba(136,172,46,0.4)' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fwww.denverbassmasters.com%2Fjoin-now&color=0C0F08&bgcolor=88AC2E&qzone=1"
-                  alt="QR code — denverbassmasters.com/join-now"
+                  src={QR_IMAGE}
+                  alt={`QR code — ${JOIN_LABEL}`}
                   width={148} height={148} style={{ display: 'block', borderRadius: 8 }}
                 />
               </div>
               <p style={{ color: '#8A9E6A', fontSize: 11, margin: '8px 0 3px', textAlign: 'center' }}>Scan to join</p>
-              <p style={{ color: GL, fontWeight: 800, fontSize: 12, margin: 0 }}>denverbassmasters.com</p>
+              <p style={{ color: GL, fontWeight: 800, fontSize: 12, margin: 0 }}>{JOIN_HOST}</p>
             </div>
           </div>
 
@@ -222,7 +227,7 @@ export default function DBMFlyerPage() {
               borderRadius: 100, padding: '10px 22px', marginBottom: 14,
             }}>
               <span style={{ fontSize: 16 }}>🎣</span>
-              <span style={{ color: GL, fontWeight: 800, fontSize: 15.5 }}>denverbassmasters.com/join-now</span>
+              <span style={{ color: GL, fontWeight: 800, fontSize: 15.5 }}>{JOIN_LABEL}</span>
             </div>
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
               {[

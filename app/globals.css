@@ -109,3 +109,23 @@ a {
 .glow-dot {
   animation: glowPulse 2.5s ease-in-out infinite;
 }
+
+/* ── Print: kill dark backgrounds + min-height ── */
+@media print {
+  :root,
+  html {
+    background: #fff !important;
+    background-color: #fff !important;
+    color: #000 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+  body {
+    background: #fff !important;
+    background-color: #fff !important;
+    color: #000 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+}

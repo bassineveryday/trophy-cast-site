@@ -106,6 +106,8 @@ Adjust `&bgcolor=` and `&color=` to match the flyer's background. For white/prin
 &bgcolor=ffffff&color=0C1A23
 ```
 
+For print/export-sensitive flyers, prefer a checked-in QR asset in `/public` when the route must render reliably without depending on a remote image service. This avoids broken print previews or PNG exports when a third-party QR URL is blocked or validated strictly.
+
 ---
 
 ## Download PNG Button (Required on Every Flyer)
