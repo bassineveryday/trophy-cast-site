@@ -1,6 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import {
+  FLYER_SIGNUP_LABEL,
+  FLYER_SIGNUP_QR_IMAGE,
+  FLYER_SIGNUP_URL,
+} from '@/lib/flyerSignup';
 
 /**
  * Trophy Cast Promotional Flyer
@@ -9,11 +14,12 @@ import { useState } from 'react';
  * Visit /flyer, zoom to fit the card on screen, then screenshot.
  * Or use Ctrl+P → Save as PDF → import into Canva.
  *
- * QR code points to https://eepurl.com/jAjfYY
+ * QR code points to https://trophycast.app/signup
  */
 
-const JOIN_URL = 'https://eepurl.com/jAjfYY';
-const JOIN_LABEL = 'eepurl.com/jAjfYY';
+const JOIN_URL = FLYER_SIGNUP_URL;
+const JOIN_LABEL = FLYER_SIGNUP_LABEL;
+const QR_IMAGE = FLYER_SIGNUP_QR_IMAGE;
 
 export default function FlyerPage() {
   const [copied, setCopied] = useState(false);
@@ -368,11 +374,11 @@ export default function FlyerPage() {
                 display: 'inline-block',
                 boxShadow: '0 8px 32px rgba(212,175,55,0.4)',
               }}>
-                {/* Real QR code via qrserver.com pointing to the Mailchimp signup */}
+                {/* Local QR asset so PNG export works without cross-origin image failures */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Feepurl.com%2FjAjfYY&color=0C1A23&bgcolor=D4AF37&qzone=1"
-                  alt="QR code to eepurl.com/jAjfYY"
+                  src={QR_IMAGE}
+                  alt={`QR code to ${JOIN_LABEL}`}
                   width={160}
                   height={160}
                   style={{ display: 'block', borderRadius: 8 }}
@@ -407,7 +413,7 @@ export default function FlyerPage() {
                 <span style={{ color: '#4FC3F7' }}>smarter.</span>
               </h2>
               <p style={{ color: '#8BA3B5', fontSize: 14, margin: '0 0 20px', lineHeight: 1.6 }}>
-                Trophy Cast is launching soon. Join the email signup at{' '}
+                Trophy Cast is launching soon. Join the signup at{' '}
                 <strong style={{ color: '#F5F1E6' }}>{JOIN_LABEL}</strong> and be the
                 first angler to experience coaching that actually knows your water.
               </p>
@@ -541,7 +547,7 @@ export default function FlyerPage() {
             <li><strong style={{ color: '#C9D3DA' }}>Screenshot it:</strong> Zoom out in your browser (Ctrl/Cmd −) until the full card fits, then screenshot. Paste directly into Canva.</li>
             <li><strong style={{ color: '#C9D3DA' }}>Save as PDF:</strong> Click &ldquo;Save as PDF / Print&rdquo; above → destination: &ldquo;Save as PDF&rdquo; → Letter size. Import into Canva or print directly.</li>
             <li><strong style={{ color: '#C9D3DA' }}>Canva tip:</strong> In Canva, create a new &ldquo;Letter&rdquo; design, import this screenshot as the background, then layer your own text/logo on top if needed.</li>
-            <li><strong style={{ color: '#C9D3DA' }}>QR code</strong> points live to <strong style={{ color: '#F5F1E6' }}>{JOIN_LABEL}</strong> — the Mailchimp-hosted Trophy Cast email signup.</li>
+            <li><strong style={{ color: '#C9D3DA' }}>QR code</strong> points live to <strong style={{ color: '#F5F1E6' }}>{JOIN_LABEL}</strong> — the Trophy Cast signup page.</li>
           </ul>
         </div>
 

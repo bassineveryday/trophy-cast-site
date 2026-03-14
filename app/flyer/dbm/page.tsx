@@ -1,6 +1,12 @@
 ﻿'use client';
 
 import { useState } from 'react';
+import {
+  FLYER_SIGNUP_HOST,
+  FLYER_SIGNUP_LABEL,
+  FLYER_SIGNUP_QR_IMAGE,
+  FLYER_SIGNUP_URL,
+} from '@/lib/flyerSignup';
 
 /**
  * Denver BassMasters — Recruitment Flyer (Dark Digital)
@@ -8,17 +14,17 @@ import { useState } from 'react';
  * Brand palette: #88AC2E (lime green), #000000 (black), #FFFFFF (white)
  * Sampled directly from DBM logo files.
  *
- * QR code → https://eepurl.com/jAjfYY
+ * QR code → https://trophycast.app/signup
  */
 
 // DBM brand colors
 const G = '#88AC2E';   // DBM lime green (primary)
 const GL = '#B5D45A';  // light lime
 const GD = '#5D6D24';  // deep olive green
-const JOIN_URL = 'https://eepurl.com/jAjfYY';
-const JOIN_HOST = 'eepurl.com';
-const JOIN_LABEL = 'eepurl.com/jAjfYY';
-const QR_IMAGE = '/dbm-join-qr.svg';
+const JOIN_URL = FLYER_SIGNUP_URL;
+const JOIN_HOST = FLYER_SIGNUP_HOST;
+const JOIN_LABEL = FLYER_SIGNUP_LABEL;
+const QR_IMAGE = FLYER_SIGNUP_QR_IMAGE;
 const DBM_JUNIORS_LOGO = '/Denver%20Bassmaster%20Junior%27s%20logo%20transparent..png';
 
 export default function DBMFlyerPage() {
@@ -219,7 +225,7 @@ export default function DBMFlyerPage() {
             </h2>
             <p style={{ color: '#8A9E6A', fontSize: 13, margin: '0 0 16px', lineHeight: 1.65, maxWidth: 560 }}>
               Meetings are open to everyone. Come check us out — no commitment required.
-              Visit <strong style={{ color: '#F5F5EE' }}>eepurl.com/jAjfYY</strong> to go straight to the Trophy Cast email signup.
+              Visit <strong style={{ color: '#F5F5EE' }}>{JOIN_LABEL}</strong> to go straight to the Trophy Cast signup page.
             </p>
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,

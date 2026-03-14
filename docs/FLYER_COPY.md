@@ -1,4 +1,5 @@
 # Trophy Cast – Flyer Copy & Designs
+
 _Created: February 25, 2026_
 _For: March 14–15 Tournament/Expo Handout_
 
@@ -9,6 +10,7 @@ _For: March 14–15 Tournament/Expo Handout_
 **Front:**
 
 ### 🏆 Trophy Cast
+
 **Trophy Cast gets smarter the more you fish.**
 
 Not another tracker. Not another social feed.
@@ -26,7 +28,7 @@ Join the waitlist — be first in.
 
 **Back (or bottom):**
 
-*"Other fishing tools track your catch. We learn from it."*
+_"Other fishing tools track your catch. We learn from it."_
 
 The more you fish, the more it knows. What you threw.
 What the water looked like. What you changed. Over time,

@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
+import { FLYER_SIGNUP_LABEL, FLYER_SIGNUP_QR_IMAGE } from '@/lib/flyerSignup';
 
-const JOIN_LABEL = 'eepurl.com/jAjfYY';
-const QR_IMAGE = '/dbm-join-qr.svg';
+const JOIN_LABEL = FLYER_SIGNUP_LABEL;
+const QR_IMAGE = FLYER_SIGNUP_QR_IMAGE;
 const DBM_JUNIORS_LOGO = '/Denver%20Bassmaster%20Junior%27s%20logo%20transparent..png';
 const CBN_LOGO = '/CBN.png';
 const SHEET_WIDTH_IN = 11;
@@ -47,6 +48,10 @@ const INFO_CARDS = [
   {
     title: 'Stay Connected Year-Round',
     body: 'Trophy Cast keeps members connected with pairings, standings, stats, and club communication between meetings and events.',
+  },
+  {
+    title: 'Youth & Juniors Program',
+    body: 'DBM Juniors gives young anglers real tournament experience, mentorship from adult members, and a path into competitive bass fishing.',
   },
 ];
 
@@ -149,16 +154,21 @@ export default function DBMPrintFlyerPage() {
       body > main > * { display: none !important; }
       body > main > .print-wrap { display: block !important; }
 
-      /* Print-wrap: single container */
+      /* Print-wrap: single container — force exactly one page */
       .print-wrap {
         width: 11in !important;
         height: 8.5in !important;
+        max-height: 8.5in !important;
+        min-height: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
+        gap: 0 !important;
         overflow: hidden !important;
         background: #fff !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
       }
 
       /* Flatten wrappers */
@@ -192,8 +202,10 @@ export default function DBMPrintFlyerPage() {
         height: auto !important;
         max-height: 8.5in !important;
         align-self: start !important;
-        padding-left: 0.25in !important;
-        padding-right: 0.25in !important;
+        padding-left: 0.18in !important;
+        padding-right: 0.18in !important;
+        margin: 3px !important;
+        border: 2.5px solid #88AC2E !important;
         overflow: hidden !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
@@ -416,27 +428,29 @@ function PortraitHalfFlyer() {
       style={{
         height: '100%',
         background: COLORS.paper,
-        padding: '12px 22px 12px',
+        padding: '8px 18px 8px',
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'space-between',
         boxSizing: 'border-box',
+        border: `2.5px solid ${COLORS.green}`,
       }}
     >
-      <div style={{ height: 4, width: '100%', background: COLORS.green, borderRadius: 999, marginBottom: 8 }} />
+      <div style={{ height: 3, width: '100%', background: COLORS.green, borderRadius: 999, marginBottom: 3 }} />
 
       <div style={{ textAlign: 'center' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/Loge%20Transparent%20background.png"
           alt="Denver BassMasters logo"
-          height={140}
-          style={{ display: 'block', height: 144, width: 'auto', maxWidth: '100%', margin: '0 auto -38px', objectFit: 'contain' }}
+          height={132}
+          style={{ display: 'block', height: 132, width: 'auto', maxWidth: '100%', margin: '0 auto -30px', objectFit: 'contain' }}
         />
-        <div style={{ marginTop: '0.22in' }}>
-          <h1 style={{ fontSize: 36, lineHeight: 0.93, margin: '0 0 5px', color: COLORS.ink, fontWeight: 900, letterSpacing: '-0.05em' }}>
+        <div style={{ marginTop: '0.12in' }}>
+          <h1 style={{ fontSize: 36, lineHeight: 0.93, margin: '0 0 3px', color: COLORS.ink, fontWeight: 900, letterSpacing: '-0.05em' }}>
             You Don&rsquo;t Need <span style={{ color: COLORS.greenDark }}>a Boat.</span>
           </h1>
-          <p style={{ fontSize: 17, lineHeight: 1.08, margin: '8px 0 10px', color: COLORS.text, fontWeight: 600, fontStyle: 'italic' }}>
+          <p style={{ fontSize: 17, lineHeight: 1.08, margin: '4px 0 6px', color: COLORS.text, fontWeight: 600, fontStyle: 'italic' }}>
             Just a love for bass fishing.
           </p>
           <div
@@ -470,15 +484,15 @@ function PortraitHalfFlyer() {
         </div>
       </div>
 
-      <div style={{ height: 1, background: COLORS.line, margin: '4px 20px 0', borderRadius: 1 }} />
+      <div style={{ height: 1, background: COLORS.line, margin: '2px 20px 0', borderRadius: 1 }} />
 
       <div
         style={{
-          marginTop: 6,
+          marginTop: 4,
           background: 'linear-gradient(180deg, #F7FBFF 0%, #E8F1F8 100%)',
           border: `1px solid ${COLORS.blue}`,
           borderRadius: 999,
-          padding: '5px 10px',
+          padding: '3px 10px',
           display: 'grid',
           gridTemplateColumns: 'auto 1fr auto',
           columnGap: 10,
@@ -489,22 +503,22 @@ function PortraitHalfFlyer() {
           style={{
             background: COLORS.blue,
             color: '#FFFFFF',
-            fontSize: 10.5,
+            fontSize: 10,
             fontWeight: 900,
             letterSpacing: '0.05em',
             textTransform: 'uppercase',
             borderRadius: 999,
-            padding: '4px 9px',
+            padding: '3px 8px',
             whiteSpace: 'nowrap',
           }}
         >
           Open Meetings
         </div>
-        <div style={{ textAlign: 'center', color: COLORS.ink, fontSize: 11.5, fontWeight: 800, whiteSpace: 'nowrap' }}>First Wednesday - 7:00 PM</div>
-        <div style={{ textAlign: 'right', color: COLORS.blue, fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap' }}>Bass Pro Shops Denver</div>
+        <div style={{ textAlign: 'center', color: COLORS.ink, fontSize: 13, fontWeight: 800, whiteSpace: 'nowrap' }}>First Wednesday - 7:00 PM</div>
+        <div style={{ textAlign: 'right', color: COLORS.blue, fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap' }}>Bass Pro Shops Denver</div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 8, rowGap: 8, marginTop: 6, alignContent: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 8, rowGap: 6, marginTop: 4, alignContent: 'start' }}>
         {INFO_CARDS.map((point) => (
           <div
             key={point.title}
@@ -512,79 +526,79 @@ function PortraitHalfFlyer() {
               background: `linear-gradient(180deg, ${COLORS.greenCard} 0%, ${COLORS.greenCardSoft} 100%)`,
               border: `1px solid #C7D9AE`,
               borderRadius: 7,
-              padding: '6px 9px 7px',
+              padding: '5px 9px 6px',
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.72), 0 0 0 1px rgba(136,172,46,0.08)',
               boxSizing: 'border-box',
             }}
           >
-            <div style={{ fontSize: 14, lineHeight: 1.1, marginBottom: 3, color: COLORS.greenDark, fontWeight: 900 }}>{point.title}</div>
-            <div style={{ fontSize: 11.4, lineHeight: 1.24, color: COLORS.text }}>{point.body}</div>
+            <div style={{ fontSize: 14, lineHeight: 1.08, marginBottom: 2, color: COLORS.greenDark, fontWeight: 900 }}>{point.title}</div>
+            <div style={{ fontSize: 11.5, lineHeight: 1.22, color: COLORS.text }}>{point.body}</div>
           </div>
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 108px', gap: 8, marginTop: 6, alignItems: 'start' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <div style={{ background: COLORS.greenSoft, border: `1px solid ${COLORS.line}`, borderRadius: 10, padding: '6px 10px', textAlign: 'center' }}>
-            <div style={{ fontSize: 11, color: COLORS.greenMuted, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 2 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 114px', gap: 8, marginTop: 4, alignItems: 'start' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <div style={{ background: COLORS.greenSoft, border: `1px solid ${COLORS.line}`, borderRadius: 8, padding: '4px 8px', textAlign: 'center' }}>
+            <div style={{ fontSize: 10, color: COLORS.greenMuted, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 2 }}>
               DBM Family
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', gap: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', gap: 6 }}>
               {FAMILY_LOGOS.map((logo) => (
-                <div key={logo.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, width: 76 }}>
-                  <div style={{ height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div key={logo.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, width: 72 }}>
+                  <div style={{ height: 26, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={logo.src}
                       alt={logo.name}
                       height={logo.height}
-                      style={{ objectFit: 'contain', maxWidth: logo.maxWidth, maxHeight: 32, display: 'block' }}
+                      style={{ objectFit: 'contain', maxWidth: logo.maxWidth, maxHeight: 30, display: 'block' }}
                     />
                   </div>
-                  <div style={{ fontSize: 8.2, lineHeight: 1.04, color: COLORS.greenMuted, letterSpacing: '0.02em', textAlign: 'center', maxWidth: 76 }}>{logo.label}</div>
+                  <div style={{ fontSize: 7.5, lineHeight: 1.04, color: COLORS.greenMuted, letterSpacing: '0.02em', textAlign: 'center', maxWidth: 72 }}>{logo.label}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div style={{ padding: '6px 10px', background: COLORS.greenSoft, borderLeft: `3px solid ${COLORS.green}`, borderRadius: 6 }}>
-            <div style={{ fontSize: 10.1, lineHeight: 1.28, color: COLORS.text, fontStyle: 'italic' }}>
+          <div style={{ padding: '4px 8px', background: COLORS.greenSoft, borderLeft: `3px solid ${COLORS.green}`, borderRadius: 6 }}>
+            <div style={{ fontSize: 9.4, lineHeight: 1.22, color: COLORS.text, fontStyle: 'italic' }}>
               &ldquo;I showed up not knowing anyone. Now I always have someone to learn from, someone to fish with, and friends I trust.&rdquo;
             </div>
-            <div style={{ fontSize: 9, color: COLORS.greenMuted, fontWeight: 700, marginTop: 2, letterSpacing: '0.04em' }}>&mdash; DBM Member</div>
+            <div style={{ fontSize: 8.5, color: COLORS.greenMuted, fontWeight: 700, marginTop: 1, letterSpacing: '0.04em' }}>&mdash; DBM Member</div>
           </div>
         </div>
 
-        <div style={{ width: 108, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 8 }}>
+        <div style={{ width: 114, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 5 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={QR_IMAGE}
             alt={`QR code - ${JOIN_LABEL}`}
-            width={84}
-            height={84}
+            width={86}
+            height={86}
             style={{
               display: 'block',
               margin: '0 auto',
               border: `2px solid ${COLORS.green}`,
-              borderRadius: 10,
-              padding: 4,
+              borderRadius: 8,
+              padding: 3,
               background: '#FFFFFF',
             }}
           />
           <div style={{
-            fontSize: 13,
+            fontSize: 12,
             color: '#FFFFFF',
             fontWeight: 900,
             background: COLORS.blue,
             borderRadius: 6,
-            padding: '4px 12px',
+            padding: '3px 10px',
             letterSpacing: '0.03em',
             width: '100%',
             boxSizing: 'border-box',
           }}>Join Today</div>
           <div
             style={{
-              fontSize: 9.5,
+              fontSize: 9,
               lineHeight: 1.08,
               color: COLORS.greenDark,
               fontWeight: 700,
@@ -595,8 +609,8 @@ function PortraitHalfFlyer() {
         </div>
       </div>
 
-      <div style={{ marginTop: 6, paddingTop: 5, borderTop: `1px solid ${COLORS.line}` }}>
-        <div style={{ fontSize: 9, color: COLORS.greenMuted, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', textAlign: 'center', marginBottom: 5 }}>
+      <div style={{ marginTop: 4, paddingTop: 3, borderTop: `1px solid ${COLORS.line}` }}>
+        <div style={{ fontSize: 8.5, color: COLORS.greenMuted, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', textAlign: 'center', marginBottom: 3 }}>
           Club Partners
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '100%' }}>
@@ -627,7 +641,7 @@ function PortraitHalfFlyer() {
         </div>
       </div>
 
-      <div style={{ height: 4, width: '100%', background: COLORS.green, borderRadius: 999, marginTop: 6 }} />
+      <div style={{ height: 3, width: '100%', background: COLORS.green, borderRadius: 999, marginTop: 3 }} />
     </div>
   );
 }

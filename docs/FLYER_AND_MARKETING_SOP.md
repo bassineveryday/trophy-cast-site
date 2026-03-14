@@ -11,6 +11,7 @@ This document is the Standard Operating Procedure for designing, building, and d
 All flyers and marketing materials live as **Next.js pages** inside `trophy-cast-site` → the same codebase as `trophycast.app`. When a flyer page is merged to `main`, Vercel auto-deploys it and it's live at a public URL instantly.
 
 **Why This Approach (Not Canva/Figma):**
+
 - Flyers are always up-to-date — change the code, redeploy, done
 - Built-in **Download PNG** button (3× resolution) for print/email
 - Built-in **Print** button for home printing with correct page margins
@@ -21,12 +22,12 @@ All flyers and marketing materials live as **Next.js pages** inside `trophy-cast
 
 ## Flyer Routes (Existing)
 
-| URL | File | Purpose |
-|-----|------|---------|
-| `/flyer` | `app/flyer/page.tsx` | Dark/digital full-page flyer (general TC) |
-| `/flyer/print` | `app/flyer/print/page.tsx` | White 2-up print version (letter size, Epson home printer) |
-| `/flyer/dbm` | `app/flyer/dbm/page.tsx` | Denver BassMasters dark version with club/sponsor branding |
-| `/flyer/dbm/print` | `app/flyer/dbm/print/page.tsx` | DBM white 2-up print version |
+| URL                | File                           | Purpose                                                    |
+| ------------------ | ------------------------------ | ---------------------------------------------------------- |
+| `/flyer`           | `app/flyer/page.tsx`           | Dark/digital full-page flyer (general TC)                  |
+| `/flyer/print`     | `app/flyer/print/page.tsx`     | White 2-up print version (letter size, Epson home printer) |
+| `/flyer/dbm`       | `app/flyer/dbm/page.tsx`       | Denver BassMasters dark version with club/sponsor branding |
+| `/flyer/dbm/print` | `app/flyer/dbm/print/page.tsx` | DBM white 2-up print version                               |
 
 **Naming convention for new flyers:** `/flyer/<slug>` and `/flyer/<slug>/print`
 
@@ -55,35 +56,38 @@ mist (light bg):        #F5F1E6
 All public images live in `/public`. Always reference them as `/filename.png` in code.
 
 ### Trophy Cast Logos
-| File | Use When |
-|------|----------|
-| `/trophy-cast-logo-256.png` | Base `/flyer` and `/flyer/print` pages |
-| `/Trophy cast transparent background..png` | Dark backgrounds (general) |
-| `/Trophy cast white background.png` | Light backgrounds |
-| `/trophy-cast-logo-48.png` | Small favicon/nav uses |
-| `/flood-filled-logo.png` | Stylized alternate mark |
+
+| File                                       | Use When                               |
+| ------------------------------------------ | -------------------------------------- |
+| `/trophy-cast-logo-256.png`                | Base `/flyer` and `/flyer/print` pages |
+| `/Trophy cast transparent background..png` | Dark backgrounds (general)             |
+| `/Trophy cast white background.png`        | Light backgrounds                      |
+| `/trophy-cast-logo-48.png`                 | Small favicon/nav uses                 |
+| `/flood-filled-logo.png`                   | Stylized alternate mark                |
 
 ### DBM Club Logos
-| File | Use When |
-|------|----------|
-| `/Loge Transparent background.png` | DBM flyer headers (the Loge/DBM mark) |
-| `/dbm-logo-transparent.png` | Alternative DBM mark |
-| `/Denver Bassmaster Junior's logo transparent..png` | DBM Juniors specific |
-| `/DBMJ Long Logo (2).jpg` | DBM long horizontal lockup |
-| `/Copy of Copy of Copy of DBM Banner logo 800px x 200px  (2).png` | DBM banner (800×200) |
+
+| File                                                              | Use When                              |
+| ----------------------------------------------------------------- | ------------------------------------- |
+| `/Loge Transparent background.png`                                | DBM flyer headers (the Loge/DBM mark) |
+| `/dbm-logo-transparent.png`                                       | Alternative DBM mark                  |
+| `/Denver Bassmaster Junior's logo transparent..png`               | DBM Juniors specific                  |
+| `/DBMJ Long Logo (2).jpg`                                         | DBM long horizontal lockup            |
+| `/Copy of Copy of Copy of DBM Banner logo 800px x 200px  (2).png` | DBM banner (800×200)                  |
 
 ### DBM Sponsor Logos
-| File | Sponsor |
-|------|---------|
-| `/BassproShop.png` | Bass Pro Shops |
-| `/Eagle Claw logo transparent..png` | Eagle Claw |
-| `/Militia Marine logo. Transparent..png` | Milicia Marine |
+
+| File                                               | Sponsor                        |
+| -------------------------------------------------- | ------------------------------ |
+| `/BassproShop.png`                                 | Bass Pro Shops                 |
+| `/Eagle Claw logo transparent..png`                | Eagle Claw                     |
+| `/Militia Marine logo. Transparent..png`           | Milicia Marine                 |
 | `/Discount fishing tackle. Logo. Transparent..png` | Discount Fishing Tackle Denver |
-| `/JJ-logo-trim (2).png` | JJ Bass Jigs |
-| `/Topper Sales.png` | AA Toppers |
-| `/Rapala logo transparent..png` | Rapala |
-| `/FRBC Logo.png` | Front Range Bass Club |
-| `/bass-pro-logo-2x.png` | Bass Pro (2x variant) |
+| `/JJ-logo-trim (2).png`                            | JJ Bass Jigs                   |
+| `/Topper Sales.png`                                | AA Toppers                     |
+| `/Rapala logo transparent..png`                    | Rapala                         |
+| `/FRBC Logo.png`                                   | Front Range Bass Club          |
+| `/bass-pro-logo-2x.png`                            | Bass Pro (2x variant)          |
 
 > **Tip:** Prefer transparent-background PNGs for logos on colored backgrounds. If a logo has a white box, remove the background using Cloudinary or remove.bg before adding the file to `/public`.
 
@@ -105,6 +109,7 @@ Generate QR codes inline — no static image file needed:
 For general Trophy Cast acquisition flyers, the QR target and printed signup label should use `eepurl.com/jAjfYY`. Keep `trophycast.app` as the brand website in headers, footers, and support copy unless the flyer specifically needs the email signup destination.
 
 Adjust `&bgcolor=` and `&color=` to match the flyer's background. For white/print flyers:
+
 ```
 &bgcolor=ffffff&color=0C1A23
 ```
@@ -118,17 +123,17 @@ For print/export-sensitive flyers, prefer a checked-in QR asset in `/public` whe
 Every flyer page must have a **Download PNG** button that exports the flyer as a high-res image.
 
 ```tsx
-'use client';
-import { toPng } from 'html-to-image';
+"use client";
+import { toPng } from "html-to-image";
 
 const handleDownloadPng = async () => {
-  const node = document.getElementById('flyer'); // must match the id on your flyer div
+  const node = document.getElementById("flyer"); // must match the id on your flyer div
   if (!node) return;
   setDownloading(true);
   try {
     const dataUrl = await toPng(node, { pixelRatio: 3, cacheBust: true });
-    const link = document.createElement('a');
-    link.download = 'trophy-cast-flyer.png'; // customize filename
+    const link = document.createElement("a");
+    link.download = "trophy-cast-flyer.png"; // customize filename
     link.href = dataUrl;
     link.click();
   } finally {
@@ -164,18 +169,19 @@ style={{
 }}
 
 /* Divider line */
-<div style={{ 
-  borderTop: '1px dashed #ccc', 
-  textAlign: 'center', 
-  fontSize: 10, 
-  color: '#aaa', 
-  lineHeight: '0' 
+<div style={{
+  borderTop: '1px dashed #ccc',
+  textAlign: 'center',
+  fontSize: 10,
+  color: '#aaa',
+  lineHeight: '0'
 }}>
   <span style={{ background: '#fff', padding: '0 8px' }}>✂ CUT HERE</span>
 </div>
 ```
 
 Print CSS:
+
 ```tsx
 <style>{`
   @media print {
@@ -191,23 +197,28 @@ Print CSS:
 ## Step-by-Step: Creating a New Flyer
 
 ### 1. Create a feature branch
+
 ```bash
 npm run branch:feature flyer-<event-or-club-name>
 # e.g.: npm run branch:feature flyer-bass-pro-april
 ```
 
 ### 2. Create the page file
+
 ```
 app/flyer/<slug>/page.tsx          ← dark/digital version
 app/flyer/<slug>/print/page.tsx    ← white 2-up print version (if needed)
 ```
 
 ### 3. Copy a template
+
 - **Dark/digital:** Copy `app/flyer/dbm/page.tsx` as your starting point
 - **Print 2-up:** Copy `app/flyer/dbm/print/page.tsx` as your starting point
 
 ### 4. Update copy
+
 Refer to `docs/FLYER_COPY.md` for approved messaging. Key things to update:
+
 - Event name / club name in the header
 - Feature bullets (pick 4–6 most relevant)
 - Stat chips (relevant to the audience)
@@ -216,12 +227,14 @@ Refer to `docs/FLYER_COPY.md` for approved messaging. Key things to update:
 - Download filename in `handleDownloadPng`
 
 ### 5. Add any new logos/images
+
 1. Remove backgrounds first (use remove.bg or Cloudinary background removal)
 2. Drop PNG files in `/public/`
 3. Reference as `/filename.png` in the `src` attribute
 4. Name files clearly: `Sponsor Name logo transparent.png`
 
 ### 6. Test locally
+
 ```bash
 npx next dev -p 3001
 # Visit: http://localhost:3001/flyer/<slug>
@@ -229,6 +242,7 @@ npx next dev -p 3001
 ```
 
 Check:
+
 - [ ] All logos load (no broken images)
 - [ ] QR code renders
 - [ ] Download PNG button works — open the downloaded file, verify it looks sharp
@@ -236,6 +250,7 @@ Check:
 - [ ] No overflow / nothing cut off on mobile viewport
 
 ### 7. Commit and push
+
 ```bash
 git add app/flyer/<slug>/ public/<any-new-images>
 git commit -m "feat: <slug> flyer pages"
@@ -243,11 +258,13 @@ git push origin feature/flyer-<slug>
 ```
 
 ### 8. Merge to main → Vercel deploys
+
 Open a PR on GitHub: `feature/flyer-<slug>` → `main`
 
 After merge, live at: `https://trophycast.app/flyer/<slug>`
 
 Sync dev branch after merge:
+
 ```bash
 git checkout dev
 git merge main
@@ -272,6 +289,7 @@ git push origin dev
 ## Printing at a Print Shop
 
 For bigger runs (50–200 flyers):
+
 - Use **FedEx Office** or **Staples** (not Office Depot — quality is inconsistent)
 - Export the PNG at `pixelRatio: 3` using the Download button
 - Request: **Color, Letter, Single-Sided, Cut in half**
