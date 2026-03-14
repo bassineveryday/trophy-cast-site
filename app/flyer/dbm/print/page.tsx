@@ -148,13 +148,13 @@ export default function DBMPrintFlyerPage() {
         box-shadow: none !important;
         border: none !important;
         border-radius: 0 !important;
+        overflow: visible !important;
       }
       .portrait-half {
         width: 50% !important;
         padding-left: 0.2in !important;
         padding-right: 0.2in !important;
-        transform: scale(0.88) !important;
-        transform-origin: top center !important;
+        zoom: 0.85 !important;
       }
       .cut-guide {
         width: 0 !important;
