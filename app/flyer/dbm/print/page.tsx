@@ -9,6 +9,7 @@ const SHEET_HEIGHT_IN = 8;
 const CSS_DPI = 96;
 const SHEET_WIDTH_PX = SHEET_WIDTH_IN * CSS_DPI;
 const SHEET_HEIGHT_PX = SHEET_HEIGHT_IN * CSS_DPI;
+const PRINT_SCALE = 0.82;
 
 const COLORS = {
   green: '#88AC2E',
@@ -142,6 +143,7 @@ export default function DBMPrintFlyerPage() {
         height: 8.5in !important;
         margin: 0 auto !important;
         position: relative !important;
+        overflow: hidden !important;
       }
       body { background: #fff !important; margin: 0; padding: 0; }
       .print-wrap {
@@ -156,15 +158,15 @@ export default function DBMPrintFlyerPage() {
         background: #fff !important;
       }
       .sheet {
-        width: 11in !important;
-        min-width: 11in !important;
-        height: 8.5in !important;
+        width: calc(11in / ${PRINT_SCALE}) !important;
+        min-width: calc(11in / ${PRINT_SCALE}) !important;
+        height: calc(8.5in / ${PRINT_SCALE}) !important;
         margin: 0 !important;
         position: static !important;
         left: auto !important;
         top: auto !important;
-        transform: none !important;
-        zoom: 0.82 !important;
+        transform: scale(${PRINT_SCALE}) !important;
+        transform-origin: top left !important;
         box-shadow: none !important;
         border: none !important;
         border-radius: 0 !important;
@@ -377,7 +379,7 @@ function PortraitHalfFlyer() {
       style={{
         height: '100%',
         background: COLORS.paper,
-        padding: '8px 20px 8px',
+        padding: '8px 20px 6px',
         display: 'flex',
         flexDirection: 'column',
         boxSizing: 'border-box',
@@ -390,14 +392,14 @@ function PortraitHalfFlyer() {
         <img
           src="/Loge%20Transparent%20background.png"
           alt="Denver BassMasters logo"
-          height={158}
-          style={{ display: 'block', height: 158, width: 'auto', maxWidth: '100%', margin: '0 auto -38px', objectFit: 'contain' }}
+          height={140}
+          style={{ display: 'block', height: 140, width: 'auto', maxWidth: '100%', margin: '0 auto -42px', objectFit: 'contain' }}
         />
-        <div style={{ marginTop: '0.3in' }}>
-          <h1 style={{ fontSize: 33.3, lineHeight: 0.93, margin: '0 0 5px', color: COLORS.ink, fontWeight: 900, letterSpacing: '-0.05em' }}>
+        <div style={{ marginTop: '0.22in' }}>
+          <h1 style={{ fontSize: 36, lineHeight: 0.93, margin: '0 0 5px', color: COLORS.ink, fontWeight: 900, letterSpacing: '-0.05em' }}>
             You Don&rsquo;t Need <span style={{ color: COLORS.greenDark }}>a Boat.</span>
           </h1>
-          <p style={{ fontSize: 15.5, lineHeight: 1.08, margin: '8px 0 10px', color: COLORS.text, fontWeight: 600, fontStyle: 'italic' }}>
+          <p style={{ fontSize: 17, lineHeight: 1.08, margin: '8px 0 10px', color: COLORS.text, fontWeight: 600, fontStyle: 'italic' }}>
             Just a love for bass fishing.
           </p>
           <div
@@ -418,7 +420,7 @@ function PortraitHalfFlyer() {
                   border: `1px solid ${COLORS.green}`,
                   borderRadius: 999,
                   padding: '2px 9px',
-                  fontSize: 9.0,
+                  fontSize: 10,
                   fontWeight: 800,
                   color: COLORS.greenDark,
                   letterSpacing: '0.04em',
@@ -431,7 +433,7 @@ function PortraitHalfFlyer() {
         </div>
       </div>
 
-      <div style={{ height: 1, background: COLORS.line, margin: '7px 20px 0', borderRadius: 1 }} />
+      <div style={{ height: 1, background: COLORS.line, margin: '4px 20px 0', borderRadius: 1 }} />
 
       <div
         style={{
@@ -439,17 +441,17 @@ function PortraitHalfFlyer() {
           background: COLORS.blueSoft,
           border: `1.5px solid ${COLORS.blue}`,
           borderRadius: 9,
-          padding: '5px 9px',
+          padding: '4px 9px',
           display: 'flex',
           alignItems: 'center',
         }}
       >
-        <div style={{ flex: 1, color: COLORS.blue, fontSize: 12.3, fontWeight: 900 }}>Meetings</div>
-        <div style={{ flex: 1, textAlign: 'center', color: COLORS.ink, fontSize: 10.8, fontWeight: 700 }}>First Wednesday · 7:00 PM</div>
-        <div style={{ flex: 1, textAlign: 'right', color: COLORS.blue, fontSize: 10.8, fontWeight: 700 }}>Bass Pro Shops Denver</div>
+        <div style={{ flex: 1, color: COLORS.blue, fontSize: 14, fontWeight: 900 }}>Meetings</div>
+        <div style={{ flex: 1, textAlign: 'center', color: COLORS.ink, fontSize: 12, fontWeight: 700 }}>First Wednesday · 7:00 PM</div>
+        <div style={{ flex: 1, textAlign: 'right', color: COLORS.blue, fontSize: 12, fontWeight: 700 }}>Bass Pro Shops Denver</div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 4, rowGap: 2, marginTop: 7, alignContent: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 4, rowGap: 1, marginTop: 5, alignContent: 'start' }}>
         {INFO_CARDS.map((point) => (
           <div
             key={point.title}
@@ -457,21 +459,21 @@ function PortraitHalfFlyer() {
               background: `linear-gradient(180deg, ${COLORS.greenCard} 0%, ${COLORS.greenCardSoft} 100%)`,
               border: `1px solid #C7D9AE`,
               borderRadius: 7,
-              padding: '4px 7px 5px',
+              padding: '3px 7px 4px',
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.72), 0 0 0 1px rgba(136,172,46,0.08)',
               boxSizing: 'border-box',
             }}
           >
-            <div style={{ fontSize: 12.6, lineHeight: 1.1, marginBottom: 1, color: COLORS.greenDark, fontWeight: 900 }}>{point.title}</div>
-            <div style={{ fontSize: 10.2, lineHeight: 1.2, color: COLORS.text }}>{point.body}</div>
+            <div style={{ fontSize: 14, lineHeight: 1.1, marginBottom: 1, color: COLORS.greenDark, fontWeight: 900 }}>{point.title}</div>
+            <div style={{ fontSize: 11.5, lineHeight: 1.2, color: COLORS.text }}>{point.body}</div>
           </div>
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 104px', gap: 8, marginTop: 2, alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 104px', gap: 6, marginTop: 1, alignItems: 'start' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <div style={{ background: COLORS.greenSoft, border: `1px solid ${COLORS.line}`, borderRadius: 10, padding: '4px 8px', textAlign: 'center' }}>
-            <div style={{ fontSize: 10.0, color: COLORS.greenMuted, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 2 }}>
+            <div style={{ fontSize: 11, color: COLORS.greenMuted, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 2 }}>
               DBM Family
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', gap: 10 }}>
@@ -486,17 +488,17 @@ function PortraitHalfFlyer() {
                       style={{ objectFit: 'contain', maxWidth: logo.maxWidth, maxHeight: 36, display: 'block' }}
                     />
                   </div>
-                  <div style={{ fontSize: 7.6, lineHeight: 1.08, color: COLORS.greenMuted, letterSpacing: '0.02em', textAlign: 'center', maxWidth: 82 }}>{logo.label}</div>
+                  <div style={{ fontSize: 8.5, lineHeight: 1.08, color: COLORS.greenMuted, letterSpacing: '0.02em', textAlign: 'center', maxWidth: 82 }}>{logo.label}</div>
                 </div>
               ))}
             </div>
           </div>
 
           <div style={{ padding: '4px 10px', background: COLORS.greenSoft, borderLeft: `3px solid ${COLORS.green}`, borderRadius: 6 }}>
-            <div style={{ fontSize: 9.4, lineHeight: 1.35, color: COLORS.text, fontStyle: 'italic' }}>
+            <div style={{ fontSize: 10.5, lineHeight: 1.35, color: COLORS.text, fontStyle: 'italic' }}>
               &ldquo;I showed up not knowing anyone. Now I fish 8 tournaments a year and I&rsquo;ve got a boat partner for life.&rdquo;
             </div>
-            <div style={{ fontSize: 8.0, color: COLORS.greenMuted, fontWeight: 700, marginTop: 2, letterSpacing: '0.04em' }}>&mdash; DBM Member</div>
+            <div style={{ fontSize: 9, color: COLORS.greenMuted, fontWeight: 700, marginTop: 2, letterSpacing: '0.04em' }}>&mdash; DBM Member</div>
           </div>
         </div>
 
@@ -517,7 +519,7 @@ function PortraitHalfFlyer() {
             }}
           />
           <div style={{
-            fontSize: 11.7,
+            fontSize: 13,
             color: '#FFFFFF',
             fontWeight: 900,
             background: COLORS.blue,
@@ -529,7 +531,7 @@ function PortraitHalfFlyer() {
           }}>Join Today</div>
           <div
             style={{
-              fontSize: 8.4,
+              fontSize: 9.5,
               lineHeight: 1.08,
               color: COLORS.greenDark,
               fontWeight: 700,
@@ -540,7 +542,7 @@ function PortraitHalfFlyer() {
         </div>
       </div>
 
-      <div style={{ marginTop: 3, paddingTop: 3, borderTop: `1px solid ${COLORS.line}` }}>
+      <div style={{ marginTop: 2, paddingTop: 2, borderTop: `1px solid ${COLORS.line}` }}>
         <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '100%' }}>
           {SPONSORS.map((sponsor) => (
             <div
