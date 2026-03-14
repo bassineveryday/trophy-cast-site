@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { toPng } from 'html-to-image';
 
 /* ═══════════════════════════════════════════════════════════
@@ -37,16 +37,16 @@ const SCREEN_CENTER_GAP_PX = Math.round(CENTER_GAP_IN * CSS_DPI);
 
 type HowItWorksStep = {
   title: string;
-  detail: string;
+  detail: React.ReactNode;
   icon?: string;
   imageSrc?: string;
   imageAlt?: string;
 };
 
 const HOW_IT_WORKS_STEPS: HowItWorksStep[] = [
-  { icon: '🎙️', title: 'Quick Capture', detail: 'Voice-log your catch in under 15 seconds' },
-  { icon: '✨', title: 'TC Coach', detail: 'Learns your water, gear, and how you fish' },
-  { imageSrc: '/TrophyCast_FishMark_transparent.png', imageAlt: 'Trophy Cast fish mark', title: 'Level Up', detail: 'Build confidence, fish smarter, become a better angler' },
+  { icon: '🎙️', title: 'Quick Capture', detail: <>Voice-log your <span style={{color:GOLD,fontWeight:700}}>catch</span> in under 15 seconds</> },
+  { icon: '✨', title: 'TC Coach', detail: <>Learns your <span style={{color:TEAL,fontWeight:700}}>water</span>, <span style={{color:GREEN,fontWeight:700}}>gear</span>, and how you fish</> },
+  { imageSrc: '/TrophyCast_FishMark_transparent.png', imageAlt: 'Trophy Cast fish mark', title: 'Level Up', detail: <>Build <span style={{color:GOLD,fontWeight:700}}>confidence</span>, fish smarter, become a better <span style={{color:GREEN,fontWeight:700}}>angler</span></> },
 ];
 
 export default function PrintFlyerPage() {
@@ -294,8 +294,8 @@ function FlyerCard() {
         flexShrink: 0,
       }}>
         <div style={{ paddingBottom: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12 }}>
-            <div style={{ width: 62, height: 78, flexShrink: 0, overflow: 'hidden' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 70, height: 88, flexShrink: 0, overflow: 'hidden', marginTop: 6 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/TrophyCast_FishMark_transparent.png"
@@ -309,19 +309,24 @@ function FlyerCard() {
                 }}
               />
             </div>
-            <div style={{ width: '100%', maxWidth: 300, height: 56, overflow: 'hidden' }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/TrophyCast_Wordmark_transparent.png"
-                alt="Trophy Cast"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  objectPosition: 'left center',
-                  display: 'block',
-                }}
-              />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0, maxWidth: 370, marginTop: 18 }}>
+              <div style={{ width: '100%', height: 44, overflow: 'hidden' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/TrophyCast_Wordmark_transparent.png"
+                  alt="Trophy Cast"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    objectPosition: 'left top',
+                    display: 'block',
+                  }}
+                />
+              </div>
+              <p style={{ fontSize: 9, color: TEAL, fontWeight: 700, margin: '6px 0 0', paddingLeft: 6, whiteSpace: 'pre-line', lineHeight: 1.3, letterSpacing: '0.04em' }}>
+                {'Your waters.\nYour catches.\nYour coach.'}
+              </p>
             </div>
           </div>
         </div>
@@ -334,9 +339,7 @@ function FlyerCard() {
           alignItems: 'stretch',
         }}>
           <div>
-            <p style={{ fontSize: 8, fontWeight: 800, color: TEAL, margin: '0 0 3px', letterSpacing: '0.16em', textTransform: 'uppercase' }}>
-              Your water. Your patterns. Your coach.
-            </p>
+
             <p style={{ fontSize: 27, fontWeight: 900, color: NAVY, margin: 0, lineHeight: 1.05, letterSpacing: '-1px' }}>
               It gets smarter
             </p>
@@ -388,7 +391,7 @@ function FlyerCard() {
                 </div>
               </div>
               <p style={{ fontSize: 9.5, color: NAVY, margin: 0, lineHeight: 1.34, fontFamily: "'Raleway', sans-serif" }}>
-                Learns your water, conditions, and adjustments instead of giving generic tips.
+                Learns your <span style={{color:TEAL,fontWeight:700}}>water</span>, <span style={{color:SLATE,fontWeight:700}}>conditions</span>, and <span style={{color:TEAL,fontWeight:700}}>patterns</span> instead of giving generic tips.
               </p>
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                 {['🎙️ Quick Capture', '🏆 Daily missions'].map((label) => (
@@ -453,17 +456,17 @@ function FlyerCard() {
                       src={step.imageSrc}
                       alt={step.imageAlt ?? step.title}
                       style={{
-                        width: 13,
-                        height: 13,
+                        width: 15,
+                        height: 15,
                         objectFit: 'contain',
                         display: 'block',
                       }}
                     />
                   ) : step.icon}
                 </span>
-                <span style={{ fontSize: 9, color: CREAM, fontWeight: 800, letterSpacing: '0.02em' }}>{step.title}</span>
+                <span style={{ fontSize: 10.5, color: CREAM, fontWeight: 800, letterSpacing: '0.02em' }}>{step.title}</span>
               </div>
-              <span style={{ fontSize: 7.5, color: '#C9D3DA', lineHeight: 1.25, fontWeight: 600, fontFamily: "'Raleway', sans-serif" }}>{step.detail}</span>
+              <span style={{ fontSize: 8.5, color: '#C9D3DA', lineHeight: 1.25, fontWeight: 600, fontFamily: "'Raleway', sans-serif" }}>{step.detail}</span>
             </div>
           ))}
         </div>
@@ -482,12 +485,12 @@ function FlyerCard() {
             No other app does this.
           </p>
           {[
-            { num: '01', title: 'Every cast. Auto-captured.', desc: 'Just say: species, lure, color, weight & water temp. Trophy Cast auto-logs GPS, weather, barometric pressure & more — zero extra typing.' },
-            { num: '02', title: 'Your coach. Built on YOUR data.', desc: 'TC Coach learns from YOUR catches only — combining your water, gear, technique, pressure, weather, moon phase, wind & more.' },
-            { num: '03', title: 'Memory that never forgets.', desc: 'Every catch, every lure, every condition — logged and connected. Your coach pulls it all together to give you smarter advice every time out.' },
-            { num: '04', title: 'Today\'s conditions vs. your history.', desc: 'Pressure dropping? Front moving in? TC Coach looks back at every time you fished conditions just like today — and tells you what worked.' },
-            { num: '05', title: 'One app runs your whole club.', desc: 'Tournaments, meetings, Angler of the Year, live scoring, team chat — all in one spot. Never miss a tournament update again.' },
-            { num: '06', title: 'Built by anglers. Your grind stays yours.', desc: 'Trained by real fishermen. Not algorithms. Not influencers. And your GPS locations, sweet spots, practice routes? They live on your phone. Only.' },
+            { num: '01', title: 'Every cast. Auto-captured.', desc: <>Just say: <span style={{color:GREEN,fontWeight:700}}>species</span>, <span style={{color:TEAL,fontWeight:700}}>lure</span>, <span style={{color:GOLD,fontWeight:700}}>color</span>, <span style={{color:SLATE,fontWeight:700}}>weight</span> &amp; <span style={{color:TEAL,fontWeight:700}}>water temp</span>. Trophy Cast auto-logs <span style={{color:TEAL,fontWeight:700}}>GPS</span>, <span style={{color:NAVY_LIGHT,fontWeight:700}}>weather</span>, <span style={{color:SLATE,fontWeight:700}}>barometric pressure</span> &amp; more — zero extra typing.</> },
+            { num: '02', title: 'Your coach. Built on YOUR data.', desc: <><span style={{color:TEAL,fontWeight:700}}>TC Coach</span> learns from YOUR <span style={{color:GREEN,fontWeight:700}}>catches</span> only — combining your <span style={{color:TEAL,fontWeight:700}}>water</span>, <span style={{color:GREEN,fontWeight:700}}>gear</span>, <span style={{color:TEAL,fontWeight:700}}>technique</span>, <span style={{color:SLATE,fontWeight:700}}>pressure</span>, <span style={{color:NAVY_LIGHT,fontWeight:700}}>weather</span>, <span style={{color:GOLD,fontWeight:700}}>moon phase</span>, <span style={{color:TEAL,fontWeight:700}}>wind</span> &amp; more.</> },
+            { num: '03', title: 'Memory that never forgets.', desc: <>Every <span style={{color:GREEN,fontWeight:700}}>catch</span>, every <span style={{color:TEAL,fontWeight:700}}>lure</span>, every <span style={{color:NAVY_LIGHT,fontWeight:700}}>condition</span> — logged and connected. Your coach pulls it all together to give you <span style={{color:GOLD,fontWeight:700}}>smarter advice</span> every time out.</> },
+            { num: '04', title: "Today's conditions vs. your history.", desc: <><span style={{color:SLATE,fontWeight:700}}>Pressure</span> dropping? <span style={{color:TEAL,fontWeight:700}}>Front</span> moving in? <span style={{color:TEAL,fontWeight:700}}>TC Coach</span> looks back at every time you fished conditions just like today — and tells you what worked.</> },
+            { num: '05', title: 'One app runs your whole club.', desc: <><span style={{color:GOLD,fontWeight:700}}>Tournaments</span>, <span style={{color:TEAL,fontWeight:700}}>meetings</span>, <span style={{color:GREEN,fontWeight:700}}>Angler of the Year</span>, <span style={{color:GOLD,fontWeight:700}}>live scoring</span>, <span style={{color:TEAL,fontWeight:700}}>team chat</span> — all in one spot. Never miss a tournament update again.</> },
+            { num: '06', title: 'Built by anglers. Your grind stays yours.', desc: <>Trained by real fishermen. Not algorithms. Not influencers. And your <span style={{color:TEAL,fontWeight:700}}>GPS locations</span>, <span style={{color:GREEN,fontWeight:700}}>sweet spots</span>, <span style={{color:TEAL,fontWeight:700}}>practice routes</span>? They live on your phone. Only.</> },
           ].map((f, i, arr) => (
             <div key={f.num} style={{
               display: 'flex', gap: 6, alignItems: 'flex-start',
@@ -524,7 +527,7 @@ function FlyerCard() {
           </p>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://trophycast.app&color=0C1A23&bgcolor=FFFFFF&qzone=2"
+            src="/trophycast-qr.svg"
             alt="QR — trophycast.app"
             width={84}
             height={84}
