@@ -293,121 +293,59 @@ function FlyerCard() {
         padding: '14px 20px 12px',
         flexShrink: 0,
       }}>
-        <div style={{ paddingBottom: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 70, height: 88, flexShrink: 0, overflow: 'hidden', marginTop: 6 }}>
+        {/* Logo row — full width for wordmark */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 75, height: 94, flexShrink: 0, overflow: 'hidden' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/TrophyCast_FishMark_transparent.png"
+              alt="Trophy Cast fish mark"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                objectPosition: 'center center',
+                display: 'block',
+              }}
+            />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+            <div style={{ width: 320 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/TrophyCast_FishMark_transparent.png"
-                alt="Trophy Cast fish mark"
+                src="/TrophyCast_Wordmark_transparent.png"
+                alt="Trophy Cast"
                 style={{
                   width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  objectPosition: 'center center',
+                  height: 'auto',
                   display: 'block',
                 }}
               />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 0, maxWidth: 370, marginTop: 18 }}>
-              <div style={{ width: '100%', height: 44, overflow: 'hidden' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/TrophyCast_Wordmark_transparent.png"
-                  alt="Trophy Cast"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                    objectPosition: 'left top',
-                    display: 'block',
-                  }}
-                />
-              </div>
-              <p style={{ fontSize: 9, color: TEAL, fontWeight: 700, margin: '6px 0 0', paddingLeft: 6, whiteSpace: 'pre-line', lineHeight: 1.3, letterSpacing: '0.04em' }}>
-                {'Your waters.\nYour catches.\nYour coach.'}
-              </p>
-            </div>
           </div>
         </div>
 
-        <div style={{
-          paddingTop: 12,
-          display: 'grid',
-          gridTemplateColumns: '1fr 184px',
-          gap: 16,
-          alignItems: 'stretch',
-        }}>
-          <div>
-
-            <p style={{ fontSize: 27, fontWeight: 900, color: NAVY, margin: 0, lineHeight: 1.05, letterSpacing: '-1px' }}>
-              It gets smarter
-            </p>
-            <p style={{ fontSize: 27, fontWeight: 900, color: GOLD, margin: '1px 0 0', lineHeight: 1.05, letterSpacing: '-1px' }}>
-              the more you fish.
-            </p>
-            <div style={{ marginTop: 8 }}>
-              <p style={{ fontSize: 10.5, fontWeight: 800, color: NAVY, margin: '0 0 3px' }}>
-                Not another fishing app.
+        {/* Tagline + TC Coach row */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginTop: 4, paddingLeft: 102 }}>
+          <p style={{ fontSize: 10, color: TEAL, fontWeight: 700, margin: 0, whiteSpace: 'pre-line', lineHeight: 1.3, letterSpacing: '0.04em' }}>
+            {'Your waters.\nYour catches.\nYour coach.'}
+          </p>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 7 }}>
+            <span style={{
+              width: 22, height: 22, borderRadius: 999,
+              background: 'rgba(46,110,61,0.12)', color: GREEN,
+              fontSize: 12, fontWeight: 900, lineHeight: '22px',
+              textAlign: 'center', flexShrink: 0, marginTop: 1,
+            }}>✨</span>
+            <div>
+              <p style={{ fontSize: 12, fontWeight: 800, color: NAVY, margin: 0 }}>TC Coach</p>
+              <p style={{ fontSize: 7, color: GREEN, fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', margin: '1px 0 4px' }}>
+                Powered by your catch history
               </p>
-              <p style={{ fontSize: 9.5, color: TEXT_SECONDARY, margin: 0, lineHeight: 1.34, fontWeight: 500, fontFamily: "'Raleway', sans-serif" }}>
-                Trophy Cast learns your patterns, sharpens your skills, and coaches you to catch more fish.
+              <p style={{ fontSize: 9.5, fontWeight: 900, color: NAVY, margin: 0, lineHeight: 1.2 }}>
+                It gets smarter{' '}
+                <span style={{ color: GOLD }}>the more you fish.</span>
               </p>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'stretch' }}>
-            <div style={{
-              width: '100%',
-              background: 'rgba(255,255,255,0.84)',
-              border: '1px solid rgba(46,110,61,0.18)',
-              borderRadius: 14,
-              padding: '10px 12px',
-              boxShadow: '0 10px 22px rgba(12,26,35,0.08)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 8,
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{
-                  width: 24,
-                  height: 24,
-                  borderRadius: 999,
-                  background: 'rgba(46,110,61,0.12)',
-                  color: GREEN,
-                  fontSize: 13,
-                  fontWeight: 900,
-                  lineHeight: '24px',
-                  textAlign: 'center',
-                  flexShrink: 0,
-                }}>✨</span>
-                <div>
-                  <p style={{ fontSize: 12, fontWeight: 800, color: NAVY, margin: 0 }}>
-                    TC Coach
-                  </p>
-                  <p style={{ fontSize: 7.5, color: GREEN, fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', margin: '1px 0 0' }}>
-                    Powered by your catch history
-                  </p>
-                </div>
-              </div>
-              <p style={{ fontSize: 9.5, color: NAVY, margin: 0, lineHeight: 1.34, fontFamily: "'Raleway', sans-serif" }}>
-                Learns your <span style={{color:TEAL,fontWeight:700}}>water</span>, <span style={{color:SLATE,fontWeight:700}}>conditions</span>, and <span style={{color:TEAL,fontWeight:700}}>patterns</span> instead of giving generic tips.
-              </p>
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                {['🎙️ Quick Capture', '🏆 Daily missions'].map((label) => (
-                  <span key={label} style={{
-                    background: SURFACE_VARIANT,
-                    border: '1px solid rgba(59,140,127,0.22)',
-                    borderRadius: 999,
-                    color: NAVY,
-                    padding: '4px 8px',
-                    fontSize: 7.5,
-                    fontWeight: 800,
-                    letterSpacing: '0.02em',
-                    whiteSpace: 'nowrap',
-                  }}>{label}</span>
-                ))}
-              </div>
             </div>
           </div>
         </div>
@@ -480,8 +418,8 @@ function FlyerCard() {
       }}>
 
         {/* Feature list */}
-        <div style={{ padding: '7px 20px 12px', display: 'flex', flexDirection: 'column', background: `linear-gradient(180deg, ${CREAM} 0%, #FBF8F0 100%)` }}>
-          <p style={{ fontSize: 11, fontWeight: 900, color: NAVY, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 4px', borderBottom: `2px solid ${GOLD}`, paddingBottom: 3 }}>
+        <div style={{ padding: '10px 20px 14px', display: 'flex', flexDirection: 'column', background: `linear-gradient(180deg, ${CREAM} 0%, #FBF8F0 100%)` }}>
+          <p style={{ fontSize: 12, fontWeight: 900, color: NAVY, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 6px', borderBottom: `2px solid ${GOLD}`, paddingBottom: 4 }}>
             No other app does this.
           </p>
           {[
@@ -489,13 +427,13 @@ function FlyerCard() {
             { num: '02', title: 'Your coach. Built on YOUR data.', desc: <><span style={{color:TEAL,fontWeight:700}}>TC Coach</span> learns from YOUR <span style={{color:GREEN,fontWeight:700}}>catches</span> only — combining your <span style={{color:TEAL,fontWeight:700}}>water</span>, <span style={{color:GREEN,fontWeight:700}}>gear</span>, <span style={{color:TEAL,fontWeight:700}}>technique</span>, <span style={{color:SLATE,fontWeight:700}}>pressure</span>, <span style={{color:NAVY_LIGHT,fontWeight:700}}>weather</span>, <span style={{color:GOLD,fontWeight:700}}>moon phase</span>, <span style={{color:TEAL,fontWeight:700}}>wind</span> &amp; more.</> },
             { num: '03', title: 'Memory that never forgets.', desc: <>Every <span style={{color:GREEN,fontWeight:700}}>catch</span>, every <span style={{color:TEAL,fontWeight:700}}>lure</span>, every <span style={{color:NAVY_LIGHT,fontWeight:700}}>condition</span> — logged and connected. Your coach pulls it all together to give you <span style={{color:GOLD,fontWeight:700}}>smarter advice</span> every time out.</> },
             { num: '04', title: "Today's conditions vs. your history.", desc: <><span style={{color:SLATE,fontWeight:700}}>Pressure</span> dropping? <span style={{color:TEAL,fontWeight:700}}>Front</span> moving in? <span style={{color:TEAL,fontWeight:700}}>TC Coach</span> looks back at every time you fished conditions just like today — and tells you what worked.</> },
-            { num: '05', title: 'One app runs your whole club.', desc: <><span style={{color:GOLD,fontWeight:700}}>Tournaments</span>, <span style={{color:TEAL,fontWeight:700}}>meetings</span>, <span style={{color:GREEN,fontWeight:700}}>Angler of the Year</span>, <span style={{color:GOLD,fontWeight:700}}>live scoring</span>, <span style={{color:TEAL,fontWeight:700}}>team chat</span> — all in one spot. Never miss a tournament update again.</> },
-            { num: '06', title: 'Built by anglers. Your grind stays yours.', desc: <>Trained by real fishermen. Not algorithms. Not influencers. And your <span style={{color:TEAL,fontWeight:700}}>GPS locations</span>, <span style={{color:GREEN,fontWeight:700}}>sweet spots</span>, <span style={{color:TEAL,fontWeight:700}}>practice routes</span>? They live on your phone. Only.</> },
+            { num: '05', title: 'One app runs your whole club.', desc: <><span style={{color:GOLD,fontWeight:700}}>Tournaments</span>, <span style={{color:TEAL,fontWeight:700}}>meetings</span>, <span style={{color:GREEN,fontWeight:700}}>Angler of the Year</span>, <span style={{color:GOLD,fontWeight:700}}>live scoring</span>, <span style={{color:TEAL,fontWeight:700}}>team chat</span> — all in one spot. Never miss a <span style={{color:GOLD,fontWeight:700}}>tournament</span> update again.</> },
+            { num: '06', title: 'Built by anglers. Your grind stays yours.', desc: <>Built by real fishermen. Your <span style={{color:TEAL,fontWeight:700}}>GPS locations</span>, <span style={{color:GREEN,fontWeight:700}}>sweet spots</span>, and <span style={{color:TEAL,fontWeight:700}}>practice routes</span> stay on your phone. Period.</> },
           ].map((f, i, arr) => (
             <div key={f.num} style={{
               display: 'flex', gap: 6, alignItems: 'flex-start',
-              paddingBottom: i < arr.length - 1 ? 6 : 0,
-              marginBottom: i < arr.length - 1 ? 6 : 0,
+              paddingBottom: i < arr.length - 1 ? 8 : 0,
+              marginBottom: i < arr.length - 1 ? 8 : 0,
               borderBottom: i < arr.length - 1 ? '1px solid rgba(59,140,127,0.35)' : 'none',
             }}>
               <span style={{
@@ -505,8 +443,8 @@ function FlyerCard() {
                 lineHeight: '19px', textAlign: 'center', flexShrink: 0,
               }}>{f.num}</span>
               <div>
-                <p style={{ fontSize: 11, fontWeight: 800, color: NAVY, margin: 0 }}>{f.title}</p>
-                <p style={{ fontSize: 9.5, color: '#3a4a55', margin: 0, lineHeight: 1.3, fontWeight: 600, fontFamily: "'Raleway', sans-serif" }}>{f.desc}</p>
+                <p style={{ fontSize: 11.5, fontWeight: 800, color: NAVY, margin: 0 }}>{f.title}</p>
+                <p style={{ fontSize: 10, color: '#3a4a55', margin: 0, lineHeight: 1.35, fontWeight: 600, fontFamily: "'Raleway', sans-serif" }}>{f.desc}</p>
               </div>
             </div>
           ))}
@@ -515,63 +453,72 @@ function FlyerCard() {
 
         {/* QR column */}
         <div style={{
-          background: 'linear-gradient(180deg, #FFFFFF 0%, #F6FBF8 100%)',
-          borderLeft: `2px solid ${TEAL}`,
-          padding: '10px 8px',
+          background: '#FAFCFB',
+          borderLeft: `3px solid ${TEAL}`,
+          padding: '0 8px 0',
           display: 'flex', flexDirection: 'column',
-          alignItems: 'center', justifyContent: 'flex-start',
+          alignItems: 'center', justifyContent: 'space-between',
           textAlign: 'center',
         }}>
-          <p style={{ fontSize: 9, fontWeight: 900, color: TEAL, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
-            Scan to join
-          </p>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/trophycast-qr.svg"
-            alt="QR — trophycast.app"
-            width={84}
-            height={84}
-            style={{
-              display: 'block', border: `2.5px solid ${GOLD}`,
-              borderRadius: 8, marginBottom: 6,
-            }}
-          />
-          <p style={{ fontSize: 13, fontWeight: 800, color: NAVY, margin: '0 0 2px' }}>
-            trophycast.app
-          </p>
-          <p style={{ fontSize: 9, color: GOLD, fontWeight: 700, margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-            Free early access
-          </p>
-
-          {/* Clubs running on TC */}
-          <div style={{ borderTop: `1px solid ${MID_TEAL}`, paddingTop: 5, width: '100%', marginBottom: 6 }}>
-            <p style={{ fontSize: 8, fontWeight: 900, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 3px' }}>Clubs on Trophy Cast</p>
-            <p style={{ fontSize: 8.5, fontWeight: 800, color: NAVY, margin: '0 0 1px', fontFamily: "'Montserrat', sans-serif" }}>Denver BassMasters</p>
-            <p style={{ fontSize: 8.5, fontWeight: 800, color: NAVY, margin: '0 0 1px', fontFamily: "'Montserrat', sans-serif" }}>DBM Juniors</p>
-            <p style={{ fontSize: 8.5, fontWeight: 800, color: NAVY, margin: 0, fontFamily: "'Montserrat', sans-serif" }}>Front Range Bass Club</p>
+          {/* Top: URL + QR + tagline */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 10 }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: NAVY, margin: '0 0 5px', letterSpacing: '0.02em' }}>
+              trophycast.app
+            </p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/trophycast-qr.svg"
+              alt="QR — trophycast.app"
+              width={88}
+              height={88}
+              style={{
+                display: 'block',
+                border: `2.5px solid ${GOLD}`,
+                borderRadius: 8,
+                marginBottom: 5,
+              }}
+            />
+            <p style={{ fontSize: 8.5, color: GOLD, fontWeight: 800, margin: '0 0 2px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              Free Early Access
+            </p>
+            <p style={{ fontSize: 8.5, color: NAVY, fontWeight: 700, margin: 0, fontFamily: "'Raleway', sans-serif" }}>
+              Join the waitlist now.
+            </p>
           </div>
 
-          <div style={{ borderTop: `1px solid #eee`, paddingTop: 6, width: '100%' }}>
-            <p style={{ fontSize: 8, fontWeight: 800, color: NAVY, margin: '0 0 3px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          {/* Middle: Clubs */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <p style={{ fontSize: 10, fontWeight: 900, color: TEAL, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
+              Live clubs
+            </p>
+            {[
+              { name: 'Denver BassMasters', logo: '/dbm-logo-transparent.png', width: 140, height: 56, mb: 2 },
+              { name: 'DBM Juniors', logo: "/Denver Bassmaster Junior's logo transparent..png", width: 130, height: 50, mb: 6 },
+              { name: 'Front Range Bass Club', logo: '/FRBC Logo.png', width: 110, height: 50, mb: 0 },
+            ].map((club) => (
+              <div key={club.name} style={{ marginBottom: club.mb }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={club.logo} alt={club.name} style={{ width: club.width, height: club.height, objectFit: 'contain', display: 'block' }} />
+              </div>
+            ))}
+            <p style={{ fontSize: 8, color: '#8AACB8', fontWeight: 700, margin: '6px 0 1px', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
               Works everywhere
             </p>
-            <p style={{ fontSize: 8, color: '#5a6a75', margin: 0, lineHeight: 1.3, fontFamily: "'Raleway', sans-serif" }}>
+            <p style={{ fontSize: 7.5, color: '#8AACB8', margin: 0, fontFamily: "'Raleway', sans-serif", lineHeight: 1.3 }}>
               iPhone · Android · Desktop
             </p>
           </div>
 
-          {/* Creed strip */}
+          {/* CTA — bottom */}
           <div style={{
-            marginTop: 'auto',
-            marginLeft: -8, marginRight: -8, marginBottom: 12,
-            background: NAVY_LIGHT,
-            borderTop: `1px solid ${MID_TEAL}`,
-            borderRadius: 6,
-            padding: '6px 8px',
+            width: 'calc(100% + 16px)',
+            marginLeft: -8, marginRight: -8,
+            background: GOLD,
+            padding: '8px 8px',
             textAlign: 'center',
           }}>
-            <p style={{ fontSize: 8.5, fontWeight: 900, color: GOLD, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 2px' }}>The Grind is Yours.</p>
-            <p style={{ fontSize: 8, color: CREAM, margin: 0, lineHeight: 1.3, fontFamily: "'Raleway', sans-serif" }}>Your spots. Your data. Sealed.</p>
+            <p style={{ fontSize: 9, fontWeight: 900, color: NAVY, letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 1px' }}>Start Fishing Smarter</p>
+            <p style={{ fontSize: 8, color: NAVY, margin: 0, fontWeight: 700, fontFamily: "'Raleway', sans-serif" }}>Join the waitlist now.</p>
           </div>
         </div>
       </div>
