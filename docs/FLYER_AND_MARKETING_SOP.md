@@ -45,6 +45,7 @@ mist (light bg):        #F5F1E6
 **Official tagline:** "Where Every Cast Counts."
 **Body hook line:** "Gets smarter the more you fish."
 **App URL:** https://trophycast.app
+**General signup URL:** https://eepurl.com/jAjfYY
 **CTA:** "Join the Waitlist" / "Early Access" (NOT "Join Free" — app is in beta)
 
 ---
@@ -94,12 +95,14 @@ Generate QR codes inline — no static image file needed:
 
 ```tsx
 <img
-  src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://trophycast.app&bgcolor=0C1A23&color=D4AF37&margin=4"
+  src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Feepurl.com%2FjAjfYY&bgcolor=0C1A23&color=D4AF37&margin=4"
   alt="QR Code"
   width={160}
   height={160}
 />
 ```
+
+For general Trophy Cast acquisition flyers, the QR target and printed signup label should use `eepurl.com/jAjfYY`. Keep `trophycast.app` as the brand website in headers, footers, and support copy unless the flyer specifically needs the email signup destination.
 
 Adjust `&bgcolor=` and `&color=` to match the flyer's background. For white/print flyers:
 ```

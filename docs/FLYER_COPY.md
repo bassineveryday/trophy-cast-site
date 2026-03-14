@@ -21,7 +21,7 @@ and connects you with anglers who actually fish.
 - 🏆 Tournaments, clubs, and leaderboards built in.
 
 **[QR CODE]**
-**trophycast.app**
+**eepurl.com/jAjfYY**
 Join the waitlist — be first in.
 
 **Back (or bottom):**
@@ -55,7 +55,7 @@ to review and learn.
 - Club tools built in: tournaments, AOY, chat, members, board tools.
 
 **[QR CODE]**
-trophycast.app
+eepurl.com/jAjfYY
 
 ---
 
@@ -64,14 +64,14 @@ trophycast.app
 **🏆 Trophy Cast**
 Trophy Cast gets smarter the more you fish.
 
-**trophycast.app**
+**eepurl.com/jAjfYY**
 **[QR CODE]**
 
 ---
 
 ## Copy Notes for Print Designer
 
-- **QR Code links to:** https://trophycast.app (waitlist form is on homepage)
+- **QR Code links to:** https://eepurl.com/jAjfYY (Mailchimp-hosted Trophy Cast email signup)
 - **Brand colors:** Dark navy (#0a0e1a), Trophy Gold (#f5c842), White
 - **Logo:** Use transparent version if available, otherwise current logo
 - **Font feel:** Bold, clean, modern. Not outdoorsy/camo. Think tech meets fishing.
