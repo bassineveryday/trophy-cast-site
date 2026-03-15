@@ -459,7 +459,7 @@ export default function WeeklyEmailAdminPage() {
                         title="Fetch latest suggestions from server"
                         className="text-copyMuted hover:text-electric text-xs font-bold bg-liftedPanel/50 hover:bg-electric/10 px-3 py-1.5 rounded-lg border border-liftedPanel/50 transition-colors whitespace-nowrap disabled:opacity-50"
                       >
-                        {refreshing ? '↺ …' : '↺ Refresh'}
+                        {refreshing ? '✨ Generating…' : '✨ New Ideas'}
                       </button>
                       <button
                         type="button"
