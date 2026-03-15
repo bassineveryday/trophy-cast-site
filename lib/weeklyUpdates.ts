@@ -30,6 +30,17 @@ export interface WeeklyUpdate {
 export const weeklyUpdates: WeeklyUpdate[] = [
   // ─── Most recent week first ──────────────────────────────────────────────
   {
+    week: 'March 15, 2026',
+    suggestedSubject: 'Trophy Cast Weekly 🎣 — March 15',
+    suggestedDeepDive: 'TC Coach',
+    suggestedMeetingFocus: 'Live walkthrough of TC Coach — we\'ll pull up your real catch history, see your pattern insights, and show how the inline coaching panel works right inside the app',
+    bullets: [
+      'Weekly email admin now shows a full history of what shipped each week — hit Refresh to reload the latest',
+      'Catch photos now stored on Cloudinary for faster loading and better image quality across the app',
+      'Tournament visibility controls added — TDs can now control who sees a tournament before it\'s published',
+    ],
+  },
+  {
     week: 'March 7, 2026',
     suggestedSubject: 'Trophy Cast Weekly 🎣 — March 7',
     suggestedDeepDive: 'Dock Talk',

@@ -223,6 +223,14 @@ export default function WeeklyEmailAdminPage() {
     [bullets, sendNow, executeSend]
   );
 
+  const handleLoadLatest = useCallback(() => {
+    if (!latest) return;
+    setBullets(latest.bullets.join('\n'));
+    setSubject(latest.suggestedSubject);
+    setDeepDive(latest.suggestedDeepDive);
+    setMeetingFocus(latest.suggestedMeetingFocus ?? MEETING_FOCUS_BY_FEATURE[latest.suggestedDeepDive] ?? '');
+  }, [latest]);
+
   const previewBullets = useMemo(
     () =>
       bullets
@@ -294,14 +302,24 @@ export default function WeeklyEmailAdminPage() {
               ? <span className="text-copyMuted/50">loading…</span>
               : <><span className="text-trophyGold font-bold">{subCount.toLocaleString()}</span>{' '}subscribers</>}
           </p>
-          <button
-            form="email-form"
-            type="submit"
-            disabled={status === 'loading'}
-            className="bg-bass hover:bg-bassLight text-white font-bold py-2.5 px-6 rounded-xl transition-colors disabled:opacity-50 font-heading text-sm"
-          >
-            {status === 'loading' ? 'Working…' : sendNow ? '🚀 Send Now' : '📅 Schedule'}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleLoadLatest}
+              title="Reload this week's suggestions into the form"
+              className="text-copyMuted hover:text-electric text-xs font-bold bg-liftedPanel/50 hover:bg-electric/10 px-3 py-2 rounded-lg border border-liftedPanel/50 transition-colors"
+            >
+              ↺ Refresh
+            </button>
+            <button
+              form="email-form"
+              type="submit"
+              disabled={status === 'loading'}
+              className="bg-bass hover:bg-bassLight text-white font-bold py-2.5 px-6 rounded-xl transition-colors disabled:opacity-50 font-heading text-sm"
+            >
+              {status === 'loading' ? 'Working…' : sendNow ? '🚀 Send Now' : '📅 Schedule'}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -414,35 +432,72 @@ export default function WeeklyEmailAdminPage() {
               </div>
             </div>
 
-            {/* This Week's Suggestions */}
-            {latest && (
-              <div className="bg-deepPanel border border-electric/20 rounded-xl p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-electric">This Week&apos;s Suggestions</p>
-                    <p className="text-copyMuted/60 text-xs">{latest.week}</p>
+            {/* This Week's Suggestions + History */}
+            {weeklyUpdates.length > 0 && (
+              <div className="space-y-2">
+                {/* Current week */}
+                <div className="bg-deepPanel border border-electric/20 rounded-xl p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wider text-electric">This Week&apos;s Suggestions</p>
+                      <p className="text-copyMuted/60 text-xs">{weeklyUpdates[0].week}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleLoadLatest}
+                      className="text-electric text-xs font-bold bg-electric/10 hover:bg-electric/20 px-3 py-1.5 rounded-lg border border-electric/20 transition-colors whitespace-nowrap"
+                    >
+                      Load All →
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setBullets(latest.bullets.join('\n'));
-                      setSubject(latest.suggestedSubject);
-                      setDeepDive(latest.suggestedDeepDive);
-                      setMeetingFocus(latest.suggestedMeetingFocus ?? MEETING_FOCUS_BY_FEATURE[latest.suggestedDeepDive] ?? '');
-                    }}
-                    className="text-electric text-xs font-bold bg-electric/10 hover:bg-electric/20 px-3 py-1.5 rounded-lg border border-electric/20 transition-colors whitespace-nowrap"
-                  >
-                    Load All →
-                  </button>
+                  <ul className="space-y-2">
+                    {weeklyUpdates[0].bullets.map((b, i) => (
+                      <li key={i} className="flex gap-2 text-xs text-copyLight leading-relaxed">
+                        <span className="text-electric shrink-0">•</span>
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="space-y-2">
-                  {latest.bullets.map((b, i) => (
-                    <li key={i} className="flex gap-2 text-xs text-copyLight leading-relaxed">
-                      <span className="text-electric shrink-0">•</span>
-                      <span>{b}</span>
-                    </li>
-                  ))}
-                </ul>
+
+                {/* Previous weeks history */}
+                {weeklyUpdates.length > 1 && (
+                  <div className="bg-deepPanel border border-liftedPanel rounded-xl overflow-hidden">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-copyMuted px-4 py-3 border-b border-liftedPanel">
+                      Previous Weeks
+                    </p>
+                    <div className="divide-y divide-liftedPanel/50">
+                      {weeklyUpdates.slice(1).map((update, wi) => (
+                        <details key={wi} className="group">
+                          <summary className="flex items-center justify-between px-4 py-3 cursor-pointer list-none hover:bg-liftedPanel/30 transition-colors">
+                            <span className="text-xs font-semibold text-copyMuted group-open:text-copyLight transition-colors">{update.week}</span>
+                            <span className="text-copyMuted/40 text-xs group-open:rotate-180 transition-transform inline-block">▾</span>
+                          </summary>
+                          <div className="px-4 pb-3 space-y-1.5">
+                            {update.bullets.map((b, i) => (
+                              <div key={i} className="flex gap-2 text-xs text-copyMuted/80 leading-relaxed">
+                                <span className="text-copyMuted/40 shrink-0">•</span>
+                                <span>{b}</span>
+                              </div>
+                            ))}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setBullets(update.bullets.join('\n'));
+                                setSubject(update.suggestedSubject);
+                                setDeepDive(update.suggestedDeepDive);
+                                setMeetingFocus(update.suggestedMeetingFocus ?? MEETING_FOCUS_BY_FEATURE[update.suggestedDeepDive] ?? '');
+                              }}
+                              className="mt-1 text-copyMuted/60 hover:text-electric text-xs font-bold transition-colors"
+                            >
+                              Load this week →
+                            </button>
+                          </div>
+                        </details>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -465,7 +520,7 @@ export default function WeeklyEmailAdminPage() {
                     required={!sendNow}
                     className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
                   />
-                  <p className="text-xs text-copyMuted/40 mt-1.5">Mailchimp requires at least 15 min from now.</p>
+                  <p className="text-xs text-copyMuted/40 mt-1.5">Resend delivers at the exact time you choose.</p>
                 </div>
               )}
             </div>
@@ -496,7 +551,7 @@ export default function WeeklyEmailAdminPage() {
               <p className="font-semibold text-copyLight text-sm">📌 Reminder</p>
               <p>Monday 7–8PM MT · <a href="https://meet.google.com/kys-cuub-idb" target="_blank" rel="noopener noreferrer" className="text-electric underline">meet.google.com/kys-cuub-idb</a></p>
               <p>Targets <strong>app-user</strong> segment. Waitlist excluded.</p>
-              <p>Check <a href="https://mailchimp.com" target="_blank" rel="noopener noreferrer" className="text-electric underline">Mailchimp dashboard</a> after sending.</p>
+              <p>Check <a href="https://resend.com" target="_blank" rel="noopener noreferrer" className="text-electric underline">Resend dashboard</a> after sending.</p>
             </div>
 
           </div>
