@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
-import { weeklyUpdates } from '@/lib/weeklyUpdates';
+import { weeklyUpdates, type WeeklyUpdate } from '@/lib/weeklyUpdates';
 import { useAdminAuth } from '@/lib/useAdminAuth';
 import { buildEmailHtml } from '@/lib/emailTemplate';
 
@@ -50,7 +50,10 @@ function getDefaultSubject(): string {
 }
 
 export default function WeeklyEmailAdminPage() {
-  const latest = weeklyUpdates[0];
+  // Dynamic suggestions state (initialized from static import, refreshable via API)
+  const [suggestions, setSuggestions] = useState<WeeklyUpdate[]>(weeklyUpdates);
+  const [refreshing, setRefreshing] = useState(false);
+  const latest = suggestions[0];
 
   // Auth gate
   const { password, unlocked, authError, unlock, lockOut } = useAdminAuth();
@@ -231,6 +234,20 @@ export default function WeeklyEmailAdminPage() {
     setMeetingFocus(latest.suggestedMeetingFocus ?? MEETING_FOCUS_BY_FEATURE[latest.suggestedDeepDive] ?? '');
   }, [latest]);
 
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const res = await fetch('/api/admin/weekly-updates', { cache: 'no-store' });
+      if (!res.ok) throw new Error('Failed to fetch');
+      const data: WeeklyUpdate[] = await res.json();
+      if (data.length > 0) setSuggestions(data);
+    } catch {
+      // silently keep existing suggestions
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
   const previewBullets = useMemo(
     () =>
       bullets
@@ -303,14 +320,6 @@ export default function WeeklyEmailAdminPage() {
               : <><span className="text-trophyGold font-bold">{subCount.toLocaleString()}</span>{' '}subscribers</>}
           </p>
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handleLoadLatest}
-              title="Reload this week's suggestions into the form"
-              className="text-copyMuted hover:text-electric text-xs font-bold bg-liftedPanel/50 hover:bg-electric/10 px-3 py-2 rounded-lg border border-liftedPanel/50 transition-colors"
-            >
-              ↺ Refresh
-            </button>
             <button
               form="email-form"
               type="submit"
@@ -433,25 +442,36 @@ export default function WeeklyEmailAdminPage() {
             </div>
 
             {/* This Week's Suggestions + History */}
-            {weeklyUpdates.length > 0 && (
+            {suggestions.length > 0 && (
               <div className="space-y-2">
                 {/* Current week */}
                 <div className="bg-deepPanel border border-electric/20 rounded-xl p-4">
                   <div className="flex items-center justify-between mb-3">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-electric">This Week&apos;s Suggestions</p>
-                      <p className="text-copyMuted/60 text-xs">{weeklyUpdates[0].week}</p>
+                      <p className="text-copyMuted/60 text-xs">{suggestions[0].week}</p>
                     </div>
-                    <button
-                      type="button"
-                      onClick={handleLoadLatest}
-                      className="text-electric text-xs font-bold bg-electric/10 hover:bg-electric/20 px-3 py-1.5 rounded-lg border border-electric/20 transition-colors whitespace-nowrap"
-                    >
-                      Load All →
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={handleRefresh}
+                        disabled={refreshing}
+                        title="Fetch latest suggestions from server"
+                        className="text-copyMuted hover:text-electric text-xs font-bold bg-liftedPanel/50 hover:bg-electric/10 px-3 py-1.5 rounded-lg border border-liftedPanel/50 transition-colors whitespace-nowrap disabled:opacity-50"
+                      >
+                        {refreshing ? '↺ …' : '↺ Refresh'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleLoadLatest}
+                        className="text-electric text-xs font-bold bg-electric/10 hover:bg-electric/20 px-3 py-1.5 rounded-lg border border-electric/20 transition-colors whitespace-nowrap"
+                      >
+                        Load All →
+                      </button>
+                    </div>
                   </div>
                   <ul className="space-y-2">
-                    {weeklyUpdates[0].bullets.map((b, i) => (
+                    {suggestions[0].bullets.map((b, i) => (
                       <li key={i} className="flex gap-2 text-xs text-copyLight leading-relaxed">
                         <span className="text-electric shrink-0">•</span>
                         <span>{b}</span>
@@ -461,13 +481,13 @@ export default function WeeklyEmailAdminPage() {
                 </div>
 
                 {/* Previous weeks history */}
-                {weeklyUpdates.length > 1 && (
+                {suggestions.length > 1 && (
                   <div className="bg-deepPanel border border-liftedPanel rounded-xl overflow-hidden">
                     <p className="text-xs font-semibold uppercase tracking-wider text-copyMuted px-4 py-3 border-b border-liftedPanel">
                       Previous Weeks
                     </p>
                     <div className="divide-y divide-liftedPanel/50">
-                      {weeklyUpdates.slice(1).map((update, wi) => (
+                      {suggestions.slice(1).map((update, wi) => (
                         <details key={wi} className="group">
                           <summary className="flex items-center justify-between px-4 py-3 cursor-pointer list-none hover:bg-liftedPanel/30 transition-colors">
                             <span className="text-xs font-semibold text-copyMuted group-open:text-copyLight transition-colors">{update.week}</span>
