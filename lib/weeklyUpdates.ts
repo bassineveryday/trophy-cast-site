@@ -25,6 +25,10 @@ export interface WeeklyUpdate {
    * E.g. "Live demo of TC Coach's inline catch panel"
    */
   suggestedMeetingFocus: string;
+  /** Optional metadata for AI-generated idea sets shown in the admin UI. */
+  source?: 'static' | 'generated';
+  sourceLabel?: string;
+  generatedAt?: string;
 }
 
 export const weeklyUpdates: WeeklyUpdate[] = [

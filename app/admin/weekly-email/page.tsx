@@ -49,10 +49,17 @@ function getDefaultSubject(): string {
   return `Trophy Cast Weekly 🎣 — ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`;
 }
 
+function getUpdateSignature(update: WeeklyUpdate): string {
+  return [update.suggestedSubject, update.suggestedDeepDive, update.bullets.join('|')]
+    .join('::')
+    .toLowerCase();
+}
+
 export default function WeeklyEmailAdminPage() {
   // Dynamic suggestions state (initialized from static import, refreshable via API)
   const [suggestions, setSuggestions] = useState<WeeklyUpdate[]>(weeklyUpdates);
   const [refreshing, setRefreshing] = useState(false);
+  const [refreshError, setRefreshError] = useState('');
   const latest = suggestions[0];
 
   // Auth gate
@@ -236,17 +243,33 @@ export default function WeeklyEmailAdminPage() {
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
+    setRefreshError('');
     try {
-      const res = await fetch('/api/admin/weekly-updates', { cache: 'no-store' });
+      const res = await fetch('/api/admin/weekly-updates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        cache: 'no-store',
+        body: JSON.stringify({
+          seenBullets: suggestions.slice(0, 8).flatMap((update) => update.bullets),
+          seenSubjects: suggestions.slice(0, 8).map((update) => update.suggestedSubject),
+        }),
+      });
       if (!res.ok) throw new Error('Failed to fetch');
-      const data: WeeklyUpdate[] = await res.json();
-      if (data.length > 0) setSuggestions(data);
+      const data = await res.json() as { suggestion?: WeeklyUpdate };
+      if (!data.suggestion) throw new Error('Missing suggestion');
+      setSuggestions((current) => {
+        const next = [
+          data.suggestion as WeeklyUpdate,
+          ...current.filter((update) => getUpdateSignature(update) !== getUpdateSignature(data.suggestion as WeeklyUpdate)),
+        ];
+        return next.slice(0, 10);
+      });
     } catch {
-      // silently keep existing suggestions
+      setRefreshError('Could not generate a new idea set. Keeping your current suggestions.');
     } finally {
       setRefreshing(false);
     }
-  }, []);
+  }, [suggestions]);
 
   const previewBullets = useMemo(
     () =>
@@ -450,6 +473,9 @@ export default function WeeklyEmailAdminPage() {
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-electric">This Week&apos;s Suggestions</p>
                       <p className="text-copyMuted/60 text-xs">{suggestions[0].week}</p>
+                      {latest?.sourceLabel && (
+                        <p className="text-copyMuted/50 text-[11px] mt-1">{latest.sourceLabel}</p>
+                      )}
                     </div>
                     <div className="flex items-center gap-2">
                       <button
@@ -470,6 +496,8 @@ export default function WeeklyEmailAdminPage() {
                       </button>
                     </div>
                   </div>
+                  <p className="text-copyMuted/60 text-[11px] mb-3">Each click adds another idea set below so you can scroll and pick the best one.</p>
+                  {refreshError && <p className="text-red-400 text-[11px] mb-3">{refreshError}</p>}
                   <ul className="space-y-2">
                     {suggestions[0].bullets.map((b, i) => (
                       <li key={i} className="flex gap-2 text-xs text-copyLight leading-relaxed">
@@ -484,7 +512,7 @@ export default function WeeklyEmailAdminPage() {
                 {suggestions.length > 1 && (
                   <div className="bg-deepPanel border border-liftedPanel rounded-xl overflow-hidden">
                     <p className="text-xs font-semibold uppercase tracking-wider text-copyMuted px-4 py-3 border-b border-liftedPanel">
-                      Previous Weeks
+                      More Ideas & Previous Weeks
                     </p>
                     <div className="divide-y divide-liftedPanel/50">
                       {suggestions.slice(1).map((update, wi) => (
@@ -494,6 +522,9 @@ export default function WeeklyEmailAdminPage() {
                             <span className="text-copyMuted/40 text-xs group-open:rotate-180 transition-transform inline-block">▾</span>
                           </summary>
                           <div className="px-4 pb-3 space-y-1.5">
+                            {update.sourceLabel && (
+                              <p className="text-[11px] text-copyMuted/50">{update.sourceLabel}</p>
+                            )}
                             {update.bullets.map((b, i) => (
                               <div key={i} className="flex gap-2 text-xs text-copyMuted/80 leading-relaxed">
                                 <span className="text-copyMuted/40 shrink-0">•</span>
