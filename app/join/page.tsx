@@ -1,8 +1,10 @@
 'use client';
 
+import { ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { MarketingIcon } from '@/components/MarketingIcon';
 
 const PROGRAMS = [
   {
@@ -99,7 +101,11 @@ export default function DBMJoinPage() {
       }}>
         {status === 'success' ? (
           <div style={{ textAlign: 'center', padding: '16px 0' }}>
-            <div style={{ fontSize: 48, marginBottom: 12 }}>{selectedProgram.emoji}</div>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full border border-[#88AC2E]/30 bg-[#88AC2E]/10 text-[#3A5C12]">
+                <MarketingIcon emoji={selectedProgram.emoji} className="h-8 w-8" fallbackClassName="text-5xl" />
+              </div>
+            </div>
             <h1 style={{ fontSize: 24, fontWeight: 900, color: '#3A5C12', margin: '0 0 10px' }}>
               You&rsquo;re In!
             </h1>
@@ -112,7 +118,9 @@ export default function DBMJoinPage() {
             <Link
               href="https://www.denverbassmasters.com"
               style={{
-                display: 'inline-block',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
                 background: '#88AC2E',
                 color: '#0C1A06',
                 fontWeight: 800,
@@ -122,7 +130,8 @@ export default function DBMJoinPage() {
                 textDecoration: 'none',
               }}
             >
-              Visit denverbassmasters.com →
+              Visit denverbassmasters.com
+              <ArrowRight size={16} strokeWidth={2.4} />
             </Link>
           </div>
         ) : (
@@ -165,6 +174,9 @@ export default function DBMJoinPage() {
                         onChange={() => setForm({ ...form, program: p.id })}
                         style={{ accentColor: '#88AC2E', width: 16, height: 16, flexShrink: 0 }}
                       />
+                      <div className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#88AC2E]/30 bg-[#88AC2E]/10 text-[#3A5C12]">
+                        <MarketingIcon emoji={p.emoji} className="h-4.5 w-4.5" fallbackClassName="text-lg" />
+                      </div>
                       <div>
                         <div style={{ fontSize: 14, fontWeight: 800, color: '#0C1A06' }}>{p.label}</div>
                         <div style={{ fontSize: 12, color: '#6B7F35', marginTop: 1 }}>{p.sublabel}</div>

@@ -22,9 +22,8 @@ export default function CoachPage() {
             </p>
             <ul className="space-y-3">
               {siteContent.coachInsights.bullets.map((bullet) => (
-                <li key={bullet.text} className="card-hover flex items-start gap-3 rounded-2xl border border-white/5 bg-deepPanel/80 p-4">
-                  <span className="emoji-icon shrink-0">{bullet.emoji}</span>
-                  <span className="text-sm text-copyMuted">{bullet.text}</span>
+                <li key={bullet} className="card-hover rounded-2xl border border-white/5 bg-deepPanel/80 p-4 text-sm text-copyMuted">
+                  {bullet}
                 </li>
               ))}
             </ul>
@@ -48,25 +47,35 @@ export default function CoachPage() {
         </div>
       </Section>
 
-      {/* ── Conditions Engine ────────────────────────────────── */}
+      {/* ── Insight Boundaries ───────────────────────────────── */}
       <Section variant="surfaceLifted">
         <div className="space-y-5">
           <div className="space-y-1">
             <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">
-              {siteContent.conditionsEngine.title}
+              What the product is actually doing
             </p>
-            <p className="max-w-3xl text-sm text-copyMuted">{siteContent.conditionsEngine.description}</p>
+            <p className="max-w-3xl text-sm text-copyMuted">
+              The current coach experience is deliberately narrow: it restructures logs, surfaces
+              confidence-oriented observations, and avoids pretending it can predict a bite.
+            </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {siteContent.conditionsEngine.chips.map((chip) => (
-              <div key={chip.label} className="card-hover gold-top-bar rounded-2xl border border-trophyGold/10 bg-deepPanel/70 p-4">
-                <span className="text-2xl">{chip.emoji}</span>
-                <p className="mt-2 font-heading text-sm font-bold text-trophyGold">{chip.label}</p>
+            {[
+              { title: "Optional", detail: "AI assists the log. It is not required to use the product well." },
+              { title: "Grounded", detail: "Insights come from your own logging history and current entry context." },
+              { title: "Non-prescriptive", detail: "No secret spots, no hard promises, no fake certainty." },
+              { title: "Transparent", detail: "The site now frames this as confidence-building support, not magic coaching." },
+            ].map((chip) => (
+              <div key={chip.title} className="card-hover gold-top-bar rounded-2xl border border-trophyGold/10 bg-deepPanel/70 p-4">
+                <p className="mt-2 font-heading text-sm font-bold text-trophyGold">{chip.title}</p>
                 <p className="mt-1 text-xs text-copyMuted">{chip.detail}</p>
               </div>
             ))}
           </div>
-          <p className="max-w-3xl text-xs text-copyMuted">{siteContent.conditionsEngine.score}</p>
+          <p className="max-w-3xl text-xs text-copyMuted">
+            The marketing copy and UI now line up with that boundary so the public site does not
+            over-claim what the app is doing.
+          </p>
         </div>
       </Section>
 
@@ -79,7 +88,7 @@ export default function CoachPage() {
           <p className="mx-auto max-w-2xl text-sm text-copyMuted">
             Join the waitlist — TC Coach gets smarter every time you fish.
           </p>
-          <WaitlistForm />
+          <WaitlistForm waitlist={siteContent.waitlist} message={siteContent.finalCta.message} />
         </div>
       </Section>
     </>
