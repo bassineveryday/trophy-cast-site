@@ -32,6 +32,7 @@ import {
 import { useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useAdminAuth } from '@/lib/useAdminAuth';
+import { TCCoachBadge } from '@/components/TCCoachBadge';
 import {
   ResponsiveContainer,
   LineChart,
@@ -1046,6 +1047,7 @@ export default function AdminDashboardPage() {
             <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
               <div className="flex items-center justify-between gap-4 mb-5">
                 <div>
+                  <TCCoachBadge className="mb-3" />
                   <p className="text-sm font-semibold text-copyLight">TC Coach</p>
                   <p className="text-xs text-copyMuted/50 mt-0.5">chat prompts, post-catch coaching, and voice conversation flow</p>
                 </div>
@@ -1475,11 +1477,11 @@ export default function AdminDashboardPage() {
           })()}
         </section>
 
-        {/* AI Usage Insights */}
+        {/* TC Coach Usage Insights */}
         <section>
           <div className="flex items-center justify-between mb-4">
             <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted">
-              AI Usage Insights
+              TC Coach Usage Insights
             </p>
             <button
               onClick={() => { void fetchInsights(); }}

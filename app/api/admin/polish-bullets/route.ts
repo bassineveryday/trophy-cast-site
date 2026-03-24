@@ -37,7 +37,7 @@ Rules:
 - Write like a casual but enthusiastic fishing club member talking to other anglers
 - Keep each bullet under 15 words — punchy and clear
 - Use plain English. No jargon, no technical terms
-- Do NOT use the term "AI Coach" — use "TC" instead  
+- Do NOT use raw AI labels — use "TC" instead  
 - Do NOT use markdown (no bold, no asterisks)
 - Output ONLY the bullet points, one per line, no numbers, no dashes, no extra text
 - Each bullet should start with the feature name or action (e.g. "TC now...", "Dock Talk...", "Tournament results...")`,
@@ -59,6 +59,6 @@ Rules:
     return NextResponse.json({ bullets });
   } catch (error) {
     console.error('[polish-bullets] error:', error);
-    return NextResponse.json({ error: 'AI polish failed. Try again.' }, { status: 500 });
+    return NextResponse.json({ error: 'TC Coach polish failed. Try again.' }, { status: 500 });
   }
 }

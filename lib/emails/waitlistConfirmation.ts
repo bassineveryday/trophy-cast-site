@@ -35,7 +35,7 @@ export function waitlistConfirmationHtml(firstName: string): string {
                 <p style="margin:0 0 12px 0;font-size:13px;font-weight:700;color:#f5c842;text-transform:uppercase;letter-spacing:1px;">What to expect</p>
                 <table cellpadding="0" cellspacing="0" width="100%">
                   <tr>
-                    <td style="padding:8px 0;font-size:14px;color:#cbd5e1;">📸 &nbsp; Voice-first catch logging with AI</td>
+                    <td style="padding:8px 0;font-size:14px;color:#cbd5e1;">📸 &nbsp; Voice-first catch logging with TC Coach</td>
                   </tr>
                   <tr>
                     <td style="padding:8px 0;font-size:14px;color:#cbd5e1;">🏆 &nbsp; Live tournament management &amp; AOY leaderboards</td>
@@ -94,7 +94,7 @@ export function waitlistConfirmationText(firstName: string): string {
 You're on the Trophy Cast waitlist! We'll reach out as soon as we're ready for you.
 
 What to expect:
-- Voice-first catch logging with AI
+- Voice-first catch logging with TC Coach
 - Live tournament management & AOY leaderboards
 - The more you fish, the better it knows your patterns
 - Catch maps, weather intel & season stats

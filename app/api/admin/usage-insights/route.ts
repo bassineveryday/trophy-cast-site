@@ -194,7 +194,7 @@ export async function POST(request: Request) {
 
       const underused: string[] = [];
       if (!catchScreen || catchScreen[1] < 3) underused.push('Catch Logging');
-      if (!coachScreen || coachScreen[1] < 3) underused.push('AI Coach');
+      if (!coachScreen || coachScreen[1] < 3) underused.push('TC Coach');
 
       if (underused.length > 0) {
         insights.push({

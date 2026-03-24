@@ -1,6 +1,7 @@
 import { DeviceFrame } from "@/components/DeviceFrame";
 import { FeaturePageHero } from "@/components/FeaturePageHero";
 import { Section } from "@/components/Section";
+import { TCCoachBadge } from "@/components/TCCoachBadge";
 import { WaitlistForm } from "@/components/WaitlistForm";
 import { siteContent } from "@/lib/content";
 
@@ -17,6 +18,7 @@ export default function CoachPage() {
       <Section variant="surface">
         <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-start">
           <div className="space-y-5">
+            <TCCoachBadge />
             <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">
               How TC Coach works for you
             </p>
@@ -61,7 +63,7 @@ export default function CoachPage() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { title: "Optional", detail: "AI assists the log. It is not required to use the product well." },
+              { title: "Optional", detail: "TC Coach assists the log. It is not required to use the product well." },
               { title: "Grounded", detail: "Insights come from your own logging history and current entry context." },
               { title: "Non-prescriptive", detail: "No secret spots, no hard promises, no fake certainty." },
               { title: "Transparent", detail: "The site now frames this as confidence-building support, not magic coaching." },
@@ -88,6 +90,7 @@ export default function CoachPage() {
           <p className="mx-auto max-w-2xl text-sm text-copyMuted">
             Join the waitlist — TC Coach gets smarter every time you fish.
           </p>
+          <TCCoachBadge label="Gold sparkle = TC Coach" className="mx-auto" />
           <WaitlistForm waitlist={siteContent.waitlist} message={siteContent.finalCta.message} />
         </div>
       </Section>

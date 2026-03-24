@@ -97,5 +97,5 @@ Trophy Cast gets smarter the more you fish.
 ## Social Proof (Add when available)
 
 - "Trusted by Denver Bassmasters — 41 members and counting"
-- "30+ features. Voice logging. Live tournaments. AI coaching."
+- "30+ features. Voice logging. Live tournaments. TC Coach."
 - "Launching March 2026"

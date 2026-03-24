@@ -319,7 +319,7 @@ export default function PrivacyPage() {
               <li className="flex gap-2">
                 <span className="text-trophyGold shrink-0 mt-0.5">→</span>
                 <span>
-                  <strong className="text-copyLight">Opt out</strong> of analytics, AI coaching
+                  <strong className="text-copyLight">Opt out</strong> of analytics, TC Coach
                   features, or SMS notifications at any time via Settings → Trust Center.
                 </span>
               </li>
@@ -357,7 +357,7 @@ export default function PrivacyPage() {
               </li>
               <li>
                 <strong className="text-copyLight">OpenAI / Anthropic</strong> — powers TC Coach
-                AI responses using anonymized prompts (no personal identifiers sent)
+                responses using anonymized prompts (no personal identifiers sent)
               </li>
             </ul>
             <p className="mt-3">

@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { weeklyUpdates, type WeeklyUpdate } from '@/lib/weeklyUpdates';
 import { useAdminAuth } from '@/lib/useAdminAuth';
 import { buildEmailHtml } from '@/lib/emailTemplate';
+import { TCCoachBadge } from '@/components/TCCoachBadge';
 
 const DEEP_DIVE_OPTIONS = [
   'Dock Talk',
@@ -420,12 +421,9 @@ export default function WeeklyEmailAdminPage() {
               />
             </div>
 
-            {/* AI Polish */}
+            {/* TC Coach Polish */}
             <div className="bg-deepPanel border border-trophyGold/20 rounded-xl p-4">
-              <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-trophyGold mb-1">
-                <Sparkles className="h-3.5 w-3.5" strokeWidth={2.2} />
-                <span>TC Coach Polish</span>
-              </p>
+              <TCCoachBadge label="TC Coach Polish" className="mb-2" />
               <p className="text-copyMuted/70 text-xs mb-3">Talk or type rough thoughts — TC Coach fills the bullets above</p>
               <div className="relative mb-3">
                 <textarea
@@ -470,8 +468,8 @@ export default function WeeklyEmailAdminPage() {
                   </>
                 ) : (
                   <>
-                    <Sparkles className="h-4 w-4" strokeWidth={2.2} />
-                    <span>Polish with AI →</span>
+                    <Sparkles className="h-4 w-4 text-trophyGold" strokeWidth={2.2} />
+                    <span>Polish with TC Coach →</span>
                   </>
                 )}
               </button>
@@ -532,7 +530,7 @@ export default function WeeklyEmailAdminPage() {
                         onClick={handleRefresh}
                         disabled={refreshing}
                         title="Fetch latest suggestions from server"
-                        className="inline-flex items-center gap-2 text-copyMuted hover:text-electric text-xs font-bold bg-liftedPanel/50 hover:bg-electric/10 px-3 py-1.5 rounded-lg border border-liftedPanel/50 transition-colors whitespace-nowrap disabled:opacity-50"
+                        className="inline-flex items-center gap-2 text-copyMuted hover:text-trophyGold text-xs font-bold bg-liftedPanel/50 hover:bg-trophyGold/10 px-3 py-1.5 rounded-lg border border-liftedPanel/50 transition-colors whitespace-nowrap disabled:opacity-50"
                       >
                         {refreshing ? (
                           <>
@@ -541,7 +539,7 @@ export default function WeeklyEmailAdminPage() {
                           </>
                         ) : (
                           <>
-                            <Sparkles className="h-3.5 w-3.5" strokeWidth={2.2} />
+                            <Sparkles className="h-3.5 w-3.5 text-trophyGold" strokeWidth={2.2} />
                             <span>New Ideas</span>
                           </>
                         )}
