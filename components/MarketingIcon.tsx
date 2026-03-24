@@ -30,6 +30,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const iconMap: Record<string, LucideIcon> = {
+  coach: Sparkles,
   "🎣": Fish,
   "🐟": Fish,
   "🏆": Trophy,

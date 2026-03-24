@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Sparkles } from 'lucide-react';
 import {
   FLYER_SIGNUP_LABEL,
   FLYER_SIGNUP_QR_IMAGE,
@@ -304,7 +305,7 @@ export default function FlyerPage() {
                 body: 'Log catches on the water in one breath. Trophy Cast remembers every detail.',
               },
               {
-                icon: '✨',
+                icon: 'coach',
                 title: 'TC Coach — knows your water',
                 body: 'Not generic tips. Coaching built from YOUR patterns, YOUR techniques, YOUR adjustments.',
               },
@@ -342,7 +343,11 @@ export default function FlyerPage() {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontSize: 20 }}>{item.icon}</span>
+                  {item.icon === 'coach' ? (
+                    <Sparkles size={20} color="#D4AF37" strokeWidth={2.2} />
+                  ) : (
+                    <span style={{ fontSize: 20 }}>{item.icon}</span>
+                  )}
                   <span style={{ color: '#F5F1E6', fontWeight: 700, fontSize: 14 }}>{item.title}</span>
                 </div>
                 <p style={{ color: '#8BA3B5', fontSize: 12.5, margin: 0, lineHeight: 1.5 }}>{item.body}</p>
@@ -385,7 +390,7 @@ export default function FlyerPage() {
                 />
               </div>
               <p style={{ color: '#8BA3B5', fontSize: 11, margin: '8px 0 0', textAlign: 'center' }}>
-                Scan to join
+                Scan to join Trophy Cast
               </p>
             </div>
 
@@ -474,7 +479,7 @@ export default function FlyerPage() {
             {[
               { emoji: '🎣', value: '80+ screens', label: 'built for anglers' },
               { emoji: '⚡', value: 'Voice-first', label: 'log in one breath' },
-              { emoji: '✨', value: 'TC Coach', label: 'knows your water' },
+              { emoji: 'coach', value: 'TC Coach', label: 'knows your water' },
               { emoji: '🏆', value: '30 trophies', label: 'real milestones' },
             ].map((chip) => (
               <div
@@ -489,7 +494,11 @@ export default function FlyerPage() {
                   gap: 8,
                 }}
               >
-                <span style={{ fontSize: 16 }}>{chip.emoji}</span>
+                {chip.emoji === 'coach' ? (
+                  <Sparkles size={16} color="#D4AF37" strokeWidth={2.2} />
+                ) : (
+                  <span style={{ fontSize: 16 }}>{chip.emoji}</span>
+                )}
                 <div>
                   <div style={{ color: '#F5F1E6', fontWeight: 700, fontSize: 12 }}>{chip.value}</div>
                   <div style={{ color: '#5E7A8A', fontSize: 10 }}>{chip.label}</div>

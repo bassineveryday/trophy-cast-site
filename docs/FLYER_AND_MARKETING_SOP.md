@@ -49,6 +49,13 @@ mist (light bg):        #F5F1E6
 **General signup URL:** https://eepurl.com/jAjfYY
 **CTA:** "Join the Waitlist" / "Early Access" (NOT "Join Free" — app is in beta)
 
+### TC Coach Visual Rule
+
+- Use the sparkle mark to represent TC Coach.
+- TC Coach sparkles should always use `trophy gold: #D4AF37`.
+- Do not reuse sparkles as a generic decorative icon in marketing layouts.
+- If a sparkle is shown in a CTA, badge, or eyebrow, the surrounding pill should use the standard gold treatment: `border-trophyGold/30` + `bg-trophyGold/10` + `text-trophyGold`.
+
 ---
 
 ## Logo & Image Files
