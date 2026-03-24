@@ -1,5 +1,6 @@
 import { DeviceFrame } from "@/components/DeviceFrame";
 import { FeaturePageHero } from "@/components/FeaturePageHero";
+import { LogoGrid } from "@/components/LogoGrid";
 import { Section } from "@/components/Section";
 import { WaitlistForm } from "@/components/WaitlistForm";
 import { siteContent } from "@/lib/content";
@@ -25,7 +26,6 @@ export default function ClubsPage() {
                 key={item.title}
                 className="card-hover gold-top-bar rounded-2xl border border-trophyGold/10 bg-deepPanel/70 p-4"
               >
-                <span className="text-2xl">{item.emoji}</span>
                 <p className="mt-2 font-heading text-sm font-bold text-trophyGold">
                   {item.title}
                 </p>
@@ -36,6 +36,24 @@ export default function ClubsPage() {
             ))}
           </div>
         </div>
+      </Section>
+
+      <Section variant="surfaceLifted">
+        <LogoGrid
+          eyebrow={siteContent.logoRails.clubs.eyebrow}
+          title={siteContent.logoRails.clubs.title}
+          description={siteContent.logoRails.clubs.description}
+          items={siteContent.logoRails.clubs.items}
+        />
+      </Section>
+
+      <Section variant="surface">
+        <LogoGrid
+          eyebrow={siteContent.logoRails.sponsors.eyebrow}
+          title={siteContent.logoRails.sponsors.title}
+          description={siteContent.logoRails.sponsors.description}
+          items={siteContent.logoRails.sponsors.items}
+        />
       </Section>
 
       {/* ── Screenshots ──────────────────────────────────────── */}
@@ -78,33 +96,45 @@ export default function ClubsPage() {
         </div>
       </Section>
 
-      {/* ── Founding Club ─────────────────────────────────── */}
+      {/* ── Adoption Path ───────────────────────────────────── */}
       <Section variant="surfaceLifted">
         <div className="mx-auto max-w-3xl space-y-6">
           <div className="space-y-3 text-center">
             <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">
-              {siteContent.foundingClub.title}
+              Built with a real club first
             </p>
             <p className="text-sm text-copyMuted">
-              {siteContent.foundingClub.description}
+              {siteContent.clubs.lead}
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
-            {siteContent.foundingClub.orgs.map((org) => (
+            {[
+              {
+                title: "Current club partner",
+                detail: "Denver Bassmasters is helping shape the operating model through real usage.",
+              },
+              {
+                title: "Next phase",
+                detail: "Club-in-a-Box packages the repeatable onboarding pieces instead of hiding them in docs.",
+              },
+              {
+                title: "Why the waitlist exists",
+                detail: "New clubs are being onboarded in waves so support and feedback stay high quality.",
+              },
+            ].map((org) => (
               <div
-                key={org.name}
+                key={org.title}
                 className="card-hover rounded-2xl border border-trophyGold/10 bg-deepPanel/70 p-4 text-center"
               >
-                <span className="text-3xl">{org.emoji}</span>
                 <p className="mt-2 font-heading text-sm font-bold text-trophyGold">
-                  {org.name}
+                  {org.title}
                 </p>
                 <p className="mt-1 text-xs text-copyMuted">{org.detail}</p>
               </div>
             ))}
           </div>
           <p className="text-center text-xs text-copyMuted">
-            {siteContent.foundingClub.closing}
+            Clubs are being added carefully rather than all at once so the workflows hold up in real use.
           </p>
         </div>
       </Section>
@@ -118,7 +148,7 @@ export default function ClubsPage() {
           <p className="mx-auto max-w-2xl text-sm text-copyMuted">
             We&apos;re in beta with Denver BassMasters right now. Join the waitlist and we&apos;ll let you know when we&apos;re ready for your crew.
           </p>
-          <WaitlistForm />
+          <WaitlistForm waitlist={siteContent.waitlist} message={siteContent.finalCta.message} />
         </div>
       </Section>
     </>

@@ -22,9 +22,14 @@ export function FeaturePageHero({ eyebrow, title, description, waitlistHref = "#
           <p className="text-sm leading-relaxed text-copyMuted sm:text-base">
             {description}
           </p>
-          <div className="flex justify-center gap-3">
-            <CTAButton href={waitlistHref} label="Join the waitlist" variant="primary" />
-            <CTAButton href="/" label="← Back to home" variant="ghost" />
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <CTAButton
+              href={waitlistHref}
+              label="Join the waitlist"
+              variant="primary"
+              className="w-full max-w-[220px] sm:w-auto sm:max-w-none"
+            />
+            <CTAButton href="/" label="← Back to home" variant="ghost" className="w-auto" />
           </div>
         </div>
       </Container>

@@ -1,4 +1,5 @@
 import { Container } from "@/components/Container";
+import { Check, X } from "lucide-react";
 
 export const metadata = {
   title: "Privacy Policy — Trophy Cast",
@@ -64,7 +65,7 @@ export default function PrivacyPage() {
                 "SMS alerts are opt-in only — you control whether you receive them.",
               ].map((item, i) => (
                 <li key={i} className="flex gap-2">
-                  <span className="text-trophyGold shrink-0 mt-0.5">✓</span>
+                  <Check className="text-trophyGold shrink-0 mt-0.5 h-4 w-4" strokeWidth={2.4} />
                   <span>{item}</span>
                 </li>
               ))}
@@ -178,7 +179,7 @@ export default function PrivacyPage() {
                 "Share your individual catch patterns with other users without your explicit consent.",
               ].map((item, i) => (
                 <li key={i} className="flex gap-2">
-                  <span className="text-red-400 shrink-0 mt-0.5">✕</span>
+                  <X className="mt-0.5 h-4 w-4 shrink-0 text-red-400" strokeWidth={2.4} />
                   <span>{item}</span>
                 </li>
               ))}
@@ -203,8 +204,10 @@ export default function PrivacyPage() {
                   <strong className="text-copyLight">
                     Settings → Trust Center → SMS Notifications
                   </strong>
-                  . Toggle SMS Notifications on. By enabling this setting, you consent to receive
-                  transactional SMS messages from Trophy Cast.
+                  . The toggle is off by default. A member must deliberately switch SMS
+                  Notifications on to consent to receive transactional SMS messages from Trophy
+                  Cast. This consent is standalone and is not bundled with account creation,
+                  tournament registration, or any other agreement.
                 </p>
               </div>
               <div>
@@ -219,8 +222,9 @@ export default function PrivacyPage() {
               <div>
                 <p className="font-semibold text-copyLight mb-1">Message Frequency &amp; Rates</p>
                 <p>
-                  Message frequency varies based on club activity. Message and data rates may apply.
-                  For help, reply <strong className="text-copyLight">HELP</strong> or contact{" "}
+                  Message frequency varies based on club activity and typically ranges from 5 to 20
+                  messages per month across all recipients. Message and data rates may apply. For
+                  help, reply <strong className="text-copyLight">HELP</strong> or contact{" "}
                   <a href="mailto:hello@trophycast.app" className="text-trophyGold hover:underline">
                     hello@trophycast.app
                   </a>
@@ -230,8 +234,21 @@ export default function PrivacyPage() {
               <div>
                 <p className="font-semibold text-copyLight mb-1">No Sharing</p>
                 <p>
-                  Your phone number is never shared with any third party for marketing purposes.
-                  It is used solely to deliver transactional messages you have opted into.
+                  Your phone number is never shared with any third party for marketing purposes. Text
+                  messaging originator opt-in data and consent will not be shared with any third
+                  parties or affiliates for marketing or promotional purposes. We use providers such
+                  as Twilio only as service providers to deliver the messages you asked to receive.
+                </p>
+              </div>
+              <div>
+                <p className="font-semibold text-copyLight mb-1">Public Program Details</p>
+                <p>
+                  A public explanation of the Trophy Cast SMS program and the current in-app opt-in
+                  flow is available at{" "}
+                  <a href="https://trophycast.app/sms-consent" className="text-trophyGold hover:underline">
+                    trophycast.app/sms-consent
+                  </a>
+                  .
                 </p>
               </div>
             </div>

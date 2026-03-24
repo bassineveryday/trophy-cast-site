@@ -1,5 +1,6 @@
 "use client";
 
+import { CircleAlert, CircleCheckBig, Fish, TriangleAlert } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
 export default function SupportPage() {
@@ -69,8 +70,9 @@ export default function SupportPage() {
       <div className="bg-white/5 border border-white/10 rounded-2xl p-8 w-full max-w-md space-y-5">
         {/* Header */}
         <div className="space-y-1">
-          <h1 className="text-[#C9A646] font-bold text-xl tracking-tight">
-            🎣 Trophy Cast Support
+          <h1 className="flex items-center gap-2 text-[#C9A646] font-bold text-xl tracking-tight">
+            <Fish className="h-5 w-5" strokeWidth={2.3} />
+            <span>Trophy Cast Support</span>
           </h1>
           <p className="text-white/50 text-sm">
             Generate a one-time magic link to log in as a member for debugging.
@@ -133,8 +135,9 @@ export default function SupportPage() {
 
         {/* Error */}
         {error && (
-          <div className="bg-red-500/20 border border-red-500/30 rounded-lg px-4 py-3 text-red-300 text-sm">
-            ✗ {error}
+          <div className="flex items-start gap-2 bg-red-500/20 border border-red-500/30 rounded-lg px-4 py-3 text-red-300 text-sm">
+            <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={2.4} />
+            <span>{error}</span>
           </div>
         )}
 
@@ -143,8 +146,9 @@ export default function SupportPage() {
           <div className="space-y-3">
             <div className="bg-green-500/10 border border-green-500/30 rounded-lg px-4 py-3 space-y-2">
               <div className="flex items-center justify-between">
-                <p className="text-green-400 text-sm font-semibold">
-                  ✓ Link ready
+                <p className="flex items-center gap-2 text-green-400 text-sm font-semibold">
+                  <CircleCheckBig className="h-4 w-4" strokeWidth={2.4} />
+                  <span>Link ready</span>
                 </p>
                 <span
                   className={`text-sm font-mono font-bold tabular-nums ${
@@ -169,10 +173,12 @@ export default function SupportPage() {
                 Copy to clipboard
               </button>
             </div>
-            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-4 py-3 text-yellow-300 text-xs leading-relaxed">
-              ⚠️{" "}
-              <strong>Open in Incognito / Private browsing</strong> so you
-              don&apos;t get logged out of your own account.
+            <div className="flex items-start gap-2 bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-4 py-3 text-yellow-300 text-xs leading-relaxed">
+              <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={2.4} />
+              <span>
+                <strong>Open in Incognito / Private browsing</strong> so you
+                don&apos;t get logged out of your own account.
+              </span>
             </div>
           </div>
         )}

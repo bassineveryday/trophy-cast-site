@@ -1,4 +1,5 @@
 import { Container } from "@/components/Container";
+import { Check, X } from "lucide-react";
 
 export const metadata = {
   title: "Terms of Service — Trophy Cast",
@@ -74,7 +75,7 @@ export default function TermsPage() {
                     "Beta access is free. We will give reasonable advance notice before introducing paid tiers.",
                   ].map((item, i) => (
                     <li key={i} className="flex gap-2">
-                      <span className="text-trophyGold shrink-0 mt-0.5">✓</span>
+                      <Check className="text-trophyGold shrink-0 mt-0.5 h-4 w-4" strokeWidth={2.4} />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -177,7 +178,7 @@ export default function TermsPage() {
                 "Post abusive, harassing, or hateful content in any messaging or social features.",
               ].map((item, i) => (
                 <li key={i} className="flex gap-2">
-                  <span className="text-red-400 shrink-0 mt-0.5">✕</span>
+                  <X className="mt-0.5 h-4 w-4 shrink-0 text-red-400" strokeWidth={2.4} />
                   <span>{item}</span>
                 </li>
               ))}
@@ -194,9 +195,11 @@ export default function TermsPage() {
               6. SMS Notifications
             </h2>
             <p className="mb-3">
-              If you enable SMS Notifications (Settings → Trust Center → SMS Notifications), you
-              consent to receive transactional SMS messages from Trophy Cast. These messages are
-              limited to:
+              The Trophy Cast SMS Notifications program sends transactional club-management alerts to
+              members who have deliberately enabled SMS Notifications in Settings → Trust Center →
+              SMS Notifications. The toggle is off by default and consent is separate from account
+              creation, tournament registration, or any other agreement. These messages are limited
+              to:
             </p>
             <ul className="space-y-2 mb-4">
               <li className="flex gap-2">
@@ -212,14 +215,33 @@ export default function TermsPage() {
                 <span>Direct messages within the app (if enabled)</span>
               </li>
             </ul>
-            <p>
-              We never send marketing SMS messages. Message frequency varies based on tournament
-              schedules and club activity. Message and data rates may apply. To opt out, toggle SMS
-              Notifications off in Settings → Trust Center, or reply{" "}
-              <strong className="text-copyLight">STOP</strong> to any Trophy Cast message. Reply{" "}
-              <strong className="text-copyLight">HELP</strong> for support or contact us at{" "}
-              hello@trophycast.app.
-            </p>
+            <div className="space-y-3">
+              <p>
+                We never send marketing SMS messages. Message frequency varies based on tournament
+                schedules and club activity and typically ranges from 5 to 20 messages per month
+                across all recipients. Message and data rates may apply.
+              </p>
+              <p>
+                To opt out, toggle SMS Notifications off in Settings → Trust Center, or reply{" "}
+                <strong className="text-copyLight">STOP</strong> to any Trophy Cast message. For
+                support, reply <strong className="text-copyLight">HELP</strong> or contact{" "}
+                <a href="mailto:hello@trophycast.app" className="text-trophyGold hover:underline">
+                  hello@trophycast.app
+                </a>
+                .
+              </p>
+              <p>
+                Full public program details, current opt-in flow, and message samples are published
+                at{" "}
+                <a href="https://trophycast.app/sms-consent" className="text-trophyGold hover:underline">
+                  https://trophycast.app/sms-consent
+                </a>
+                .
+              </p>
+              <p>
+                Carriers are not liable for delayed or undelivered messages.
+              </p>
+            </div>
           </div>
 
           {/* TC Coach / AI */}
