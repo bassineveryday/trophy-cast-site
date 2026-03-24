@@ -1,5 +1,6 @@
 import { DeviceFrame } from "@/components/DeviceFrame";
 import { FeaturePageHero } from "@/components/FeaturePageHero";
+import { LogoGrid } from "@/components/LogoGrid";
 import { Section } from "@/components/Section";
 import { WaitlistForm } from "@/components/WaitlistForm";
 import { siteContent } from "@/lib/content";
@@ -35,6 +36,24 @@ export default function ClubsPage() {
             ))}
           </div>
         </div>
+      </Section>
+
+      <Section variant="surfaceLifted">
+        <LogoGrid
+          eyebrow={siteContent.logoRails.clubs.eyebrow}
+          title={siteContent.logoRails.clubs.title}
+          description={siteContent.logoRails.clubs.description}
+          items={siteContent.logoRails.clubs.items}
+        />
+      </Section>
+
+      <Section variant="surface">
+        <LogoGrid
+          eyebrow={siteContent.logoRails.sponsors.eyebrow}
+          title={siteContent.logoRails.sponsors.title}
+          description={siteContent.logoRails.sponsors.description}
+          items={siteContent.logoRails.sponsors.items}
+        />
       </Section>
 
       {/* ── Screenshots ──────────────────────────────────────── */}

@@ -1,5 +1,34 @@
 'use client';
 
+import type { LucideIcon } from 'lucide-react';
+import {
+  BarChart3,
+  ChevronDown,
+  ChevronUp,
+  Clock3,
+  Database,
+  DoorOpen,
+  ExternalLink,
+  Fish,
+  Flag,
+  Flame,
+  FolderKanban,
+  Github,
+  Lightbulb,
+  Mail,
+  MessageCircleMore,
+  MoonStar,
+  RefreshCw,
+  Smartphone,
+  Sparkles,
+  Target,
+  TrendingDown,
+  TrendingUp,
+  Triangle,
+  TriangleAlert,
+  Trophy,
+  Users,
+} from 'lucide-react';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useAdminAuth } from '@/lib/useAdminAuth';
@@ -18,6 +47,39 @@ import {
 } from 'recharts';
 
 const FEATURE_RANGE_OPTIONS = [7, 14, 30, 90] as const;
+
+const QUICK_LINKS: { label: string; href: string; icon: LucideIcon }[] = [
+  { label: 'Resend', href: 'https://resend.com/emails', icon: Mail },
+  { label: 'Supabase', href: 'https://supabase.com/dashboard/project/pxmffkaiwpvnpfrhfeco', icon: Database },
+  { label: 'Vercel', href: 'https://vercel.com/dashboard', icon: Triangle },
+  { label: 'GitHub', href: 'https://github.com/bassineveryday', icon: Github },
+  { label: 'Live App', href: 'https://trophycast.app', icon: Fish },
+];
+
+const INSIGHT_ICON_MAP: Record<string, LucideIcon> = {
+  '📈': TrendingUp,
+  '📉': TrendingDown,
+  '⏱️': Clock3,
+  '📊': BarChart3,
+  '🔥': Flame,
+  '👥': Users,
+  '⚠️': TriangleAlert,
+  '💤': MoonStar,
+  '📱': Smartphone,
+  '💡': Lightbulb,
+  '🏆': Trophy,
+  '🚪': DoorOpen,
+  '🎯': Target,
+  '🕐': Clock3,
+};
+
+const WORKSPACE_FOLDER_ICON_MAP: Record<string, LucideIcon> = {
+  dev_sync: FolderKanban,
+  trophy_cast: Trophy,
+  growth_marketing: Sparkles,
+  legal_admin: Database,
+  research: Lightbulb,
+};
 
 type FeatureRangeDays = (typeof FEATURE_RANGE_OPTIONS)[number];
 
@@ -226,13 +288,15 @@ function rangeSummary(days: number): string {
   return `last ${days} days`;
 }
 
-const QUICK_LINKS = [
-  { label: 'Resend', href: 'https://resend.com/emails', icon: '📬' },
-  { label: 'Supabase', href: 'https://supabase.com/dashboard/project/pxmffkaiwpvnpfrhfeco', icon: '🗄️' },
-  { label: 'Vercel', href: 'https://vercel.com/dashboard', icon: '▲' },
-  { label: 'GitHub', href: 'https://github.com/bassineveryday', icon: '🐙' },
-  { label: 'Live App', href: 'https://trophycast.app', icon: '🎣' },
-] as const;
+function AdminInsightIcon({ icon }: { icon: string }) {
+  const Icon = INSIGHT_ICON_MAP[icon] ?? Sparkles;
+  return <Icon className="h-5 w-5 shrink-0" strokeWidth={2.2} />;
+}
+
+function WorkspaceFolderIcon({ folderKey }: { folderKey: string }) {
+  const Icon = WORKSPACE_FOLDER_ICON_MAP[folderKey] ?? FolderKanban;
+  return <Icon className="h-5 w-5" strokeWidth={2.2} />;
+}
 
 function StatCard({
   label,
@@ -545,7 +609,9 @@ export default function AdminDashboardPage() {
       <div className="min-h-screen bg-midnight flex items-center justify-center px-4">
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
-            <p className="text-5xl mb-4">🏆</p>
+            <div className="mb-4 flex justify-center">
+              <Trophy className="h-12 w-12 text-trophyGold" strokeWidth={2.2} />
+            </div>
             <h1 className="text-3xl font-heading font-bold text-trophyGold">Admin Dashboard</h1>
             <p className="text-copyMuted mt-2">Enter your password to continue</p>
           </div>
@@ -627,9 +693,10 @@ export default function AdminDashboardPage() {
           )}
           <button
             onClick={refreshAll}
-            className="text-electric/70 hover:text-electric transition-colors"
+            className="inline-flex items-center gap-1.5 text-electric/70 hover:text-electric transition-colors"
           >
-            ↻ refresh all
+            <RefreshCw className="h-4 w-4" strokeWidth={2.2} />
+            <span>refresh all</span>
           </button>
         </div>
       </div>
@@ -682,9 +749,10 @@ export default function AdminDashboardPage() {
               <p className="text-xs font-semibold uppercase tracking-widest text-copyMuted">Attention Queue</p>
               <button
                 onClick={refreshAll}
-                className="text-xs text-electric/60 hover:text-electric transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs text-electric/60 hover:text-electric transition-colors"
               >
-                ↻ refresh all
+                <RefreshCw className="h-3.5 w-3.5" strokeWidth={2.2} />
+                <span>refresh all</span>
               </button>
             </div>
             <div className="space-y-3">
@@ -915,7 +983,7 @@ export default function AdminDashboardPage() {
                   <p className="text-sm font-semibold text-copyLight">Catch Logging</p>
                   <p className="text-xs text-copyMuted/50 mt-0.5">who is logging fish and how complete the logs are</p>
                 </div>
-                <span className="text-2xl">🎣</span>
+                <Fish className="h-6 w-6 text-electric" strokeWidth={2.2} />
               </div>
               <div className="grid grid-cols-2 gap-4 mb-5">
                 <div>
@@ -981,7 +1049,7 @@ export default function AdminDashboardPage() {
                   <p className="text-sm font-semibold text-copyLight">TC Coach</p>
                   <p className="text-xs text-copyMuted/50 mt-0.5">chat prompts, post-catch coaching, and voice conversation flow</p>
                 </div>
-                <span className="text-2xl">✨</span>
+                <Sparkles className="h-6 w-6 text-trophyGold" strokeWidth={2.2} />
               </div>
               <div className="grid grid-cols-2 gap-4 mb-5">
                 <div>
@@ -1038,7 +1106,7 @@ export default function AdminDashboardPage() {
                   <p className="text-sm font-semibold text-copyLight">Tournaments</p>
                   <p className="text-xs text-copyMuted/50 mt-0.5">registration flow and what is coming up next</p>
                 </div>
-                <span className="text-2xl">🏁</span>
+                <Flag className="h-6 w-6 text-bass" strokeWidth={2.2} />
               </div>
               <div className="grid grid-cols-2 gap-4 mb-5">
                 <div>
@@ -1115,7 +1183,7 @@ export default function AdminDashboardPage() {
                   <p className="text-sm font-semibold text-copyLight">Inbox Activity</p>
                   <p className="text-xs text-copyMuted/50 mt-0.5">chat traffic across DMs, tournament channels, groups, and announcements</p>
                 </div>
-                <span className="text-2xl">💬</span>
+                <MessageCircleMore className="h-6 w-6 text-electric" strokeWidth={2.2} />
               </div>
               <div className="grid grid-cols-2 gap-4 mb-5">
                 <div>
@@ -1184,9 +1252,10 @@ export default function AdminDashboardPage() {
                 onClick={() => {
                   void fetchActivity();
                 }}
-                className="text-xs text-electric/60 hover:text-electric transition-colors ml-2"
+                className="ml-2 inline-flex items-center gap-1.5 text-xs text-electric/60 hover:text-electric transition-colors"
               >
-                ↻ refresh
+                <RefreshCw className="h-3.5 w-3.5" strokeWidth={2.2} />
+                <span>refresh</span>
               </button>
             </div>
           </div>
@@ -1271,9 +1340,19 @@ export default function AdminDashboardPage() {
                     {(allMembers.length > 5 || recentMembers.length > 5) && (
                       <button
                         onClick={() => setShowAllMembers((v) => !v)}
-                        className="text-xs text-electric/60 hover:text-electric transition-colors"
+                        className="inline-flex items-center gap-1 text-xs text-electric/60 hover:text-electric transition-colors"
                       >
-                        {showAllMembers ? '▲ show less' : `▼ show all ${allMembers.length}`}
+                        {showAllMembers ? (
+                          <>
+                            <ChevronUp className="h-3.5 w-3.5" strokeWidth={2.2} />
+                            <span>show less</span>
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown className="h-3.5 w-3.5" strokeWidth={2.2} />
+                            <span>{`show all ${allMembers.length}`}</span>
+                          </>
+                        )}
                       </button>
                     )}
                   </div>
@@ -1352,9 +1431,19 @@ export default function AdminDashboardPage() {
                   {activity.topScreens.length > 5 && (
                     <button
                       onClick={() => setShowAllScreens((v) => !v)}
-                      className="text-xs text-electric/60 hover:text-electric transition-colors"
+                      className="inline-flex items-center gap-1 text-xs text-electric/60 hover:text-electric transition-colors"
                     >
-                      {showAllScreens ? '▲ show less' : `▼ show all ${activity.topScreens.length}`}
+                      {showAllScreens ? (
+                        <>
+                          <ChevronUp className="h-3.5 w-3.5" strokeWidth={2.2} />
+                          <span>show less</span>
+                        </>
+                      ) : (
+                        <>
+                          <ChevronDown className="h-3.5 w-3.5" strokeWidth={2.2} />
+                          <span>{`show all ${activity.topScreens.length}`}</span>
+                        </>
+                      )}
                     </button>
                   )}
                 </div>
@@ -1394,9 +1483,10 @@ export default function AdminDashboardPage() {
             </p>
             <button
               onClick={() => { void fetchInsights(); }}
-              className="text-xs text-electric/60 hover:text-electric transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-electric/60 hover:text-electric transition-colors"
             >
-              ↻ refresh insights
+              <RefreshCw className="h-3.5 w-3.5" strokeWidth={2.2} />
+              <span>refresh insights</span>
             </button>
           </div>
 
@@ -1426,7 +1516,7 @@ export default function AdminDashboardPage() {
                 return (
                   <div key={i} className={`bg-deepPanel border rounded-2xl p-5 ${toneBorder[insight.tone] ?? toneBorder.info}`}>
                     <div className="flex items-start gap-3">
-                      <span className="text-xl shrink-0">{insight.icon}</span>
+                      <AdminInsightIcon icon={insight.icon} />
                       <div>
                         <p className={`text-sm font-semibold ${toneAccent[insight.tone] ?? toneAccent.info}`}>
                           {insight.title}
@@ -1452,9 +1542,10 @@ export default function AdminDashboardPage() {
             </div>
             <button
               onClick={() => { void fetchTrends(); }}
-              className="text-xs text-electric/60 hover:text-electric transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-electric/60 hover:text-electric transition-colors"
             >
-              ↻ refresh charts
+              <RefreshCw className="h-3.5 w-3.5" strokeWidth={2.2} />
+              <span>refresh charts</span>
             </button>
           </div>
 
@@ -1733,7 +1824,7 @@ export default function AdminDashboardPage() {
           <div className="bg-deepPanel border border-liftedPanel rounded-2xl p-6">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-3">
-                <span className="text-2xl">🗂️</span>
+                <FolderKanban className="h-6 w-6 text-trophyGold" strokeWidth={2.2} />
                 <div>
                   <p className="text-lg font-heading font-bold text-copyLight">
                     Business Drive
@@ -1772,13 +1863,13 @@ export default function AdminDashboardPage() {
                       rel="noopener noreferrer"
                       className="flex items-center gap-3 bg-liftedPanel/50 hover:bg-liftedPanel border border-liftedPanel hover:border-electric/30 rounded-xl px-4 py-3 transition-colors group"
                     >
-                      <span className="text-lg">{folder.icon}</span>
+                      <WorkspaceFolderIcon folderKey={folder.key} />
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-medium text-copyLight group-hover:text-electric transition-colors truncate">
                           {folder.label}
                         </p>
                       </div>
-                      <span className="text-copyMuted/30 group-hover:text-electric/50 transition-colors text-sm">↗</span>
+                      <ExternalLink className="h-4 w-4 text-copyMuted/30 group-hover:text-electric/50 transition-colors" strokeWidth={2.2} />
                     </a>
                   ) : (
                     <div
@@ -1907,7 +1998,7 @@ export default function AdminDashboardPage() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 bg-deepPanel border border-liftedPanel hover:border-electric/30 hover:bg-liftedPanel text-copyMuted hover:text-copyLight rounded-xl px-5 py-3 text-sm font-medium transition-colors"
               >
-                <span>{link.icon}</span>
+                <link.icon className="h-4 w-4" strokeWidth={2.2} />
                 <span>{link.label}</span>
               </a>
             ))}

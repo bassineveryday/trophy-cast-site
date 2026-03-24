@@ -1,5 +1,13 @@
 'use client';
 
+import {
+  ChevronDown,
+  ChevronUp,
+  CircleCheckBig,
+  MapPin,
+  RefreshCw,
+  Trophy,
+} from 'lucide-react';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useAdminAuth } from '@/lib/useAdminAuth';
@@ -122,7 +130,9 @@ export default function BugReportsPage() {
       <div className="min-h-screen bg-midnight flex items-center justify-center px-4">
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
-            <p className="text-5xl mb-4">🏆</p>
+            <div className="mb-4 flex justify-center">
+              <Trophy className="h-12 w-12 text-trophyGold" strokeWidth={2.2} />
+            </div>
             <h1 className="text-3xl font-heading font-bold text-trophyGold">Admin</h1>
             <p className="text-copyMuted mt-2">Enter your password to continue</p>
           </div>
@@ -163,9 +173,10 @@ export default function BugReportsPage() {
         <button
           onClick={() => fetchReports(password)}
           disabled={loading}
-          className="text-sm text-copyMuted hover:text-copyLight transition-colors disabled:opacity-40"
+          className="inline-flex items-center gap-1.5 text-sm text-copyMuted hover:text-copyLight transition-colors disabled:opacity-40"
         >
-          ↻ Refresh
+          <RefreshCw className="h-4 w-4" strokeWidth={2.2} />
+          <span>Refresh</span>
         </button>
       </div>
 
@@ -184,7 +195,9 @@ export default function BugReportsPage() {
           </div>
         ) : reports.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-4xl mb-4">✅</p>
+            <div className="mb-4 flex justify-center">
+              <CircleCheckBig className="h-10 w-10 text-bass" strokeWidth={2.2} />
+            </div>
             <p className="text-copyMuted text-lg">No bug reports yet.</p>
           </div>
         ) : (
@@ -218,13 +231,18 @@ export default function BugReportsPage() {
                       {r.description}
                     </p>
                     {r.page_path && (
-                      <p className="text-copyMuted/40 text-xs mt-1 truncate">
-                        📍 {r.page_path}
+                      <p className="mt-1 flex items-center gap-1.5 truncate text-copyMuted/40 text-xs">
+                        <MapPin className="h-3.5 w-3.5 shrink-0" strokeWidth={2.2} />
+                        <span className="truncate">{r.page_path}</span>
                       </p>
                     )}
                   </div>
                   <span className="text-copyMuted/30 shrink-0 mt-0.5 text-xs">
-                    {expanded === r.id ? '▲' : '▼'}
+                    {expanded === r.id ? (
+                      <ChevronUp className="h-4 w-4" strokeWidth={2.2} />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" strokeWidth={2.2} />
+                    )}
                   </span>
                 </button>
 

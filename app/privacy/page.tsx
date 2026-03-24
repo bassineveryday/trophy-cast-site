@@ -1,12 +1,11 @@
 import { Container } from "@/components/Container";
+import { Check, X } from "lucide-react";
 
 export const metadata = {
   title: "Privacy Policy — Trophy Cast",
   description:
     "Trophy Cast Privacy Policy. Your data belongs to you. We never sell or share your personal information with third parties.",
 };
-
-import { X } from "lucide-react";
 
 export default function PrivacyPage() {
   return (
@@ -66,7 +65,7 @@ export default function PrivacyPage() {
                 "SMS alerts are opt-in only — you control whether you receive them.",
               ].map((item, i) => (
                 <li key={i} className="flex gap-2">
-                  <span className="text-trophyGold shrink-0 mt-0.5">✓</span>
+                  <Check className="text-trophyGold shrink-0 mt-0.5 h-4 w-4" strokeWidth={2.4} />
                   <span>{item}</span>
                 </li>
               ))}

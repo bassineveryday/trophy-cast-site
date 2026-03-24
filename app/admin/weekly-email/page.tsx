@@ -1,5 +1,15 @@
 'use client';
 
+import {
+  CalendarDays,
+  LoaderCircle,
+  Mic,
+  Pin,
+  Rocket,
+  Sparkles,
+  Square,
+  Trophy,
+} from 'lucide-react';
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { weeklyUpdates, type WeeklyUpdate } from '@/lib/weeklyUpdates';
@@ -200,7 +210,7 @@ export default function WeeklyEmailAdminPage() {
         data.action === 'sent'
           ? 'Campaign sent immediately!'
           : `Campaign scheduled for ${new Date(data.scheduleTime).toLocaleString()}.`;
-      setResultMsg(`✅ ${action} Sent to ${data.recipientCount} subscriber${data.recipientCount === 1 ? '' : 's'}.`);
+      setResultMsg(`${action} Sent to ${data.recipientCount} subscriber${data.recipientCount === 1 ? '' : 's'}.`);
     } catch {
       setStatus('error');
       setResultMsg('Network error. Check your connection and try again.');
@@ -300,7 +310,9 @@ export default function WeeklyEmailAdminPage() {
       <div className="min-h-screen bg-midnight flex items-center justify-center px-4">
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
-            <p className="text-5xl mb-4">🏆</p>
+            <div className="mb-4 flex justify-center">
+              <Trophy className="h-12 w-12 text-trophyGold" strokeWidth={2.2} />
+            </div>
             <h1 className="text-3xl font-heading font-bold text-trophyGold">Weekly Email Admin</h1>
             <p className="text-copyMuted mt-2">Enter your password to continue</p>
           </div>
@@ -347,9 +359,24 @@ export default function WeeklyEmailAdminPage() {
               form="email-form"
               type="submit"
               disabled={status === 'loading'}
-              className="bg-bass hover:bg-bassLight text-white font-bold py-2.5 px-6 rounded-xl transition-colors disabled:opacity-50 font-heading text-sm"
+              className="inline-flex items-center gap-2 bg-bass hover:bg-bassLight text-white font-bold py-2.5 px-6 rounded-xl transition-colors disabled:opacity-50 font-heading text-sm"
             >
-              {status === 'loading' ? 'Working…' : sendNow ? '🚀 Send Now' : '📅 Schedule'}
+              {status === 'loading' ? (
+                <>
+                  <LoaderCircle className="h-4 w-4 animate-spin" strokeWidth={2.2} />
+                  <span>Working…</span>
+                </>
+              ) : sendNow ? (
+                <>
+                  <Rocket className="h-4 w-4" strokeWidth={2.2} />
+                  <span>Send Now</span>
+                </>
+              ) : (
+                <>
+                  <CalendarDays className="h-4 w-4" strokeWidth={2.2} />
+                  <span>Schedule</span>
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -393,9 +420,12 @@ export default function WeeklyEmailAdminPage() {
               />
             </div>
 
-            {/* ✨ AI Polish */}
+            {/* AI Polish */}
             <div className="bg-deepPanel border border-trophyGold/20 rounded-xl p-4">
-              <p className="text-xs font-semibold uppercase tracking-wider text-trophyGold mb-1">✨ TC Coach Polish</p>
+              <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-trophyGold mb-1">
+                <Sparkles className="h-3.5 w-3.5" strokeWidth={2.2} />
+                <span>TC Coach Polish</span>
+              </p>
               <p className="text-copyMuted/70 text-xs mb-3">Talk or type rough thoughts — TC Coach fills the bullets above</p>
               <div className="relative mb-3">
                 <textarea
@@ -413,18 +443,37 @@ export default function WeeklyEmailAdminPage() {
                     listening ? 'bg-red-500 animate-pulse text-white' : 'bg-liftedPanel hover:bg-trophyGold/20 text-copyMuted hover:text-trophyGold'
                   }`}
                 >
-                  {listening ? '⏹' : '🎤'}
+                  {listening ? (
+                    <Square className="h-4 w-4 fill-current" strokeWidth={2.2} />
+                  ) : (
+                    <Mic className="h-4 w-4" strokeWidth={2.2} />
+                  )}
                 </button>
               </div>
-              {listening && <p className="text-red-400 text-xs mb-2 animate-pulse">🔴 Listening…</p>}
+              {listening && (
+                <p className="flex items-center gap-2 text-red-400 text-xs mb-2 animate-pulse">
+                  <span className="h-2 w-2 rounded-full bg-red-400" />
+                  <span>Listening…</span>
+                </p>
+              )}
               {polishError && <p className="text-red-400 text-xs mb-2">{polishError}</p>}
               <button
                 type="button"
                 onClick={handlePolish}
                 disabled={polishing || !roughNotes.trim()}
-                className="w-full bg-trophyGold/10 hover:bg-trophyGold/20 border border-trophyGold/30 text-trophyGold font-bold py-2.5 rounded-lg text-xs transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="inline-flex w-full items-center justify-center gap-2 bg-trophyGold/10 hover:bg-trophyGold/20 border border-trophyGold/30 text-trophyGold font-bold py-2.5 rounded-lg text-xs transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                {polishing ? '✨ Rewriting…' : '✨ Polish with AI →'}
+                {polishing ? (
+                  <>
+                    <LoaderCircle className="h-4 w-4 animate-spin" strokeWidth={2.2} />
+                    <span>Rewriting…</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4" strokeWidth={2.2} />
+                    <span>Polish with AI →</span>
+                  </>
+                )}
               </button>
             </div>
 
@@ -483,9 +532,19 @@ export default function WeeklyEmailAdminPage() {
                         onClick={handleRefresh}
                         disabled={refreshing}
                         title="Fetch latest suggestions from server"
-                        className="text-copyMuted hover:text-electric text-xs font-bold bg-liftedPanel/50 hover:bg-electric/10 px-3 py-1.5 rounded-lg border border-liftedPanel/50 transition-colors whitespace-nowrap disabled:opacity-50"
+                        className="inline-flex items-center gap-2 text-copyMuted hover:text-electric text-xs font-bold bg-liftedPanel/50 hover:bg-electric/10 px-3 py-1.5 rounded-lg border border-liftedPanel/50 transition-colors whitespace-nowrap disabled:opacity-50"
                       >
-                        {refreshing ? '✨ Generating…' : '✨ New Ideas'}
+                        {refreshing ? (
+                          <>
+                            <LoaderCircle className="h-3.5 w-3.5 animate-spin" strokeWidth={2.2} />
+                            <span>Generating…</span>
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="h-3.5 w-3.5" strokeWidth={2.2} />
+                            <span>New Ideas</span>
+                          </>
+                        )}
                       </button>
                       <button
                         type="button"
@@ -580,9 +639,24 @@ export default function WeeklyEmailAdminPage() {
             <button
               type="submit"
               disabled={status === 'loading'}
-              className="w-full bg-bass hover:bg-bassLight text-white font-bold py-4 rounded-xl transition-colors disabled:opacity-50 font-heading text-base"
+              className="inline-flex w-full items-center justify-center gap-2 bg-bass hover:bg-bassLight text-white font-bold py-4 rounded-xl transition-colors disabled:opacity-50 font-heading text-base"
             >
-              {status === 'loading' ? 'Working…' : sendNow ? '🚀 Send Campaign Now' : '📅 Schedule Campaign'}
+              {status === 'loading' ? (
+                <>
+                  <LoaderCircle className="h-4 w-4 animate-spin" strokeWidth={2.2} />
+                  <span>Working…</span>
+                </>
+              ) : sendNow ? (
+                <>
+                  <Rocket className="h-4 w-4" strokeWidth={2.2} />
+                  <span>Send Campaign Now</span>
+                </>
+              ) : (
+                <>
+                  <CalendarDays className="h-4 w-4" strokeWidth={2.2} />
+                  <span>Schedule Campaign</span>
+                </>
+              )}
             </button>
 
             {/* Status messages */}
@@ -599,7 +673,10 @@ export default function WeeklyEmailAdminPage() {
 
             {/* Reminder */}
             <div className="bg-deepPanel border border-liftedPanel rounded-xl p-4 text-xs text-copyMuted space-y-1.5">
-              <p className="font-semibold text-copyLight text-sm">📌 Reminder</p>
+              <p className="flex items-center gap-2 font-semibold text-copyLight text-sm">
+                <Pin className="h-4 w-4" strokeWidth={2.2} />
+                <span>Reminder</span>
+              </p>
               <p>Monday 7–8PM MT · <a href="https://meet.google.com/kys-cuub-idb" target="_blank" rel="noopener noreferrer" className="text-electric underline">meet.google.com/kys-cuub-idb</a></p>
               <p>Targets <strong>app-user</strong> segment. Waitlist excluded.</p>
               <p>Check <a href="https://resend.com" target="_blank" rel="noopener noreferrer" className="text-electric underline">Resend dashboard</a> after sending.</p>
@@ -632,7 +709,9 @@ export default function WeeklyEmailAdminPage() {
     {confirmOpen && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
         <div className="w-full max-w-sm bg-deepPanel border border-liftedPanel rounded-2xl p-8 shadow-2xl">
-          <p className="text-3xl text-center mb-4">🚀</p>
+          <div className="mb-4 flex justify-center">
+            <Rocket className="h-8 w-8 text-trophyGold" strokeWidth={2.2} />
+          </div>
           <h2 className="text-xl font-heading font-bold text-trophyGold text-center mb-2">Send right now?</h2>
           <p className="text-copyMuted text-sm text-center mb-2">
             This will immediately deliver to{' '}

@@ -1,9 +1,19 @@
+type LogoRailItem = {
+  name: string;
+  src: string;
+  width: number;
+  height: number;
+  panel?: "dark" | "light";
+};
+
 export const siteContent = {
   brand: {
     name: "Trophy Cast",
     motto: "Log the day. Trust the water.",
     logoText: "TC",
     tagline: "Where Every Cast Counts",
+    heroMark: "/TrophyCast_FishMark_transparent.png",
+    heroWordmark: "/TrophyCast_Horizontal_Side_FullColor_transparent.png",
   },
   seo: {
     title: "Trophy Cast — Where Every Cast Counts",
@@ -132,6 +142,115 @@ export const siteContent = {
           "Share high-level summaries with anglers without ever exposing spots or sensitive info.",
       },
     ],
+  },
+  logoRails: {
+    clubs: {
+      eyebrow: "Club logos",
+      title: "The clubs already shaping the workflow",
+      description:
+        "These are the downloaded club marks now sitting in the site repo. They are logo assets, not a separate icon package, and they map to the current Trophy Cast club network.",
+      items: [
+        {
+          name: "Trophy Cast",
+          src: "/TrophyCast_Horizontal_Side_FullColor_transparent.png",
+          width: 220,
+          height: 60,
+          panel: "dark",
+        },
+        {
+          name: "Denver Bassmasters",
+          src: "/Loge%20Transparent%20background.png",
+          width: 180,
+          height: 72,
+          panel: "dark",
+        },
+        {
+          name: "DBM Juniors",
+          src: "/Denver%20Bassmaster%20Junior%27s%20logo%20transparent..png",
+          width: 150,
+          height: 64,
+          panel: "dark",
+        },
+        {
+          name: "Front Range Bass Club",
+          src: "/FRBC%20Logo.png",
+          width: 150,
+          height: 64,
+          panel: "dark",
+        },
+        {
+          name: "Colorado Bass Nation",
+          src: "/CBN.png",
+          width: 150,
+          height: 64,
+          panel: "dark",
+        },
+        {
+          name: "DBM Banner",
+          src: "/Copy%20of%20Copy%20of%20Copy%20of%20DBM%20Banner%20logo%20800px%20x%20200px%20%20%282%29.png",
+          width: 220,
+          height: 56,
+          panel: "dark",
+        },
+      ] satisfies LogoRailItem[],
+    },
+    sponsors: {
+      eyebrow: "Sponsor logos",
+      title: "The downloaded sponsor set",
+      description:
+        "These are the names of the logo files we just added to the website assets. They appear here as a clean sponsor/supporter rail instead of staying buried in public/.",
+      items: [
+        {
+          name: "Bass Pro Shops",
+          src: "/bass-pro-logo-2x.png",
+          width: 160,
+          height: 56,
+          panel: "light",
+        },
+        {
+          name: "JJ Bass Jigs",
+          src: "/JJ-logo-trim%20%282%29.png",
+          width: 120,
+          height: 56,
+          panel: "light",
+        },
+        {
+          name: "Eagle Claw",
+          src: "/Eagle%20Claw%20logo%20transparent..png",
+          width: 140,
+          height: 56,
+          panel: "light",
+        },
+        {
+          name: "Militia Marine",
+          src: "/Militia%20Marine%20logo.%20Transparent..png",
+          width: 150,
+          height: 56,
+          panel: "light",
+        },
+        {
+          name: "Rapala",
+          src: "/Rapala%20logo%20transparent..png",
+          width: 130,
+          height: 56,
+          panel: "light",
+        },
+        {
+          name: "Topper Sales",
+          src: "/Topper%20Sales.png",
+          width: 130,
+          height: 56,
+          panel: "light",
+        },
+        {
+          name: "Discount Fishing Tackle",
+          src: "/Discount%20fishing%20tackle.%20Logo.%20Transparent..png",
+          width: 150,
+          height: 56,
+          panel: "light",
+        },
+      ] satisfies LogoRailItem[],
+    },
   },
   clubInABox: {
     id: "club-in-a-box",

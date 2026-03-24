@@ -4,6 +4,7 @@ import { Container } from "@/components/Container";
 import { Icon } from "@/components/Icon";
 import { ScreenshotGrid } from "@/components/ScreenshotGrid";
 import { Section } from "@/components/Section";
+import { LogoGrid } from "@/components/LogoGrid";
 import { WaitlistForm } from "@/components/WaitlistForm";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { siteContent } from "@/lib/content";
@@ -20,7 +21,7 @@ export default function Page() {
             <div className="relative">
               <div className="absolute -inset-4 animate-pulse rounded-full bg-trophyGold/20 blur-2xl" />
               <Image
-                src="/trophy-cast-logo-256.png"
+                src={siteContent.brand.heroMark}
                 alt="Trophy Cast logo"
                 width={256}
                 height={256}
@@ -29,6 +30,13 @@ export default function Page() {
               />
             </div>
             <div className="space-y-2">
+              <Image
+                src={siteContent.brand.heroWordmark}
+                alt="Trophy Cast wordmark"
+                width={420}
+                height={88}
+                className="mx-auto h-12 w-auto sm:h-16"
+              />
               <h1 className="font-heading text-5xl font-bold tracking-tight text-white sm:text-7xl">
                 {siteContent.brand.name}
               </h1>
@@ -85,6 +93,24 @@ export default function Page() {
           </div>
         </Container>
       </section>
+
+      <Section variant="surfaceLifted">
+        <LogoGrid
+          eyebrow={siteContent.logoRails.clubs.eyebrow}
+          title={siteContent.logoRails.clubs.title}
+          description={siteContent.logoRails.clubs.description}
+          items={siteContent.logoRails.clubs.items}
+        />
+      </Section>
+
+      <Section variant="surface">
+        <LogoGrid
+          eyebrow={siteContent.logoRails.sponsors.eyebrow}
+          title={siteContent.logoRails.sponsors.title}
+          description={siteContent.logoRails.sponsors.description}
+          items={siteContent.logoRails.sponsors.items}
+        />
+      </Section>
 
       <Section id={siteContent.what.id} variant="surface">
         <div className="space-y-8">

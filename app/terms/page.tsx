@@ -1,12 +1,11 @@
 import { Container } from "@/components/Container";
+import { Check, X } from "lucide-react";
 
 export const metadata = {
   title: "Terms of Service — Trophy Cast",
   description:
     "Trophy Cast Terms of Service. Your rights, our commitments, and what we both agree to during the Trophy Cast beta.",
 };
-
-import { X } from "lucide-react";
 
 export default function TermsPage() {
   return (
@@ -76,7 +75,7 @@ export default function TermsPage() {
                     "Beta access is free. We will give reasonable advance notice before introducing paid tiers.",
                   ].map((item, i) => (
                     <li key={i} className="flex gap-2">
-                      <span className="text-trophyGold shrink-0 mt-0.5">✓</span>
+                      <Check className="text-trophyGold shrink-0 mt-0.5 h-4 w-4" strokeWidth={2.4} />
                       <span>{item}</span>
                     </li>
                   ))}
