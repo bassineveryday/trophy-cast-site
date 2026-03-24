@@ -24,8 +24,9 @@ export default function CoachPage() {
             </p>
             <ul className="space-y-3">
               {siteContent.coachInsights.bullets.map((bullet) => (
-                <li key={bullet} className="card-hover rounded-2xl border border-white/5 bg-deepPanel/80 p-4 text-sm text-copyMuted">
-                  {bullet}
+                <li key={bullet.text} className="card-hover flex items-start gap-3 rounded-2xl border border-white/5 bg-deepPanel/80 p-4 text-sm text-copyMuted">
+                  <span className="emoji-icon shrink-0">{bullet.emoji}</span>
+                  <span>{bullet.text}</span>
                 </li>
               ))}
             </ul>

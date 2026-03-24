@@ -21,8 +21,9 @@ export default function AnglersPage() {
           </p>
           <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {siteContent.anglers.bulletPoints.map((point) => (
-              <li key={point} className="card-hover rounded-2xl border border-white/5 bg-deepPanel/70 p-4 text-sm text-copyMuted">
-                {point}
+              <li key={point.text} className="card-hover flex items-start gap-3 rounded-2xl border border-white/5 bg-deepPanel/70 p-4 text-sm text-copyMuted">
+                <span className="emoji-icon shrink-0">{point.emoji}</span>
+                <span>{point.text}</span>
               </li>
             ))}
           </ul>
