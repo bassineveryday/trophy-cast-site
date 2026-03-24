@@ -393,7 +393,7 @@ function FlyerCard() {
             No other app does this.
           </p>
           {[
-            { num: '01', title: 'Every cast. Auto-captured.', desc: 'Just say: species, lure, color, weight & water temp. Trophy Cast auto-logs GPS, weather, barometric pressure & more — zero extra typing.' },
+            { num: '01', title: 'Every cast. Auto-captured.', desc: 'Just say: species, lure, color, weight & water temp. Trophy Cast auto-logs GPS, time, weather, and barometric pressure around it — zero extra typing.' },
             { num: '02', title: 'Your coach. Built on YOUR data.', desc: 'TC Coach learns from YOUR catches only — combining your voice log with pressure, weather, moon phase, wind & more.' },
             { num: '03', title: 'Memory that never forgets.', desc: 'Every catch, every lure, every condition — logged and remembered. Your coach pulls from ALL of it to give you smarter advice every time out.' },
             { num: '04', title: 'Today\'s conditions vs. your history.', desc: 'Pressure dropping? Front moving in? TC Coach looks back at every time you fished conditions just like today — and tells you what worked.' },

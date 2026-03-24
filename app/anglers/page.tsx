@@ -48,7 +48,7 @@ export default function AnglersPage() {
                 },
                 {
                   title: "Context preserved",
-                  description: "Time, place, and seasonal details stay attached so later reviews are grounded in what actually happened.",
+                  description: "Time, place, and a 7-field weather snapshot stay attached automatically, while water temp remains something the angler can enter when they have the reading.",
                 },
                 {
                   title: "Season continuity",

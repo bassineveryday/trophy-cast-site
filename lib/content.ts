@@ -58,7 +58,7 @@ export const siteContent = {
     id: "what",
     title: "What Trophy Cast does",
     summary:
-      "Everything revolves around confident logging: photo + voice capture, contextual weather data, and season stats that you actually trust.",
+      "Everything revolves around confident logging: photo + voice capture, GPS-timed weather context, and season stats that you actually trust.",
     items: [
       {
         title: "Catch logging that fits the moment",
@@ -105,7 +105,7 @@ export const siteContent = {
     description:
       "Cross-species support lets you pivot from bass to walleye to trout without hacking together new templates.",
     bulletPoints: [
-      "Photo and voice logging honors the pace of real tournament days.",
+      "Photo and voice logging honors the pace of real tournament days, with GPS and weather context auto-filled while water temp stays manual.",
       "Profiles show your progression, partners, and confidence cues over the entire season.",
       "Observational insights stay private until you choose to share.",
     ],
