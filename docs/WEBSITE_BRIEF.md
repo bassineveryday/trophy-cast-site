@@ -10,6 +10,8 @@ _Last Updated: February 26, 2026_
 
 **Tagline:** _"Trophy Cast gets smarter the more you fish."_
 
+**Canonical brand reference:** `docs/BRAND_GUIDE.md`
+
 ---
 
 ## 🎯 Who Visits This Website?
@@ -47,10 +49,10 @@ _Last Updated: February 26, 2026_
 
 ### Logo
 
-- **Status:** Being redesigned by Tai (Feb 2026)
-- **Needed sizes:** 256px (hero), 48px (navbar), favicon (16/32px)
-- **Format:** PNG with transparent background
-- **Placeholder:** Leave logo spaces visible but with current/temp image
+- **Source of truth:** `public/TC Logo's/` and `docs/BRAND_GUIDE.md`
+- **Primary marks:** fish mark, square app icon, wordmark, horizontal lockup
+- **Preferred production format:** PNG with transparent background
+- **Use the canonical production assets from the brand guide, not white-background exports or duplicate process files**
 
 ### Colors (Already in Tailwind Config)
 

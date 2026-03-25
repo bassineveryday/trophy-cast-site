@@ -13,13 +13,14 @@ interface NavbarProps {
 
 export function Navbar({ brand, navItems, waitlistCta }: NavbarProps) {
   const [open, setOpen] = useState(false);
+  const logoSrc = "/TC%20Logo%27s/trophy-cast-logo-48.png";
 
   return (
     <header id="top" className="sticky top-0 z-50 border-b border-white/5 bg-midnight/70 backdrop-blur-xl">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-10">
         <Link href="#top" className="flex items-center gap-3 text-copyLight">
           <Image
-            src="/trophy-cast-logo-48.png"
+            src={logoSrc}
             alt="Trophy Cast logo"
             width={48}
             height={48}

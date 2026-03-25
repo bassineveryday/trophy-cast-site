@@ -4,6 +4,8 @@ _Last updated: March 12, 2026_
 
 This document is the Standard Operating Procedure for designing, building, and deploying promotional flyers and marketing materials for Trophy Cast. Follow this every time so the process is consistent and nothing important gets missed.
 
+**Canonical brand reference:** `docs/BRAND_GUIDE.md`
+
 ---
 
 ## Overview: How This System Works
@@ -66,11 +68,13 @@ All public images live in `/public`. Always reference them as `/filename.png` in
 
 | File                                       | Use When                               |
 | ------------------------------------------ | -------------------------------------- |
-| `/trophy-cast-logo-256.png`                | Base `/flyer` and `/flyer/print` pages |
-| `/Trophy cast transparent background..png` | Dark backgrounds (general)             |
-| `/Trophy cast white background.png`        | Light backgrounds                      |
-| `/trophy-cast-logo-48.png`                 | Small favicon/nav uses                 |
-| `/flood-filled-logo.png`                   | Stylized alternate mark                |
+| `/TC Logo's/TrophyCast_FishMark_transparent.png` | Primary hero mark on dark or light layouts |
+| `/TC Logo's/trophy-cast-logo-256.png` | Square brand mark for email headers, exports, and app-adjacent placements |
+| `/TC Logo's/trophy-cast-logo-48.png` | Small nav/favicon-adjacent usage |
+| `/TC Logo's/TrophyCast_Wordmark_transparent.png` | Text-first lockup for print support and secondary placements |
+| `/TC Logo's/TrophyCast_Horizontal_Side_FullColor_transparent.png` | Wide lockup for headers, sponsor rows, and press-style placements |
+
+**Do not treat these as primary brand assets:** white-background exports, duplicate horizontal variants, or process-only files in `public/TC Logo's/`. Use the brand guide to decide what is canonical.
 
 ### DBM Club Logos
 
@@ -345,11 +349,12 @@ trophy-cast-site/
 │           ├── page.tsx          ← DBM dark flyer
 │           └── print/page.tsx    ← DBM print 2-up
 ├── docs/
+│   ├── BRAND_GUIDE.md           ← canonical brand reference
 │   ├── FLYER_COPY.md             ← approved copy & messaging
 │   ├── FLYER_AND_MARKETING_SOP.md (this file)
 │   └── WEBSITE_BRIEF.md          ← brand/site brief
 └── public/
-    ├── trophy-cast-logo-256.png  ← main TC logo
+  ├── TC Logo's/                ← canonical Trophy Cast logo family
     ├── Loge Transparent background.png  ← DBM logo
     ├── [sponsor logos...]
     └── [other assets...]

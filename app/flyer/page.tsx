@@ -21,6 +21,7 @@ import {
 const JOIN_URL = FLYER_SIGNUP_URL;
 const JOIN_LABEL = FLYER_SIGNUP_LABEL;
 const QR_IMAGE = FLYER_SIGNUP_QR_IMAGE;
+const SQUARE_LOGO_SRC = "/TC%20Logo%27s/trophy-cast-logo-256.png";
 
 export default function FlyerPage() {
   const [copied, setCopied] = useState(false);
@@ -218,7 +219,7 @@ export default function FlyerPage() {
             <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 18 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/trophy-cast-logo-256.png"
+                src={SQUARE_LOGO_SRC}
                 alt="Trophy Cast Logo"
                 width={110}
                 height={110}

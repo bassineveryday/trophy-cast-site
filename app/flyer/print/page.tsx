@@ -20,6 +20,8 @@ const LIGHT_TEAL = '#D4EDE6';      // visible turquoise for panel fills
 const MID_TEAL   = '#B8DDD3';      // stronger turquoise accent/borders
 const NAVY_LIGHT = '#243E50';     // softer navy for strips
 const WHITE  = '#FFFFFF';
+const FISH_MARK_SRC = "/TC%20Logo%27s/TrophyCast_FishMark_transparent.png";
+const WORDMARK_SRC = "/TC%20Logo%27s/TrophyCast_Wordmark_transparent.png";
 const PAGE_WIDTH_IN = 11;
 const PAGE_HEIGHT_IN = 8.5;
 const PAGE_FRAME_SIDE_IN = 0.13;
@@ -267,7 +269,7 @@ function FlyerCard() {
             <div style={{ width: 62, height: 78, flexShrink: 0, overflow: 'hidden' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/TrophyCast_FishMark_transparent.png"
+                src={FISH_MARK_SRC}
                 alt="Trophy Cast fish mark"
                 style={{
                   width: '100%',
@@ -281,7 +283,7 @@ function FlyerCard() {
             <div style={{ width: '100%', maxWidth: 300, height: 56, overflow: 'hidden' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/TrophyCast_Wordmark_transparent.png"
+                src={WORDMARK_SRC}
                 alt="Trophy Cast"
                 style={{
                   width: '100%',
