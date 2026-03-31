@@ -11,8 +11,6 @@ import { TC_LOGOS } from "@/lib/brandAssets";
 
 export default function Page() {
   const waitlistHref = "#waitlist";
-  const fishMarkSrc = TC_LOGOS.fishMark;
-
   return (
     <>
       {/* ── HERO ─────────────────────────────────────────────── */}
@@ -20,22 +18,16 @@ export default function Page() {
         <Container className="relative space-y-16">
           {/* Logo + Name */}
           <div className="flex flex-col items-center gap-6 text-center">
-            <div className="relative">
-              <Image
-                src={fishMarkSrc}
-                alt="Trophy Cast logo"
-                width={256}
-                height={256}
-                priority
-                className="relative h-40 w-auto drop-shadow-2xl sm:h-56 lg:h-64"
-              />
-            </div>
-            <div className="space-y-3">
-              <h1 className="font-heading text-5xl font-extrabold tracking-tight text-white sm:text-7xl lg:text-8xl">
-                {siteContent.brand.name}
-              </h1>
-              <p className="text-xl font-semibold text-trophyGold sm:text-2xl">{siteContent.brand.motto}</p>
-            </div>
+            <Image
+              src={TC_LOGOS.horizontal}
+              alt="Trophy Cast logo"
+              width={600}
+              height={300}
+              priority
+              className="h-28 w-auto sm:h-36 lg:h-44"
+            />
+            {/* H1 kept for SEO — visually hidden since text lives in the logo image */}
+            <h1 className="sr-only">{siteContent.brand.name}</h1>
           </div>
 
           {/* Two-column hero body */}
