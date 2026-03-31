@@ -7,10 +7,11 @@ import { Section } from "@/components/Section";
 import { WaitlistForm } from "@/components/WaitlistForm";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { siteContent } from "@/lib/content";
+import { TC_LOGOS } from "@/lib/brandAssets";
 
 export default function Page() {
   const waitlistHref = "#waitlist";
-  const fishMarkSrc = "/TC%20Logo%27s/TrophyCast_FishMark_transparent.png";
+  const fishMarkSrc = TC_LOGOS.fishMark;
 
   return (
     <>

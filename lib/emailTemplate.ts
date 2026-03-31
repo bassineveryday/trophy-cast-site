@@ -1,9 +1,10 @@
 // Shared email template logic — used by both the send and preview API routes.
+import { TC_EMAIL_LOGOS } from './brandAssets';
 
 const MEET_LINK = 'https://meet.google.com/kys-cuub-idb';
 const MEET_DIAL = '+1 423-657-0191 · PIN: 272 760 211#';
 const MEET_SCHEDULE = 'Every Monday · 7:00–8:00 PM Mountain Time';
-const EMAIL_LOGO_URL = 'https://trophycast.app/TC%20Logo%27s/trophy-cast-logo-48.png';
+const EMAIL_LOGO_URL = TC_EMAIL_LOGOS.fishMark;
 
 export const DEEP_DIVE_DESCRIPTIONS: Record<string, string> = {
   'Dock Talk': "Team chat built for bass clubs — channels for tournaments, announcements, and your crew. Know what's happening at the lake before you get there.",
@@ -56,7 +57,7 @@ export function buildEmailHtml(opts: {
 
     <!-- Header -->
     <div style="text-align:center;padding:32px 0 24px;">
-      <img src="${EMAIL_LOGO_URL}" alt="Trophy Cast" width="48" height="48" style="display:block;margin:0 auto 8px;">
+      <img src="${EMAIL_LOGO_URL}" alt="Trophy Cast" width="80" height="80" style="display:block;margin:0 auto 8px;">
       <h1 style="color:#D4AF37;font-size:26px;font-weight:700;margin:8px 0 4px;font-family:Georgia,serif;">Trophy Cast</h1>
       <p style="color:#C9D3DA;font-size:14px;margin:0;">Weekly Community Update</p>
     </div>

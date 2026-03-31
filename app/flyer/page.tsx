@@ -7,6 +7,7 @@ import {
   FLYER_SIGNUP_QR_IMAGE,
   FLYER_SIGNUP_URL,
 } from '@/lib/flyerSignup';
+import { TC_LOGOS } from '@/lib/brandAssets';
 
 /**
  * Trophy Cast Promotional Flyer
@@ -21,7 +22,7 @@ import {
 const JOIN_URL = FLYER_SIGNUP_URL;
 const JOIN_LABEL = FLYER_SIGNUP_LABEL;
 const QR_IMAGE = FLYER_SIGNUP_QR_IMAGE;
-const SQUARE_LOGO_SRC = "/TC%20Logo%27s/trophy-cast-logo-256.png";
+const SQUARE_LOGO_SRC = TC_LOGOS.icon256;
 
 export default function FlyerPage() {
   const [copied, setCopied] = useState(false);

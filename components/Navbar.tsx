@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { CTAButton } from "./CTAButton";
+import { TC_LOGOS } from "@/lib/brandAssets";
 
 interface NavbarProps {
   brand: { name: string; motto: string; logoText: string };
@@ -13,7 +14,7 @@ interface NavbarProps {
 
 export function Navbar({ brand, navItems, waitlistCta }: NavbarProps) {
   const [open, setOpen] = useState(false);
-  const logoSrc = "/TC%20Logo%27s/trophy-cast-logo-48.png";
+  const logoSrc = TC_LOGOS.icon48;
 
   return (
     <header id="top" className="sticky top-0 z-50 border-b border-white/5 bg-midnight/70 backdrop-blur-xl">

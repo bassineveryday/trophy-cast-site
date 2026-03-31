@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { toPng } from 'html-to-image';
+import { TC_LOGOS } from '@/lib/brandAssets';
 
 /**
  * Denver BassMasters — Recruitment Flyer (Dark Digital)
@@ -279,7 +280,7 @@ export default function DBMFlyerPage() {
                 { name: 'Rapala',                  src: '/Rapala%20logo%20transparent..png' },
                 { name: 'AA Toppers',              src: '/Topper%20Sales.png' },
                 { name: 'Discount Fishing Denver', src: '/Discount%20fishing%20tackle.%20Logo.%20Transparent..png' },
-                { name: 'Trophy Cast',             src: '/Trophy%20cast%20white%20background.png' },
+                { name: 'Trophy Cast',             src: TC_LOGOS.icon256 },
               ].map((s) => (
                 <div key={s.name} title={s.name} style={{ background: '#fff', borderRadius: 8, padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, minWidth: 44 }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}

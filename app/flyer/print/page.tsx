@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { toPng } from 'html-to-image';
+import { TC_LOGOS } from '@/lib/brandAssets';
 
 /* ═══════════════════════════════════════════════════════════
    Trophy Cast — Print Flyer (2-up landscape)
@@ -20,8 +21,8 @@ const LIGHT_TEAL = '#D4EDE6';      // visible turquoise for panel fills
 const MID_TEAL   = '#B8DDD3';      // stronger turquoise accent/borders
 const NAVY_LIGHT = '#243E50';     // softer navy for strips
 const WHITE  = '#FFFFFF';
-const FISH_MARK_SRC = "/TC%20Logo%27s/TrophyCast_FishMark_transparent.png";
-const WORDMARK_SRC = "/TC%20Logo%27s/TrophyCast_Wordmark_transparent.png";
+const FISH_MARK_SRC = TC_LOGOS.fishMark;
+const WORDMARK_SRC = TC_LOGOS.wordmark;
 const PAGE_WIDTH_IN = 11;
 const PAGE_HEIGHT_IN = 8.5;
 const PAGE_FRAME_SIDE_IN = 0.13;

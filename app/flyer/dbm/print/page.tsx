@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { TC_LOGOS } from '@/lib/brandAssets';
 
 const JOIN_LABEL = 'denverbassmasters.com/join-now';
 const QR_IMAGE = '/dbm-join-qr.svg';
@@ -65,7 +66,7 @@ const INFO_CARDS = [
 const SPONSORS = [
   { name: 'Bass Pro Shops', src: '/bass-pro-logo-2x.png', h: 26, mw: 56 },
   { name: 'JJ Bass Jigs', src: '/JJ-logo-trim%20(2).png', h: 26, mw: 52 },
-  { name: 'Trophy Cast', src: '/Trophy%20cast%20white%20background.png', h: 30, mw: 62 },
+  { name: 'Trophy Cast', src: TC_LOGOS.icon256, h: 30, mw: 62 },
   { name: 'Eagle Claw', src: '/Eagle%20Claw%20logo%20transparent..png', h: 24, mw: 54 },
   { name: 'Militia Marine', src: '/Militia%20Marine%20logo.%20Transparent..png', h: 22, mw: 54 },
   { name: 'Rapala', src: '/Rapala%20logo%20transparent..png', h: 20, mw: 54 },
