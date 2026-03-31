@@ -1,5 +1,5 @@
 export function waitlistConfirmationHtml(firstName: string): string {
-  const emailLogoUrl = 'https://trophycast.app/TC%20Logo%27s/trophy-cast-logo-256.png';
+  const emailLogoUrl = 'https://trophycast.app/TC%20Logo%27s/trophy-cast-logo-nobg.png';
 
   return `<!DOCTYPE html>
 <html lang="en">

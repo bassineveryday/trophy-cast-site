@@ -3,7 +3,7 @@
 const MEET_LINK = 'https://meet.google.com/kys-cuub-idb';
 const MEET_DIAL = '+1 423-657-0191 · PIN: 272 760 211#';
 const MEET_SCHEDULE = 'Every Monday · 7:00–8:00 PM Mountain Time';
-const EMAIL_LOGO_URL = 'https://trophycast.app/TC%20Logo%27s/trophy-cast-logo-256.png';
+const EMAIL_LOGO_URL = 'https://trophycast.app/TC%20Logo%27s/trophy-cast-logo-nobg.png';
 
 export const DEEP_DIVE_DESCRIPTIONS: Record<string, string> = {
   'Dock Talk': "Team chat built for bass clubs — channels for tournaments, announcements, and your crew. Know what's happening at the lake before you get there.",
