@@ -1,0 +1,8 @@
+# Exclude binary assets from Copilot context to prevent 413 request-too-large errors
+public/**/*.png
+public/**/*.jpg
+public/**/*.jpeg
+public/**/*.gif
+public/**/*.webp
+public/**/*.ico
+public/**/*.svg
