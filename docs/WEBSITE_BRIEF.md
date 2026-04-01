@@ -49,7 +49,7 @@ _Last Updated: February 26, 2026_
 
 ### Logo
 
-- **Source of truth:** `public/TC Logo's/` and `docs/BRAND_GUIDE.md`
+- **Source of truth:** `public/tc-logos/` and `docs/BRAND_GUIDE.md`
 - **Primary marks:** fish mark, square app icon, wordmark, horizontal lockup
 - **Preferred production format:** PNG with transparent background
 - **Use the canonical production assets from the brand guide, not white-background exports or duplicate process files**

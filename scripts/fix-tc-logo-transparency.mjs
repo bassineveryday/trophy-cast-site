@@ -1,7 +1,7 @@
 import { Jimp } from 'jimp';
 import path from 'path';
 
-const baseDir = path.join(process.cwd(), 'public', "TC Logo's");
+const baseDir = path.join(process.cwd(), 'public', "tc-logos");
 
 const files = [
   'TrophyCast_FishMark_transparent.png',

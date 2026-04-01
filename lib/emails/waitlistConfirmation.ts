@@ -1,5 +1,7 @@
+import { TC_EMAIL_LOGOS } from '../brandAssets';
+
 export function waitlistConfirmationHtml(firstName: string): string {
-  const emailLogoUrl = 'https://trophycast.app/TC%20Logo%27s/trophy-cast-logo-256.png';
+  const emailLogoUrl = TC_EMAIL_LOGOS.fishMark;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -17,7 +19,7 @@ export function waitlistConfirmationHtml(firstName: string): string {
           <!-- Header -->
           <tr>
             <td align="center" style="padding:0 0 32px 0;">
-              <img src="${emailLogoUrl}" alt="Trophy Cast" width="120" height="120" style="display:block;margin:0 auto 16px auto;" />
+              <img src="${emailLogoUrl}" alt="Trophy Cast" width="80" height="80" style="display:block;margin:0 auto 16px auto;" />
               <div style="font-size:28px;font-weight:900;color:#ffffff;letter-spacing:-0.5px;">Trophy Cast</div>
               <div style="font-size:12px;color:#f5c842;letter-spacing:2px;text-transform:uppercase;margin-top:6px;">Where Every Cast Counts.</div>
             </td>

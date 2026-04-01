@@ -5,6 +5,7 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { siteContent } from "@/lib/content";
+import { TC_LOGOS } from "@/lib/brandAssets";
 import { buildMailtoHref } from "@/lib/utils";
 
 const heading = Montserrat({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-heading" });
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: siteContent.seo.title,
     description: siteContent.seo.description,
-    images: ["/og.png"],
+    images: [TC_LOGOS.fishMark],
   },
 };
 
