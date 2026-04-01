@@ -57,7 +57,7 @@ export function buildEmailHtml(opts: {
 
     <!-- Header -->
     <div style="text-align:center;padding:32px 0 24px;">
-      <img src="${EMAIL_LOGO_URL}" alt="Trophy Cast" width="80" height="80" style="display:block;margin:0 auto 8px;">
+      <img src="${EMAIL_LOGO_URL}" alt="Trophy Cast" width="80" height="80" style="display:block;margin:0 auto 8px;background-color:#0C1A23;">
       <h1 style="color:#D4AF37;font-size:26px;font-weight:700;margin:8px 0 4px;font-family:Georgia,serif;">Trophy Cast</h1>
       <p style="color:#C9D3DA;font-size:14px;margin:0;">Weekly Community Update</p>
     </div>
