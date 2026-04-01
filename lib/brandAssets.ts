@@ -37,8 +37,10 @@ export const TC_LOGOS = {
  * Absolute URLs for email HTML bodies.
  * fishMark is the default primary email header logo.
  * icon48 is available for compact utility placements.
+ * The ?v= param busts CDN and Gmail proxy caches after image updates.
  */
+const EMAIL_LOGO_VERSION = 'v=2';
 export const TC_EMAIL_LOGOS = {
-  fishMark: `${DOMAIN}${TC_LOGOS.fishMark}`,
-  icon48: `${DOMAIN}${TC_LOGOS.icon48}`,
+  fishMark: `${DOMAIN}${TC_LOGOS.fishMark}?${EMAIL_LOGO_VERSION}`,
+  icon48: `${DOMAIN}${TC_LOGOS.icon48}?${EMAIL_LOGO_VERSION}`,
 } as const;
