@@ -20,7 +20,7 @@ Static landing page for the Trophy Cast waitlist built with Next.js (App Router)
 - Waitlist CTA opens a `mailto:` link to `hello@trophycast.app`.
 - Tailwind theme encodes Trophy Cast brand colors and typography.
 - Canonical brand guidance lives in `docs/BRAND_GUIDE.md`.
-- Canonical Trophy Cast logo assets live in `public/TC Logo's/`.
+- Canonical Trophy Cast logo assets live in `public/tc-logos/`.
 
 ## Deploying to Vercel
 

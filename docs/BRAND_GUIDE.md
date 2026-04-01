@@ -4,7 +4,7 @@ _Last updated: March 24, 2026_
 
 This document is the canonical brand reference for Trophy Cast marketing, website, flyer, and product-adjacent visual work in the site repo.
 
-It is grounded in the actual logo assets currently stored in `public/TC Logo's/`.
+It is grounded in the actual logo assets currently stored in `public/tc-logos/`.
 
 ---
 
@@ -82,20 +82,20 @@ It is grounded in the actual logo assets currently stored in `public/TC Logo's/`
 
 ## Logo System
 
-All current Trophy Cast logo assets live in `public/TC Logo's/`.
-Deprecated or process-only variants must stay in `public/TC Logo's/_archive/` and must not be referenced by live code.
+All current Trophy Cast logo assets live in `public/tc-logos/`.
+Deprecated or process-only variants must stay in `public/tc-logos/_archive/` and must not be referenced by live code.
 
 ### Canonical production assets
 
 These are the assets that should anchor all current brand usage.
 
-| Asset             | File                                                                    | Best use                                                      |
-| ----------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------- |
-| Primary fish mark | `public/TC Logo's/TrophyCast_FishMark_transparent.png`                  | Hero sections, large placements, primary brand symbol         |
-| Primary app icon  | `public/TC Logo's/trophy-cast-logo-256.png`                             | App-style square branding, email header mark, export graphics |
-| Small icon        | `public/TC Logo's/trophy-cast-logo-48.png`                              | Navbar, small lockups, favicon-adjacent usage                 |
-| Wordmark          | `public/TC Logo's/TrophyCast_Wordmark_transparent.png`                  | Text-only brand lockup, print support, secondary placements   |
-| Horizontal lockup | `public/TC Logo's/TrophyCast_Horizontal_Side_FullColor_transparent.png` | Wide headers, sponsor boards, footer lockups, press usage     |
+| Asset             | File                                                                   | Best use                                                      |
+| ----------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Primary fish mark | `public/tc-logos/TrophyCast_FishMark_transparent.png`                  | Hero sections, large placements, primary brand symbol         |
+| Primary app icon  | `public/tc-logos/trophy-cast-logo-256.png`                             | App-style square branding, email header mark, export graphics |
+| Small icon        | `public/tc-logos/trophy-cast-logo-48.png`                              | Navbar, small lockups, favicon-adjacent usage                 |
+| Wordmark          | `public/tc-logos/TrophyCast_Wordmark_transparent.png`                  | Text-only brand lockup, print support, secondary placements   |
+| Horizontal lockup | `public/tc-logos/TrophyCast_Horizontal_Side_FullColor_transparent.png` | Wide headers, sponsor boards, footer lockups, press usage     |
 
 ---
 

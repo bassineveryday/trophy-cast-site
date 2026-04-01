@@ -66,15 +66,15 @@ All public images live in `/public`. Always reference them as `/filename.png` in
 
 ### Trophy Cast Logos
 
-| File                                       | Use When                               |
-| ------------------------------------------ | -------------------------------------- |
-| `/TC Logo's/TrophyCast_FishMark_transparent.png` | Primary hero mark on dark or light layouts |
-| `/TC Logo's/trophy-cast-logo-256.png` | Square brand mark for email headers, exports, and app-adjacent placements |
-| `/TC Logo's/trophy-cast-logo-48.png` | Small nav/favicon-adjacent usage |
-| `/TC Logo's/TrophyCast_Wordmark_transparent.png` | Text-first lockup for print support and secondary placements |
-| `/TC Logo's/TrophyCast_Horizontal_Side_FullColor_transparent.png` | Wide lockup for headers, sponsor rows, and press-style placements |
+| File                                                             | Use When                                                                  |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `/tc-logos/TrophyCast_FishMark_transparent.png`                  | Primary hero mark on dark or light layouts                                |
+| `/tc-logos/trophy-cast-logo-256.png`                             | Square brand mark for email headers, exports, and app-adjacent placements |
+| `/tc-logos/trophy-cast-logo-48.png`                              | Small nav/favicon-adjacent usage                                          |
+| `/tc-logos/TrophyCast_Wordmark_transparent.png`                  | Text-first lockup for print support and secondary placements              |
+| `/tc-logos/TrophyCast_Horizontal_Side_FullColor_transparent.png` | Wide lockup for headers, sponsor rows, and press-style placements         |
 
-**Do not treat these as primary brand assets:** white-background exports, duplicate horizontal variants, or process-only files in `public/TC Logo's/`. Use the brand guide to decide what is canonical.
+**Do not treat these as primary brand assets:** white-background exports, duplicate horizontal variants, or process-only files in `public/tc-logos/`. Use the brand guide to decide what is canonical.
 
 ### DBM Club Logos
 
@@ -354,7 +354,7 @@ trophy-cast-site/
 │   ├── FLYER_AND_MARKETING_SOP.md (this file)
 │   └── WEBSITE_BRIEF.md          ← brand/site brief
 └── public/
-  ├── TC Logo's/                ← canonical Trophy Cast logo family
+  ├── tc-logos/                 ← canonical Trophy Cast logo family
     ├── Loge Transparent background.png  ← DBM logo
     ├── [sponsor logos...]
     └── [other assets...]

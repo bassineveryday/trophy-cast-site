@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 import sharp from "sharp";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const logoDir = join(__dirname, "..", "public", "TC Logo's");
+const logoDir = join(__dirname, "..", "public", "tc-logos");
 
 async function checkFile(filename) {
   const filePath = join(logoDir, filename);

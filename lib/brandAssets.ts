@@ -17,7 +17,7 @@
  *     Those files are archived for print proof reference only.
  */
 
-const LOGO_FOLDER = "/TC%20Logo%27s";
+const LOGO_FOLDER = "/tc-logos";
 const DOMAIN = 'https://trophycast.app';
 
 export const TC_LOGOS = {
