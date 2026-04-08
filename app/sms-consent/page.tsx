@@ -19,6 +19,8 @@ const consentSteps = [
   "The member opens Trust Center and sees SMS Notifications turned off by default.",
   "The member must have a valid mobile phone number on file before the toggle can be enabled.",
   "The member deliberately turns the SMS Notifications toggle on to opt in to transactional messages.",
+  "The disclosure shown at the point of opt-in reads: \"Msg frequency varies. Msg & data rates may apply. Reply HELP for help, STOP to cancel.\"",
+  "Immediately after enabling the toggle, the member receives a confirmation SMS: \"Trophy Cast: You're now opted in to club SMS alerts. Msg frequency varies. Msg & data rates may apply. Reply HELP for help, STOP to cancel.\"",
   "The member can opt out at any time by turning the toggle off or replying STOP to any Trophy Cast SMS.",
 ];
 
@@ -135,8 +137,9 @@ export default function SmsConsentPage() {
                 <p className="font-semibold text-copyLight">What the member sees when consenting</p>
                 <p className="mt-2">
                   The Trust Center screen clearly identifies SMS Notifications, the member chooses to
-                  enable the toggle, and the disclosure states that message and data rates may apply
-                  and that replying STOP opts the member out.
+                  enable the toggle, and the disclosure states: &ldquo;Msg frequency varies. Msg &amp; data
+                  rates may apply. Reply HELP for help, STOP to cancel.&rdquo; Immediately after enabling,
+                  the member receives an opt-in confirmation SMS to their phone.
                 </p>
               </div>
             </div>
@@ -161,8 +164,7 @@ export default function SmsConsentPage() {
                         </div>
                       </div>
                       <p className="mt-3 text-xs leading-relaxed text-copyMuted">
-                        Texts sent to (555) 555-5555. Message &amp; data rates may apply. Reply STOP
-                        to opt out. Reply HELP for help.
+                        Texts sent to (555) 555-5555. Msg frequency varies. Msg &amp; data rates may apply. Reply HELP for help, STOP to cancel.
                       </p>
                       <a href="/privacy" className="mt-3 inline-block text-xs font-semibold text-trophyGold hover:underline">
                         View Privacy Policy →
@@ -207,6 +209,16 @@ export default function SmsConsentPage() {
                     Notifications off inside Settings → Trust Center.
                   </p>
                   <p>Carriers are not liable for delayed or undelivered messages.</p>
+                </div>
+              </div>
+              <div className="rounded-2xl border border-trophyGold/15 bg-trophyGold/6 p-5">
+                <p className="font-semibold text-copyLight">Opt-in confirmation message</p>
+                <p className="mt-2 text-sm text-copyMuted">
+                  Every member who enables SMS Notifications receives this confirmation immediately
+                  at the moment they turn the toggle on:
+                </p>
+                <div className="mt-3 rounded-xl border border-white/8 bg-white/5 p-3 text-sm text-copyLight font-mono">
+                  Trophy Cast: You&rsquo;re now opted in to club SMS alerts. Msg frequency varies. Msg &amp; data rates may apply. Reply HELP for help, STOP to cancel.
                 </div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-midnight/55 p-5">
