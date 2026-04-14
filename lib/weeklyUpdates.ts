@@ -34,6 +34,28 @@ export interface WeeklyUpdate {
 export const weeklyUpdates: WeeklyUpdate[] = [
   // ─── Most recent week first ──────────────────────────────────────────────
   {
+    week: 'April 8, 2026',
+    suggestedSubject: 'Trophy Cast Weekly 🎣 — April 8 | Norton is THIS Weekend',
+    suggestedDeepDive: 'Tournament Dashboard',
+    suggestedMeetingFocus: 'Live demo of Card Certification — scan and certify your tournament score card right in the app, with missed fish tracking and over-limit guards built in',
+    bullets: [
+      'Card Certification is live — scan your weigh-in card at the ramp, the app reads scores, flags missed fish, and locks in results for the TD',
+      'Norton is April 11–12 — draw happened at the April 1st meeting. Safe light to 3 PM Saturday, safe light to 2 PM Sunday',
+      'Partner notifications added — your partner gets an in-app ping when you submit your score card so everyone stays in sync at the ramp',
+    ],
+  },
+  {
+    week: 'April 1, 2026',
+    suggestedSubject: 'Trophy Cast Weekly 🎣 — April 1',
+    suggestedDeepDive: 'Video Notes',
+    suggestedMeetingFocus: 'Show the catch rate dashboard live — TDs can see entry fees collected, Big Fish pot totals, and per-angler stats in real time from the tournament screen',
+    bullets: [
+      'Big Fish Yearly opt-in is now in the app — sign up for the $20 annual pot right at check-in before your tournament starts',
+      'Catch rate dashboard is live for TDs — real-time financial totals, Big Fish pot tracking, and per-angler catch stats all in one place',
+      'Video ruler got smarter — AI now picks the sharpest frames from anywhere in your video for more accurate fish length reads',
+    ],
+  },
+  {
     week: 'March 15, 2026',
     suggestedSubject: 'Trophy Cast Weekly 🎣 — March 15',
     suggestedDeepDive: 'TC Coach',

@@ -49,7 +49,7 @@ export const siteContent = {
         value: "Record video notes on the water. Chat with your crew, share catch photos, and get SMS alerts for tournaments and announcements.",
       },
     ],
-    statRibbon: "80+ screens · Voice logging · Video notes · Personal coaching · Live weather · 30 trophies · Daily missions · Group chats · SMS alerts · Club-in-a-box · Built by fishermen, for fishermen.",
+    statRibbon: "80+ screens · Voice logging · Video notes · Personal coaching · Live weather · 30 trophies · Daily missions · Group chats · SMS alerts · Card Certification · Catch Rate tournaments · Club-in-a-box · Built by fishermen, for fishermen.",
   },
   what: {
     id: "what",
@@ -174,6 +174,79 @@ export const siteContent = {
       "✅ 6 officer roles with role-specific dashboards",
       "✅ Configurable tournament formats, divisions, and AOY scoring",
     ],
+  },
+  tightLineOutdoors: {
+    id: "tight-line-outdoors",
+    badge: "Now live on Trophy Cast",
+    logoUrl: "https://tightlineoutdoors.com/hubfs/TLO-logo-fullcolor-200.png",
+    description:
+      "Tightline Outdoors is Colorado's premier guided fishing and tournament operation — 24+ years on the water, 5 expert guides, 12+ permitted bodies of water, and the largest ice fishing tournament series west of the Mississippi.",
+    stats: [
+      { label: "24+ Years", sub: "guiding on Colorado water" },
+      { label: "1,371+", sub: "clients guided" },
+      { label: "5 Guides", sub: "expert, permitted professionals" },
+      { label: "10+ State Records", sub: "caught with TLO clients" },
+      { label: "CPW Partner of the Year", sub: "Colorado Parks & Wildlife" },
+      { label: "12+ Waters", sub: "open water & ice, year-round" },
+    ],
+    guides: [
+      {
+        name: "Nate Zelinsky",
+        species: "Walleye · Ice School",
+        note: "Founder · 104.3 FM Radio Host · Pro Tournament Angler",
+      },
+      {
+        name: "Matt Endsley",
+        species: "Trout · Panfish",
+        note: "Colorado seasonal bite specialist",
+      },
+      {
+        name: "TJ Miranda",
+        species: "Walleye · Electronics",
+        note: "Forward-facing sonar · Garmin & Humminbird",
+      },
+      {
+        name: "Dustin Sigler",
+        species: "Pike · Fly Fishing",
+        note: "Trophy pike & still-water fly specialist",
+      },
+      {
+        name: "Rhett Feltman",
+        species: "All-Season Guide",
+        note: "Multi-species Colorado angler",
+      },
+    ],
+    catchRate: {
+      badge: "2026 Multi-Species Tournament Series",
+      season: "May 6 – August 19, 2026",
+      kickoff: "Saturday April 18 · 7am–3pm · Beat Nate in Trout",
+      format: "Select Wednesdays · 4pm–8pm · 9 total events",
+      checkin: "Mandatory check-in 3:30pm–4:00pm",
+      location: "Chatfield Reservoir · North Boat Ramp · Littleton, CO",
+      entry: "$20 per angler / per species",
+      species: ["Walleye", "Bass", "Trout", "Carp (4 events)"],
+      prizes:
+        "Cash payouts 1st–5th · Eagle Claw Prize Pack · $100 Bass Pro/Cabela's gift card for 1st in each category weekly",
+      beatNate: "4× $250 Beat Nate bonus events",
+      url: "https://tightlineoutdoors.com/catch-rate-tournament",
+      schedule: [
+        { date: "Apr 18", label: "Kickoff Event", note: "Saturday 7am–3pm · Beat Nate in Trout · Carp eligible" },
+        { date: "May 6", label: "Event 1", note: "Beat Nate in Carp · Carp eligible" },
+        { date: "May 20", label: "Event 2", note: "Beat Nate in Bass" },
+        { date: "Jun 3", label: "Youth Night", note: "Kids 12 & under fish free · Carp eligible" },
+        { date: "Jun 17", label: "Carp Included", note: "4th carp event" },
+        { date: "Jul 1", label: "USA Night", note: "Most American display angler bonus" },
+        { date: "Jul 22", label: "JJ Branson Event", note: "$250 if winning Bass breaks 18.25\"" },
+        { date: "Aug 5", label: "Event 7", note: "Beat Nate in Walleye" },
+        { date: "Aug 19", label: "Final Event + Awards", note: "Angler Champions of the Year announced" },
+      ],
+    },
+    contact: {
+      phone: "720.775.7770",
+      email: "tightlinecs@gmail.com",
+      website: "tightlineoutdoors.com",
+      facebook: "https://www.facebook.com/TightlineOutdoors/",
+    },
   },
   gamificationLoop: {
     id: "loop",

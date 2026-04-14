@@ -1,6 +1,6 @@
 # Trophy Cast – Website Brief
 
-_Last Updated: February 26, 2026_
+_Last Updated: April 8, 2026_
 
 ---
 
@@ -28,20 +28,20 @@ _Last Updated: February 26, 2026_
 
 ## 🏗️ Website Sections (In Order)
 
-| #   | Section            | Purpose                                   | Key Message                                                  |
-| --- | ------------------ | ----------------------------------------- | ------------------------------------------------------------ |
-| 1   | **Hero**           | First impression – 5 seconds to hook them | "Where Every Cast Counts" + North Star                       |
-| 2   | **Social Proof**   | Credibility                               | "Live with Denver Bassmasters" + member count                |
-| 3   | **What It Does**   | Quick feature overview (3 cards)          | Log catches, track seasons, run your club                    |
-| 4   | **How It Works**   | Simple 3-step flow                        | Log → Organize → Reflect                                     |
-| 5   | **For Anglers**    | Individual value                          | Voice-first TC Coach logging, trophy room, patterns, weather |
-| 6   | **TC Coach**       | Differentiator                            | "Coach insights, not coaching" – honest, personal, private   |
-| 7   | **For Clubs**      | Club leader value                         | AOY, tournaments, rosters, announcements, treasury           |
-| 8   | **Club-in-a-Box**  | Growth / scale story                      | Any club can launch on Trophy Cast                           |
-| 9   | **Screenshots**    | Show Trophy Cast                          | 4-6 real screenshots from Trophy Cast                        |
-| 10  | **Trust**          | Address concerns                          | Optional TC Coach, no spot sharing, your data is yours       |
-| 11  | **Waitlist / CTA** | Convert the visitor                       | Email signup → "Join the waitlist"                           |
-| 12  | **Footer**         | Links, contact, legal                     | Email, socials (future), motto                               |
+| #   | Section            | Purpose                                   | Key Message                                                      |
+| --- | ------------------ | ----------------------------------------- | ---------------------------------------------------------------- |
+| 1   | **Hero**           | First impression – 5 seconds to hook them | "Where Every Cast Counts" + North Star                           |
+| 2   | **Social Proof**   | Credibility                               | "Live with Denver Bassmasters + Tightline Outdoors" + club count |
+| 3   | **What It Does**   | Quick feature overview (3 cards)          | Log catches, track seasons, run your club                        |
+| 4   | **How It Works**   | Simple 3-step flow                        | Log → Organize → Reflect                                         |
+| 5   | **For Anglers**    | Individual value                          | Voice-first TC Coach logging, trophy room, patterns, weather     |
+| 6   | **TC Coach**       | Differentiator                            | "Coach insights, not coaching" – honest, personal, private       |
+| 7   | **For Clubs**      | Club leader value                         | AOY, tournaments, rosters, announcements, treasury               |
+| 8   | **Club-in-a-Box**  | Growth / scale story                      | Any club can launch on Trophy Cast                               |
+| 9   | **Screenshots**    | Show Trophy Cast                          | 4-6 real screenshots from Trophy Cast                            |
+| 10  | **Trust**          | Address concerns                          | Optional TC Coach, no spot sharing, your data is yours           |
+| 11  | **Waitlist / CTA** | Convert the visitor                       | Email signup → "Join the waitlist"                               |
+| 12  | **Footer**         | Links, contact, legal                     | Email, socials (future), motto                                   |
 
 ---
 
@@ -122,12 +122,12 @@ _Last Updated: February 26, 2026_
 
 ## 📊 Stats to Highlight (When Available)
 
-| Stat                | Where to Show       | Current                                     |
-| ------------------- | ------------------- | ------------------------------------------- |
-| Active club         | Hero / social proof | Denver Bassmasters                          |
-| Features built      | Credibility         | 30+ screens, TC Coach, weather, tournaments |
-| User roles          | Depth               | 6 role types (member → admin)               |
-| Tournament features | Club value          | Full tournament lifecycle                   |
+| Stat                | Where to Show       | Current                                                   |
+| ------------------- | ------------------- | --------------------------------------------------------- |
+| Active clubs        | Hero / social proof | Denver Bassmasters · Tightline Outdoors (Catch Rate 2026) |
+| Features built      | Credibility         | 30+ screens, TC Coach, weather, tournaments               |
+| User roles          | Depth               | 6 role types (member → admin)                             |
+| Tournament features | Club value          | Full tournament lifecycle                                 |
 
 ---
 
