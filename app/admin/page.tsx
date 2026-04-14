@@ -1950,6 +1950,26 @@ export default function AdminDashboardPage() {
               )}
             </Link>
 
+            <Link
+              href="/admin/survey"
+              className="group bg-deepPanel border border-liftedPanel hover:border-purple-500/40 rounded-2xl p-7 transition-colors block"
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-3xl mb-4">📋</p>
+                  <p className="text-xl font-heading font-bold text-copyLight group-hover:text-purple-400 transition-colors">
+                    Survey Manager
+                  </p>
+                  <p className="text-copyMuted text-sm mt-2 leading-relaxed">
+                    Create surveys, email them to members, collect responses, and get AI-powered analysis from Ask DBM
+                  </p>
+                </div>
+                <span className="text-copyMuted/30 group-hover:text-purple-400/50 text-xl transition-colors ml-4 shrink-0">
+                  →
+                </span>
+              </div>
+            </Link>
+
           </div>
         </section>
 
