@@ -12,6 +12,26 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY ?? 'placeholder'
 );
 
+function corsHeaders(origin: string | null): Record<string, string> {
+  const isAllowed =
+    origin &&
+    (origin === 'https://trophycast.app' ||
+      origin.endsWith('.vercel.app') ||
+      /^http:\/\/localhost:\d+$/.test(origin));
+
+  const allowedOrigin = isAllowed ? origin : 'https://trophycast.app';
+  return {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+}
+
+export async function OPTIONS(request: Request) {
+  const origin = request.headers.get('origin');
+  return new NextResponse(null, { status: 204, headers: corsHeaders(origin) });
+}
+
 function checkPassword(provided: string, expected: string): boolean {
   if (!expected || !provided) return false;
   const a = new Uint8Array(Buffer.from(provided));
@@ -40,6 +60,9 @@ export type SuggestedQuestion = {
 
 // ── POST: Suggest survey questions for a given topic ────────────────────────
 export async function POST(request: Request) {
+  const origin = request.headers.get('origin');
+  const cors = corsHeaders(origin);
+
   try {
     const body = await request.json();
     const { password, topic, clubName, count = 8 } = body as {
@@ -50,15 +73,15 @@ export async function POST(request: Request) {
     };
 
     if (!await verifyAuth(request, { password })) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: cors });
     }
 
     if (!topic?.trim()) {
-      return NextResponse.json({ error: 'topic is required' }, { status: 400 });
+      return NextResponse.json({ error: 'topic is required' }, { status: 400, headers: cors });
     }
 
     if (!openai) {
-      return NextResponse.json({ error: 'OpenAI API key not configured.' }, { status: 503 });
+      return NextResponse.json({ error: 'OpenAI API key not configured.' }, { status: 503, headers: cors });
     }
 
     const clampedCount = Math.min(Math.max(Number(count) || 8, 3), 15);
@@ -116,12 +139,12 @@ These will be sent to members of ${club}.`;
         })
         .slice(0, clampedCount);
     } catch {
-      return NextResponse.json({ error: 'Failed to parse AI response.' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to parse AI response.' }, { status: 500, headers: cors });
     }
 
-    return NextResponse.json({ questions });
+    return NextResponse.json({ questions }, { headers: cors });
   } catch (error: any) {
     console.error('[survey/suggest] Error:', error);
-    return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error.' }, { status: 500, headers: cors });
   }
 }

@@ -12,6 +12,26 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY ?? 'placeholder'
 );
 
+function corsHeaders(origin: string | null): Record<string, string> {
+  const isAllowed =
+    origin &&
+    (origin === 'https://trophycast.app' ||
+      origin.endsWith('.vercel.app') ||
+      /^http:\/\/localhost:\d+$/.test(origin));
+
+  const allowedOrigin = isAllowed ? origin : 'https://trophycast.app';
+  return {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+}
+
+export async function OPTIONS(request: Request) {
+  const origin = request.headers.get('origin');
+  return new NextResponse(null, { status: 204, headers: corsHeaders(origin) });
+}
+
 function checkPassword(provided: string, expected: string): boolean {
   if (!expected || !provided) return false;
   const a = new Uint8Array(Buffer.from(provided));
@@ -36,19 +56,22 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const origin = request.headers.get('origin');
+  const cors = corsHeaders(origin);
+
   try {
     const { id: surveyId } = await params;
     const body = await request.json();
     const { password } = body;
 
     if (!await verifyAuth(request, { password })) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: cors });
     }
 
     if (!openai) {
       return NextResponse.json(
         { error: 'OpenAI API key not configured.' },
-        { status: 503 }
+        { status: 503, headers: cors }
       );
     }
 
@@ -60,7 +83,7 @@ export async function POST(
     ]);
 
     if (surveyRes.error || !surveyRes.data) {
-      return NextResponse.json({ error: 'Survey not found.' }, { status: 404 });
+      return NextResponse.json({ error: 'Survey not found.' }, { status: 404, headers: cors });
     }
 
     const survey = surveyRes.data;
@@ -144,9 +167,9 @@ Rules:
       .update({ ai_summary: aiSummary, updated_at: new Date().toISOString() })
       .eq('id', surveyId);
 
-    return NextResponse.json({ ok: true, aiSummary });
+    return NextResponse.json({ ok: true, aiSummary }, { headers: cors });
   } catch (error) {
     console.error('[survey-analyze] error:', error);
-    return NextResponse.json({ error: 'AI analysis failed. Try again.' }, { status: 500 });
+    return NextResponse.json({ error: 'AI analysis failed. Try again.' }, { status: 500, headers: cors });
   }
 }

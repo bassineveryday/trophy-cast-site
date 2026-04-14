@@ -19,6 +19,26 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY ?? 'placeholder'
 );
 
+function corsHeaders(origin: string | null): Record<string, string> {
+  const isAllowed =
+    origin &&
+    (origin === 'https://trophycast.app' ||
+      origin.endsWith('.vercel.app') ||
+      /^http:\/\/localhost:\d+$/.test(origin));
+
+  const allowedOrigin = isAllowed ? origin : 'https://trophycast.app';
+  return {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+}
+
+export async function OPTIONS(request: Request) {
+  const origin = request.headers.get('origin');
+  return new NextResponse(null, { status: 204, headers: corsHeaders(origin) });
+}
+
 function checkPassword(provided: string, expected: string): boolean {
   if (!expected || !provided) return false;
   const a = new Uint8Array(Buffer.from(provided));
@@ -90,13 +110,16 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const origin = request.headers.get('origin');
+  const cors = corsHeaders(origin);
+
   try {
     const { id: surveyId } = await params;
     const body = await request.json();
     const { password } = body;
 
     if (!await verifyAuth(request, { password })) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: cors });
     }
 
     // Fetch survey
@@ -107,7 +130,7 @@ export async function POST(
       .single();
 
     if (sErr || !survey) {
-      return NextResponse.json({ error: 'Survey not found.' }, { status: 404 });
+      return NextResponse.json({ error: 'Survey not found.' }, { status: 404, headers: cors });
     }
 
     // Activate survey if still draft
@@ -124,12 +147,12 @@ export async function POST(
       .select('email');
 
     if (subErr) {
-      return NextResponse.json({ error: `Failed to fetch subscribers: ${subErr.message}` }, { status: 500 });
+      return NextResponse.json({ error: `Failed to fetch subscribers: ${subErr.message}` }, { status: 500, headers: cors });
     }
 
     const emails = (subs ?? []).map((r) => r.email).filter(Boolean) as string[];
     if (emails.length === 0) {
-      return NextResponse.json({ error: 'No subscribers found.' }, { status: 400 });
+      return NextResponse.json({ error: 'No subscribers found.' }, { status: 400, headers: cors });
     }
 
     const surveyUrl = `https://trophycast.app/survey/${surveyId}`;
@@ -151,7 +174,7 @@ export async function POST(
       const { data, error } = await getResend().batch.send(chunk);
       if (error) {
         console.error('[survey-send] Resend batch error:', error);
-        return NextResponse.json({ error: 'Failed to send emails.', detail: error.message }, { status: 500 });
+        return NextResponse.json({ error: 'Failed to send emails.', detail: error.message }, { status: 500, headers: cors });
       }
       const sent = (data as { data?: { id: string }[] } | null)?.data ?? [];
       ids.push(...sent.map((d) => d.id));
@@ -162,9 +185,9 @@ export async function POST(
       recipientCount: emails.length,
       surveyUrl,
       ids,
-    });
+    }, { headers: cors });
   } catch (error) {
     console.error('[survey-send] error:', error);
-    return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error.' }, { status: 500, headers: cors });
   }
 }
