@@ -27,6 +27,18 @@ function checkPassword(provided: string, expected: string): boolean {
   return crypto.timingSafeEqual(a, b);
 }
 
+// Verify either admin password or a valid Supabase JWT (used by the mobile app)
+async function verifyAuth(request: Request, body: { password?: string }): Promise<boolean> {
+  if (body.password && checkPassword(String(body.password), ADMIN_PASSWORD)) return true;
+  const authHeader = request.headers.get('authorization');
+  if (authHeader?.startsWith('Bearer ')) {
+    const token = authHeader.slice(7);
+    const { data, error } = await supabase.auth.getUser(token);
+    if (!error && data.user) return true;
+  }
+  return false;
+}
+
 function buildSurveyEmailHtml(opts: {
   title: string;
   description: string;
@@ -83,7 +95,7 @@ export async function POST(
     const body = await request.json();
     const { password } = body;
 
-    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD)) {
+    if (!await verifyAuth(request, { password })) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

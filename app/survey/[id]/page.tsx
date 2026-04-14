@@ -9,7 +9,7 @@ interface Question {
   id: string;
   question_text: string;
   question_type: 'multiple_choice' | 'rating' | 'open_text' | 'yes_no';
-  options: string[] | null;
+  options: string[] | { max: number } | null;
   required: boolean;
   sort_order: number;
 }
@@ -47,6 +47,7 @@ export default function SurveyPage() {
         if (typeof q.options === 'string') {
           try { q.options = JSON.parse(q.options); } catch { q.options = []; }
         }
+        // Ensure rating options are treated as { max } object, not array
       }
     } catch {
       setError('Failed to load survey.');
@@ -191,7 +192,7 @@ export default function SurveyPage() {
                 {q.required && <span className="text-red-400 ml-1">*</span>}
               </label>
 
-              {q.question_type === 'multiple_choice' && q.options && (
+              {q.question_type === 'multiple_choice' && Array.isArray(q.options) && (
                 <div className="space-y-2">
                   {(q.options as string[]).map((opt) => (
                     <label key={opt} className="flex items-center gap-3 cursor-pointer group">
@@ -232,23 +233,28 @@ export default function SurveyPage() {
                 </div>
               )}
 
-              {q.question_type === 'rating' && (
-                <div className="flex gap-2 justify-center">
-                  {['1', '2', '3', '4', '5'].map((v) => (
-                    <button
-                      key={v}
-                      onClick={() => setAnswer(q.id, v)}
-                      className={`w-12 h-12 rounded-lg text-lg font-bold transition-colors ${
-                        answers[q.id] === v
-                          ? 'bg-[#D4AF37] text-[#0C1A23]'
-                          : 'bg-[#0C1A23] text-[#C9D3DA] border border-[#2A4A5F] hover:border-[#D4AF37]'
-                      }`}
-                    >
-                      {v}
-                    </button>
-                  ))}
-                </div>
-              )}
+              {q.question_type === 'rating' && (() => {
+                const ratingMax = (q.options && !Array.isArray(q.options) && typeof q.options === 'object' && 'max' in q.options)
+                  ? (q.options as { max: number }).max
+                  : 5;
+                return (
+                  <div className={`flex gap-2 ${ratingMax > 5 ? 'flex-wrap' : 'justify-center'}`}>
+                    {Array.from({ length: ratingMax }, (_, i) => String(i + 1)).map((v) => (
+                      <button
+                        key={v}
+                        onClick={() => setAnswer(q.id, v)}
+                        className={`w-11 h-11 rounded-lg text-base font-bold transition-colors ${
+                          answers[q.id] === v
+                            ? 'bg-[#D4AF37] text-[#0C1A23]'
+                            : 'bg-[#0C1A23] text-[#C9D3DA] border border-[#2A4A5F] hover:border-[#D4AF37]'
+                        }`}
+                      >
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                );
+              })()}
 
               {q.question_type === 'open_text' && (
                 <textarea
