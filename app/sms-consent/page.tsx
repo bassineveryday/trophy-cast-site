@@ -8,10 +8,11 @@ export const metadata = {
 };
 
 const sampleMessages = [
-  "Trophy Cast: Norton Lake tournament start time moved to 6AM due to weather. Reply STOP to opt out. Reply HELP for help.",
-  "Trophy Cast [URGENT]: Tomorrow's Bartlett Lake tournament is cancelled. Check the app for details. Reply STOP to opt out. Reply HELP for help.",
-  "Trophy Cast: Reminder - Denver BassMasters monthly meeting this Wednesday at 7PM. Reply STOP to opt out. Reply HELP for help.",
-  "Trophy Cast: Pairings are live for Chatfield Reservoir. Open the app to confirm your boat and partner. Reply STOP to opt out. Reply HELP for help.",
+  "Trophy Cast: Norton Lake tournament start time moved to 6AM due to weather. Msg & data rates may apply. Reply HELP for help, STOP to cancel.",
+  "Trophy Cast [URGENT]: Tomorrow's Bartlett Lake tournament is cancelled. Check the app for details. Reply HELP for help, STOP to cancel.",
+  "Trophy Cast: You're now opted in to club SMS alerts. Msg frequency varies. Msg & data rates may apply. Reply HELP for help, STOP to cancel.",
+  "Trophy Cast: Reminder - Denver BassMasters monthly meeting this Wednesday at 7PM. Msg & data rates may apply. Reply HELP for help, STOP to cancel.",
+  "Trophy Cast: Pairings are live for Chatfield Reservoir. Open the app to confirm your boat and partner. Msg & data rates may apply. Reply HELP for help, STOP to cancel.",
 ];
 
 const consentSteps = [
@@ -144,38 +145,20 @@ export default function SmsConsentPage() {
               </div>
             </div>
 
-            <div className="rounded-[2rem] border border-trophyGold/18 bg-midnight/80 p-5 shadow-glow">
-              <div className="mx-auto max-w-[24rem] rounded-[2rem] border border-white/10 bg-[#102230] p-4 shadow-2xl">
-                <div className="rounded-[1.5rem] border border-white/8 bg-[#0d1a23] p-4">
-                  <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-copyMuted">
-                    <span>Settings</span>
-                    <span>Trust Center</span>
-                  </div>
-                  <div className="mt-6 space-y-3">
-                    <p className="text-xs text-copyMuted">
-                      Your preferences are saved to your account.
-                    </p>
-                    <div className="rounded-2xl border border-white/8 bg-[#132633] p-4">
-                      <p className="text-sm font-bold text-white">SMS Notifications</p>
-                      <div className="mt-3 flex items-center justify-between gap-3">
-                        <p className="text-sm font-semibold text-copyLight">Enable SMS alerts</p>
-                        <div className="flex h-7 w-12 items-center rounded-full bg-white/10 px-1">
-                          <div className="h-5 w-5 rounded-full bg-white/90" />
-                        </div>
-                      </div>
-                      <p className="mt-3 text-xs leading-relaxed text-copyMuted">
-                        Texts sent to (555) 555-5555. Msg frequency varies. Msg &amp; data rates may apply. Reply HELP for help, STOP to cancel.
-                      </p>
-                      <a href="/privacy" className="mt-3 inline-block text-xs font-semibold text-trophyGold hover:underline">
-                        View Privacy Policy →
-                      </a>
-                    </div>
-                  </div>
-                </div>
+            <div className="space-y-4 rounded-[2rem] border border-trophyGold/18 bg-midnight/80 p-5 shadow-glow">
+              <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#102230] shadow-2xl">
+                <Image
+                  src="/screenshots/trust-center-sms-off.png"
+                  alt="Live Trophy Cast Trust Center screenshot showing the SMS Notifications toggle in the OFF position by default, with the disclosure text visible before consent is given."
+                  width={1400}
+                  height={500}
+                  className="w-full h-auto"
+                />
               </div>
-              <p className="mt-4 text-xs leading-relaxed text-copyMuted">
-                Public mirror of the current Trophy Cast Trust Center SMS setting. The live app keeps
-                the toggle off until the member deliberately enables it.
+              <p className="text-xs leading-relaxed text-copyMuted">
+                Screenshot from the live Trophy Cast app. The SMS Notifications toggle is OFF by
+                default, the disclosure text is visible at the point of consent, and SMS opt-in is
+                separate from account creation, tournament registration, or any other agreement.
               </p>
             </div>
           </div>
@@ -222,7 +205,10 @@ export default function SmsConsentPage() {
                 </div>
               </div>
               <div className="rounded-2xl border border-white/8 bg-midnight/55 p-5">
-                <p className="font-semibold text-copyLight">Sample messages</p>
+                <p className="font-semibold text-copyLight">Campaign sample messages</p>
+                <p className="mt-2 text-sm text-copyMuted">
+                  These examples match the wording used for campaign verification.
+                </p>
                 <ul className="mt-3 space-y-3 text-sm">
                   {sampleMessages.map((message) => (
                     <li key={message} className="rounded-xl border border-white/8 bg-white/5 p-3 text-copyLight">
