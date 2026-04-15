@@ -1,12 +1,31 @@
 import { Jimp } from 'jimp';
 import path from 'path';
+import { copyFileSync } from 'fs';
 
-const baseDir = path.join(process.cwd(), 'public', "tc-logos");
+const baseDir = path.join(process.cwd(), 'public', 'tc-logos');
+const archiveDir = path.join(baseDir, '_archive');
 
-const files = [
-  'TrophyCast_FishMark_transparent.png',
-  'TrophyCast_Wordmark_transparent.png',
-  'TrophyCast_Horizontal_Side_FullColor_transparent.png',
+// Each entry: { source } is the clean white-background original to read from.
+// { output } is the transparent PNG to write. If source !== output, we copy first.
+const fileMap = [
+  {
+    // Clean white-background source → horizontal lockup transparent output
+    source: path.join(archiveDir, 'TrophyCast_Horizontal_Side_FullColor_WhiteBG.png'),
+    output: path.join(baseDir, 'TrophyCast_Horizontal_Side_FullColor_transparent.png'),
+    label: 'TrophyCast_Horizontal_Side_FullColor_transparent.png',
+  },
+  {
+    // Stack wordmark + tagline white-bg → wordmark transparent output
+    source: path.join(archiveDir, 'TrophyCast_Stack_Wordmark_Tagline_WhiteBG.png'),
+    output: path.join(baseDir, 'TrophyCast_Wordmark_transparent.png'),
+    label: 'TrophyCast_Wordmark_transparent.png',
+  },
+  {
+    // FishMark: current file is white-bg (never correctly stripped) — process in-place
+    source: path.join(baseDir, 'TrophyCast_FishMark_transparent.png'),
+    output: path.join(baseDir, 'TrophyCast_FishMark_transparent.png'),
+    label: 'TrophyCast_FishMark_transparent.png',
+  },
 ];
 
 const colorTolerance = 32;
@@ -37,9 +56,12 @@ function isBackgroundMatch(pixel, seedColors) {
   return seedColors.some((seedColor) => colorDistance(pixel, seedColor) <= colorTolerance);
 }
 
-async function removeEdgeConnectedBackground(fileName) {
-  const filePath = path.join(baseDir, fileName);
-  const image = await Jimp.read(filePath);
+async function removeEdgeConnectedBackground({ source, output, label }) {
+  // Copy clean source to output path before processing (no-op when source === output)
+  if (source !== output) {
+    copyFileSync(source, output);
+  }
+  const image = await Jimp.read(output);
   const { width, height, data } = image.bitmap;
   const visited = new Uint8Array(width * height);
   const toRemove = new Uint8Array(width * height);
@@ -106,10 +128,10 @@ async function removeEdgeConnectedBackground(fileName) {
     removed += 1;
   }
 
-  await image.write(filePath);
-  console.log(`${fileName}: removed ${removed} background pixels`);
+  await image.write(output);
+  console.log(`${label}: removed ${removed} background pixels`);
 }
 
-for (const fileName of files) {
-  await removeEdgeConnectedBackground(fileName);
+for (const entry of fileMap) {
+  await removeEdgeConnectedBackground(entry);
 }

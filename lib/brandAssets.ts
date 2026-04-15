@@ -39,7 +39,7 @@ export const TC_LOGOS = {
  * icon48 is available for compact utility placements.
  * The ?v= param busts CDN and Gmail proxy caches after image updates.
  */
-const EMAIL_LOGO_VERSION = 'v=3';
+const EMAIL_LOGO_VERSION = 'v=4';
 export const TC_EMAIL_LOGOS = {
   /** Purpose-built 160×160 email header logo (7 KB, transparent, fresh filename). */
   emailHeader: `${DOMAIN}${LOGO_FOLDER}/tc-email-header.png?${EMAIL_LOGO_VERSION}`,
