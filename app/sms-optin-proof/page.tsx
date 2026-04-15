@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export const metadata = {
   title: "SMS Opt-In Screen — Trophy Cast",
   description:
@@ -27,76 +29,54 @@ export default function SmsOptinProofPage() {
         </p>
       </div>
 
-      {/* Phone mockup */}
-      <div className="w-full max-w-sm rounded-[2rem] border border-white/15 bg-[#0d1a25] shadow-2xl overflow-hidden">
+      {/* Live app screenshots — primary proof */}
+      <div className="w-full max-w-2xl space-y-6">
+        <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#C9A646] text-center">
+          Screenshots from the live Trophy Cast app
+        </p>
 
-        {/* Status bar */}
-        <div className="flex items-center justify-between px-5 pt-4 pb-2">
-          <span className="text-xs font-semibold text-white">9:41</span>
-          <span className="text-xs text-[#94a3b8]">●●●</span>
-        </div>
-
-        {/* Nav header */}
-        <div className="flex items-center gap-3 px-5 pb-3 border-b border-white/8">
-          <span className="text-[#C9A646] text-sm">←</span>
-          <span className="text-sm font-bold text-white">Trust Center</span>
-        </div>
-
-        {/* Body */}
-        <div className="px-5 py-4 space-y-4">
-
-          <p className="text-xs text-[#94a3b8]">
-            Your preferences are saved to your account.
+        {/* OFF state — default */}
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-white text-center">
+            Default state — SMS toggle is OFF
           </p>
-
-          {/* TC Coach card */}
-          <div className="rounded-xl border border-white/8 bg-[#132633] p-4 space-y-3">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#94a3b8]">
-              TC Coach consent
-            </p>
-            <div className="flex items-center justify-between gap-3">
-              <p className="text-sm font-semibold text-white">Allow TC Coach features</p>
-              <div className="flex h-7 w-12 items-center justify-end rounded-full bg-[#C9A646] px-1">
-                <div className="h-5 w-5 rounded-full bg-white shadow" />
-              </div>
-            </div>
+          <div className="rounded-2xl border border-white/15 overflow-hidden shadow-2xl">
+            <Image
+              src="/screenshots/trust-center-sms-off.png"
+              alt="Trophy Cast Trust Center screen showing SMS Notifications toggle in the OFF position by default, with disclosure text visible: Msg frequency varies. Msg and data rates may apply. Reply HELP for help, STOP to cancel."
+              width={1400}
+              height={500}
+              className="w-full h-auto"
+              priority
+            />
           </div>
+          <p className="text-xs text-[#94a3b8] text-center">
+            The SMS Notifications toggle is OFF by default. The disclosure — &ldquo;Msg
+            frequency varies. Msg &amp; data rates may apply. Reply HELP for help,
+            STOP to cancel.&rdquo; — is visible before the member takes any action.
+          </p>
+        </div>
 
-          {/* SMS card — this is the CTA */}
-          <div className="rounded-xl border border-[#C9A646]/30 bg-[#132633] p-4 space-y-3">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#94a3b8]">
-              SMS Notifications
-            </p>
-
-            {/* Toggle row — OFF by default */}
-            <div className="flex items-center justify-between gap-3">
-              <p className="text-sm font-semibold text-white">Enable SMS alerts</p>
-              {/* Toggle shown in OFF state */}
-              <div className="flex h-7 w-12 items-center justify-start rounded-full bg-white/15 px-1">
-                <div className="h-5 w-5 rounded-full bg-white/70 shadow" />
-              </div>
-            </div>
-
-            {/* Disclosure text shown at point of opt-in */}
-            <p className="text-xs leading-relaxed text-[#94a3b8]">
-              Texts sent to your phone number on file.{" "}
-              <strong className="text-white">Msg frequency varies.</strong>{" "}
-              Msg &amp; data rates may apply.{" "}
-              Reply <strong className="text-white">HELP</strong> for help,{" "}
-              <strong className="text-white">STOP</strong> to cancel.
-            </p>
-
-            <a
-              href="https://trophycast.app/privacy"
-              className="block text-xs font-semibold text-[#C9A646] underline underline-offset-2"
-            >
-              View Privacy Policy →
-            </a>
+        {/* ON state — after opt-in */}
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-white text-center">
+            After member enables SMS — toggle is ON
+          </p>
+          <div className="rounded-2xl border border-white/15 overflow-hidden shadow-2xl">
+            <Image
+              src="/screenshots/trust-center-sms-on.png"
+              alt="Trophy Cast Trust Center screen showing SMS Notifications toggle in the ON position after the member deliberately enabled it, with disclosure text and View Privacy Policy link visible."
+              width={1400}
+              height={200}
+              className="w-full h-auto"
+              priority
+            />
           </div>
-
-          <p className="text-xs text-[#94a3b8]">
-            Users must have a valid phone number on their profile before the SMS
-            toggle can be enabled.
+          <p className="text-xs text-[#94a3b8] text-center">
+            After the member deliberately enables the toggle, a confirmation SMS is
+            sent immediately: &ldquo;Trophy Cast: You&rsquo;re now opted in to club
+            SMS alerts. Msg frequency varies. Msg &amp; data rates may apply. Reply
+            HELP for help, STOP to cancel.&rdquo;
           </p>
         </div>
       </div>
