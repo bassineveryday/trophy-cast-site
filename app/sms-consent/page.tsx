@@ -163,6 +163,30 @@ export default function SmsConsentPage() {
             </div>
           </div>
 
+          {/* Video walkthrough */}
+          <div className="space-y-4 rounded-3xl border border-white/8 bg-deepPanel/55 p-6">
+            <div>
+              <p className="font-heading text-xs font-bold uppercase tracking-[0.28em] text-trophyGold">
+                Video Walkthrough
+              </p>
+              <h2 className="mt-2 font-heading text-2xl font-extrabold text-white">
+                SMS toggle — on and off
+              </h2>
+              <p className="mt-2 text-sm text-copyMuted">
+                Screen recording showing a member navigating to Settings → Trust Center and turning the SMS Notifications toggle on and off.
+              </p>
+            </div>
+            <div className="relative w-full aspect-video overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+              <iframe
+                src="https://www.youtube.com/embed/eXvDL8Rt2Cs"
+                title="Trophy Cast Trust Center — SMS Notifications toggle walkthrough"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              />
+            </div>
+          </div>
+
           <div className="space-y-5 rounded-3xl border border-white/8 bg-deepPanel/50 p-6">
             <div>
               <p className="font-heading text-xs font-bold uppercase tracking-[0.28em] text-trophyGold">

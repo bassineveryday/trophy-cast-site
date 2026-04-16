@@ -81,6 +81,25 @@ export default function SmsOptinProofPage() {
         </div>
       </div>
 
+      {/* Video walkthrough */}
+      <div className="w-full max-w-xl space-y-3">
+        <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#C9A646] text-center">
+          Video walkthrough — toggle being turned on and off
+        </p>
+        <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/15 shadow-2xl">
+          <iframe
+            src="https://www.youtube.com/embed/eXvDL8Rt2Cs"
+            title="Trophy Cast Trust Center — SMS Notifications toggle walkthrough"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="absolute inset-0 w-full h-full"
+          />
+        </div>
+        <p className="text-xs text-[#94a3b8] text-center">
+          Screen recording showing a member navigating to Settings → Trust Center and turning the SMS Notifications toggle on and off.
+        </p>
+      </div>
+
       {/* Compliance summary */}
       <div className="w-full max-w-xl rounded-2xl border border-white/10 bg-[#0d1a25] p-5 space-y-4 text-sm text-[#94a3b8]">
         <p className="font-bold text-white text-base">Program details shown at time of opt-in</p>
