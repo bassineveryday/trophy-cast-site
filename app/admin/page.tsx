@@ -1951,6 +1951,26 @@ export default function AdminDashboardPage() {
             </Link>
 
             <Link
+              href="/admin/member-access"
+              className="group bg-deepPanel border border-liftedPanel hover:border-electric/40 rounded-2xl p-7 transition-colors block"
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-3xl mb-4">🔑</p>
+                  <p className="text-xl font-heading font-bold text-copyLight group-hover:text-electric transition-colors">
+                    Member Access
+                  </p>
+                  <p className="text-copyMuted text-sm mt-2 leading-relaxed">
+                    Generate a one-time magic link to log in as any member — for support sessions and access verification
+                  </p>
+                </div>
+                <span className="text-copyMuted/30 group-hover:text-electric/50 text-xl transition-colors ml-4 shrink-0">
+                  →
+                </span>
+              </div>
+            </Link>
+
+            <Link
               href="/admin/survey"
               className="group bg-deepPanel border border-liftedPanel hover:border-purple-500/40 rounded-2xl p-7 transition-colors block"
             >
