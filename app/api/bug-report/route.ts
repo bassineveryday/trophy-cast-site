@@ -36,6 +36,30 @@ const supabaseAdmin = createClient(
 
 const NOTIFY_EMAIL = process.env.SUPPORT_ADMIN_EMAIL ?? 'tai@trophycast.app';
 
+function parseScreenshotDataUrl(input: unknown) {
+  if (typeof input !== 'string' || !input.trim()) {
+    return { attachmentContent: null, extension: null, included: false };
+  }
+
+  const trimmed = input.trim();
+  const match = trimmed.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+  if (!match) {
+    return { attachmentContent: null, extension: null, included: false, error: 'Screenshot must be a valid image data URL.' };
+  }
+
+  if (trimmed.length > 3_500_000) {
+    return { attachmentContent: null, extension: null, included: false, error: 'Screenshot is too large to email. Please choose a smaller image.' };
+  }
+
+  const mimeType = match[1];
+  const extension = mimeType === 'image/png' ? 'png' : 'jpg';
+  return {
+    attachmentContent: match[2],
+    extension,
+    included: true,
+  };
+}
+
 export async function POST(request: Request) {
   const origin = request.headers.get('origin');
   const cors = corsHeaders(origin);
@@ -57,7 +81,7 @@ export async function POST(request: Request) {
 
     // ── 2. Parse + validate body ─────────────────────────────────────────────
     const body = await request.json();
-    const { description, memberName, memberEmail, buildTime, deviceInfo, pagePath, clubId } = body;
+    const { description, memberName, memberEmail, buildTime, deviceInfo, pagePath, clubId, screenshotDataUrl } = body;
 
     if (!description || typeof description !== 'string' || description.trim().length < 10) {
       return NextResponse.json(
@@ -68,6 +92,11 @@ export async function POST(request: Request) {
 
     if (!memberEmail || !memberName) {
       return NextResponse.json({ error: 'Missing member info.' }, { status: 400, headers: cors });
+    }
+
+    const screenshot = parseScreenshotDataUrl(screenshotDataUrl);
+    if (screenshot.error) {
+      return NextResponse.json({ error: screenshot.error }, { status: 400, headers: cors });
     }
 
     // ── 3. Rate limit — 1 report per user per 60 seconds ────────────────────
@@ -130,6 +159,7 @@ export async function POST(request: Request) {
         submittedAt,
         clubId: effectiveClubId,
         reportId,
+        screenshotIncluded: screenshot.included,
       };
 
       const { data: emailResult, error: resendError } = await resend.emails.send({
@@ -139,6 +169,9 @@ export async function POST(request: Request) {
         subject: `🐛 Bug Report from ${memberName}`,
         html: bugReportHtml(emailData),
         text: bugReportText(emailData),
+        attachments: screenshot.attachmentContent
+          ? [{ filename: `bug-report-${reportId}.${screenshot.extension}`, content: screenshot.attachmentContent }]
+          : undefined,
       });
 
       if (resendError) {

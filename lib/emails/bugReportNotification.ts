@@ -8,6 +8,7 @@ export interface BugReportData {
   submittedAt: string;
   clubId: string;
   reportId: string;
+  screenshotIncluded?: boolean;
 }
 
 export function bugReportHtml(data: BugReportData): string {
@@ -21,6 +22,7 @@ export function bugReportHtml(data: BugReportData): string {
     submittedAt,
     clubId,
     reportId,
+    screenshotIncluded,
   } = data;
 
   const buildDisplay = buildTime && buildTime !== 'dev'
@@ -72,6 +74,7 @@ export function bugReportHtml(data: BugReportData): string {
                 ${row('Build', buildDisplay)}
                 ${deviceInfo ? row('Device', deviceInfo) : ''}
                 ${pagePath ? row('Page', pagePath) : ''}
+                ${screenshotIncluded ? row('Screenshot', 'Attached to this email') : ''}
                 ${row('Report ID', `<span style="font-family:monospace;font-size:11px;">${reportId}</span>`)}
               </table>
 
@@ -109,6 +112,7 @@ export function bugReportText(data: BugReportData): string {
     `Build: ${buildDisplay}`,
     data.deviceInfo ? `Device: ${data.deviceInfo}` : '',
     data.pagePath ? `Page: ${data.pagePath}` : '',
+    data.screenshotIncluded ? 'Screenshot: Attached to this email' : '',
     `Report ID: ${data.reportId}`,
     '',
     '--- Description ---',
