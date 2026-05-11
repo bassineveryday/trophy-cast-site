@@ -1,7 +1,37 @@
 import { TC_EMAIL_LOGOS } from '../brandAssets';
 
-export function waitlistConfirmationHtml(firstName: string): string {
+export interface WaitlistConfirmationOpts {
+  /** Absolute URL for the club's logo — shown above the TC logo when set */
+  clubLogoUrl?: string | null;
+  /** Club display name, e.g. "Denver BassMasters" */
+  clubDisplayName?: string;
+  /** Short club name used in body copy, e.g. "Denver BassMasters" */
+  clubName?: string;
+  /** "from" display name override for subject line context */
+  fromName?: string;
+}
+
+export function waitlistConfirmationHtml(
+  firstName: string,
+  opts: WaitlistConfirmationOpts = {}
+): string {
   const emailLogoUrl = TC_EMAIL_LOGOS.fishMark;
+  const { clubLogoUrl, clubDisplayName, clubName } = opts;
+
+  const headerHtml = clubLogoUrl
+    ? `<img src="${clubLogoUrl}" alt="${clubDisplayName ?? 'Club'}" width="88" height="88" style="display:block;margin:0 auto 10px auto;" />
+              <div style="font-size:20px;font-weight:800;color:#ffffff;letter-spacing:-0.3px;">${clubDisplayName ?? ''}</div>
+              <div style="font-size:11px;color:#546674;letter-spacing:2px;text-transform:uppercase;margin:4px 0 12px;">presented by</div>
+              <img src="${emailLogoUrl}" alt="Trophy Cast" width="48" height="48" style="display:block;margin:0 auto 8px auto;" />
+              <div style="font-size:16px;font-weight:700;color:#f5c842;">Trophy Cast</div>
+              <div style="font-size:11px;color:#f5c842;letter-spacing:2px;text-transform:uppercase;margin-top:4px;">Where Every Cast Counts.</div>`
+    : `<img src="${emailLogoUrl}" alt="Trophy Cast" width="80" height="80" style="display:block;margin:0 auto 16px auto;" />
+              <div style="font-size:28px;font-weight:900;color:#ffffff;letter-spacing:-0.5px;">Trophy Cast</div>
+              <div style="font-size:12px;color:#f5c842;letter-spacing:2px;text-transform:uppercase;margin-top:6px;">Where Every Cast Counts.</div>`;
+
+  const clubLine = clubName
+    ? `You're officially signed up with <strong style="color:#f5c842;">${clubName}</strong> on Trophy Cast.`
+    : `You're officially on the <strong style="color:#f5c842;">Trophy Cast waitlist</strong>.`;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -19,9 +49,7 @@ export function waitlistConfirmationHtml(firstName: string): string {
           <!-- Header -->
           <tr>
             <td align="center" style="padding:0 0 32px 0;">
-              <img src="${emailLogoUrl}" alt="Trophy Cast" width="80" height="80" style="display:block;margin:0 auto 16px auto;" />
-              <div style="font-size:28px;font-weight:900;color:#ffffff;letter-spacing:-0.5px;">Trophy Cast</div>
-              <div style="font-size:12px;color:#f5c842;letter-spacing:2px;text-transform:uppercase;margin-top:6px;">Where Every Cast Counts.</div>
+              ${headerHtml}
             </td>
           </tr>
 
@@ -32,7 +60,7 @@ export function waitlistConfirmationHtml(firstName: string): string {
                 Hey ${firstName} 👋
               </p>
               <p style="margin:0 0 24px 0;font-size:16px;color:#94a3b8;line-height:1.6;">
-                You're officially on the <strong style="color:#f5c842;">Trophy Cast waitlist</strong>. We'll reach out as soon as we're ready for you.
+                ${clubLine} We'll reach out as soon as we're ready for you.
               </p>
 
               <div style="background:#0a0e1a;border-radius:12px;padding:24px;border:1px solid #1e2d40;margin:0 0 28px 0;">

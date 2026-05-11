@@ -16,6 +16,7 @@ import { weeklyUpdates, type WeeklyUpdate } from '@/lib/weeklyUpdates';
 import { useAdminAuth } from '@/lib/useAdminAuth';
 import { buildEmailHtml } from '@/lib/emailTemplate';
 import { TCCoachBadge } from '@/components/TCCoachBadge';
+import { CLUB_SELECTOR_OPTIONS, getClubEmailConfig } from '@/lib/clubEmailConfig';
 
 const DEEP_DIVE_OPTIONS = [
   'Dock Talk',
@@ -56,8 +57,10 @@ function getNextSundayLocal(): string {
   return `${next.getFullYear()}-${pad(next.getMonth() + 1)}-${pad(next.getDate())}T${pad(next.getHours())}:00`;
 }
 
-function getDefaultSubject(): string {
-  return `Trophy Cast Weekly 🎣 — ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`;
+function getDefaultSubject(clubId: string): string {
+  const config = getClubEmailConfig(clubId);
+  const prefix = config?.subjectPrefix ?? '';
+  return `${prefix}Trophy Cast Weekly \uD83C\uDFA3 \u2014 ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`;
 }
 
 function getUpdateSignature(update: WeeklyUpdate): string {
@@ -85,7 +88,8 @@ export default function WeeklyEmailAdminPage() {
   const recognitionRef = useRef<any>(null);
 
   // Campaign fields
-  const [subject, setSubject] = useState(getDefaultSubject);
+  const [clubId, setClubId] = useState('DBM');
+  const [subject, setSubject] = useState(() => getDefaultSubject('DBM'));
   const [bullets, setBullets] = useState('');
   const [deepDive, setDeepDive] = useState<string>(DEEP_DIVE_OPTIONS[0]);
   const [deepDiveNote, setDeepDiveNote] = useState('');
@@ -107,18 +111,19 @@ export default function WeeklyEmailAdminPage() {
     unlock(pwInput);
   }, [pwInput, unlock]);
 
-  // Fetch subscriber count once after unlock
+  // Fetch subscriber count after unlock or when club changes
   useEffect(() => {
     if (!unlocked || !password) return;
+    setSubCount(null);
     fetch('/api/admin/subscriber-count', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
+      body: JSON.stringify({ password, clubId }),
     })
       .then((r) => r.json())
       .then((d) => setSubCount(d.count ?? null))
       .catch(() => {});
-  }, [unlocked, password]);
+  }, [unlocked, password, clubId]);
 
   const toggleVoice = useCallback(() => {
     if (typeof window === 'undefined') return;
@@ -195,6 +200,7 @@ export default function WeeklyEmailAdminPage() {
           deepDiveNote: deepDiveNote.trim() || undefined,
           meetingFocus: meetingFocus.trim() || undefined,
           scheduleTime: isoScheduleTime,
+          clubId,
         }),
       });
 
@@ -216,7 +222,7 @@ export default function WeeklyEmailAdminPage() {
       setStatus('error');
       setResultMsg('Network error. Check your connection and try again.');
     }
-  }, [password, subject, bullets, deepDive, deepDiveNote, meetingFocus, sendNow, scheduleTime, lockOut]);
+  }, [password, subject, bullets, deepDive, deepDiveNote, meetingFocus, sendNow, scheduleTime, lockOut, clubId]);
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -291,19 +297,20 @@ export default function WeeklyEmailAdminPage() {
     [bullets]
   );
 
-  const previewHtml = useMemo(
-    () =>
-      buildEmailHtml({
-        subject,
-        bullets: previewBullets.length
-          ? previewBullets
-          : ['(Start typing bullets above to see them here…)'],
-        deepDive,
-        deepDiveNote,
-        meetingFocus,
-      }),
-    [subject, previewBullets, deepDive, deepDiveNote, meetingFocus]
-  );
+  const previewHtml = useMemo(() => {
+    const clubConfig = getClubEmailConfig(clubId);
+    return buildEmailHtml({
+      subject,
+      bullets: previewBullets.length
+        ? previewBullets
+        : ['(Start typing bullets above to see them here…)'],
+      deepDive,
+      deepDiveNote,
+      meetingFocus,
+      clubLogoUrl: clubConfig?.logoAbsoluteUrl ?? null,
+      clubDisplayName: clubConfig?.displayName,
+    });
+  }, [clubId, subject, previewBullets, deepDive, deepDiveNote, meetingFocus]);
 
   // ── Password gate ────────────────────────────────────────────────────────
   if (!unlocked) {
@@ -393,6 +400,30 @@ export default function WeeklyEmailAdminPage() {
           className="w-[440px] shrink-0 border-r border-liftedPanel overflow-y-auto bg-deeperPanel"
         >
           <div className="p-5 space-y-5 pb-10">
+
+            {/* Club */}
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-copyMuted mb-2">Club</label>
+              <select
+                value={clubId}
+                onChange={(e) => {
+                  const newId = e.target.value;
+                  setClubId(newId);
+                  const config = getClubEmailConfig(newId);
+                  const prefix = config?.subjectPrefix ?? '';
+                  // Re-prefix the subject: strip any existing club prefix then add new one
+                  setSubject((prev) => {
+                    const stripped = prev.replace(/^[A-Z]+ \| /, '');
+                    return prefix + stripped;
+                  });
+                }}
+                className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
+              >
+                {CLUB_SELECTOR_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
 
             {/* Subject */}
             <div>

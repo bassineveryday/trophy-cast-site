@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 import { buildEmailHtml } from '@/lib/emailTemplate';
+import { getClubEmailConfig } from '@/lib/clubEmailConfig';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,11 +29,13 @@ function checkPassword(provided: string, expected: string): boolean {
   return crypto.timingSafeEqual(a, b);
 }
 
-// Fetch all subscribed emails from Supabase
-async function fetchSubscriberEmails(): Promise<string[]> {
-  const { data, error } = await supabase
-    .from('waitlist_subscribers')
-    .select('email');
+// Fetch subscribed emails from Supabase, optionally filtered by club
+async function fetchSubscriberEmails(clubName?: string | null): Promise<string[]> {
+  let query = supabase.from('waitlist_subscribers').select('email');
+  if (clubName) {
+    query = query.eq('club_name', clubName);
+  }
+  const { data, error } = await query;
   if (error) throw new Error(`Supabase error: ${error.message} (code: ${error.code})`);
   if (!data) throw new Error('Supabase returned no data');
   return data.map((r) => r.email).filter(Boolean) as string[];
@@ -41,7 +44,8 @@ async function fetchSubscriberEmails(): Promise<string[]> {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { password, subject, bullets, deepDive, deepDiveNote, meetingFocus, scheduleTime } = body;
+    const { password, subject, bullets, deepDive, deepDiveNote, meetingFocus, scheduleTime, clubId } = body;
+    const clubConfig = getClubEmailConfig(clubId);
 
     // ── 1. Auth ───────────────────────────────────────────────────────────────
     if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD)) {
@@ -62,10 +66,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Deep dive topic is required.' }, { status: 400 });
     }
 
-    // ── 3. Fetch subscriber list from Mailchimp ───────────────────────────────
+    // ── 3. Fetch subscriber list filtered by club ────────────────────────────
     let emails: string[];
     try {
-      emails = await fetchSubscriberEmails();
+      emails = await fetchSubscriberEmails(clubConfig?.clubName ?? null);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       console.error('[weekly-email] Failed to fetch subscribers:', msg);
@@ -82,11 +86,15 @@ export async function POST(request: Request) {
       deepDive,
       deepDiveNote,
       meetingFocus,
+      clubLogoUrl: clubConfig?.logoAbsoluteUrl ?? null,
+      clubDisplayName: clubConfig?.displayName,
     });
+
+    const fromName = clubConfig?.fromName ?? 'Tai — Trophy Cast';
 
     // ── 5. Send via Resend batch (max 100 per call) ───────────────────────────
     const baseEmail = {
-      from: 'Tai — Trophy Cast <cast@trophycast.app>',
+      from: `${fromName} <cast@trophycast.app>`,
       subject: subject.trim(),
       html: htmlBody,
       ...(scheduleTime ? { scheduledAt: scheduleTime as string } : {}),

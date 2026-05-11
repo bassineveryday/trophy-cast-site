@@ -6,6 +6,35 @@ const MEET_DIAL = '+1 423-657-0191 · PIN: 272 760 211#';
 const MEET_SCHEDULE = 'Every Monday · 7:00–8:00 PM Mountain Time';
 const EMAIL_LOGO_URL = TC_EMAIL_LOGOS.emailHeader;
 
+/**
+ * Renders the club + TC co-branded header block.
+ * When clubLogoUrl is provided the club logo appears first (larger),
+ * followed by a subtle divider, then the TC logo and "Trophy Cast" wordmark.
+ * When clubLogoUrl is null/undefined only the TC header is rendered.
+ */
+function buildEmailHeader(opts: {
+  clubLogoUrl?: string | null;
+  clubDisplayName?: string;
+}): string {
+  const { clubLogoUrl, clubDisplayName } = opts;
+
+  if (!clubLogoUrl) {
+    return `
+      <img src="${EMAIL_LOGO_URL}" alt="TC" width="80" height="80" style="display:block;margin:0 auto 8px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
+      <h1 style="color:#D4AF37;font-size:26px;font-weight:700;margin:8px 0 4px;font-family:Georgia,serif;">Trophy Cast</h1>
+      <p style="color:#C9D3DA;font-size:14px;margin:0;">Weekly Community Update</p>`;
+  }
+
+  const clubAlt = clubDisplayName ? escapeHtml(clubDisplayName) : 'Club';
+  return `
+      <img src="${clubLogoUrl}" alt="${clubAlt}" width="96" height="96" style="display:block;margin:0 auto 6px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
+      <p style="color:#C9D3DA;font-size:15px;font-weight:700;margin:0 0 12px;font-family:Georgia,serif;">${escapeHtml(clubDisplayName ?? '')}</p>
+      <p style="color:#546674;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 10px;">presented by</p>
+      <img src="${EMAIL_LOGO_URL}" alt="Trophy Cast" width="48" height="48" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
+      <p style="color:#D4AF37;font-size:13px;font-weight:700;margin:0 0 4px;font-family:Georgia,serif;">Trophy Cast</p>
+      <p style="color:#C9D3DA;font-size:13px;margin:0;">Weekly Community Update</p>`;
+}
+
 export const DEEP_DIVE_DESCRIPTIONS: Record<string, string> = {
   'Dock Talk': "Team chat built for bass clubs — channels for tournaments, announcements, and your crew. Know what's happening at the lake before you get there.",
   'Voice Catch Logging': 'Log your catches hands-free with your voice. Describe the fish, it gets logged automatically. No more typing with wet hands.',
@@ -34,8 +63,12 @@ export function buildEmailHtml(opts: {
   deepDive: string;
   deepDiveNote?: string;
   meetingFocus?: string;
+  /** Absolute URL for the sending club's logo — shown above the TC logo */
+  clubLogoUrl?: string | null;
+  /** Display name for the sending club, e.g. "Denver BassMasters" */
+  clubDisplayName?: string;
 }): string {
-  const { subject, bullets, deepDive, deepDiveNote, meetingFocus } = opts;
+  const { subject, bullets, deepDive, deepDiveNote, meetingFocus, clubLogoUrl, clubDisplayName } = opts;
   const desc =
     deepDiveNote?.trim() ||
     DEEP_DIVE_DESCRIPTIONS[deepDive] ||
@@ -57,9 +90,7 @@ export function buildEmailHtml(opts: {
 
     <!-- Header -->
     <div style="text-align:center;padding:32px 0 24px;">
-      <img src="${EMAIL_LOGO_URL}" alt="TC" width="80" height="80" style="display:block;margin:0 auto 8px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
-      <h1 style="color:#D4AF37;font-size:26px;font-weight:700;margin:8px 0 4px;font-family:Georgia,serif;">Trophy Cast</h1>
-      <p style="color:#C9D3DA;font-size:14px;margin:0;">Weekly Community Update</p>
+      ${buildEmailHeader({ clubLogoUrl, clubDisplayName })}
     </div>
 
     <!-- What's New -->
@@ -96,6 +127,66 @@ export function buildEmailHtml(opts: {
       </p>
     </div>
 
+  </div>
+</body>
+</html>`;
+}
+
+/**
+ * Builds the HTML body for a survey invitation email.
+ * Shared by the survey send API route — extracted here so survey emails
+ * get the same club-branding treatment as weekly campaign emails.
+ */
+export function buildSurveyEmailHtml(opts: {
+  title: string;
+  description: string;
+  surveyUrl: string;
+  clubName?: string;
+  /** Absolute URL for the sending club's logo */
+  clubLogoUrl?: string | null;
+  /** Display name for the sending club */
+  clubDisplayName?: string;
+}): string {
+  const { title, description, surveyUrl, clubName, clubLogoUrl, clubDisplayName } = opts;
+  const headerSubtitle = clubName ? escapeHtml(clubName) + ' Survey' : 'Denver Bassmasters Survey';
+  const feedbackLine = clubName
+    ? `Your feedback directly shapes how ${escapeHtml(clubName)} runs. The board reviews every response — and Trophy Cast&apos;s AI compiles everything into an actionable report so nothing gets missed.`
+    : `Your feedback directly shapes how Denver Bassmasters runs. The board reviews every response — and Trophy Cast&apos;s AI compiles everything into an actionable report so nothing gets missed.`;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${escapeHtml(title)}</title>
+</head>
+<body style="margin:0;padding:0;background-color:#0C1A23;font-family:Arial,Helvetica,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;padding:32px 20px;">
+
+    <!-- Header -->
+    <div style="text-align:center;padding:32px 0 24px;">
+      ${buildEmailHeader({ clubLogoUrl, clubDisplayName })}
+      ${!clubLogoUrl ? `<p style="color:#C9D3DA;font-size:14px;margin:4px 0 0;">${headerSubtitle}</p>` : `<p style="color:#C9D3DA;font-size:13px;margin:6px 0 0;">${headerSubtitle}</p>`}
+    </div>
+
+    <!-- Survey Invite -->
+    <div style="background:#162D3D;border-radius:12px;padding:28px;margin-bottom:20px;">
+      <h2 style="color:#4FC3F7;font-size:20px;font-weight:700;margin:0 0 12px;font-family:Georgia,serif;">📋 ${escapeHtml(title)}</h2>
+      <p style="color:#C9D3DA;font-size:15px;line-height:1.6;margin:0 0 20px;">${escapeHtml(description)}</p>
+      <div style="text-align:center;">
+        <a href="${escapeHtml(surveyUrl)}" style="display:inline-block;background:#D4AF37;color:#0C1A23;font-size:16px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;font-family:Arial,Helvetica,sans-serif;">Take the Survey</a>
+      </div>
+    </div>
+
+    <!-- Why it matters -->
+    <div style="background:#132532;border-radius:12px;padding:24px;margin-bottom:20px;">
+      <p style="color:#C9D3DA;font-size:14px;line-height:1.6;margin:0;">${feedbackLine}</p>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align:center;padding:24px 0 0;">
+      <p style="color:#546674;font-size:12px;margin:0;">&copy; ${new Date().getFullYear()} Trophy Cast &middot; <a href="https://trophycast.app" style="color:#546674;">trophycast.app</a></p>
+    </div>
   </div>
 </body>
 </html>`;

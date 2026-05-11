@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { buildEmailHtml } from '@/lib/emailTemplate';
+import { getClubEmailConfig } from '@/lib/clubEmailConfig';
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 
@@ -15,12 +16,13 @@ function checkPassword(provided: string, expected: string): boolean {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { password, subject, bullets, deepDive, deepDiveNote, meetingFocus } = body;
+    const { password, subject, bullets, deepDive, deepDiveNote, meetingFocus, clubId } = body;
 
     if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const clubConfig = getClubEmailConfig(clubId);
     const bulletList: string[] = Array.isArray(bullets)
       ? bullets.filter((b: string) => b?.trim())
       : [];
@@ -31,6 +33,8 @@ export async function POST(request: Request) {
       deepDive: deepDive || 'Dock Talk',
       deepDiveNote,
       meetingFocus,
+      clubLogoUrl: clubConfig?.logoAbsoluteUrl ?? null,
+      clubDisplayName: clubConfig?.displayName,
     });
 
     return new NextResponse(html, {

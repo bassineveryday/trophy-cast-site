@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
+import { getClubEmailConfig } from '@/lib/clubEmailConfig';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -19,15 +20,18 @@ function checkPassword(provided: string, expected: string): boolean {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { password } = body;
+    const { password, clubId } = body;
 
     if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { count, error } = await supabase
-      .from('waitlist_subscribers')
-      .select('id', { count: 'exact', head: true });
+    const clubConfig = getClubEmailConfig(clubId);
+    let query = supabase.from('waitlist_subscribers').select('id', { count: 'exact', head: true });
+    if (clubConfig?.clubName) {
+      query = query.eq('club_name', clubConfig.clubName);
+    }
+    const { count, error } = await query;
 
     if (error) return NextResponse.json({ count: null }, { status: 200 });
     return NextResponse.json({ count });

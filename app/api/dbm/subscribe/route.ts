@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
+import { waitlistConfirmationHtml, waitlistConfirmationText } from '@/lib/emails/waitlistConfirmation';
+import { getClubEmailConfig } from '@/lib/clubEmailConfig';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,9 +17,16 @@ const MC_AUDIENCE_ID = process.env.MAILCHIMP_DBM_AUDIENCE_ID ?? '';
 const MC_DC = MC_API_KEY.split('-').pop() ?? 'us12';
 const MC_BASE = `https://${MC_DC}.api.mailchimp.com/3.0`;
 
+let _resend: Resend | null = null;
+function getResend(): Resend | null {
+  if (!process.env.RESEND_API_KEY) return null;
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY);
+  return _resend;
+}
+
 export async function POST(request: Request) {
   try {
-    const { firstName, lastName, email, source } = await request.json();
+    const { firstName, lastName, email, source, program } = await request.json();
 
     if (!email || !firstName) {
       return NextResponse.json({ error: 'First name and email are required.' }, { status: 400 });
@@ -24,6 +34,14 @@ export async function POST(request: Request) {
 
     const emailClean = email.toLowerCase().trim();
     const tag = source ?? '2026-Print-Flyer';
+
+    // Map program to club_name (must match CLUB_EMAIL_CONFIGS clubName values)
+    const PROGRAM_TO_CLUB: Record<string, { clubName: string; role: string }> = {
+      adult:      { clubName: 'Denver BassMasters', role: 'dbm-member' },
+      juniors:    { clubName: 'DBM Juniors',        role: 'dbm-juniors-member' },
+      highschool: { clubName: 'DBM High School',    role: 'dbm-hs-member' },
+    };
+    const clubEntry = PROGRAM_TO_CLUB[program as string] ?? PROGRAM_TO_CLUB.adult;
 
     // ── 1. Add/update member in Mailchimp audience ────────────────────────────
     // Using PUT so it upserts (creates or updates)
@@ -77,12 +95,33 @@ export async function POST(request: Request) {
       {
         email: emailClean,
         first_name: firstName.trim(),
-        role: 'dbm-member',
-        club_name: 'Denver BassMasters',
+        role: clubEntry.role,
+        club_name: clubEntry.clubName,
       },
       { onConflict: 'email', ignoreDuplicates: true }
     );
+    // ── 4. Send branded confirmation email via Resend ───────────────────────────
+    const resend = getResend();
+    if (resend) {
+      const clubId = (
+        { adult: 'DBM', juniors: 'DBMJ', highschool: 'DBMHS' } as Record<string, string>
+      )[program as string] ?? 'DBM';
+      const clubConfig = getClubEmailConfig(clubId);
+      const fromName = clubConfig?.fromName ?? 'Tai — Trophy Cast';
+      const subjectPrefix = clubConfig?.subjectPrefix ?? '';
 
+      await resend.emails.send({
+        from: `${fromName} <cast@trophycast.app>`,
+        to: emailClean,
+        subject: `${subjectPrefix}You’re signed up! 🎣`,
+        html: waitlistConfirmationHtml(firstName.trim(), {
+          clubLogoUrl: clubConfig?.logoAbsoluteUrl ?? null,
+          clubDisplayName: clubConfig?.displayName,
+          clubName: clubConfig?.displayName,
+        }),
+        text: waitlistConfirmationText(firstName.trim()),
+      }).catch((err) => console.warn('[dbm/subscribe] Resend confirmation failed:', err));
+    }
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('[dbm/subscribe] Unexpected error:', err);
