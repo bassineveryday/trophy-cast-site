@@ -104,12 +104,20 @@ export async function POST(
     // Resolve club branding from the survey's club_id
     const clubConfig = getClubEmailConfig(survey.club_id);
 
-    // Fetch subscriber emails — filtered by club when config is found
-    let subsQuery = supabase.from('waitlist_subscribers').select('email');
-    if (clubConfig?.clubName) {
-      subsQuery = subsQuery.eq('club_name', clubConfig.clubName);
+    // Fail closed: never broadcast to all subscribers when club is unknown.
+    // A missing or unrecognised club_id means the survey can't be safely scoped.
+    if (!clubConfig) {
+      return NextResponse.json(
+        { error: `Unknown club_id '${survey.club_id ?? '(none)'}'. Add it to CLUB_EMAIL_CONFIGS before sending.` },
+        { status: 400, headers: cors }
+      );
     }
-    const { data: subs, error: subErr } = await subsQuery;
+
+    // Fetch subscriber emails filtered to the survey's club
+    const { data: subs, error: subErr } = await supabase
+      .from('waitlist_subscribers')
+      .select('email')
+      .eq('club_name', clubConfig.clubName);
 
     if (subErr) {
       return NextResponse.json({ error: `Failed to fetch subscribers: ${subErr.message}` }, { status: 500, headers: cors });
@@ -123,17 +131,16 @@ export async function POST(
     const surveyUrl = `https://trophycast.app/survey/${surveyId}`;
     const html = buildSurveyEmailHtml({
       title: survey.title,
-      description: survey.description || `We want to hear from you! Your feedback helps make ${clubConfig?.displayName ?? 'the club'} better.`,
+      description: survey.description || `We want to hear from you! Your feedback helps make ${clubConfig.displayName} better.`,
       surveyUrl,
-      clubName: clubConfig?.displayName,
-      clubLogoUrl: clubConfig?.logoAbsoluteUrl ?? null,
-      clubDisplayName: clubConfig?.displayName,
+      clubName: clubConfig.displayName,
+      clubLogoUrl: clubConfig.logoAbsoluteUrl,
+      clubDisplayName: clubConfig.displayName,
     });
 
-    const fromName = clubConfig?.fromName ?? 'Tai — Trophy Cast';
     const baseEmail = {
-      from: `${fromName} <cast@trophycast.app>`,
-      subject: buildSurveySubject(survey.title, clubConfig?.abbreviation),
+      from: `${clubConfig.fromName} <cast@trophycast.app>`,
+      subject: buildSurveySubject(survey.title, clubConfig.abbreviation),
       html,
     };
 

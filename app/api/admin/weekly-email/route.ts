@@ -93,9 +93,15 @@ export async function POST(request: Request) {
     const fromName = clubConfig?.fromName ?? 'Tai — Trophy Cast';
 
     // ── 5. Send via Resend batch (max 100 per call) ───────────────────────────
+    // Enforce the club prefix server-side so it can't be stripped from the UI.
+    const prefix = clubConfig?.subjectPrefix ?? '';
+    const subjectOut = subject.trim().startsWith(prefix)
+      ? subject.trim()
+      : `${prefix}${subject.trim()}`;
+
     const baseEmail = {
       from: `${fromName} <cast@trophycast.app>`,
-      subject: subject.trim(),
+      subject: subjectOut,
       html: htmlBody,
       ...(scheduleTime ? { scheduledAt: scheduleTime as string } : {}),
     };

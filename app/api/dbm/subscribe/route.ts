@@ -91,15 +91,21 @@ export async function POST(request: Request) {
     }
 
     // ── 3. Save to Supabase as backup ─────────────────────────────────────────
-    await supabase.from('waitlist_subscribers').upsert(
+    // Use ignoreDuplicates: false so a re-signup with a different program
+    // correctly updates club_name and role instead of silently keeping stale data.
+    const { error: dbWriteError } = await supabase.from('waitlist_subscribers').upsert(
       {
         email: emailClean,
         first_name: firstName.trim(),
         role: clubEntry.role,
         club_name: clubEntry.clubName,
       },
-      { onConflict: 'email', ignoreDuplicates: true }
+      { onConflict: 'email' }
     );
+    if (dbWriteError) {
+      console.error('[dbm/subscribe] Supabase upsert failed:', dbWriteError);
+      return NextResponse.json({ error: 'Could not save your registration. Please try again.' }, { status: 500 });
+    }
     // ── 4. Send branded confirmation email via Resend ───────────────────────────
     const resend = getResend();
     if (resend) {
