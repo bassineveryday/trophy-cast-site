@@ -39,9 +39,9 @@ export const TC_LOGOS = {
  * icon48 is available for compact utility placements.
  * The ?v= param busts CDN and Gmail proxy caches after image updates.
  */
-const EMAIL_LOGO_VERSION = 'v=5';
+const EMAIL_LOGO_VERSION = 'v=6';
 export const TC_EMAIL_LOGOS = {
-  /** 160×160 email header logo — dark background baked in, no transparency. Required for Gmail. */
+  /** 300×300 email header logo — high-res from FishMark source, dark background baked in. */
   emailHeader: `${DOMAIN}${LOGO_FOLDER}/tc-email-header-solid.png?${EMAIL_LOGO_VERSION}`,
   fishMark: `${DOMAIN}${TC_LOGOS.fishMark}?${EMAIL_LOGO_VERSION}`,
   icon48: `${DOMAIN}${TC_LOGOS.icon48}?${EMAIL_LOGO_VERSION}`,
