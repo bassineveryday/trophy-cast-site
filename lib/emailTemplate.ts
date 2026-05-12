@@ -20,17 +20,35 @@ function buildEmailHeader(opts: {
 
   if (!clubLogoUrl) {
     return `
-      <img src="${EMAIL_LOGO_URL}" alt="TC" width="80" height="80" style="display:block;margin:0 auto 8px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
+      <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 8px;">
+        <tr>
+          <td bgcolor="#0C1A23" style="background-color:#0C1A23;text-align:center;padding:0;line-height:0;">
+            <img src="${EMAIL_LOGO_URL}" alt="TC" width="80" height="80" style="display:block;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
+          </td>
+        </tr>
+      </table>
       <h1 style="color:#D4AF37;font-size:26px;font-weight:700;margin:8px 0 4px;font-family:Georgia,serif;">Trophy Cast</h1>
       <p style="color:#C9D3DA;font-size:14px;margin:0;">Weekly Community Update</p>`;
   }
 
   const clubAlt = clubDisplayName ? escapeHtml(clubDisplayName) : 'Club';
   return `
-      <img src="${clubLogoUrl}" alt="${clubAlt}" width="96" height="96" style="display:block;margin:0 auto 6px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
+      <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 6px;">
+        <tr>
+          <td bgcolor="#0C1A23" style="background-color:#0C1A23;text-align:center;padding:0;line-height:0;">
+            <img src="${clubLogoUrl}" alt="${clubAlt}" width="96" height="96" style="display:block;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
+          </td>
+        </tr>
+      </table>
       <p style="color:#C9D3DA;font-size:15px;font-weight:700;margin:0 0 12px;font-family:Georgia,serif;">${escapeHtml(clubDisplayName ?? '')}</p>
       <p style="color:#546674;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 10px;">presented by</p>
-      <img src="${EMAIL_LOGO_URL}" alt="Trophy Cast" width="48" height="48" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
+      <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 6px;">
+        <tr>
+          <td bgcolor="#0C1A23" style="background-color:#0C1A23;text-align:center;padding:0;line-height:0;">
+            <img src="${EMAIL_LOGO_URL}" alt="Trophy Cast" width="72" height="72" style="display:block;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
+          </td>
+        </tr>
+      </table>
       <p style="color:#D4AF37;font-size:13px;font-weight:700;margin:0 0 4px;font-family:Georgia,serif;">Trophy Cast</p>
       <p style="color:#C9D3DA;font-size:13px;margin:0;">Weekly Community Update</p>`;
 }
