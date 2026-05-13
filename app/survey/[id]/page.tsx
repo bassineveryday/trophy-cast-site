@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
+import { TC_MASTER_LOGO } from '@/lib/brandAssets';
 
 interface Question {
   id: string;
@@ -150,7 +151,7 @@ export default function SurveyPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <Image
-            src="https://trophycast.app/tc-logos/tc-email-header.png"
+            src={TC_MASTER_LOGO}
             alt="Trophy Cast"
             width={60}
             height={60}

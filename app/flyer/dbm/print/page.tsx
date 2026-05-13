@@ -2,10 +2,11 @@
 
 import { useEffect } from 'react';
 import { TC_LOGOS } from '@/lib/brandAssets';
+import { CLUB_WEB_LOGOS } from '@/lib/clubBrandAssets';
 
 const JOIN_LABEL = 'denverbassmasters.com/join-now';
 const QR_IMAGE = '/dbm-join-qr.svg';
-const DBM_JUNIORS_LOGO = '/Denver%20Bassmaster%20Junior%27s%20logo%20transparent..png';
+const DBM_JUNIORS_LOGO = CLUB_WEB_LOGOS.DBMJ;
 const CBN_LOGO = '/CBN.png';
 const SHEET_WIDTH_IN = 11;
 const SHEET_HEIGHT_IN = 8.5;

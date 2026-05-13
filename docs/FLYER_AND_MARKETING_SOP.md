@@ -66,25 +66,29 @@ All public images live in `/public`. Always reference them as `/filename.png` in
 
 ### Trophy Cast Logos
 
-| File                                                             | Use When                                                                  |
-| ---------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `/tc-logos/TrophyCast_FishMark_transparent.png`                  | Primary hero mark on dark or light layouts                                |
-| `/tc-logos/trophy-cast-logo-256.png`                             | Square brand mark for email headers, exports, and app-adjacent placements |
-| `/tc-logos/trophy-cast-logo-48.png`                              | Small nav/favicon-adjacent usage                                          |
-| `/tc-logos/TrophyCast_Wordmark_transparent.png`                  | Text-first lockup for print support and secondary placements              |
-| `/tc-logos/TrophyCast_Horizontal_Side_FullColor_transparent.png` | Wide lockup for headers, sponsor rows, and press-style placements         |
+| File                                                             | Use When                                                                       |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `/tc-logos/TrophyCast_FishMark_transparent.png`                  | Primary hero mark on dark or light layouts                                     |
+| `/tc-logos/tc-email-header-solid.png`                            | Email-safe Trophy Cast header mark when inbox rendering can break transparency |
+| `/tc-logos/trophy-cast-logo-256.png`                             | Square brand mark for email headers, exports, and app-adjacent placements      |
+| `/tc-logos/trophy-cast-logo-48.png`                              | Small nav/favicon-adjacent usage                                               |
+| `/tc-logos/TrophyCast_Wordmark_transparent.png`                  | Text-first lockup for print support and secondary placements                   |
+| `/tc-logos/TrophyCast_Horizontal_Side_FullColor_transparent.png` | Wide lockup for headers, sponsor rows, and press-style placements              |
 
 **Do not treat these as primary brand assets:** white-background exports, duplicate horizontal variants, or process-only files in `public/tc-logos/`. Use the brand guide to decide what is canonical.
 
 ### DBM Club Logos
 
-| File                                                              | Use When                              |
-| ----------------------------------------------------------------- | ------------------------------------- |
-| `/Loge Transparent background.png`                                | DBM flyer headers (the Loge/DBM mark) |
-| `/dbm-logo-transparent.png`                                       | Alternative DBM mark                  |
-| `/Denver Bassmaster Junior's logo transparent..png`               | DBM Juniors specific                  |
-| `/DBMJ Long Logo (2).jpg`                                         | DBM long horizontal lockup            |
-| `/Copy of Copy of Copy of DBM Banner logo 800px x 200px  (2).png` | DBM banner (800×200)                  |
+| File                                                              | Use When                                                           |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `/dbm-logo-transparent.png`                                       | Clean transparent DBM master for web or light-background use       |
+| `/dbm-logo-white-bg.png`                                          | Email-safe DBM mark for Gmail and dark-background email placements |
+| `/Denver Bassmaster Junior's logo transparent..png`               | DBM Juniors specific                                               |
+| `/DBMJ Long Logo (2).jpg`                                         | DBM long horizontal lockup                                         |
+| `/Copy of Copy of Copy of DBM Banner logo 800px x 200px  (2).png` | Legacy DBM banner source, not the clean master                     |
+| `/Loge Transparent background.png`                                | Dirty background-removal output; do not use as a master asset      |
+
+**DBM rule:** use `/dbm-logo-transparent.png` for web/light backgrounds and `/dbm-logo-white-bg.png` for email. Do not use `/Loge Transparent background.png` as the source of truth.
 
 ### DBM Sponsor Logos
 

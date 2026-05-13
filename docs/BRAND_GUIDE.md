@@ -1,6 +1,6 @@
 # Trophy Cast Brand Guide
 
-_Last updated: March 24, 2026_
+_Last updated: May 12, 2026_
 
 This document is the canonical brand reference for Trophy Cast marketing, website, flyer, and product-adjacent visual work in the site repo.
 
@@ -85,17 +85,27 @@ It is grounded in the actual logo assets currently stored in `public/tc-logos/`.
 All current Trophy Cast logo assets live in `public/tc-logos/`.
 Deprecated or process-only variants must stay in `public/tc-logos/_archive/` and must not be referenced by live code.
 
+### Master references
+
+When code needs a single source of truth instead of picking a variant ad hoc:
+
+- `lib/brandAssets.ts` → `TC_MASTER_LOGO` = `/tc-logos/TrophyCast_FishMark_transparent.png`
+- `lib/brandAssets.ts` → `TC_MASTER_EMAIL_LOGO` = `https://trophycast.app/tc-logos/tc-email-header-solid.png?v=6`
+
+If a surface needs anything else, that should be an intentional exception.
+
 ### Canonical production assets
 
 These are the assets that should anchor all current brand usage.
 
-| Asset             | File                                                                   | Best use                                                      |
-| ----------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------- |
-| Primary fish mark | `public/tc-logos/TrophyCast_FishMark_transparent.png`                  | Hero sections, large placements, primary brand symbol         |
-| Primary app icon  | `public/tc-logos/trophy-cast-logo-256.png`                             | App-style square branding, email header mark, export graphics |
-| Small icon        | `public/tc-logos/trophy-cast-logo-48.png`                              | Navbar, small lockups, favicon-adjacent usage                 |
-| Wordmark          | `public/tc-logos/TrophyCast_Wordmark_transparent.png`                  | Text-only brand lockup, print support, secondary placements   |
-| Horizontal lockup | `public/tc-logos/TrophyCast_Horizontal_Side_FullColor_transparent.png` | Wide headers, sponsor boards, footer lockups, press usage     |
+| Asset             | File                                                                   | Best use                                                                |
+| ----------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Primary fish mark | `public/tc-logos/TrophyCast_FishMark_transparent.png`                  | Master brand mark for hero sections, large placements, product identity |
+| Primary app icon  | `public/tc-logos/trophy-cast-logo-256.png`                             | App-style square branding, sponsor grid, export graphics                |
+| Small icon        | `public/tc-logos/trophy-cast-logo-48.png`                              | Navbar, small lockups, favicon-adjacent usage                           |
+| Wordmark          | `public/tc-logos/TrophyCast_Wordmark_transparent.png`                  | Text-only brand lockup, print support, secondary placements             |
+| Horizontal lockup | `public/tc-logos/TrophyCast_Horizontal_Side_FullColor_transparent.png` | Wide headers, sponsor boards, footer lockups, press usage               |
+| Email-safe master | `public/tc-logos/tc-email-header-solid.png`                            | Inbox/email header usage where transparent rendering is unreliable      |
 
 ---
 
@@ -138,6 +148,7 @@ These are the assets that should anchor all current brand usage.
 
 - Prefer transparent PNG assets for production use.
 - On dark backgrounds, use transparent assets and let the logo colors carry the identity.
+- Email is the exception: use the solid-background email export when inbox rendering or proxying can break transparency.
 - White-background exports are acceptable for print proofs or internal processing, but they are not the canonical brand assets.
 - Do not mix multiple near-identical variants in the same deliverable.
 
@@ -153,7 +164,7 @@ For consistency across the website and marketing materials, use this hierarchy:
 4. `TrophyCast_Wordmark_transparent.png` for print and support lockups
 5. `TrophyCast_Horizontal_Side_FullColor_transparent.png` for wide-format branding
 
-Email headers should default to the FishMark at 80 x 80 with a transparent background.
+Email headers should default to `tc-email-header-solid.png`, the email-safe FishMark export with the dark background baked in.
 
 This gives Trophy Cast one recognizable visual family instead of several competing logo styles.
 

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { toPng } from 'html-to-image';
 import { TC_LOGOS } from '@/lib/brandAssets';
+import { CLUB_WEB_LOGOS } from '@/lib/clubBrandAssets';
 
 /**
  * Denver BassMasters — Recruitment Flyer (Dark Digital)
@@ -21,7 +22,7 @@ const JOIN_URL = 'https://www.denverbassmasters.com/join-now';
 const JOIN_HOST = 'denverbassmasters.com';
 const JOIN_LABEL = 'denverbassmasters.com/join-now';
 const QR_IMAGE = '/dbm-join-qr.svg';
-const DBM_JUNIORS_LOGO = '/Denver%20Bassmaster%20Junior%27s%20logo%20transparent..png';
+const DBM_JUNIORS_LOGO = CLUB_WEB_LOGOS.DBMJ;
 
 export default function DBMFlyerPage() {
   const [copied, setCopied] = useState(false);

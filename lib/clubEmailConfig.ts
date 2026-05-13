@@ -16,7 +16,7 @@
  * template will skip the club logo row gracefully.
  */
 
-const DOMAIN = 'https://trophycast.app';
+import { CLUB_EMAIL_LOGOS } from './clubBrandAssets';
 
 export interface ClubEmailConfig {
   /** Short internal key — matches club_id in surveys table */
@@ -42,7 +42,9 @@ export const CLUB_EMAIL_CONFIGS: Record<string, ClubEmailConfig> = {
     displayName: 'Denver BassMasters',
     abbreviation: 'DBM',
     subjectPrefix: 'DBM | ',
-    logoAbsoluteUrl: `${DOMAIN}/dbm-logo-transparent.png`,
+    // Keep email on the white-backed export. The transparent master is fine for
+    // web/light-background usage, but Gmail can render transparent club logos poorly.
+    logoAbsoluteUrl: CLUB_EMAIL_LOGOS.DBM,
     fromName: 'Tai — DBM × Trophy Cast',
   },
   DBMJ: {
@@ -52,7 +54,7 @@ export const CLUB_EMAIL_CONFIGS: Record<string, ClubEmailConfig> = {
     abbreviation: 'DBMJ',
     subjectPrefix: 'DBMJ | ',
     // URL-encoded filename — matches the file already in /public/
-    logoAbsoluteUrl: `${DOMAIN}/Denver%20Bassmaster%20Junior%27s%20logo%20transparent..png`,
+    logoAbsoluteUrl: CLUB_EMAIL_LOGOS.DBMJ,
     fromName: 'Tai — DBM Juniors × Trophy Cast',
   },
   DBMHS: {
@@ -62,7 +64,7 @@ export const CLUB_EMAIL_CONFIGS: Record<string, ClubEmailConfig> = {
     abbreviation: 'DBMHS',
     subjectPrefix: 'DBMHS | ',
     // Shares the Juniors logo until a dedicated one is provided
-    logoAbsoluteUrl: `${DOMAIN}/Denver%20Bassmaster%20Junior%27s%20logo%20transparent..png`,
+    logoAbsoluteUrl: CLUB_EMAIL_LOGOS.DBMHS,
     fromName: 'Tai — DBM High School × Trophy Cast',
   },
   TLO: {

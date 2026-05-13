@@ -15,7 +15,7 @@ export function waitlistConfirmationHtml(
   firstName: string,
   opts: WaitlistConfirmationOpts = {}
 ): string {
-  const emailLogoUrl = TC_EMAIL_LOGOS.fishMark;
+  const emailLogoUrl = TC_EMAIL_LOGOS.emailHeader;
   const { clubLogoUrl, clubDisplayName, clubName } = opts;
 
   const headerHtml = clubLogoUrl
