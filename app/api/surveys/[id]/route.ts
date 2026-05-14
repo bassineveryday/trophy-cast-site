@@ -16,7 +16,7 @@ export async function GET(
   const { id } = await params;
 
   const [surveyRes, questionsRes] = await Promise.all([
-    supabase.from('surveys').select('*').eq('id', id).single(),
+    supabase.from('surveys').select('*').eq('id', id).eq('status', 'active').single(),
     supabase.from('survey_questions').select('*').eq('survey_id', id).order('sort_order'),
   ]);
 
@@ -60,6 +60,18 @@ export async function POST(
 
     if (survey.closes_at && new Date(survey.closes_at) < new Date()) {
       return NextResponse.json({ error: 'This survey has closed.' }, { status: 400 });
+    }
+
+    // Verify all submitted question_ids belong to this survey (prevent cross-survey injection)
+    const { data: validQuestions } = await supabase
+      .from('survey_questions')
+      .select('id')
+      .eq('survey_id', surveyId);
+
+    const validIds = new Set((validQuestions ?? []).map((q: { id: string }) => q.id));
+    const invalidAnswers = answers.filter((a: { questionId: string }) => !validIds.has(a.questionId));
+    if (invalidAnswers.length > 0) {
+      return NextResponse.json({ error: 'Invalid question IDs for this survey.' }, { status: 400 });
     }
 
     // Upsert responses (one per question per respondent)
