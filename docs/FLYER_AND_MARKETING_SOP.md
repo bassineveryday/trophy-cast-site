@@ -86,9 +86,8 @@ All public images live in `/public`. Always reference them as `/filename.png` in
 | `/Denver Bassmaster Junior's logo transparent..png`               | DBM Juniors specific                                               |
 | `/DBMJ Long Logo (2).jpg`                                         | DBM long horizontal lockup                                         |
 | `/Copy of Copy of Copy of DBM Banner logo 800px x 200px  (2).png` | Legacy DBM banner source, not the clean master                     |
-| `/Loge Transparent background.png`                                | Dirty background-removal output; do not use as a master asset      |
 
-**DBM rule:** use `/dbm-logo-transparent.png` for web/light backgrounds and `/dbm-logo-white-bg.png` for email. Do not use `/Loge Transparent background.png` as the source of truth.
+**DBM rule:** use `/dbm-logo-transparent.png` for web/light backgrounds and `/dbm-logo-white-bg.png` for email. Always import the path through `lib/clubBrandAssets.ts` (consumed by `lib/clubEmailConfig.ts`); do not hardcode it. Deprecated variants such as `Loge Transparent background.png` and `dbm-logo-email-solid.png` now live in `public/_archive/` and must not be referenced.
 
 ### DBM Sponsor Logos
 
@@ -359,7 +358,10 @@ trophy-cast-site/
 │   └── WEBSITE_BRIEF.md          ← brand/site brief
 └── public/
   ├── tc-logos/                 ← canonical Trophy Cast logo family
-    ├── Loge Transparent background.png  ← DBM logo
-    ├── [sponsor logos...]
-    └── [other assets...]
+  │   └── _archive/             ← deprecated TC variants
+  ├── _archive/                 ← deprecated club/legacy binaries (Loge Transparent background.png, dbm-logo-email-solid.png, …)
+  ├── dbm-logo-transparent.png  ← canonical DBM web/light-bg master
+  ├── dbm-logo-white-bg.png     ← canonical DBM email master
+  ├── [sponsor logos...]
+  └── [other assets...]
 ```

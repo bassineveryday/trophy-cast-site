@@ -1,10 +1,37 @@
 # Trophy Cast Brand Guide
 
-_Last updated: May 12, 2026_
+_Last updated: May 13, 2026_
 
 This document is the canonical brand reference for Trophy Cast marketing, website, flyer, and product-adjacent visual work in the site repo.
 
 It is grounded in the actual logo assets currently stored in `public/tc-logos/`.
+
+---
+
+## Canonical Owner Modules
+
+Do not hardcode logo paths in components, pages, or email templates. Always import from the canonical owner module that matches the surface:
+
+| Surface                                                | Canonical owner                                                            |
+| ------------------------------------------------------ | -------------------------------------------------------------------------- |
+| Trophy Cast web/email branding                         | `trophy-cast-site/lib/brandAssets.ts`                                      |
+| Website club logo surfaces (web, light backgrounds)    | `trophy-cast-site/lib/clubBrandAssets.ts`                                  |
+| Website club email branding (consumes the above)       | `trophy-cast-site/lib/clubEmailConfig.ts`                                  |
+| Native app local club fallback logos                   | `Trophy-Cast-MVP-v2-1/lib/clubLogoSources.ts`                              |
+| Supabase email-safe absolute logo URLs                 | `Trophy-Cast-MVP-v2-1/supabase/functions/_shared/emailBranding.ts`         |
+
+### DBM exception rules
+
+- Clean DBM transparent master is `Trophy-Cast-MVP-v2-1/assets/images/dbm-logo.png`.
+- Web/light-background DBM usage resolves through `clubBrandAssets.ts` to `public/dbm-logo-transparent.png`.
+- DBM email stays on `public/dbm-logo-white-bg.png` (Gmail breaks transparent DBM marks).
+- Trophy Cast email stays on `tc-email-header-solid.png?v=6` via `TC_MASTER_EMAIL_LOGO`.
+
+### Archive locations
+
+- Trophy Cast deprecated variants → `public/tc-logos/_archive/`.
+- Site-wide club/legacy binaries → `public/_archive/`.
+- Anything in an `_archive/` folder must not be referenced by live code.
 
 ---
 

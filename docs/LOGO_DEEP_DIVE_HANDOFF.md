@@ -1,6 +1,7 @@
 # Logo Deep Dive Handoff
 
 _Prepared: May 12, 2026_
+_Status: COMPLETED May 13, 2026 — see `docs/BRAND_GUIDE.md` → "Canonical Owner Modules" for the current source of truth. Deprecated variants now live in `public/tc-logos/_archive/` and `public/_archive/`._
 
 Use this in the next chat for the cross-repo logo cleanup pass.
 
