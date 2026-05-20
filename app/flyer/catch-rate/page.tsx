@@ -27,6 +27,7 @@ const STEPS = [
   { num: '3', text: 'You get a text with 2 links — Link 1: account setup (first time only) · Link 2: submit a catch' },
   { num: '4', text: 'Catch a fish · open app · tap Log [Species] · record video on bump board · say the CODE WORD on camera' },
   { num: '5', text: 'Enter length · tap Submit · Emily reviews · you get a text: Approved or Rejected' },
+  { num: '6', text: 'App not working? Text Emily 720-775-7770 — send the video, fish length, and you releasing it' },
 ];
 
 function HalfSheet() {
@@ -71,7 +72,7 @@ function HalfSheet() {
             <div className="codeword-label" style={{ color: GOLD, fontSize: 9, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 4 }}>
               Tonight&apos;s Code Word
             </div>
-            <div className="codeword-blank" style={{ color: '#fff', fontSize: 22, fontWeight: 900, letterSpacing: 2, minHeight: 32 }}>&nbsp;</div>
+            <div className="codeword-blank" style={{ color: '#fff', fontSize: 16, fontWeight: 900, letterSpacing: 1, minHeight: 32, lineHeight: 1.2, paddingTop: 4 }}>Taking Nates Money</div>
             <div className="codeword-hint" style={{ color: 'rgba(200,215,225,0.4)', fontSize: 8.5, marginTop: 4 }}>Say it on camera · no word = rejection</div>
           </div>
 
