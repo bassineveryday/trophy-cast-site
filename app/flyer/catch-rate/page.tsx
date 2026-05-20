@@ -52,11 +52,11 @@ function HalfSheet() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/tlo-logo.jpg" alt="Tightline Outdoors" width={160} style={{ borderRadius: 6, display: 'block' }} />
 
-          {/* TC logo — larger */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginTop: 2 }}>
+          {/* TC logo */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, marginTop: 2 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={TC_LOGOS.icon48} alt="Trophy Cast" height={40} style={{ display: 'block', objectFit: 'contain' }} />
-            <span className="logo-label" style={{ color: 'rgba(200,215,225,0.6)', fontSize: 12, fontWeight: 700, letterSpacing: '0.06em' }}>TROPHY CAST</span>
+            <img src={TC_LOGOS.icon48} alt="Trophy Cast" height={56} style={{ display: 'block', objectFit: 'contain' }} />
+            <span className="logo-label" style={{ color: '#fff', fontSize: 13, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase' }}>TROPHY CAST</span>
           </div>
 
           {/* Code word box */}
@@ -171,7 +171,7 @@ export default function CatchRateFlyerPage() {
           .accent-bar { background: ${GOLD_DARK} !important; }
 
           /* Logos */
-          .logo-label { color: #333 !important; }
+          .logo-label { color: #111 !important; font-weight: 800 !important; }
 
           /* Code word box */
           .codeword-box { background: #fffbee !important; border-color: ${GOLD_DARK} !important; }
