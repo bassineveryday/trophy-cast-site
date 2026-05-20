@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { siteContent } from '@/lib/content';
 
 const SPECIES = [
   { id: 'bass', label: 'Bass', emoji: '🐟' },
@@ -10,6 +11,9 @@ const SPECIES = [
 ] as const;
 
 type SpeciesId = (typeof SPECIES)[number]['id'];
+
+const catchRateContent = siteContent.tightLineOutdoors.catchRate;
+const registrationContent = catchRateContent.registration;
 
 export default function TLOJoinPage() {
   const [form, setForm] = useState({
@@ -130,10 +134,10 @@ export default function TLOJoinPage() {
               <strong>{result.speciesLabels}</strong>
             </p>
             <p style={{ fontSize: 22, fontWeight: 800, color: '#C9A646', margin: '8px 0 4px' }}>
-              ${result.feeTotal} due at check-in
+              ${result.feeTotal} due to {registrationContent.paymentContact}
             </p>
             <p style={{ fontSize: 13, color: '#6B7280', margin: '0 0 24px' }}>
-              Cash only · collected by the TD at the event
+              {registrationContent.paymentInstruction}
             </p>
 
             <div style={{
@@ -145,15 +149,15 @@ export default function TLOJoinPage() {
               textAlign: 'left',
             }}>
               <p style={{ margin: '0 0 4px', fontSize: 14, fontWeight: 700, color: '#1E40AF' }}>
-                📅 First Event — Saturday, April 18
+                Next step
               </p>
               <p style={{ margin: 0, fontSize: 14, color: '#374151' }}>
-                7:00 AM – 3:00 PM · Chatfield Reservoir
+                {registrationContent.paymentInstruction} {registrationContent.followUpInstruction}
               </p>
             </div>
 
             <p style={{ fontSize: 14, color: '#374151', marginBottom: 20 }}>
-              A confirmation email is on its way. Open Trophy Cast to track your catches and view the leaderboard.
+              A confirmation email is on its way. After check-in, open Trophy Cast to track your catches and view the leaderboard.
             </p>
 
             <a
@@ -190,7 +194,7 @@ export default function TLOJoinPage() {
           2026 Catch Rate Tournament
         </h1>
         <p style={{ color: '#94A3B8', fontSize: 14, margin: 0 }}>
-          Chatfield Reservoir · 9 events · Apr 18 – Aug 19
+          {catchRateContent.locationShort} · 9 events · {catchRateContent.season}
         </p>
       </div>
 
@@ -305,7 +309,7 @@ export default function TLOJoinPage() {
                 {selectedSpecies.length} species × $20
               </span>
               <span style={{ color: '#C9A646', fontWeight: 800, fontSize: 20 }}>
-                ${feeTotal} at check-in
+                ${feeTotal} to {registrationContent.paymentContact}
               </span>
             </div>
           )}
@@ -352,7 +356,7 @@ export default function TLOJoinPage() {
         </form>
 
         <p style={{ textAlign: 'center', fontSize: 12, color: '#9CA3AF', marginTop: 16, lineHeight: 1.5 }}>
-          Registration confirms your intent to enter. Payment is collected by the TD at each event.
+          Registration confirms your intent to enter. {registrationContent.paymentInstruction} {registrationContent.followUpInstruction}
           By registering you agree to the{' '}
           <a href="https://tightlineoutdoors.com" style={{ color: '#C9A646' }}>TLO tournament rules</a>.
         </p>

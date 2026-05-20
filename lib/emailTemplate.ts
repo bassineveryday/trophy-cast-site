@@ -15,14 +15,15 @@ const EMAIL_LOGO_URL = TC_EMAIL_LOGOS.emailHeader;
 function buildEmailHeader(opts: {
   clubLogoUrl?: string | null;
   clubDisplayName?: string;
+  subtitle?: string;
 }): string {
-  const { clubLogoUrl, clubDisplayName } = opts;
+  const { clubLogoUrl, clubDisplayName, subtitle = 'Weekly Community Update' } = opts;
 
   if (!clubLogoUrl) {
     return `
       <img src="${EMAIL_LOGO_URL}" alt="TC" width="120" height="120" style="display:block;margin:0 auto 8px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
       <h1 style="color:#D4AF37;font-size:26px;font-weight:700;margin:8px 0 4px;font-family:Georgia,serif;">Trophy Cast</h1>
-      <p style="color:#C9D3DA;font-size:14px;margin:0;">Weekly Community Update</p>`;
+      <p style="color:#C9D3DA;font-size:14px;margin:0;">${escapeHtml(subtitle)}</p>`;
   }
 
   const clubAlt = clubDisplayName ? escapeHtml(clubDisplayName) : 'Club';
@@ -32,7 +33,7 @@ function buildEmailHeader(opts: {
       <p style="color:#546674;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 10px;">presented by</p>
       <img src="${EMAIL_LOGO_URL}" alt="Trophy Cast" width="120" height="120" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
       <p style="color:#D4AF37;font-size:13px;font-weight:700;margin:0 0 4px;font-family:Georgia,serif;">Trophy Cast</p>
-      <p style="color:#C9D3DA;font-size:13px;margin:0;">Weekly Community Update</p>`;
+      <p style="color:#C9D3DA;font-size:13px;margin:0;">${escapeHtml(subtitle)}</p>`;
 }
 
 export const DEEP_DIVE_DESCRIPTIONS: Record<string, string> = {
@@ -90,7 +91,7 @@ export function buildEmailHtml(opts: {
 
     <!-- Header -->
     <div style="text-align:center;padding:32px 0 24px;">
-      ${buildEmailHeader({ clubLogoUrl, clubDisplayName })}
+      ${buildEmailHeader({ clubLogoUrl, clubDisplayName, subtitle: 'Weekly Community Update' })}
     </div>
 
     <!-- What's New -->
@@ -120,6 +121,110 @@ export function buildEmailHtml(opts: {
     </div>
 
     <!-- Footer -->
+    <div style="text-align:center;padding:24px 0 8px;">
+      <p style="color:#546674;font-size:13px;margin:0;">© 2026 Trophy Cast, Inc. &middot; <a href="https://trophycast.app" style="color:#546674;text-decoration:none;">trophycast.app</a></p>
+      <p style="color:#546674;font-size:12px;margin:8px 0 0;">
+        <a href="mailto:cast@trophycast.app?subject=Unsubscribe" style="color:#546674;text-decoration:underline;">Unsubscribe from these emails</a>
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>`;
+}
+
+export interface PromoEmailStep {
+  title: string;
+  body: string;
+}
+
+export function buildPromoEmailHtml(opts: {
+  subject: string;
+  eyebrow: string;
+  title: string;
+  intro: string;
+  steps: PromoEmailStep[];
+  primaryCtaLabel: string;
+  primaryCtaUrl: string;
+  secondaryCtaLabel?: string;
+  secondaryCtaUrl?: string;
+  footerNote?: string;
+  clubLogoUrl?: string | null;
+  clubDisplayName?: string;
+}): string {
+  const {
+    subject,
+    eyebrow,
+    title,
+    intro,
+    steps,
+    primaryCtaLabel,
+    primaryCtaUrl,
+    secondaryCtaLabel,
+    secondaryCtaUrl,
+    footerNote,
+    clubLogoUrl,
+    clubDisplayName,
+  } = opts;
+
+  const stepCards = steps
+    .map(
+      (step, index) => `
+        <tr>
+          <td style="padding:0 0 12px;">
+            <div style="background:#132532;border:1px solid rgba(79,195,247,0.14);border-radius:12px;padding:16px 18px;">
+              <p style="margin:0 0 8px;color:#4FC3F7;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Step ${index + 1}</p>
+              <p style="margin:0 0 6px;color:#F5F1E6;font-size:17px;font-weight:700;font-family:Georgia,serif;">${escapeHtml(step.title)}</p>
+              <p style="margin:0;color:#C9D3DA;font-size:14px;line-height:1.6;">${escapeHtml(step.body)}</p>
+            </div>
+          </td>
+        </tr>`
+    )
+    .join('');
+
+  const secondaryCta =
+    secondaryCtaLabel && secondaryCtaUrl
+      ? `<a href="${escapeHtml(secondaryCtaUrl)}" style="display:inline-block;margin-top:12px;color:#4FC3F7;font-size:14px;font-weight:700;text-decoration:underline;">${escapeHtml(secondaryCtaLabel)}</a>`
+      : '';
+
+  const noteBlock = footerNote?.trim()
+    ? `
+      <div style="background:#2E6E3D;border-radius:12px;padding:18px 20px;margin-bottom:20px;">
+        <p style="margin:0;color:#ffffff;font-size:14px;line-height:1.6;">${escapeHtml(footerNote)}</p>
+      </div>`
+    : '';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${escapeHtml(subject)}</title>
+</head>
+<body style="margin:0;padding:0;background-color:#0C1A23;font-family:Arial,Helvetica,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;padding:32px 20px;">
+
+    <div style="text-align:center;padding:32px 0 24px;">
+      ${buildEmailHeader({ clubLogoUrl, clubDisplayName, subtitle: 'Catch Rate Registration' })}
+    </div>
+
+    <div style="background:#162D3D;border-radius:16px;padding:28px 24px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0 0 10px;color:#D4AF37;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">${escapeHtml(eyebrow)}</p>
+      <h2 style="margin:0 0 12px;color:#F5F1E6;font-size:28px;font-weight:700;line-height:1.2;font-family:Georgia,serif;">${escapeHtml(title)}</h2>
+      <p style="margin:0 auto 22px;color:#C9D3DA;font-size:15px;line-height:1.7;max-width:480px;">${escapeHtml(intro)}</p>
+      <a href="${escapeHtml(primaryCtaUrl)}" style="display:inline-block;background:#D4AF37;color:#0C1A23;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:16px;">${escapeHtml(primaryCtaLabel)}</a>
+      ${secondaryCta}
+    </div>
+
+    <div style="background:#162D3D;border-radius:12px;padding:24px;margin-bottom:20px;">
+      <h2 style="color:#4FC3F7;font-size:18px;font-weight:700;margin:0 0 16px;font-family:Georgia,serif;">How it works</h2>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+        ${stepCards}
+      </table>
+    </div>
+
+    ${noteBlock}
+
     <div style="text-align:center;padding:24px 0 8px;">
       <p style="color:#546674;font-size:13px;margin:0;">© 2026 Trophy Cast, Inc. &middot; <a href="https://trophycast.app" style="color:#546674;text-decoration:none;">trophycast.app</a></p>
       <p style="color:#546674;font-size:12px;margin:8px 0 0;">
@@ -165,7 +270,7 @@ export function buildSurveyEmailHtml(opts: {
 
     <!-- Header -->
     <div style="text-align:center;padding:32px 0 24px;">
-      ${buildEmailHeader({ clubLogoUrl, clubDisplayName })}
+      ${buildEmailHeader({ clubLogoUrl, clubDisplayName, subtitle: headerSubtitle })}
       ${!clubLogoUrl ? `<p style="color:#C9D3DA;font-size:14px;margin:4px 0 0;">${headerSubtitle}</p>` : `<p style="color:#C9D3DA;font-size:13px;margin:6px 0 0;">${headerSubtitle}</p>`}
     </div>
 

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
+import { siteContent } from '@/lib/content';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,6 +23,9 @@ const SPECIES_LABELS: Record<string, string> = {
   trout: 'Trout',
   carp: 'Carp',
 };
+
+const catchRateContent = siteContent.tightLineOutdoors.catchRate;
+const registrationContent = catchRateContent.registration;
 
 export async function POST(request: Request) {
   try {
@@ -77,7 +81,7 @@ export async function POST(request: Request) {
           <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Email</td><td>${emailClean}</td></tr>
           <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Phone</td><td>${phone?.trim() || '—'}</td></tr>
           <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Species</td><td>${speciesLabels}</td></tr>
-          <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Fee due</td><td><strong>$${feeTotal} cash at check-in</strong></td></tr>
+          <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Fee due</td><td><strong>$${feeTotal} cash to ${registrationContent.paymentContact} before the tournament</strong></td></tr>
           <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Registered</td><td>${new Date().toLocaleString('en-US', { timeZone: 'America/Denver' })} MT</td></tr>
         </table>
       `;
@@ -96,16 +100,16 @@ export async function POST(request: Request) {
           <h1 style="color:#0B1A2F;font-size:22px;margin:0 0 8px">You're registered! 🎣</h1>
           <p style="color:#374151;font-size:15px;line-height:1.6;margin:0 0 20px">
             Hey ${firstName.trim()}, you're in for the <strong>2026 Tightline Outdoors Catch Rate Tournament</strong>
-            at Chatfield Reservoir.
+            at ${catchRateContent.locationShort}.
           </p>
           <div style="background:#F9FAFB;border-radius:10px;padding:16px 20px;margin-bottom:24px">
             <p style="margin:0 0 6px;font-size:14px;color:#6B7280;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Your Registration</p>
             <p style="margin:0 0 4px;font-size:15px;color:#111827"><strong>Species:</strong> ${speciesLabels}</p>
-            <p style="margin:0 0 4px;font-size:15px;color:#111827"><strong>Fee due at check-in:</strong> $${feeTotal} cash</p>
+            <p style="margin:0 0 4px;font-size:15px;color:#111827"><strong>Pay ${registrationContent.paymentContact} before the tournament:</strong> $${feeTotal} cash</p>
             <p style="margin:0;font-size:13px;color:#6B7280">${species.length} species × $20 each</p>
           </div>
           <p style="color:#374151;font-size:15px;line-height:1.6;margin:0 0 20px">
-            First event is <strong>Saturday, April 18</strong> — 7 AM to 3 PM at Chatfield Reservoir.
+            ${registrationContent.paymentInstruction} ${registrationContent.followUpInstruction}
             Have your phone ready to record video catches. The TD will tell you the code word at check-in.
           </p>
           <a href="https://trophycast.app" style="display:inline-block;background:#C9A646;color:#0B1A2F;font-weight:700;font-size:15px;padding:12px 24px;border-radius:8px;text-decoration:none;margin-bottom:24px">
@@ -119,7 +123,7 @@ export async function POST(request: Request) {
       await resend.emails.send({
         from: 'Trophy Cast <cast@trophycast.app>',
         to: emailClean,
-        subject: `You're registered for TLO Catch Rate 2026 — $${feeTotal} due at check-in`,
+        subject: `You're registered for TLO Catch Rate 2026 — pay ${registrationContent.paymentContact} before the tournament`,
         html: welcomeHtml,
       }).catch((err) => console.warn('[tlo/register] Welcome email failed:', err));
     }

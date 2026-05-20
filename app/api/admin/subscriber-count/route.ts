@@ -20,7 +20,8 @@ function checkPassword(provided: string, expected: string): boolean {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { password, clubId } = body;
+    const { password, clubId, audience: rawAudience } = body;
+    const audience = rawAudience === 'all' ? 'all' : 'club';
 
     if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -28,7 +29,7 @@ export async function POST(request: Request) {
 
     const clubConfig = getClubEmailConfig(clubId);
     let query = supabase.from('waitlist_subscribers').select('id', { count: 'exact', head: true });
-    if (clubConfig?.clubName) {
+    if (audience === 'club' && clubConfig?.clubName) {
       query = query.eq('club_name', clubConfig.clubName);
     }
     const { count, error } = await query;
