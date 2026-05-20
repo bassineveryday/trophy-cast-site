@@ -56,8 +56,8 @@ function HalfSheet() {
           {/* TC logo */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, marginTop: 2 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={TC_LOGOS.icon48} alt="Trophy Cast" height={56} style={{ display: 'block', objectFit: 'contain' }} />
-            <span className="logo-label" style={{ color: '#fff', fontSize: 13, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase' }}>TROPHY CAST</span>
+            <img src={TC_LOGOS.icon48} alt="Trophy Cast" height={72} style={{ display: 'block', objectFit: 'contain' }} />
+            <span className="logo-label" style={{ color: '#fff', fontSize: 15, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase' }}>TROPHY CAST</span>
           </div>
 
           {/* Code word box */}
