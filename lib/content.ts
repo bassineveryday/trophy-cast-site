@@ -222,8 +222,14 @@ export const siteContent = {
       kickoff: "Saturday April 18 · 7am–3pm · Beat Nate in Trout",
       format: "Select Wednesdays · 4pm–8pm · 9 total events",
       checkin: "Mandatory check-in 3:30pm–4:00pm",
+      locationShort: "Chatfield Reservoir",
       location: "Chatfield Reservoir · North Boat Ramp · Littleton, CO",
       entry: "$20 per angler / per species",
+      registration: {
+        paymentContact: "Emily",
+        paymentInstruction: "Pay Emily before the tournament at check-in.",
+        followUpInstruction: "Once Emily has your payment, open Trophy Cast and you are good to go.",
+      },
       species: ["Walleye", "Bass", "Trout", "Carp (4 events)"],
       prizes:
         "Cash payouts 1st–5th · Eagle Claw Prize Pack · $100 Bass Pro/Cabela's gift card for 1st in each category weekly",

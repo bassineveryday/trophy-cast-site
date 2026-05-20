@@ -12,13 +12,13 @@ It is grounded in the actual logo assets currently stored in `public/tc-logos/`.
 
 Do not hardcode logo paths in components, pages, or email templates. Always import from the canonical owner module that matches the surface:
 
-| Surface                                                | Canonical owner                                                            |
-| ------------------------------------------------------ | -------------------------------------------------------------------------- |
-| Trophy Cast web/email branding                         | `trophy-cast-site/lib/brandAssets.ts`                                      |
-| Website club logo surfaces (web, light backgrounds)    | `trophy-cast-site/lib/clubBrandAssets.ts`                                  |
-| Website club email branding (consumes the above)       | `trophy-cast-site/lib/clubEmailConfig.ts`                                  |
-| Native app local club fallback logos                   | `Trophy-Cast-MVP-v2-1/lib/clubLogoSources.ts`                              |
-| Supabase email-safe absolute logo URLs                 | `Trophy-Cast-MVP-v2-1/supabase/functions/_shared/emailBranding.ts`         |
+| Surface                                             | Canonical owner                                                    |
+| --------------------------------------------------- | ------------------------------------------------------------------ |
+| Trophy Cast web/email branding                      | `trophy-cast-site/lib/brandAssets.ts`                              |
+| Website club logo surfaces (web, light backgrounds) | `trophy-cast-site/lib/clubBrandAssets.ts`                          |
+| Website club email branding (consumes the above)    | `trophy-cast-site/lib/clubEmailConfig.ts`                          |
+| Native app local club fallback logos                | `Trophy-Cast-MVP-v2-1/lib/clubLogoSources.ts`                      |
+| Supabase email-safe absolute logo URLs              | `Trophy-Cast-MVP-v2-1/supabase/functions/_shared/emailBranding.ts` |
 
 ### DBM exception rules
 

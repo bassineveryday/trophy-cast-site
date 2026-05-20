@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
-import { buildEmailHtml } from '@/lib/emailTemplate';
+import { buildEmailHtml, buildPromoEmailHtml } from '@/lib/emailTemplate';
 import { getClubEmailConfig } from '@/lib/clubEmailConfig';
 
 export const dynamic = 'force-dynamic';
@@ -44,7 +44,21 @@ async function fetchSubscriberEmails(clubName?: string | null): Promise<string[]
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { password, subject, bullets, deepDive, deepDiveNote, meetingFocus, scheduleTime, clubId } = body;
+    const {
+      password,
+      subject,
+      bullets,
+      deepDive,
+      deepDiveNote,
+      meetingFocus,
+      scheduleTime,
+      clubId,
+      campaignType: rawCampaignType,
+      audience: rawAudience,
+      promo,
+    } = body;
+    const campaignType = rawCampaignType === 'promo' ? 'promo' : 'weekly';
+    const audience = rawAudience === 'all' ? 'all' : 'club';
     const clubConfig = getClubEmailConfig(clubId);
 
     // ── 1. Auth ───────────────────────────────────────────────────────────────
@@ -56,20 +70,58 @@ export async function POST(request: Request) {
     if (!subject?.trim()) {
       return NextResponse.json({ error: 'Subject is required.' }, { status: 400 });
     }
-    if (!Array.isArray(bullets) || bullets.filter((b: string) => b?.trim()).length === 0) {
+    if (audience === 'club' && !clubConfig?.clubName) {
+      return NextResponse.json({ error: 'A valid club is required for club-only sends.' }, { status: 400 });
+    }
+
+    const promoPayload = (promo ?? {}) as {
+      eyebrow?: string;
+      title?: string;
+      intro?: string;
+      steps?: Array<{ title?: string; body?: string }>;
+      primaryCtaLabel?: string;
+      primaryCtaUrl?: string;
+      secondaryCtaLabel?: string;
+      secondaryCtaUrl?: string;
+      footerNote?: string;
+    };
+    const promoSteps = Array.isArray(promoPayload.steps)
+      ? promoPayload.steps
+          .map((step) => ({
+            title: String(step?.title ?? '').trim(),
+            body: String(step?.body ?? '').trim(),
+          }))
+          .filter((step) => step.title && step.body)
+      : [];
+
+    if (campaignType === 'weekly') {
+      if (!Array.isArray(bullets) || bullets.filter((b: string) => b?.trim()).length === 0) {
+        return NextResponse.json(
+          { error: 'At least one bullet point is required.' },
+          { status: 400 }
+        );
+      }
+      if (!deepDive) {
+        return NextResponse.json({ error: 'Deep dive topic is required.' }, { status: 400 });
+      }
+    } else if (
+      !promoPayload.eyebrow?.trim() ||
+      !promoPayload.title?.trim() ||
+      !promoPayload.intro?.trim() ||
+      !promoPayload.primaryCtaLabel?.trim() ||
+      !promoPayload.primaryCtaUrl?.trim() ||
+      promoSteps.length === 0
+    ) {
       return NextResponse.json(
-        { error: 'At least one bullet point is required.' },
+        { error: 'Promo emails require intro copy, at least one step, and a primary CTA.' },
         { status: 400 }
       );
     }
-    if (!deepDive) {
-      return NextResponse.json({ error: 'Deep dive topic is required.' }, { status: 400 });
-    }
 
-    // ── 3. Fetch subscriber list filtered by club ────────────────────────────
+    // ── 3. Fetch subscriber list ──────────────────────────────────────────────
     let emails: string[];
     try {
-      emails = await fetchSubscriberEmails(clubConfig?.clubName ?? null);
+      emails = await fetchSubscriberEmails(audience === 'all' ? null : clubConfig?.clubName ?? null);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       console.error('[weekly-email] Failed to fetch subscribers:', msg);
@@ -80,15 +132,30 @@ export async function POST(request: Request) {
     }
 
     // ── 4. Build email HTML ───────────────────────────────────────────────────
-    const htmlBody = buildEmailHtml({
-      subject: subject.trim(),
-      bullets: (bullets as string[]).filter((b: string) => b?.trim()),
-      deepDive,
-      deepDiveNote,
-      meetingFocus,
-      clubLogoUrl: clubConfig?.logoAbsoluteUrl ?? null,
-      clubDisplayName: clubConfig?.displayName,
-    });
+    const htmlBody = campaignType === 'weekly'
+      ? buildEmailHtml({
+          subject: subject.trim(),
+          bullets: (bullets as string[]).filter((b: string) => b?.trim()),
+          deepDive,
+          deepDiveNote,
+          meetingFocus,
+          clubLogoUrl: clubConfig?.logoAbsoluteUrl ?? null,
+          clubDisplayName: clubConfig?.displayName,
+        })
+      : buildPromoEmailHtml({
+          subject: subject.trim(),
+          eyebrow: String(promoPayload.eyebrow ?? '').trim(),
+          title: String(promoPayload.title ?? '').trim(),
+          intro: String(promoPayload.intro ?? '').trim(),
+          steps: promoSteps,
+          primaryCtaLabel: String(promoPayload.primaryCtaLabel ?? '').trim(),
+          primaryCtaUrl: String(promoPayload.primaryCtaUrl ?? '').trim(),
+          secondaryCtaLabel: promoPayload.secondaryCtaLabel?.trim() || undefined,
+          secondaryCtaUrl: promoPayload.secondaryCtaUrl?.trim() || undefined,
+          footerNote: promoPayload.footerNote?.trim() || undefined,
+          clubLogoUrl: clubConfig?.logoAbsoluteUrl ?? null,
+          clubDisplayName: clubConfig?.displayName,
+        });
 
     const fromName = clubConfig?.fromName ?? 'Tai — Trophy Cast';
 
@@ -124,6 +191,8 @@ export async function POST(request: Request) {
     return NextResponse.json({
       ok: true,
       action: scheduleTime ? 'scheduled' : 'sent',
+      campaignType,
+      audience,
       recipientCount: emails.length,
       scheduleTime: scheduleTime ?? null,
       ids,

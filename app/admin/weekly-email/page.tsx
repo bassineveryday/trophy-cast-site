@@ -14,9 +14,12 @@ import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { weeklyUpdates, type WeeklyUpdate } from '@/lib/weeklyUpdates';
 import { useAdminAuth } from '@/lib/useAdminAuth';
-import { buildEmailHtml } from '@/lib/emailTemplate';
+import { buildEmailHtml, buildPromoEmailHtml, type PromoEmailStep } from '@/lib/emailTemplate';
 import { TCCoachBadge } from '@/components/TCCoachBadge';
 import { CLUB_SELECTOR_OPTIONS, getClubEmailConfig } from '@/lib/clubEmailConfig';
+
+type CampaignType = 'weekly' | 'promo';
+type AudienceType = 'club' | 'all';
 
 const DEEP_DIVE_OPTIONS = [
   'Dock Talk',
@@ -46,6 +49,24 @@ const MEETING_FOCUS_BY_FEATURE: Record<string, string> = {
   'Board & Officer Tools': "Live walkthrough of Board Tools — agenda builder, meeting notes, and member management for officers",
 };
 
+const DEFAULT_PROMO_STEPS: PromoEmailStep[] = [
+  {
+    title: 'Register for Catch Rate',
+    body: 'Use the link below to register inside Trophy Cast and pick the species you want to fish.',
+  },
+  {
+    title: 'Pay Emily tomorrow before the tournament',
+    body: 'Bring cash to check-in so all you have to do is hand Emily the money and you are good to go.',
+  },
+  {
+    title: 'Open Trophy Cast and fish',
+    body: 'After you are checked in, open Trophy Cast to log catches and follow the event.',
+  },
+];
+
+const DEFAULT_PROMO_PRIMARY_CTA_URL = 'https://trophycast.app/join/tlo?source=catch-rate-email-2026-05-20';
+const DEFAULT_PROMO_SECONDARY_CTA_URL = 'https://tightlineoutdoors.com/catch-rate-tournament';
+
 function getNextSundayLocal(): string {
   const now = new Date();
   const daysUntilSunday = now.getDay() === 0 ? 7 : 7 - now.getDay();
@@ -61,6 +82,12 @@ function getDefaultSubject(clubId: string): string {
   const config = getClubEmailConfig(clubId);
   const prefix = config?.subjectPrefix ?? '';
   return `${prefix}Trophy Cast Weekly \uD83C\uDFA3 \u2014 ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`;
+}
+
+function getDefaultPromoSubject(clubId: string): string {
+  const config = getClubEmailConfig(clubId);
+  const prefix = config?.subjectPrefix ?? '';
+  return `${prefix}Catch Rate is open — register now, pay Emily tomorrow`;
 }
 
 function getUpdateSignature(update: WeeklyUpdate): string {
@@ -88,12 +115,23 @@ export default function WeeklyEmailAdminPage() {
   const recognitionRef = useRef<any>(null);
 
   // Campaign fields
+  const [campaignType, setCampaignType] = useState<CampaignType>('weekly');
+  const [audience, setAudience] = useState<AudienceType>('club');
   const [clubId, setClubId] = useState('DBM');
   const [subject, setSubject] = useState(() => getDefaultSubject('DBM'));
   const [bullets, setBullets] = useState('');
   const [deepDive, setDeepDive] = useState<string>(DEEP_DIVE_OPTIONS[0]);
   const [deepDiveNote, setDeepDiveNote] = useState('');
   const [meetingFocus, setMeetingFocus] = useState(latest?.suggestedMeetingFocus ?? '');
+  const [promoEyebrow, setPromoEyebrow] = useState('Tightline Outdoors × Trophy Cast');
+  const [promoTitle, setPromoTitle] = useState('Catch Rate registration is open');
+  const [promoIntro, setPromoIntro] = useState('Register today in Trophy Cast so tomorrow morning is quick at check-in.');
+  const [promoPrimaryCtaLabel, setPromoPrimaryCtaLabel] = useState('Register for Catch Rate');
+  const [promoPrimaryCtaUrl, setPromoPrimaryCtaUrl] = useState(DEFAULT_PROMO_PRIMARY_CTA_URL);
+  const [promoSecondaryCtaLabel, setPromoSecondaryCtaLabel] = useState('Tournament details');
+  const [promoSecondaryCtaUrl, setPromoSecondaryCtaUrl] = useState(DEFAULT_PROMO_SECONDARY_CTA_URL);
+  const [promoFooterNote, setPromoFooterNote] = useState('After you register, pay Emily tomorrow before the tournament. Then open Trophy Cast and you are ready to go.');
+  const [promoSteps, setPromoSteps] = useState<PromoEmailStep[]>(DEFAULT_PROMO_STEPS);
   const [sendNow, setSendNow] = useState(false);
   const [scheduleTime, setScheduleTime] = useState(getNextSundayLocal);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -104,6 +142,7 @@ export default function WeeklyEmailAdminPage() {
 
   // Send-now confirmation modal
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const clubConfig = useMemo(() => getClubEmailConfig(clubId), [clubId]);
 
   const handleUnlock = useCallback((e: React.FormEvent) => {
     e.preventDefault();
@@ -118,12 +157,39 @@ export default function WeeklyEmailAdminPage() {
     fetch('/api/admin/subscriber-count', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password, clubId }),
+      body: JSON.stringify({ password, clubId, audience }),
     })
       .then((r) => r.json())
       .then((d) => setSubCount(d.count ?? null))
       .catch(() => {});
-  }, [unlocked, password, clubId]);
+  }, [unlocked, password, clubId, audience]);
+
+  const handleCampaignTypeChange = useCallback((nextType: CampaignType) => {
+    setCampaignType(nextType);
+    if (nextType === 'promo') {
+      const nextClubId = clubId === 'DBM' ? 'TLO' : clubId;
+      if (nextClubId !== clubId) setClubId(nextClubId);
+      setAudience('all');
+      setSubject((prev) => (
+        prev === getDefaultSubject(clubId) || !prev.trim()
+          ? getDefaultPromoSubject(nextClubId)
+          : prev
+      ));
+      return;
+    }
+
+    setSubject((prev) => (
+      prev === getDefaultPromoSubject(clubId) || !prev.trim()
+        ? getDefaultSubject(clubId)
+        : prev
+    ));
+  }, [clubId]);
+
+  const updatePromoStep = useCallback((index: number, field: keyof PromoEmailStep, value: string) => {
+    setPromoSteps((prev) => prev.map((step, stepIndex) => (
+      stepIndex === index ? { ...step, [field]: value } : step
+    )));
+  }, []);
 
   const toggleVoice = useCallback(() => {
     if (typeof window === 'undefined') return;
@@ -188,19 +254,41 @@ export default function WeeklyEmailAdminPage() {
       isoScheduleTime = new Date(scheduleTime).toISOString();
     }
 
+    const validPromoSteps = promoSteps
+      .map((step) => ({ title: step.title.trim(), body: step.body.trim() }))
+      .filter((step) => step.title && step.body);
+
     try {
       const res = await fetch('/api/admin/weekly-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           password,
+          campaignType,
+          audience,
           subject,
-          bullets: bulletList,
-          deepDive,
-          deepDiveNote: deepDiveNote.trim() || undefined,
-          meetingFocus: meetingFocus.trim() || undefined,
           scheduleTime: isoScheduleTime,
           clubId,
+          ...(campaignType === 'weekly'
+            ? {
+                bullets: bulletList,
+                deepDive,
+                deepDiveNote: deepDiveNote.trim() || undefined,
+                meetingFocus: meetingFocus.trim() || undefined,
+              }
+            : {
+                promo: {
+                  eyebrow: promoEyebrow.trim(),
+                  title: promoTitle.trim(),
+                  intro: promoIntro.trim(),
+                  steps: validPromoSteps,
+                  primaryCtaLabel: promoPrimaryCtaLabel.trim(),
+                  primaryCtaUrl: promoPrimaryCtaUrl.trim(),
+                  secondaryCtaLabel: promoSecondaryCtaLabel.trim() || undefined,
+                  secondaryCtaUrl: promoSecondaryCtaUrl.trim() || undefined,
+                  footerNote: promoFooterNote.trim() || undefined,
+                },
+              }),
         }),
       });
 
@@ -222,7 +310,29 @@ export default function WeeklyEmailAdminPage() {
       setStatus('error');
       setResultMsg('Network error. Check your connection and try again.');
     }
-  }, [password, subject, bullets, deepDive, deepDiveNote, meetingFocus, sendNow, scheduleTime, lockOut, clubId]);
+  }, [
+    password,
+    campaignType,
+    audience,
+    subject,
+    bullets,
+    deepDive,
+    deepDiveNote,
+    meetingFocus,
+    promoSteps,
+    promoEyebrow,
+    promoTitle,
+    promoIntro,
+    promoPrimaryCtaLabel,
+    promoPrimaryCtaUrl,
+    promoSecondaryCtaLabel,
+    promoSecondaryCtaUrl,
+    promoFooterNote,
+    sendNow,
+    scheduleTime,
+    lockOut,
+    clubId,
+  ]);
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -239,6 +349,27 @@ export default function WeeklyEmailAdminPage() {
         return;
       }
 
+      const validPromoSteps = promoSteps
+        .map((step) => ({ title: step.title.trim(), body: step.body.trim() }))
+        .filter((step) => step.title && step.body);
+
+      if (campaignType === 'promo') {
+        if (!promoTitle.trim() || !promoIntro.trim() || !promoPrimaryCtaLabel.trim() || !promoPrimaryCtaUrl.trim()) {
+          setStatus('error');
+          setResultMsg('Complete the promo headline, intro, and primary CTA before sending.');
+          return;
+        }
+        if (validPromoSteps.length === 0) {
+          setStatus('error');
+          setResultMsg('Add at least one Catch Rate step before sending.');
+          return;
+        }
+      } else if (bulletList.length === 0) {
+        setStatus('error');
+        setResultMsg("Add at least one bullet point in \"What's New\".");
+        return;
+      }
+
       // Send Now requires an extra confirmation step
       if (sendNow) {
         setConfirmOpen(true);
@@ -247,7 +378,7 @@ export default function WeeklyEmailAdminPage() {
 
       void executeSend();
     },
-    [bullets, sendNow, executeSend]
+    [bullets, promoSteps, campaignType, promoTitle, promoIntro, promoPrimaryCtaLabel, promoPrimaryCtaUrl, sendNow, executeSend]
   );
 
   const handleLoadLatest = useCallback(() => {
@@ -297,8 +428,37 @@ export default function WeeklyEmailAdminPage() {
     [bullets]
   );
 
+  const previewPromoSteps = useMemo(() => {
+    const steps = promoSteps
+      .map((step) => ({ title: step.title.trim(), body: step.body.trim() }))
+      .filter((step) => step.title && step.body);
+    return steps.length
+      ? steps
+      : [{ title: 'Register for Catch Rate', body: 'Tap the button below to lock in your spot.' }];
+  }, [promoSteps]);
+
+  const recipientScopeLabel = audience === 'all'
+    ? 'all subscribers'
+    : `${clubConfig?.displayName ?? 'selected club'} subscribers`;
+
   const previewHtml = useMemo(() => {
-    const clubConfig = getClubEmailConfig(clubId);
+    if (campaignType === 'promo') {
+      return buildPromoEmailHtml({
+        subject,
+        eyebrow: promoEyebrow,
+        title: promoTitle,
+        intro: promoIntro,
+        steps: previewPromoSteps,
+        primaryCtaLabel: promoPrimaryCtaLabel,
+        primaryCtaUrl: promoPrimaryCtaUrl,
+        secondaryCtaLabel: promoSecondaryCtaLabel.trim() || undefined,
+        secondaryCtaUrl: promoSecondaryCtaUrl.trim() || undefined,
+        footerNote: promoFooterNote.trim() || undefined,
+        clubLogoUrl: clubConfig?.logoAbsoluteUrl ?? null,
+        clubDisplayName: clubConfig?.displayName,
+      });
+    }
+
     return buildEmailHtml({
       subject,
       bullets: previewBullets.length
@@ -310,7 +470,24 @@ export default function WeeklyEmailAdminPage() {
       clubLogoUrl: clubConfig?.logoAbsoluteUrl ?? null,
       clubDisplayName: clubConfig?.displayName,
     });
-  }, [clubId, subject, previewBullets, deepDive, deepDiveNote, meetingFocus]);
+  }, [
+    campaignType,
+    subject,
+    promoEyebrow,
+    promoTitle,
+    promoIntro,
+    previewPromoSteps,
+    promoPrimaryCtaLabel,
+    promoPrimaryCtaUrl,
+    promoSecondaryCtaLabel,
+    promoSecondaryCtaUrl,
+    promoFooterNote,
+    clubConfig,
+    previewBullets,
+    deepDive,
+    deepDiveNote,
+    meetingFocus,
+  ]);
 
   // ── Password gate ────────────────────────────────────────────────────────
   if (!unlocked) {
@@ -321,7 +498,7 @@ export default function WeeklyEmailAdminPage() {
             <div className="mb-4 flex justify-center">
               <Trophy className="h-12 w-12 text-trophyGold" strokeWidth={2.2} />
             </div>
-            <h1 className="text-3xl font-heading font-bold text-trophyGold">Weekly Email Admin</h1>
+            <h1 className="text-3xl font-heading font-bold text-trophyGold">Email Campaign Admin</h1>
             <p className="text-copyMuted mt-2">Enter your password to continue</p>
           </div>
           <form onSubmit={handleUnlock} className="space-y-4">
@@ -352,9 +529,11 @@ export default function WeeklyEmailAdminPage() {
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-electric mb-0.5">
             <Link href="/admin" className="hover:text-copyLight transition-colors">Admin</Link>
-            {' / Weekly Email'}
+            {' / Email Campaign'}
           </p>
-          <h1 className="text-xl font-heading font-bold text-trophyGold leading-tight">Weekly Email</h1>
+          <h1 className="text-xl font-heading font-bold text-trophyGold leading-tight">
+            {campaignType === 'promo' ? 'Promo Email' : 'Weekly Email'}
+          </h1>
         </div>
         <div className="flex items-center gap-4">
           <p className="text-copyMuted text-sm hidden md:block">
@@ -377,12 +556,12 @@ export default function WeeklyEmailAdminPage() {
               ) : sendNow ? (
                 <>
                   <Rocket className="h-4 w-4" strokeWidth={2.2} />
-                  <span>Send Now</span>
+                  <span>{campaignType === 'promo' ? 'Send Promo' : 'Send Now'}</span>
                 </>
               ) : (
                 <>
                   <CalendarDays className="h-4 w-4" strokeWidth={2.2} />
-                  <span>Schedule</span>
+                  <span>{campaignType === 'promo' ? 'Schedule Promo' : 'Schedule'}</span>
                 </>
               )}
             </button>
@@ -401,9 +580,24 @@ export default function WeeklyEmailAdminPage() {
         >
           <div className="p-5 space-y-5 pb-10">
 
+            {/* Campaign Type */}
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-copyMuted mb-2">Campaign Type</label>
+              <select
+                value={campaignType}
+                onChange={(e) => handleCampaignTypeChange(e.target.value as CampaignType)}
+                className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
+              >
+                <option value="weekly">Weekly update</option>
+                <option value="promo">Catch Rate promo</option>
+              </select>
+            </div>
+
             {/* Club */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-copyMuted mb-2">Club</label>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-copyMuted mb-2">
+                Brand / From Name
+              </label>
               <select
                 value={clubId}
                 onChange={(e) => {
@@ -423,6 +617,22 @@ export default function WeeklyEmailAdminPage() {
                   <option key={opt.value} value={opt.value}>{opt.label}</option>
                 ))}
               </select>
+              <p className="text-xs text-copyMuted/50 mt-1.5">
+                Branding and subject prefix come from this club even when the audience is set to all subscribers.
+              </p>
+            </div>
+
+            {/* Audience */}
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-copyMuted mb-2">Audience</label>
+              <select
+                value={audience}
+                onChange={(e) => setAudience(e.target.value as AudienceType)}
+                className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
+              >
+                <option value="club">Selected club subscribers only</option>
+                <option value="all">All subscribers</option>
+              </select>
             </div>
 
             {/* Subject */}
@@ -437,113 +647,222 @@ export default function WeeklyEmailAdminPage() {
               />
             </div>
 
-            {/* What's New */}
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-copyMuted mb-2">
-                What&apos;s New <span className="normal-case font-normal text-copyMuted/60">— one item per line</span>
-              </label>
-              <textarea
-                value={bullets}
-                onChange={(e) => setBullets(e.target.value)}
-                required
-                rows={5}
-                placeholder="New members now get a welcome email&#10;TC Coach now shows live weather&#10;Share catch photos in Dock Talk"
-                className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric placeholder:text-copyMuted/40 resize-none leading-relaxed"
-              />
-            </div>
+            {campaignType === 'weekly' ? (
+              <>
+                {/* What's New */}
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-copyMuted mb-2">
+                    What&apos;s New <span className="normal-case font-normal text-copyMuted/60">— one item per line</span>
+                  </label>
+                  <textarea
+                    value={bullets}
+                    onChange={(e) => setBullets(e.target.value)}
+                    required
+                    rows={5}
+                    placeholder="New members now get a welcome email&#10;TC Coach now shows live weather&#10;Share catch photos in Dock Talk"
+                    className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric placeholder:text-copyMuted/40 resize-none leading-relaxed"
+                  />
+                </div>
 
-            {/* TC Coach Polish */}
-            <div className="bg-deepPanel border border-trophyGold/20 rounded-xl p-4">
-              <TCCoachBadge label="TC Coach Polish" className="mb-2" />
-              <p className="text-copyMuted/70 text-xs mb-3">Talk or type rough thoughts — TC Coach fills the bullets above</p>
-              <div className="relative mb-3">
-                <textarea
-                  value={roughNotes}
-                  onChange={(e) => setRoughNotes(e.target.value)}
-                  rows={4}
-                  placeholder="we added chat photos, fixed the standings bug, new members get welcome email..."
-                  className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-trophyGold placeholder:text-copyMuted/30 resize-none leading-relaxed"
-                />
-                <button
-                  type="button"
-                  onClick={toggleVoice}
-                  title={listening ? 'Stop recording' : 'Tap to speak'}
-                  className={`absolute bottom-2.5 right-2.5 w-9 h-9 rounded-full flex items-center justify-center text-base transition-all ${
-                    listening ? 'bg-red-500 animate-pulse text-white' : 'bg-liftedPanel hover:bg-trophyGold/20 text-copyMuted hover:text-trophyGold'
-                  }`}
-                >
-                  {listening ? (
-                    <Square className="h-4 w-4 fill-current" strokeWidth={2.2} />
-                  ) : (
-                    <Mic className="h-4 w-4" strokeWidth={2.2} />
+                {/* TC Coach Polish */}
+                <div className="bg-deepPanel border border-trophyGold/20 rounded-xl p-4">
+                  <TCCoachBadge label="TC Coach Polish" className="mb-2" />
+                  <p className="text-copyMuted/70 text-xs mb-3">Talk or type rough thoughts — TC Coach fills the bullets above</p>
+                  <div className="relative mb-3">
+                    <textarea
+                      value={roughNotes}
+                      onChange={(e) => setRoughNotes(e.target.value)}
+                      rows={4}
+                      placeholder="we added chat photos, fixed the standings bug, new members get welcome email..."
+                      className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-trophyGold placeholder:text-copyMuted/30 resize-none leading-relaxed"
+                    />
+                    <button
+                      type="button"
+                      onClick={toggleVoice}
+                      title={listening ? 'Stop recording' : 'Tap to speak'}
+                      className={`absolute bottom-2.5 right-2.5 w-9 h-9 rounded-full flex items-center justify-center text-base transition-all ${
+                        listening ? 'bg-red-500 animate-pulse text-white' : 'bg-liftedPanel hover:bg-trophyGold/20 text-copyMuted hover:text-trophyGold'
+                      }`}
+                    >
+                      {listening ? (
+                        <Square className="h-4 w-4 fill-current" strokeWidth={2.2} />
+                      ) : (
+                        <Mic className="h-4 w-4" strokeWidth={2.2} />
+                      )}
+                    </button>
+                  </div>
+                  {listening && (
+                    <p className="flex items-center gap-2 text-red-400 text-xs mb-2 animate-pulse">
+                      <span className="h-2 w-2 rounded-full bg-red-400" />
+                      <span>Listening…</span>
+                    </p>
                   )}
-                </button>
-              </div>
-              {listening && (
-                <p className="flex items-center gap-2 text-red-400 text-xs mb-2 animate-pulse">
-                  <span className="h-2 w-2 rounded-full bg-red-400" />
-                  <span>Listening…</span>
-                </p>
-              )}
-              {polishError && <p className="text-red-400 text-xs mb-2">{polishError}</p>}
-              <button
-                type="button"
-                onClick={handlePolish}
-                disabled={polishing || !roughNotes.trim()}
-                className="inline-flex w-full items-center justify-center gap-2 bg-trophyGold/10 hover:bg-trophyGold/20 border border-trophyGold/30 text-trophyGold font-bold py-2.5 rounded-lg text-xs transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                {polishing ? (
-                  <>
-                    <LoaderCircle className="h-4 w-4 animate-spin" strokeWidth={2.2} />
-                    <span>Rewriting…</span>
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="h-4 w-4 text-trophyGold" strokeWidth={2.2} />
-                    <span>Polish with TC Coach →</span>
-                  </>
-                )}
-              </button>
-            </div>
+                  {polishError && <p className="text-red-400 text-xs mb-2">{polishError}</p>}
+                  <button
+                    type="button"
+                    onClick={handlePolish}
+                    disabled={polishing || !roughNotes.trim()}
+                    className="inline-flex w-full items-center justify-center gap-2 bg-trophyGold/10 hover:bg-trophyGold/20 border border-trophyGold/30 text-trophyGold font-bold py-2.5 rounded-lg text-xs transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {polishing ? (
+                      <>
+                        <LoaderCircle className="h-4 w-4 animate-spin" strokeWidth={2.2} />
+                        <span>Rewriting…</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="h-4 w-4 text-trophyGold" strokeWidth={2.2} />
+                        <span>Polish with TC Coach →</span>
+                      </>
+                    )}
+                  </button>
+                </div>
 
-            {/* Monday Night Focus */}
-            <div className="bg-deepPanel border border-liftedPanel rounded-xl p-4 space-y-4">
-              <p className="text-xs font-semibold uppercase tracking-wider text-copyMuted">Monday Night Focus</p>
-              <div>
-                <label className="block text-xs font-semibold text-copyMuted mb-1.5">Feature Spotlight</label>
-                <select
-                  value={deepDive}
-                  onChange={(e) => { setDeepDive(e.target.value); setMeetingFocus(MEETING_FOCUS_BY_FEATURE[e.target.value] ?? ''); }}
-                  className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
-                >
-                  {DEEP_DIVE_OPTIONS.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                {/* Monday Night Focus */}
+                <div className="bg-deepPanel border border-liftedPanel rounded-xl p-4 space-y-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-copyMuted">Monday Night Focus</p>
+                  <div>
+                    <label className="block text-xs font-semibold text-copyMuted mb-1.5">Feature Spotlight</label>
+                    <select
+                      value={deepDive}
+                      onChange={(e) => { setDeepDive(e.target.value); setMeetingFocus(MEETING_FOCUS_BY_FEATURE[e.target.value] ?? ''); }}
+                      className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
+                    >
+                      {DEEP_DIVE_OPTIONS.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-copyMuted mb-1.5">What you&apos;ll cover live</label>
+                    <textarea
+                      value={meetingFocus}
+                      onChange={(e) => setMeetingFocus(e.target.value)}
+                      rows={3}
+                      className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric resize-none leading-relaxed"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-copyMuted mb-1.5">
+                      Custom blurb <span className="font-normal text-copyMuted/60">(optional)</span>
+                    </label>
+                    <textarea
+                      value={deepDiveNote}
+                      onChange={(e) => setDeepDiveNote(e.target.value)}
+                      rows={2}
+                      placeholder="Leave blank to use the default description."
+                      className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric placeholder:text-copyMuted/30 resize-none"
+                    />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="bg-deepPanel border border-electric/20 rounded-xl p-4 space-y-4">
+                <p className="text-xs font-semibold uppercase tracking-wider text-electric">Catch Rate Promo Content</p>
+                <div>
+                  <label className="block text-xs font-semibold text-copyMuted mb-1.5">Eyebrow</label>
+                  <input
+                    type="text"
+                    value={promoEyebrow}
+                    onChange={(e) => setPromoEyebrow(e.target.value)}
+                    className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-copyMuted mb-1.5">Headline</label>
+                  <input
+                    type="text"
+                    value={promoTitle}
+                    onChange={(e) => setPromoTitle(e.target.value)}
+                    className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-copyMuted mb-1.5">Intro</label>
+                  <textarea
+                    value={promoIntro}
+                    onChange={(e) => setPromoIntro(e.target.value)}
+                    rows={3}
+                    className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric resize-none leading-relaxed"
+                  />
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold text-copyMuted mb-1.5">Primary CTA Label</label>
+                    <input
+                      type="text"
+                      value={promoPrimaryCtaLabel}
+                      onChange={(e) => setPromoPrimaryCtaLabel(e.target.value)}
+                      className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-copyMuted mb-1.5">Primary CTA URL</label>
+                    <input
+                      type="url"
+                      value={promoPrimaryCtaUrl}
+                      onChange={(e) => setPromoPrimaryCtaUrl(e.target.value)}
+                      className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
+                    />
+                  </div>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold text-copyMuted mb-1.5">Secondary CTA Label</label>
+                    <input
+                      type="text"
+                      value={promoSecondaryCtaLabel}
+                      onChange={(e) => setPromoSecondaryCtaLabel(e.target.value)}
+                      className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-copyMuted mb-1.5">Secondary CTA URL</label>
+                    <input
+                      type="url"
+                      value={promoSecondaryCtaUrl}
+                      onChange={(e) => setPromoSecondaryCtaUrl(e.target.value)}
+                      className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-copyMuted mb-1.5">Footer Note</label>
+                  <textarea
+                    value={promoFooterNote}
+                    onChange={(e) => setPromoFooterNote(e.target.value)}
+                    rows={3}
+                    className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric resize-none leading-relaxed"
+                  />
+                </div>
+                <div className="space-y-3">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-copyMuted">How It Works Steps</p>
+                  {promoSteps.map((step, index) => (
+                    <div key={index} className="rounded-xl border border-liftedPanel bg-midnight/50 p-3 space-y-2">
+                      <div>
+                        <label className="block text-xs font-semibold text-copyMuted mb-1.5">Step {index + 1} title</label>
+                        <input
+                          type="text"
+                          value={step.title}
+                          onChange={(e) => updatePromoStep(index, 'title', e.target.value)}
+                          className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-copyMuted mb-1.5">Step {index + 1} body</label>
+                        <textarea
+                          value={step.body}
+                          onChange={(e) => updatePromoStep(index, 'body', e.target.value)}
+                          rows={2}
+                          className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric resize-none leading-relaxed"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div>
-                <label className="block text-xs font-semibold text-copyMuted mb-1.5">What you&apos;ll cover live</label>
-                <textarea
-                  value={meetingFocus}
-                  onChange={(e) => setMeetingFocus(e.target.value)}
-                  rows={3}
-                  className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric resize-none leading-relaxed"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-copyMuted mb-1.5">
-                  Custom blurb <span className="font-normal text-copyMuted/60">(optional)</span>
-                </label>
-                <textarea
-                  value={deepDiveNote}
-                  onChange={(e) => setDeepDiveNote(e.target.value)}
-                  rows={2}
-                  placeholder="Leave blank to use the default description."
-                  className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric placeholder:text-copyMuted/30 resize-none"
-                />
-              </div>
-            </div>
+            )}
 
             {/* This Week's Suggestions + History */}
-            {suggestions.length > 0 && (
+            {campaignType === 'weekly' && suggestions.length > 0 && (
               <div className="space-y-2">
                 {/* Current week */}
                 <div className="bg-deepPanel border border-electric/20 rounded-xl p-4">
@@ -678,12 +997,12 @@ export default function WeeklyEmailAdminPage() {
               ) : sendNow ? (
                 <>
                   <Rocket className="h-4 w-4" strokeWidth={2.2} />
-                  <span>Send Campaign Now</span>
+                  <span>{campaignType === 'promo' ? 'Send Promo Now' : 'Send Campaign Now'}</span>
                 </>
               ) : (
                 <>
                   <CalendarDays className="h-4 w-4" strokeWidth={2.2} />
-                  <span>Schedule Campaign</span>
+                  <span>{campaignType === 'promo' ? 'Schedule Promo Email' : 'Schedule Campaign'}</span>
                 </>
               )}
             </button>
@@ -706,8 +1025,8 @@ export default function WeeklyEmailAdminPage() {
                 <Pin className="h-4 w-4" strokeWidth={2.2} />
                 <span>Reminder</span>
               </p>
-              <p>Monday 7–8PM MT · <a href="https://meet.google.com/kys-cuub-idb" target="_blank" rel="noopener noreferrer" className="text-electric underline">meet.google.com/kys-cuub-idb</a></p>
-              <p>Targets <strong>app-user</strong> segment. Waitlist excluded.</p>
+              <p>Audience: <strong>{recipientScopeLabel}</strong> from <strong>waitlist_subscribers</strong>.</p>
+              <p>Branding: <strong>{clubConfig?.displayName ?? 'Trophy Cast'}</strong> email header and subject prefix.</p>
               <p>Check <a href="https://resend.com" target="_blank" rel="noopener noreferrer" className="text-electric underline">Resend dashboard</a> after sending.</p>
             </div>
 
@@ -746,7 +1065,7 @@ export default function WeeklyEmailAdminPage() {
             This will immediately deliver to{' '}
             {subCount !== null
               ? <span className="text-copyLight font-bold">{subCount.toLocaleString()} subscribers</span>
-              : <span className="text-copyLight font-bold">all app-user subscribers</span>}
+              : <span className="text-copyLight font-bold">{recipientScopeLabel}</span>}
             {'.'}
           </p>
           <p className="text-copyMuted/60 text-xs text-center mb-7">There&apos;s no undo once it&apos;s sent.</p>
