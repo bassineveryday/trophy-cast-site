@@ -356,7 +356,7 @@ export default function CatchRateFlyerPage() {
 
         {/* Below-card note */}
         <p className="no-print" style={{ color: 'rgba(200,215,225,0.3)', fontSize: 11, marginTop: 20, textAlign: 'center' }}>
-          Print this page or use Ctrl+P → Save as PDF. For a PNG, click "Download PNG" above.
+          Print this page or use Ctrl+P → Save as PDF. For a PNG, click &quot;Download PNG&quot; above.
         </p>
       </div>
     </>
