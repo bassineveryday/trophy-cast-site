@@ -57,7 +57,10 @@ export default function SurveyPage() {
     }
   }, [id]);
 
-  useEffect(() => { fetchSurvey(); }, [fetchSurvey]);
+  useEffect(() => {
+    if (!id) return;
+    fetchSurvey();
+  }, [id, fetchSurvey]);
 
   const setAnswer = (questionId: string, value: string) => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
@@ -67,7 +70,8 @@ export default function SurveyPage() {
     if (!data) return;
     setError('');
 
-    if (!email.trim() || !email.includes('@')) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim() || !emailRegex.test(email.trim())) {
       setError('Please enter your email so we know who responded.');
       return;
     }

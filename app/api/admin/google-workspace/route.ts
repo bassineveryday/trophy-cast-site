@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 function checkPassword(provided: string, expected: string): boolean {
   if (!expected || !provided) return false;
