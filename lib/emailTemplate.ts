@@ -12,14 +12,24 @@ const EMAIL_LOGO_URL = TC_EMAIL_LOGOS.emailHeader;
  * followed by a subtle divider, then the TC logo and "Trophy Cast" wordmark.
  * When clubLogoUrl is null/undefined only the TC header is rendered.
  */
+
+/** Sanitize a URL for use in HTML attribute context. Only http/https allowed. */
+function sanitizeUrl(url: string | undefined | null): string | null {
+  if (!url || typeof url !== 'string') return null;
+  const trimmed = url.trim();
+  if (!/^https?:\/\//i.test(trimmed)) return null;
+  return trimmed;
+}
+
 function buildEmailHeader(opts: {
   clubLogoUrl?: string | null;
   clubDisplayName?: string;
   subtitle?: string;
 }): string {
   const { clubLogoUrl, clubDisplayName, subtitle = 'Weekly Community Update' } = opts;
+  const safeClubLogoUrl = sanitizeUrl(clubLogoUrl);
 
-  if (!clubLogoUrl) {
+  if (!safeClubLogoUrl) {
     return `
       <img src="${EMAIL_LOGO_URL}" alt="TC" width="120" height="120" style="display:block;margin:0 auto 8px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
       <h1 style="color:#D4AF37;font-size:26px;font-weight:700;margin:8px 0 4px;font-family:Georgia,serif;">Trophy Cast</h1>
@@ -28,7 +38,7 @@ function buildEmailHeader(opts: {
 
   const clubAlt = clubDisplayName ? escapeHtml(clubDisplayName) : 'Club';
   return `
-      <img src="${clubLogoUrl}" alt="${clubAlt}" width="96" height="96" style="display:block;margin:0 auto 6px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
+      <img src="${safeClubLogoUrl}" alt="${clubAlt}" width="96" height="96" style="display:block;margin:0 auto 6px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
       <p style="color:#C9D3DA;font-size:15px;font-weight:700;margin:0 0 12px;font-family:Georgia,serif;">${escapeHtml(clubDisplayName ?? '')}</p>
       <p style="color:#546674;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 10px;">presented by</p>
       <img src="${EMAIL_LOGO_URL}" alt="Trophy Cast" width="120" height="120" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">

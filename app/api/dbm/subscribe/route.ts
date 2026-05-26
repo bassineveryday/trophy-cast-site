@@ -35,6 +35,14 @@ export async function POST(request: Request) {
     const emailClean = email.toLowerCase().trim();
     const tag = source ?? '2026-Print-Flyer';
 
+    if (!MC_API_KEY || !MC_AUDIENCE_ID) {
+      console.error('[dbm/subscribe] Missing Mailchimp configuration');
+      return NextResponse.json(
+        { error: 'Waitlist service is temporarily unavailable. Please try again shortly.' },
+        { status: 503 },
+      );
+    }
+
     // Map program to club_name (must match CLUB_EMAIL_CONFIGS clubName values)
     const PROGRAM_TO_CLUB: Record<string, { clubName: string; role: string }> = {
       adult:      { clubName: 'Denver BassMasters', role: 'dbm-member' },

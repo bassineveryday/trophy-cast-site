@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,

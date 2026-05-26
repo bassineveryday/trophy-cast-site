@@ -15,6 +15,8 @@ export function waitlistConfirmationHtml(
   firstName: string,
   opts: WaitlistConfirmationOpts = {}
 ): string {
+  const APP_URL = 'https://trophy-cast-mvp-v2.vercel.app';
+  const WEBSITE_URL = 'https://trophycast.app';
   const emailLogoUrl = TC_EMAIL_LOGOS.emailHeader;
   const { clubLogoUrl, clubDisplayName, clubName } = opts;
 
@@ -88,6 +90,18 @@ export function waitlistConfirmationHtml(
                 We're launching with our first club in March 2026. You're already ahead of the line.
               </p>
 
+              <div style="background:#0a0e1a;border-radius:12px;padding:16px;border:1px solid #1e2d40;margin:0 0 20px 0;">
+                <p style="margin:0 0 8px 0;font-size:12px;font-weight:700;color:#f5c842;text-transform:uppercase;letter-spacing:1px;">App vs Website</p>
+                <p style="margin:0 0 6px 0;font-size:13px;color:#cbd5e1;line-height:1.5;">
+                  Use the app on phone or computer:
+                  <a href="${APP_URL}" style="color:#f5c842;text-decoration:none;"> ${APP_URL}</a>
+                </p>
+                <p style="margin:0;font-size:13px;color:#94a3b8;line-height:1.5;">
+                  Trophy Cast website:
+                  <a href="${WEBSITE_URL}" style="color:#f5c842;text-decoration:none;"> ${WEBSITE_URL}</a>
+                </p>
+              </div>
+
               <div style="border-top:1px solid #1e2d40;padding-top:24px;">
                 <p style="margin:0;font-size:13px;color:#64748b;line-height:1.6;">
                   Questions? Reply to this email — it goes straight to me.<br/>
@@ -121,6 +135,8 @@ export function waitlistConfirmationHtml(
 }
 
 export function waitlistConfirmationText(firstName: string): string {
+  const APP_URL = 'https://trophy-cast-mvp-v2.vercel.app';
+  const WEBSITE_URL = 'https://trophycast.app';
   return `Hey ${firstName},
 
 You're on the Trophy Cast waitlist! We'll reach out as soon as we're ready for you.
@@ -135,11 +151,15 @@ Honestly — thank you. It means the world that you took the time to check out T
 
 We're launching with our first club in March 2026. You're already ahead of the line.
 
+App vs website:
+- Use the app on phone or computer: ${APP_URL}
+- Trophy Cast website: ${WEBSITE_URL}
+
 Questions? Reply to this email — it goes straight to me.
 
 Tai Hunt
 Founder, Trophy Cast, Inc.
-trophycast.app
+${WEBSITE_URL}
 
 © 2026 Trophy Cast, Inc.
 To unsubscribe from future emails, reply with "Unsubscribe" in the subject line.
