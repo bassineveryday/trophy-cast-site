@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
 
 export async function POST(request: Request) {

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const DAY_MS = 24 * 60 * 60 * 1000;
 const FEATURE_RANGE_OPTIONS = [7, 14, 30, 90] as const;
 
