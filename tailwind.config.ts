@@ -24,7 +24,14 @@ const config: Config = {
         badge: "0 12px 40px rgba(19, 37, 50, 0.45)",
       },
       backgroundImage: {
-        heroMesh: "radial-gradient(circle at 15% 25%, rgba(212, 175, 55, 0.18), transparent 50%), radial-gradient(circle at 85% 10%, rgba(46, 110, 61, 0.45), transparent 55%)",
+        heroMesh: [
+          "linear-gradient(180deg, rgba(12, 26, 35, 0.76) 0%, rgba(12, 26, 35, 0.84) 42%, rgba(12, 26, 35, 0.94) 100%)",
+          "radial-gradient(ellipse at 14% 84%, rgba(151, 92, 35, 0.52), transparent 46%)",
+          "radial-gradient(ellipse at 82% 82%, rgba(78, 58, 29, 0.36), transparent 40%)",
+          "radial-gradient(ellipse at 50% 46%, rgba(42, 89, 128, 0.30), transparent 58%)",
+          "radial-gradient(ellipse at 84% 16%, rgba(46, 110, 61, 0.28), transparent 48%)",
+          "radial-gradient(ellipse at 18% 18%, rgba(212, 175, 55, 0.12), transparent 34%)",
+        ].join(", "),
         shimmer: "linear-gradient(45deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 60%)",
       },
       animation: {
