@@ -27,7 +27,7 @@ interface Insight {
 export async function POST(request: Request) {
   try {
     const { password } = await request.json();
-    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD)) {
+    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD ?? '')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

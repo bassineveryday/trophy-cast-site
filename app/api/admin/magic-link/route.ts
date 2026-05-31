@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       reason?: string;
     };
 
-    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD)) {
+    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD ?? '')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
