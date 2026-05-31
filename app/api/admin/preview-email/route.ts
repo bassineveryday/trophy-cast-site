@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import { buildEmailHtml, buildPromoEmailHtml } from '@/lib/emailTemplate';
 import { getClubEmailConfig } from '@/lib/clubEmailConfig';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? '';
 
 function checkPassword(provided: string, expected: string): boolean {
   if (!expected || !provided) return false;

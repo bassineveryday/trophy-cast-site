@@ -140,7 +140,7 @@ function FlyerPage() {
             Sample TC Coach Tip
           </div>
           <div style={{ fontSize: 13, color: '#334155', lineHeight: 1.45 }}>
-            "Pattern alert: no wind and shaded trees. You caught 3 fish on a green pumpkin Senko, so start there first and target shade lines."
+            &ldquo;Pattern alert: no wind and shaded trees. You caught 3 fish on a green pumpkin Senko, so start there first and target shade lines.&rdquo;
           </div>
         </div>
       </div>
