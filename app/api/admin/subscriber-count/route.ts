@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     const { password, clubId, audience: rawAudience } = body;
     const audience = rawAudience === 'all' ? 'all' : 'club';
 
-    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD)) {
+    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD ?? '')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

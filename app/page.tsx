@@ -15,19 +15,42 @@ export default function Page() {
     <>
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section id="hero" className="relative overflow-hidden bg-midnight bg-heroMesh py-24 sm:py-36">
+        <div className="hero-waterline" aria-hidden="true" />
+        <div className="quiet-grid absolute inset-0 opacity-30" aria-hidden="true" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-midnight via-midnight/70 to-transparent" aria-hidden="true" />
         <Container className="relative space-y-16">
           {/* Logo + Name */}
-          <div className="flex flex-col items-center gap-6 text-center">
-            <Image
-              src={TC_LOGOS.horizontal}
-              alt="Trophy Cast logo"
-              width={600}
-              height={300}
-              priority
-              className="h-28 w-auto sm:h-36 lg:h-44"
-            />
-            {/* H1 kept for SEO — visually hidden since text lives in the logo image */}
-            <h1 className="sr-only">{siteContent.brand.name}</h1>
+          <div className="flex justify-center">
+            <div className="brand-lockup mx-auto max-w-3xl rounded-[1.75rem] px-5 py-5 sm:rounded-[2rem] sm:px-10 sm:py-8">
+              <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:gap-6 sm:text-left">
+                <div className="relative flex items-center justify-center">
+                  <div className="brand-halo" aria-hidden="true" />
+                  <div className="relative rounded-full bg-midnight/45 p-1.5 ring-1 ring-trophyGold/15 sm:p-2">
+                    <Image
+                      src={TC_LOGOS.fishMark}
+                      alt="Trophy Cast fish mark"
+                      width={220}
+                      height={220}
+                      priority
+                      className="h-20 w-auto drop-shadow-[0_10px_34px_rgba(12,26,35,0.55)] sm:h-28 lg:h-32"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <p className="font-heading text-[10px] font-semibold uppercase tracking-[0.34em] text-trophyGold/80 sm:text-xs sm:tracking-[0.42em]">
+                    {siteContent.hero.brandEyebrow}
+                  </p>
+                  <div className="space-y-1">
+                    <h1 className="font-heading text-3xl font-extrabold tracking-[0.04em] text-white sm:text-5xl sm:tracking-[0.06em] lg:text-6xl">
+                      {siteContent.brand.name}
+                    </h1>
+                    <p className="font-heading text-xs font-semibold uppercase tracking-[0.22em] text-copyMuted sm:text-base sm:tracking-[0.30em]">
+                      {siteContent.brand.motto}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Two-column hero body */}

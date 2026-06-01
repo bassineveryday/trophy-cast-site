@@ -62,7 +62,7 @@ export async function POST(request: Request) {
     const clubConfig = getClubEmailConfig(clubId);
 
     // ── 1. Auth ───────────────────────────────────────────────────────────────
-    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD)) {
+    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD ?? '')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

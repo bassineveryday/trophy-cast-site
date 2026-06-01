@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     } = body;
     const campaignType = rawCampaignType === 'promo' ? 'promo' : 'weekly';
 
-    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD)) {
+    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD ?? '')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

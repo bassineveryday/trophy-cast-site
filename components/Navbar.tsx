@@ -17,15 +17,19 @@ export function Navbar({ brand, navItems, waitlistCta }: NavbarProps) {
   return (
     <header id="top" className="sticky top-0 z-50 border-b border-white/5 bg-midnight/70 backdrop-blur-xl">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-10">
-        <Link href="#top" className="flex items-center text-copyLight">
+        <Link href="#top" className="flex items-center gap-3 text-copyLight">
           <Image
-            src={TC_LOGOS.horizontal}
+            src={TC_LOGOS.icon256}
             alt="Trophy Cast logo"
-            width={200}
-            height={100}
+            width={256}
+            height={256}
             priority
-            className="h-10 w-auto sm:h-11"
+            className="h-10 w-10 rounded-full ring-1 ring-trophyGold/20 sm:h-11 sm:w-11"
           />
+          <div className="hidden sm:block">
+            <p className="font-heading text-base font-bold tracking-wide text-copyLight">{brand.name}</p>
+            <p className="text-[11px] uppercase tracking-[0.24em] text-trophyGold/80">{brand.motto}</p>
+          </div>
         </Link>
 
         <button

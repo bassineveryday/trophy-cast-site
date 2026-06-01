@@ -73,6 +73,64 @@ a {
   border-radius: 2px;
 }
 
+.hero-waterline {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-waterline::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.34), rgba(201, 211, 218, 0.14), transparent);
+  opacity: 0.9;
+}
+
+.hero-waterline::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 0;
+  height: 42%;
+  background: linear-gradient(180deg, rgba(42, 89, 128, 0) 0%, rgba(42, 89, 128, 0.07) 35%, rgba(151, 92, 35, 0.12) 100%);
+  filter: blur(10px);
+  opacity: 0.9;
+}
+
+.brand-halo {
+  position: absolute;
+  inset: -8%;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.22), transparent 34%),
+    radial-gradient(circle at 65% 55%, rgba(42, 89, 128, 0.20), transparent 42%),
+    radial-gradient(circle at 72% 28%, rgba(46, 110, 61, 0.20), transparent 32%);
+  filter: blur(28px);
+  opacity: 0.95;
+}
+
+.brand-lockup {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.14);
+  background: linear-gradient(135deg, rgba(12, 26, 35, 0.54), rgba(19, 37, 50, 0.3));
+  box-shadow: 0 28px 80px rgba(3, 12, 20, 0.4);
+  backdrop-filter: blur(16px);
+}
+
+.brand-lockup::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), transparent 36%, rgba(201, 211, 218, 0.03) 65%, transparent);
+  pointer-events: none;
+}
+
 .hero-photo-card {
   position: relative;
   overflow: hidden;
