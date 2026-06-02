@@ -402,7 +402,7 @@ export default function AdminDashboardPage() {
   const [workspace, setWorkspace] = useState<GoogleWorkspaceData | null>(null);
   const [workspaceLoading, setWorkspaceLoading] = useState(false);
   const [showAllMembers, setShowAllMembers] = useState(false);
-  const [memberSortCol, setMemberSortCol] = useState<'avgSession' | 'lastSession' | 'sessions' | null>(null);
+  const [memberSortCol, setMemberSortCol] = useState<'name' | 'lastSeenAt' | 'lastSessionMinutes' | 'avgSessionMinutes' | 'sessionCount' | 'tier'>('lastSeenAt');
   const [memberSortDir, setMemberSortDir] = useState<'asc' | 'desc'>('desc');
   const [showAllScreens, setShowAllScreens] = useState(false);
   const [insights, setInsights] = useState<UsageInsight[]>([]);
@@ -1297,41 +1297,27 @@ export default function AdminDashboardPage() {
           {/* Member activity table */}
           {activity?.memberList && activity.memberList.length > 0 && (() => {
             const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
-            const recentMembers = activity.memberList.filter(
+            const sortedMembers = [...activity.memberList].sort((a, b) => {
+              const dir = memberSortDir === 'asc' ? 1 : -1;
+              if (memberSortCol === 'name') return dir * a.name.localeCompare(b.name);
+              if (memberSortCol === 'lastSeenAt') return dir * (new Date(a.lastSeenAt).getTime() - new Date(b.lastSeenAt).getTime());
+              if (memberSortCol === 'lastSessionMinutes') return dir * ((a.lastSessionMinutes ?? -1) - (b.lastSessionMinutes ?? -1));
+              if (memberSortCol === 'avgSessionMinutes') return dir * ((a.avgSessionMinutes ?? -1) - (b.avgSessionMinutes ?? -1));
+              if (memberSortCol === 'sessionCount') return dir * (a.sessionCount - b.sessionCount);
+              if (memberSortCol === 'tier') {
+                const order = { power: 0, regular: 1, light: 2, dormant: 3 };
+                return dir * ((order[a.tier] ?? 4) - (order[b.tier] ?? 4));
+              }
+              return 0;
+            });
+            const allMembers = sortedMembers;
+            const recentSorted = sortedMembers.filter(
               (m) => new Date(m.lastSeenAt).getTime() >= oneDayAgo
             );
-            const allMembers = activity.memberList;
-            const sortMembers = (list: typeof allMembers) => {
-              if (!memberSortCol) return list;
-              return [...list].sort((a, b) => {
-                let av: number, bv: number;
-                if (memberSortCol === 'avgSession') {
-                  av = a.avgSessionMinutes ?? -1;
-                  bv = b.avgSessionMinutes ?? -1;
-                } else if (memberSortCol === 'lastSession') {
-                  av = a.lastSessionMinutes ?? -1;
-                  bv = b.lastSessionMinutes ?? -1;
-                } else {
-                  av = a.sessionCount ?? 0;
-                  bv = b.sessionCount ?? 0;
-                }
-                return memberSortDir === 'desc' ? bv - av : av - bv;
-              });
-            };
-            const toggleSort = (col: 'avgSession' | 'lastSession' | 'sessions') => {
-              if (memberSortCol === col) {
-                setMemberSortDir((d) => (d === 'desc' ? 'asc' : 'desc'));
-              } else {
-                setMemberSortCol(col);
-                setMemberSortDir('desc');
-              }
-            };
-            const baseList = showAllMembers ? allMembers : recentMembers;
-            const sortedBase = sortMembers(baseList);
-            const listToShow = showAllMembers ? sortedBase : sortedBase.slice(0, 5);
+            const listToShow = showAllMembers ? allMembers : recentSorted.slice(0, 5);
             const hiddenCount = showAllMembers
               ? 0
-              : allMembers.length - Math.min(recentMembers.length, 5);
+              : allMembers.length - Math.min(recentSorted.length, 5);
 
             const tierBadge = (tier: string) => {
               const styles: Record<string, string> = {
@@ -1353,11 +1339,7 @@ export default function AdminDashboardPage() {
                   <div>
                     <p className="text-sm font-semibold text-copyLight">Member Activity</p>
                     <p className="text-xs text-copyMuted/50 mt-0.5">
-                      {showAllMembers
-                        ? memberSortCol
-                          ? `all members, sorted by ${memberSortCol === 'avgSession' ? 'avg session' : memberSortCol === 'lastSession' ? 'last session' : 'sessions'} (${memberSortDir === 'desc' ? 'high → low' : 'low → high'})`
-                          : 'all members, most recent first'
-                        : 'active in last 24 hours'}
+                      {showAllMembers ? 'all members, sorted' : 'active in last 24 hours'}
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1372,7 +1354,7 @@ export default function AdminDashboardPage() {
                         <span className="text-copyMuted/50">{activity.engagement.dormant} dormant</span>
                       </div>
                     )}
-                    {(allMembers.length > 5 || recentMembers.length > 5) && (
+                    {(allMembers.length > 5 || recentSorted.length > 5) && (
                       <button
                         onClick={() => setShowAllMembers((v) => !v)}
                         className="inline-flex items-center gap-1 text-xs text-electric/60 hover:text-electric transition-colors"
@@ -1396,49 +1378,40 @@ export default function AdminDashboardPage() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="text-xs text-copyMuted/50 uppercase tracking-wider border-b border-liftedPanel">
-                        <th className="text-left px-6 py-3 font-medium">Member</th>
-                        <th className="text-left px-6 py-3 font-medium">Last Seen</th>
-                        <th className="px-6 py-3 font-medium">
-                          <button
-                            onClick={() => toggleSort('lastSession')}
-                            className="flex items-center gap-1 hover:text-copyLight transition-colors"
+                        {([
+                          { col: 'name', label: 'Member' },
+                          { col: 'lastSeenAt', label: 'Last Seen' },
+                          { col: 'lastSessionMinutes', label: 'Last Session' },
+                          { col: 'avgSessionMinutes', label: 'Avg Session' },
+                          { col: 'sessionCount', label: 'Sessions' },
+                          { col: 'tier', label: 'Tier' },
+                        ] as const).map(({ col, label }) => (
+                          <th
+                            key={col}
+                            className="text-left px-6 py-3 font-medium cursor-pointer select-none hover:text-copyMuted transition-colors"
+                            onClick={() => {
+                              if (memberSortCol === col) {
+                                setMemberSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
+                              } else {
+                                setMemberSortCol(col);
+                                setMemberSortDir('desc');
+                              }
+                            }}
                           >
-                            Last Session
-                            {memberSortCol === 'lastSession'
-                              ? memberSortDir === 'desc'
-                                ? <ChevronDown className="h-3 w-3" strokeWidth={2.5} />
-                                : <ChevronUp className="h-3 w-3" strokeWidth={2.5} />
-                              : <ChevronDown className="h-3 w-3 opacity-25" strokeWidth={2} />}
-                          </button>
-                        </th>
-                        <th className="px-6 py-3 font-medium">
-                          <button
-                            onClick={() => toggleSort('avgSession')}
-                            className="flex items-center gap-1 hover:text-copyLight transition-colors"
-                          >
-                            Avg Session
-                            {memberSortCol === 'avgSession'
-                              ? memberSortDir === 'desc'
-                                ? <ChevronDown className="h-3 w-3" strokeWidth={2.5} />
-                                : <ChevronUp className="h-3 w-3" strokeWidth={2.5} />
-                              : <ChevronDown className="h-3 w-3 opacity-25" strokeWidth={2} />}
-                          </button>
-
-                        </th>
-                        <th className="px-6 py-3 font-medium">
-                          <button
-                            onClick={() => toggleSort('sessions')}
-                            className="flex items-center gap-1 hover:text-copyLight transition-colors"
-                          >
-                            Sessions
-                            {memberSortCol === 'sessions'
-                              ? memberSortDir === 'desc'
-                                ? <ChevronDown className="h-3 w-3" strokeWidth={2.5} />
-                                : <ChevronUp className="h-3 w-3" strokeWidth={2.5} />
-                              : <ChevronDown className="h-3 w-3 opacity-25" strokeWidth={2} />}
-                          </button>
-                        </th>
-                        <th className="text-left px-6 py-3 font-medium">Tier</th>
+                            <span className="inline-flex items-center gap-1">
+                              {label}
+                              {memberSortCol === col ? (
+                                memberSortDir === 'desc' ? (
+                                  <ChevronDown className="h-3 w-3" strokeWidth={2.5} />
+                                ) : (
+                                  <ChevronUp className="h-3 w-3" strokeWidth={2.5} />
+                                )
+                              ) : (
+                                <ChevronDown className="h-3 w-3 opacity-20" strokeWidth={2.5} />
+                              )}
+                            </span>
+                          </th>
+                        ))}
                       </tr>
                     </thead>
                     <tbody>

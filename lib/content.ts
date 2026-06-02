@@ -32,6 +32,7 @@ export const siteContent = {
   ],
   hero: {
     eyebrow: "Not another fishing app.",
+    brandEyebrow: "Built on the water",
     title: "The fishing app that gets smarter the more you fish.",
     description:
       "Trophy Cast learns your patterns, sharpens your skills, and connects you with anglers who actually fish. No generic tips. No sponsored advice. Just insights from your own water.",

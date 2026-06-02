@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? '';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 function checkPassword(provided: string, expected: string): boolean {
   if (!expected || !provided) return false;
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       reason?: string;
     };
 
-    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD)) {
+    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD ?? '')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? '';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const TRACKING_STARTED_AT = '2026-03-08T00:00:00.000Z';
 const DAY_MS = 24 * 60 * 60 * 1000;
 const RETURN_AFTER_MS = 30 * 60 * 1000;
@@ -46,7 +46,7 @@ function hasSessionAfter(userId: string, thresholdMs: number, sessionMap: Map<st
 export async function POST(request: Request) {
   try {
     const { password } = await request.json();
-    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD)) {
+    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD ?? '')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

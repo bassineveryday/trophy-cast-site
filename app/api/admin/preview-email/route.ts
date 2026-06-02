@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import { buildEmailHtml, buildPromoEmailHtml } from '@/lib/emailTemplate';
 import { getClubEmailConfig } from '@/lib/clubEmailConfig';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? '';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 function checkPassword(provided: string, expected: string): boolean {
   if (!expected || !provided) return false;
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     } = body;
     const campaignType = rawCampaignType === 'promo' ? 'promo' : 'weekly';
 
-    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD)) {
+    if (!checkPassword(String(password ?? ''), ADMIN_PASSWORD ?? '')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
