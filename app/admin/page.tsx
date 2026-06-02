@@ -1354,7 +1354,7 @@ export default function AdminDashboardPage() {
                         <span className="text-copyMuted/50">{activity.engagement.dormant} dormant</span>
                       </div>
                     )}
-                    {(allMembers.length > 5 || recentMembers.length > 5) && (
+                    {(allMembers.length > 5 || recentSorted.length > 5) && (
                       <button
                         onClick={() => setShowAllMembers((v) => !v)}
                         className="inline-flex items-center gap-1 text-xs text-electric/60 hover:text-electric transition-colors"

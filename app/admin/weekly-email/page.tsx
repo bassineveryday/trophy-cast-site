@@ -19,7 +19,7 @@ import { TCCoachBadge } from '@/components/TCCoachBadge';
 import { CLUB_SELECTOR_OPTIONS, getClubEmailConfig } from '@/lib/clubEmailConfig';
 
 type CampaignType = 'weekly' | 'promo';
-type AudienceType = 'club' | 'all';
+type AudienceType = 'club' | 'all' | 'app_users_club' | 'app_users_all' | 'combined_club' | 'combined_all';
 
 const DEEP_DIVE_OPTIONS = [
   'Dock Talk',
@@ -437,9 +437,13 @@ export default function WeeklyEmailAdminPage() {
       : [{ title: 'Register for Catch Rate', body: 'Tap the button below to lock in your spot.' }];
   }, [promoSteps]);
 
-  const recipientScopeLabel = audience === 'all'
-    ? 'all subscribers'
-    : `${clubConfig?.displayName ?? 'selected club'} subscribers`;
+  const recipientScopeLabel =
+    audience === 'all'            ? 'all waitlist subscribers' :
+    audience === 'app_users_club' ? `${clubConfig?.displayName ?? 'selected club'} app users` :
+    audience === 'app_users_all'  ? 'all app users' :
+    audience === 'combined_club'  ? `${clubConfig?.displayName ?? 'selected club'} waitlist + app users` :
+    audience === 'combined_all'   ? 'all waitlist + app users' :
+    `${clubConfig?.displayName ?? 'selected club'} waitlist subscribers`;
 
   const previewHtml = useMemo(() => {
     if (campaignType === 'promo') {
@@ -630,8 +634,12 @@ export default function WeeklyEmailAdminPage() {
                 onChange={(e) => setAudience(e.target.value as AudienceType)}
                 className="w-full bg-midnight border border-liftedPanel rounded-xl px-4 py-3 text-copyLight text-sm focus:outline-none focus:border-electric"
               >
-                <option value="club">Selected club subscribers only</option>
-                <option value="all">All subscribers</option>
+                <option value="club">Waitlist — selected club only</option>
+                <option value="all">Waitlist — all clubs</option>
+                <option value="app_users_club">App users — selected club</option>
+                <option value="app_users_all">App users — all clubs</option>
+                <option value="combined_club">Combined (waitlist + app) — selected club</option>
+                <option value="combined_all">Combined (waitlist + app) — all clubs</option>
               </select>
             </div>
 
@@ -1025,7 +1033,7 @@ export default function WeeklyEmailAdminPage() {
                 <Pin className="h-4 w-4" strokeWidth={2.2} />
                 <span>Reminder</span>
               </p>
-              <p>Audience: <strong>{recipientScopeLabel}</strong> from <strong>waitlist_subscribers</strong>.</p>
+              <p>Audience: <strong>{recipientScopeLabel}</strong>.</p>
               <p>Branding: <strong>{clubConfig?.displayName ?? 'Trophy Cast'}</strong> email header and subject prefix.</p>
               <p>Check <a href="https://resend.com" target="_blank" rel="noopener noreferrer" className="text-electric underline">Resend dashboard</a> after sending.</p>
             </div>

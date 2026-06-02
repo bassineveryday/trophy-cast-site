@@ -29,7 +29,7 @@ function checkPassword(provided: string, expected: string): boolean {
   return crypto.timingSafeEqual(a, b);
 }
 
-// Fetch subscribed emails from Supabase, optionally filtered by club
+// Fetch emails from waitlist_subscribers, optionally filtered by club name.
 async function fetchSubscriberEmails(clubName?: string | null): Promise<string[]> {
   let query = supabase.from('waitlist_subscribers').select('email');
   if (clubName) {
@@ -39,6 +39,84 @@ async function fetchSubscriberEmails(clubName?: string | null): Promise<string[]
   if (error) throw new Error(`Supabase error: ${error.message} (code: ${error.code})`);
   if (!data) throw new Error('Supabase returned no data');
   return data.map((r) => r.email).filter(Boolean) as string[];
+}
+
+// Fetch emails for real app users (profiles → auth.users), optionally filtered by club.
+// Uses service role to access auth.admin.listUsers().
+// TODO: when profiles.email_opt_out is added, filter it here for consent compliance.
+async function fetchAppUserEmails(clubId?: string | null): Promise<string[]> {
+  // 1. Collect profile IDs for the target club (or all clubs)
+  let profileQuery = supabase.from('profiles').select('id');
+  if (clubId) profileQuery = profileQuery.eq('club_id', clubId);
+  const { data: profiles, error: profileError } = await profileQuery;
+  if (profileError) throw new Error(`Profile lookup failed: ${profileError.message}`);
+  if (!profiles?.length) return [];
+
+  const profileIdSet = new Set((profiles as { id: string }[]).map((p) => p.id));
+
+  // 2. Page through auth users; collect emails for matched profiles
+  const emails: string[] = [];
+  let page = 1;
+  const perPage = 1000;
+  while (true) {
+    const { data, error } = await supabase.auth.admin.listUsers({ page, perPage });
+    if (error) throw new Error(`Auth user lookup failed: ${error.message}`);
+    for (const user of data.users ?? []) {
+      if (user.email && profileIdSet.has(user.id)) {
+        emails.push(user.email.toLowerCase());
+      }
+    }
+    if ((data.users?.length ?? 0) < perPage) break;
+    page++;
+  }
+  return emails;
+}
+
+// Supported audience sources:
+//   'club'           — waitlist subscribers for the selected club (legacy default)
+//   'all'            — all waitlist subscribers (legacy)
+//   'app_users_club' — app users (profiles → auth.users) for the selected club
+//   'app_users_all'  — all app users regardless of club
+//   'combined_club'  — waitlist + app users for club, deduped by email
+//   'combined_all'   — all waitlist + all app users, deduped by email
+type AudienceSource = 'club' | 'all' | 'app_users_club' | 'app_users_all' | 'combined_club' | 'combined_all';
+
+function normalizeAudience(raw: unknown): AudienceSource {
+  const valid: AudienceSource[] = ['club', 'all', 'app_users_club', 'app_users_all', 'combined_club', 'combined_all'];
+  if (valid.includes(raw as AudienceSource)) return raw as AudienceSource;
+  return 'club';
+}
+
+async function resolveAudienceEmails(
+  source: AudienceSource,
+  clubId?: string | null,
+  clubName?: string | null,
+): Promise<string[]> {
+  switch (source) {
+    case 'all':
+      return fetchSubscriberEmails(null);
+    case 'app_users_club':
+      return fetchAppUserEmails(clubId);
+    case 'app_users_all':
+      return fetchAppUserEmails(null);
+    case 'combined_club': {
+      const [waitlist, appUsers] = await Promise.all([
+        fetchSubscriberEmails(clubName),
+        fetchAppUserEmails(clubId),
+      ]);
+      return Array.from(new Set([...waitlist.map((e) => e.toLowerCase()), ...appUsers]));
+    }
+    case 'combined_all': {
+      const [waitlist, appUsers] = await Promise.all([
+        fetchSubscriberEmails(null),
+        fetchAppUserEmails(null),
+      ]);
+      return Array.from(new Set([...waitlist.map((e) => e.toLowerCase()), ...appUsers]));
+    }
+    case 'club':
+    default:
+      return fetchSubscriberEmails(clubName);
+  }
 }
 
 export async function POST(request: Request) {
@@ -58,7 +136,7 @@ export async function POST(request: Request) {
       promo,
     } = body;
     const campaignType = rawCampaignType === 'promo' ? 'promo' : 'weekly';
-    const audience = rawAudience === 'all' ? 'all' : 'club';
+    const audience = normalizeAudience(rawAudience);
     const clubConfig = getClubEmailConfig(clubId);
 
     // ── 1. Auth ───────────────────────────────────────────────────────────────
@@ -70,8 +148,14 @@ export async function POST(request: Request) {
     if (!subject?.trim()) {
       return NextResponse.json({ error: 'Subject is required.' }, { status: 400 });
     }
-    if (audience === 'club' && !clubConfig?.clubName) {
-      return NextResponse.json({ error: 'A valid club is required for club-only sends.' }, { status: 400 });
+    // Club-scoped sends require a configured club
+    const isClubScoped = (['club', 'app_users_club', 'combined_club'] as AudienceSource[]).includes(audience);
+    if (isClubScoped && !clubId) {
+      return NextResponse.json({ error: 'A valid club is required for club-scoped sends.' }, { status: 400 });
+    }
+    // Waitlist-based club sends additionally need a matching club name in waitlist_subscribers
+    if ((audience === 'club' || audience === 'combined_club') && !clubConfig?.clubName) {
+      return NextResponse.json({ error: 'Selected club is not configured for email sends.' }, { status: 400 });
     }
 
     const promoPayload = (promo ?? {}) as {
@@ -118,10 +202,10 @@ export async function POST(request: Request) {
       );
     }
 
-    // ── 3. Fetch subscriber list ──────────────────────────────────────────────
+    // ── 3. Resolve recipient list by audience source ──────────────────────────
     let emails: string[];
     try {
-      emails = await fetchSubscriberEmails(audience === 'all' ? null : clubConfig?.clubName ?? null);
+      emails = await resolveAudienceEmails(audience, clubId, clubConfig?.clubName ?? null);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       console.error('[weekly-email] Failed to fetch subscribers:', msg);
