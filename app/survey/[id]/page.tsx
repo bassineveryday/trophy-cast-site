@@ -109,7 +109,7 @@ export default function SurveyPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0C1A23] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-[#D4AF37] animate-spin" />
+        <Loader2 className="w-8 h-8 text-trophyGold animate-spin" />
       </div>
     );
   }
@@ -135,12 +135,12 @@ export default function SurveyPage() {
       <div className="min-h-screen bg-[#0C1A23] flex items-center justify-center p-6">
         <div className="text-center max-w-md bg-[#162D3D] rounded-xl p-8">
           <CheckCircle2 className="w-16 h-16 text-green-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-[#D4AF37] font-serif mb-2">Thank You!</h1>
+          <h1 className="text-2xl font-bold text-trophyGold font-serif mb-2">Thank You!</h1>
           <p className="text-[#C9D3DA]">
             Your feedback has been recorded. The Denver Bassmasters board will review all responses
             and Trophy Cast&apos;s AI will compile a full analysis report.
           </p>
-          <a href="https://trophycast.app" className="inline-block mt-6 px-6 py-3 bg-[#D4AF37] text-[#0C1A23] font-bold rounded-lg hover:bg-[#C4A030]">
+          <a href="https://trophycast.app" className="inline-block mt-6 px-6 py-3 bg-trophyGold text-[#0C1A23] font-bold rounded-lg hover:bg-[#B5953E]">
             Back to Trophy Cast
           </a>
         </div>
@@ -162,7 +162,7 @@ export default function SurveyPage() {
             className="mx-auto mb-3"
             unoptimized
           />
-          <h1 className="text-2xl font-bold text-[#D4AF37] font-serif">{data.survey.title}</h1>
+          <h1 className="text-2xl font-bold text-trophyGold font-serif">{data.survey.title}</h1>
           {data.survey.description && (
             <p className="text-[#C9D3DA] mt-2 text-sm">{data.survey.description}</p>
           )}
@@ -183,7 +183,7 @@ export default function SurveyPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
-            className="w-full px-4 py-3 rounded-lg bg-[#162D3D] text-[#F5F1E6] border border-[#2A4A5F] focus:border-[#D4AF37] outline-none"
+            className="w-full px-4 py-3 rounded-lg bg-[#162D3D] text-[#F5F1E6] border border-[#2A4A5F] focus:border-trophyGold outline-none"
           />
           <p className="text-xs text-[#546674] mt-1">So we can track who&apos;s responded (one submission per person).</p>
         </div>
@@ -202,7 +202,7 @@ export default function SurveyPage() {
                   {(q.options as string[]).map((opt) => (
                     <label key={opt} className="flex items-center gap-3 cursor-pointer group">
                       <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${
-                        answers[q.id] === opt ? 'border-[#D4AF37] bg-[#D4AF37]' : 'border-[#546674] group-hover:border-[#C9D3DA]'
+                        answers[q.id] === opt ? 'border-trophyGold bg-trophyGold' : 'border-[#546674] group-hover:border-[#C9D3DA]'
                       }`}>
                         {answers[q.id] === opt && <div className="w-1.5 h-1.5 bg-[#0C1A23] rounded-full" />}
                       </div>
@@ -228,8 +228,8 @@ export default function SurveyPage() {
                       onClick={() => setAnswer(q.id, opt)}
                       className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
                         answers[q.id] === opt
-                          ? 'bg-[#D4AF37] text-[#0C1A23]'
-                          : 'bg-[#0C1A23] text-[#C9D3DA] border border-[#2A4A5F] hover:border-[#D4AF37]'
+                          ? 'bg-trophyGold text-[#0C1A23]'
+                          : 'bg-[#0C1A23] text-[#C9D3DA] border border-[#2A4A5F] hover:border-trophyGold'
                       }`}
                     >
                       {opt}
@@ -250,8 +250,8 @@ export default function SurveyPage() {
                         onClick={() => setAnswer(q.id, v)}
                         className={`w-11 h-11 rounded-lg text-base font-bold transition-colors ${
                           answers[q.id] === v
-                            ? 'bg-[#D4AF37] text-[#0C1A23]'
-                            : 'bg-[#0C1A23] text-[#C9D3DA] border border-[#2A4A5F] hover:border-[#D4AF37]'
+                            ? 'bg-trophyGold text-[#0C1A23]'
+                            : 'bg-[#0C1A23] text-[#C9D3DA] border border-[#2A4A5F] hover:border-trophyGold'
                         }`}
                       >
                         {v}
@@ -267,7 +267,7 @@ export default function SurveyPage() {
                   onChange={(e) => setAnswer(q.id, e.target.value)}
                   placeholder="Type your answer..."
                   rows={3}
-                  className="w-full px-4 py-3 rounded-lg bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-[#D4AF37] outline-none resize-none text-sm"
+                  className="w-full px-4 py-3 rounded-lg bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-trophyGold outline-none resize-none text-sm"
                 />
               )}
             </div>
@@ -278,7 +278,7 @@ export default function SurveyPage() {
         <button
           onClick={handleSubmit}
           disabled={submitting}
-          className="w-full mt-8 py-4 bg-[#D4AF37] text-[#0C1A23] font-bold text-lg rounded-xl hover:bg-[#C4A030] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full mt-8 py-4 bg-trophyGold text-[#0C1A23] font-bold text-lg rounded-xl hover:bg-[#B5953E] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle2 className="w-5 h-5" />}
           {submitting ? 'Submitting...' : 'Submit Survey'}

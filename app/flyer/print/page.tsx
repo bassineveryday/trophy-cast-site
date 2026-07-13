@@ -13,7 +13,7 @@ import { TC_LOGOS } from '@/lib/brandAssets';
 
 /* ── Brand palette ── */
 const NAVY   = '#0C1A23';
-const GOLD   = '#D4AF37';
+const GOLD   = '#C9A646';
 const TEAL   = '#3B8C7F';          // from logo mark — the blue-green
 const CREAM  = '#F5F1E6';
 const SLATE  = '#6B8494';
