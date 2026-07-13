@@ -32,18 +32,18 @@ function PasswordGate({ onUnlock }: { onUnlock: (pw: string) => void }) {
   return (
     <div className="min-h-screen bg-[#0C1A23] flex items-center justify-center p-6">
       <div className="bg-[#162D3D] rounded-xl p-8 max-w-sm w-full">
-        <h1 className="text-xl font-bold text-[#D4AF37] mb-4 font-serif">🔒 Admin Access</h1>
+        <h1 className="text-xl font-bold text-trophyGold mb-4 font-serif">🔒 Admin Access</h1>
         <input
           type="password"
           value={pw}
           onChange={(e) => setPw(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && pw && onUnlock(pw)}
           placeholder="Enter admin password"
-          className="w-full px-4 py-3 rounded-lg bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-[#D4AF37] outline-none mb-4"
+          className="w-full px-4 py-3 rounded-lg bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-trophyGold outline-none mb-4"
         />
         <button
           onClick={() => pw && onUnlock(pw)}
-          className="w-full py-3 bg-[#D4AF37] text-[#0C1A23] font-bold rounded-lg hover:bg-[#C4A030] transition-colors"
+          className="w-full py-3 bg-trophyGold text-[#0C1A23] font-bold rounded-lg hover:bg-[#B5953E] transition-colors"
         >
           Unlock
         </button>
@@ -56,10 +56,10 @@ function RatingBar({ value, count, total }: { value: string; count: number; tota
   const pct = total > 0 ? Math.round((count / total) * 100) : 0;
   return (
     <div className="flex items-center gap-3 text-sm">
-      <span className="text-[#D4AF37] w-6 text-right font-mono">{value}</span>
+      <span className="text-trophyGold w-6 text-right font-mono">{value}</span>
       <div className="flex-1 bg-[#0C1A23] rounded-full h-5 overflow-hidden">
         <div
-          className="bg-[#D4AF37] h-full rounded-full transition-all"
+          className="bg-trophyGold h-full rounded-full transition-all"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -94,7 +94,7 @@ function QuestionResult({ stat }: { stat: QuestionStat }) {
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-[#C9D3DA]">{opt}</span>
-                    <span className="text-[#D4AF37] font-mono">{pct}%</span>
+                    <span className="text-trophyGold font-mono">{pct}%</span>
                   </div>
                   <div className="bg-[#0C1A23] rounded-full h-4 overflow-hidden">
                     <div
@@ -113,7 +113,7 @@ function QuestionResult({ stat }: { stat: QuestionStat }) {
       {isRating && (
         <div className="space-y-2">
           <div className="text-center mb-3">
-            <span className="text-3xl font-bold text-[#D4AF37]">{stat.average}</span>
+            <span className="text-3xl font-bold text-trophyGold">{stat.average}</span>
             <span className="text-sm text-[#546674]"> / 5</span>
           </div>
           {['5', '4', '3', '2', '1'].map((v) => (
@@ -194,7 +194,7 @@ export default function SurveyResultsPage() {
           <Link href="/admin/survey" className="text-[#546674] hover:text-[#C9D3DA]">
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <h1 className="text-2xl font-bold text-[#D4AF37] font-serif flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-trophyGold font-serif flex items-center gap-2">
             <BarChart3 className="w-6 h-6" /> Survey Results
           </h1>
         </div>

@@ -87,7 +87,7 @@ export default function FlyerPage() {
               background: 'rgba(212,175,55,0.12)',
               border: '1px solid rgba(212,175,55,0.3)',
               borderRadius: 8,
-              color: '#D4AF37',
+              color: '#C9A646',
               padding: '6px 14px',
               fontSize: 12,
               cursor: 'pointer',
@@ -116,7 +116,7 @@ export default function FlyerPage() {
           <button
             onClick={handlePrint}
             style={{
-              background: '#D4AF37',
+              background: '#C9A646',
               border: 'none',
               borderRadius: 8,
               color: '#0C1A23',
@@ -189,7 +189,7 @@ export default function FlyerPage() {
           {/* ── TOP ACCENT BAR ── */}
           <div style={{
             height: 6,
-            background: 'linear-gradient(90deg, #4FC3F7, #D4AF37, #4FC3F7)',
+            background: 'linear-gradient(90deg, #4FC3F7, #C9A646, #4FC3F7)',
           }} />
 
           {/* ── HEADER SECTION ── */}
@@ -211,7 +211,7 @@ export default function FlyerPage() {
               marginBottom: 28,
             }}>
               <span style={{ fontSize: 12 }}>🏆</span>
-              <span style={{ color: '#D4AF37', fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+              <span style={{ color: '#C9A646', fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
                 Now on the waitlist
               </span>
             </div>
@@ -235,7 +235,7 @@ export default function FlyerPage() {
                 letterSpacing: '-2px',
               }}>
                 Trophy{' '}
-                <span style={{ color: '#D4AF37' }}>Cast</span>
+                <span style={{ color: '#C9A646' }}>Cast</span>
               </h1>
             </div>
 
@@ -285,7 +285,7 @@ export default function FlyerPage() {
             <p style={{
               fontSize: 28,
               fontWeight: 700,
-              color: '#D4AF37',
+              color: '#C9A646',
               margin: 0,
               lineHeight: 1.35,
             }}>
@@ -346,7 +346,7 @@ export default function FlyerPage() {
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   {item.icon === 'coach' ? (
-                    <Sparkles size={20} color="#D4AF37" strokeWidth={2.2} />
+                    <Sparkles size={20} color="#C9A646" strokeWidth={2.2} />
                   ) : (
                     <span style={{ fontSize: 20 }}>{item.icon}</span>
                   )}
@@ -375,7 +375,7 @@ export default function FlyerPage() {
             {/* QR Code */}
             <div style={{ flexShrink: 0, textAlign: 'center' }}>
               <div style={{
-                background: '#D4AF37',
+                background: '#C9A646',
                 borderRadius: 16,
                 padding: 12,
                 display: 'inline-block',
@@ -400,7 +400,7 @@ export default function FlyerPage() {
             <div style={{ flex: 1 }}>
               <p style={{
                 fontSize: 13,
-                color: '#D4AF37',
+                color: '#C9A646',
                 fontWeight: 700,
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
@@ -497,7 +497,7 @@ export default function FlyerPage() {
                 }}
               >
                 {chip.emoji === 'coach' ? (
-                  <Sparkles size={16} color="#D4AF37" strokeWidth={2.2} />
+                  <Sparkles size={16} color="#C9A646" strokeWidth={2.2} />
                 ) : (
                   <span style={{ fontSize: 16 }}>{chip.emoji}</span>
                 )}
@@ -519,7 +519,7 @@ export default function FlyerPage() {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-              <span style={{ color: '#D4AF37', fontSize: 12, fontWeight: 700, letterSpacing: '0.06em' }}>
+              <span style={{ color: '#C9A646', fontSize: 12, fontWeight: 700, letterSpacing: '0.06em' }}>
                 🏆 TROPHY CAST
               </span>
               <span style={{ color: 'rgba(139,163,181,0.5)', fontSize: 11, fontStyle: 'italic' }}>
@@ -532,7 +532,7 @@ export default function FlyerPage() {
             {/* Bottom color bar */}
             <div style={{
               height: 6,
-              background: 'linear-gradient(90deg, #D4AF37, #4FC3F7, #D4AF37)',
+              background: 'linear-gradient(90deg, #C9A646, #4FC3F7, #C9A646)',
             }} />
           </div>
 
@@ -551,7 +551,7 @@ export default function FlyerPage() {
             padding: '20px 28px',
           }}
         >
-          <p style={{ color: '#D4AF37', fontWeight: 700, fontSize: 13, margin: '0 0 10px' }}>
+          <p style={{ color: '#C9A646', fontWeight: 700, fontSize: 13, margin: '0 0 10px' }}>
             📸 How to use this flyer
           </p>
           <ul style={{ color: '#8BA3B5', fontSize: 13, margin: 0, paddingLeft: 18, lineHeight: 2 }}>

@@ -77,7 +77,7 @@ export default function DBMFlyerPage() {
           }}>🖨 Print version →</a>
           <button onClick={handleCopyUrl} style={{
             background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.3)',
-            borderRadius: 8, color: '#D4AF37', padding: '6px 14px', fontSize: 12, cursor: 'pointer', fontWeight: 600,
+            borderRadius: 8, color: '#C9A646', padding: '6px 14px', fontSize: 12, cursor: 'pointer', fontWeight: 600,
           }}>{copied ? '✓ Copied!' : 'Copy URL'}</button>
           <button onClick={handleDownloadPng} disabled={downloading} style={{
             background: GD, border: 'none', borderRadius: 8, color: '#fff',
@@ -113,7 +113,7 @@ export default function DBMFlyerPage() {
           <div style={{ position: 'absolute', bottom: -60, left: '25%', width: 380, height: 380, borderRadius: '50%', background: 'radial-gradient(circle, rgba(93,109,36,0.07), transparent 70%)', pointerEvents: 'none' }} />
 
           {/* Top accent bar */}
-          <div style={{ height: 6, background: 'linear-gradient(90deg, #88AC2E, #D4AF37, #88AC2E)' }} />
+          <div style={{ height: 6, background: 'linear-gradient(90deg, #88AC2E, #C9A646, #88AC2E)' }} />
 
           {/* HEADER */}
           <div style={{ padding: '44px 64px 30px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', position: 'relative' }}>
@@ -131,7 +131,7 @@ export default function DBMFlyerPage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/Loge%20Transparent%20background.png" alt="Denver BassMasters logo" height={88} style={{ display: 'block', margin: '0 auto', objectFit: 'contain' }} />
             </div>
-            <h1 style={{ fontSize: 54, fontWeight: 900, margin: '0 0 6px', lineHeight: 1, letterSpacing: '-1.5px', textTransform: 'uppercase', background: 'linear-gradient(90deg, #D4AF37 0%, #88AC2E 45%, #B5D45A 75%, #D4AF37 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            <h1 style={{ fontSize: 54, fontWeight: 900, margin: '0 0 6px', lineHeight: 1, letterSpacing: '-1.5px', textTransform: 'uppercase', background: 'linear-gradient(90deg, #C9A646 0%, #88AC2E 45%, #B5D45A 75%, #C9A646 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               Denver BassMasters
             </h1>
             <p style={{ fontSize: 13, color: 'rgba(197,213,180,0.5)', margin: '4px 0 8px', fontStyle: 'italic', letterSpacing: '0.06em' }}>
@@ -215,9 +215,9 @@ export default function DBMFlyerPage() {
 
           {/* CTA SECTION */}
           <div style={{ padding: '28px 64px 28px' }}>
-            <p style={{ fontSize: 12, color: '#D4AF37', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px' }}>Join Denver BassMasters</p>
+            <p style={{ fontSize: 12, color: '#C9A646', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px' }}>Join Denver BassMasters</p>
             <h2 style={{ fontSize: 33, fontWeight: 900, color: '#F5F5EE', margin: '0 0 12px', lineHeight: 1.15, letterSpacing: '-0.5px' }}>
-              Ready to fish <span style={{ color: '#D4AF37' }}>with us?</span>
+              Ready to fish <span style={{ color: '#C9A646' }}>with us?</span>
             </h2>
             <p style={{ color: '#8A9E6A', fontSize: 13, margin: '0 0 16px', lineHeight: 1.65, maxWidth: 560 }}>
               Meetings are open to everyone. Come check us out — no commitment required.
@@ -254,7 +254,7 @@ export default function DBMFlyerPage() {
           }}>
             <span style={{ fontSize: 22 }}>🏆</span>
             <div style={{ flex: 1 }}>
-              <p style={{ color: '#D4AF37', fontWeight: 800, fontSize: 12.5, margin: '0 0 3px', letterSpacing: '0.03em' }}>
+              <p style={{ color: '#C9A646', fontWeight: 800, fontSize: 12.5, margin: '0 0 3px', letterSpacing: '0.03em' }}>
                 Official Club App — Trophy Cast
               </p>
               <p style={{ color: '#8A9E6A', fontSize: 11.5, margin: 0, lineHeight: 1.5 }}>
@@ -263,7 +263,7 @@ export default function DBMFlyerPage() {
               </p>
             </div>
             <div style={{ background: 'rgba(14,18,8,0.7)', border: '1px solid rgba(212,175,55,0.22)', borderRadius: 8, padding: '6px 14px', flexShrink: 0, textAlign: 'center' }}>
-              <p style={{ color: '#D4AF37', fontWeight: 800, fontSize: 11, margin: 0 }}>trophycast.app</p>
+              <p style={{ color: '#C9A646', fontWeight: 800, fontSize: 11, margin: 0 }}>trophycast.app</p>
             </div>
           </div>
 
