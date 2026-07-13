@@ -1,8 +1,8 @@
 # Trophy Cast Brand Guide
 
-_Last updated: May 13, 2026_
+_Last updated: July 13, 2026 — colors realigned to the app repo's 2026-07-10/11 brand decisions._
 
-This document is the canonical brand reference for Trophy Cast marketing, website, flyer, and product-adjacent visual work in the site repo.
+This document is the canonical brand reference for Trophy Cast marketing, website, flyer, and product-adjacent visual work in the site repo. **The app repo (`Trophy-Cast-MVP-v2-1`) is the code source of truth for color values** — see `docs/product/BRAND_AND_VISION_MASTER.md` §13 there (tokens live in `lib/brandConfig.ts` + `lib/colors.ts`). If this doc and that repo ever disagree, the app repo wins; fix this doc to match.
 
 It is grounded in the actual logo assets currently stored in `public/tc-logos/`.
 
@@ -84,13 +84,16 @@ Do not hardcode logo paths in components, pages, or email templates. Always impo
 
 ### Core colors
 
+_Aligned 2026-07-13 to `tailwind.config.ts` + the app repo's approved dark tokens. The old values (`#D4AF37`/`#0C1A23`/`#F5F1E6`/`#132532`) are superseded — if you find them still in code (e.g. `app/flyer/*`, `app/survey/*` currently hardcode the old gold directly instead of the `trophyGold` token), that's known drift, not the correct value._
+
 | Token       | Hex       | Role                                     |
 | ----------- | --------- | ---------------------------------------- |
-| Trophy Gold | `#D4AF37` | CTA, highlight, brand accent             |
-| Midnight    | `#0C1A23` | Primary dark background                  |
-| Bass Green  | `#2E6E3D` | Secondary accent                         |
-| Mist        | `#F5F1E6` | Light surface and readable contrast text |
-| Deep Panel  | `#132532` | Cards and secondary surfaces             |
+| Trophy Gold | `#C9A646` | CTA, highlight, brand accent (`trophyGold`) |
+| Midnight    | `#0B1A2F` | Primary dark background (`midnight`)     |
+| Bass Green  | `#2E6E3D` | Secondary accent (`bass`)                |
+| Mist        | `#EAF1F8` | Light surface and readable contrast text (`mist`/`copyLight`) |
+| Deep Panel  | `#152B47` | Cards and secondary surfaces (`deepPanel`) |
+| Teal        | `#1EBCC8` | Links, info accents                      |
 
 ### Typography
 
@@ -197,9 +200,17 @@ This gives Trophy Cast one recognizable visual family instead of several competi
 
 ---
 
+## Email "From" Name Convention
+
+Club emails use `"{ClubDisplayName} via Trophy Cast"` (e.g. `Denver BassMasters via Trophy Cast`) as the Resend `from` display name — set in `lib/clubEmailConfig.ts` here and mirrored in the app repo's `supabase/functions/_shared/emailBranding.ts` (`CLUB_EMAIL_META`). Keep both in sync when adding a club; the app repo's values are live in prod and should be treated as the reference if they ever diverge.
+
+---
+
 ## Related Files
 
 - `docs/WEBSITE_BRIEF.md`
 - `docs/FLYER_AND_MARKETING_SOP.md`
 - `docs/FLYER_COPY.md`
 - `lib/content.ts`
+- App repo: `Trophy-Cast-MVP-v2-1/docs/product/BRAND_AND_VISION_MASTER.md` §13 (code color/voice SSOT)
+- App repo: `Trophy-Cast-MVP-v2-1/.github/copilot-reference.md` §21 (transactional email HTML canon)

@@ -5,15 +5,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Aligned 2026-07-13 to the app repo's approved brand tokens
+        // (lib/brandConfig.ts DARK_THEME_COLORS + Trophy Gold #C9A646).
+        // The app repo is the code SSOT — see docs/product/BRAND_AND_VISION_MASTER.md
+        // §13 there. Old values (#D4AF37/#0C1A23/#F5F1E6/#132532/#C9D3DA) superseded.
         bass: "#2E6E3D",
-        trophyGold: "#D4AF37",
-        midnight: "#0C1A23",
-        mist: "#F5F1E6",
-        deepPanel: "#132532",
-        deeperPanel: "#1A2C3A",
-        copyLight: "#F5F1E6",
-        copyMuted: "#C9D3DA",
-        copyDark: "#0C1A23",
+        trophyGold: "#C9A646",
+        midnight: "#0B1A2F",
+        mist: "#EAF1F8",
+        deepPanel: "#152B47",
+        deeperPanel: "#10233C",
+        copyLight: "#EAF1F8",
+        copyMuted: "#8FA6BE",
+        copyDark: "#0B1A2F",
         copyDarkMuted: "#546674",
       },
       fontFamily: {

@@ -32,18 +32,18 @@ function buildEmailHeader(opts: {
   if (!safeClubLogoUrl) {
     return `
       <img src="${EMAIL_LOGO_URL}" alt="TC" width="120" height="120" style="display:block;margin:0 auto 8px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
-      <h1 style="color:#D4AF37;font-size:26px;font-weight:700;margin:8px 0 4px;font-family:Georgia,serif;">Trophy Cast</h1>
-      <p style="color:#C9D3DA;font-size:14px;margin:0;">${escapeHtml(subtitle)}</p>`;
+      <h1 style="color:#C9A646;font-size:26px;font-weight:700;margin:8px 0 4px;font-family:Georgia,serif;">Trophy Cast</h1>
+      <p style="color:#8FA6BE;font-size:14px;margin:0;">${escapeHtml(subtitle)}</p>`;
   }
 
   const clubAlt = clubDisplayName ? escapeHtml(clubDisplayName) : 'Club';
   return `
       <img src="${safeClubLogoUrl}" alt="${clubAlt}" width="96" height="96" style="display:block;margin:0 auto 6px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
-      <p style="color:#C9D3DA;font-size:15px;font-weight:700;margin:0 0 12px;font-family:Georgia,serif;">${escapeHtml(clubDisplayName ?? '')}</p>
+      <p style="color:#8FA6BE;font-size:15px;font-weight:700;margin:0 0 12px;font-family:Georgia,serif;">${escapeHtml(clubDisplayName ?? '')}</p>
       <p style="color:#546674;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 10px;">presented by</p>
       <img src="${EMAIL_LOGO_URL}" alt="Trophy Cast" width="120" height="120" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;">
-      <p style="color:#D4AF37;font-size:13px;font-weight:700;margin:0 0 4px;font-family:Georgia,serif;">Trophy Cast</p>
-      <p style="color:#C9D3DA;font-size:13px;margin:0;">${escapeHtml(subtitle)}</p>`;
+      <p style="color:#C9A646;font-size:13px;font-weight:700;margin:0 0 4px;font-family:Georgia,serif;">Trophy Cast</p>
+      <p style="color:#8FA6BE;font-size:13px;margin:0;">${escapeHtml(subtitle)}</p>`;
 }
 
 export const DEEP_DIVE_DESCRIPTIONS: Record<string, string> = {
@@ -86,7 +86,7 @@ export function buildEmailHtml(opts: {
     `This week we're spotlighting ${deepDive}.`;
 
   const bulletHtml = bullets
-    .map((b) => `<li style="margin-bottom:8px;color:#F5F1E6;">${escapeHtml(b)}</li>`)
+    .map((b) => `<li style="margin-bottom:8px;color:#EAF1F8;">${escapeHtml(b)}</li>`)
     .join('\n');
 
   return `<!DOCTYPE html>
@@ -96,7 +96,7 @@ export function buildEmailHtml(opts: {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${escapeHtml(subject)}</title>
 </head>
-<body style="margin:0;padding:0;background-color:#0C1A23;font-family:Arial,Helvetica,sans-serif;">
+<body style="margin:0;padding:0;background-color:#0B1A2F;font-family:Arial,Helvetica,sans-serif;">
   <div style="max-width:600px;margin:0 auto;padding:32px 20px;">
 
     <!-- Header -->
@@ -105,17 +105,17 @@ export function buildEmailHtml(opts: {
     </div>
 
     <!-- What's New -->
-    <div style="background:#162D3D;border-radius:12px;padding:24px;margin-bottom:20px;">
-      <h2 style="color:#4FC3F7;font-size:18px;font-weight:700;margin:0 0 16px;font-family:Georgia,serif;">🎣 What&apos;s New</h2>
+    <div style="background:#10233C;border-radius:12px;padding:24px;margin-bottom:20px;">
+      <h2 style="color:#1EBCC8;font-size:18px;font-weight:700;margin:0 0 16px;font-family:Georgia,serif;">🎣 What&apos;s New</h2>
       <ul style="margin:0;padding:0 0 0 20px;">
         ${bulletHtml}
       </ul>
     </div>
 
     <!-- Deep Dive -->
-    <div style="background:#132532;border-radius:12px;padding:24px;margin-bottom:20px;">
-      <h2 style="color:#D4AF37;font-size:18px;font-weight:700;margin:0 0 12px;font-family:Georgia,serif;">🔍 Deep Dive: ${escapeHtml(deepDive)}</h2>
-      <p style="color:#C9D3DA;font-size:15px;line-height:1.6;margin:0;">${escapeHtml(desc)}</p>
+    <div style="background:#152B47;border-radius:12px;padding:24px;margin-bottom:20px;">
+      <h2 style="color:#C9A646;font-size:18px;font-weight:700;margin:0 0 12px;font-family:Georgia,serif;">🔍 Deep Dive: ${escapeHtml(deepDive)}</h2>
+      <p style="color:#8FA6BE;font-size:15px;line-height:1.6;margin:0;">${escapeHtml(desc)}</p>
     </div>
 
     <!-- Monday Meeting -->
@@ -182,10 +182,10 @@ export function buildPromoEmailHtml(opts: {
       (step, index) => `
         <tr>
           <td style="padding:0 0 12px;">
-            <div style="background:#132532;border:1px solid rgba(79,195,247,0.14);border-radius:12px;padding:16px 18px;">
-              <p style="margin:0 0 8px;color:#4FC3F7;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Step ${index + 1}</p>
-              <p style="margin:0 0 6px;color:#F5F1E6;font-size:17px;font-weight:700;font-family:Georgia,serif;">${escapeHtml(step.title)}</p>
-              <p style="margin:0;color:#C9D3DA;font-size:14px;line-height:1.6;">${escapeHtml(step.body)}</p>
+            <div style="background:#152B47;border:1px solid rgba(30,188,200,0.14);border-radius:12px;padding:16px 18px;">
+              <p style="margin:0 0 8px;color:#1EBCC8;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Step ${index + 1}</p>
+              <p style="margin:0 0 6px;color:#EAF1F8;font-size:17px;font-weight:700;font-family:Georgia,serif;">${escapeHtml(step.title)}</p>
+              <p style="margin:0;color:#8FA6BE;font-size:14px;line-height:1.6;">${escapeHtml(step.body)}</p>
             </div>
           </td>
         </tr>`
@@ -194,7 +194,7 @@ export function buildPromoEmailHtml(opts: {
 
   const secondaryCta =
     secondaryCtaLabel && secondaryCtaUrl
-      ? `<a href="${escapeHtml(secondaryCtaUrl)}" style="display:inline-block;margin-top:12px;color:#4FC3F7;font-size:14px;font-weight:700;text-decoration:underline;">${escapeHtml(secondaryCtaLabel)}</a>`
+      ? `<a href="${escapeHtml(secondaryCtaUrl)}" style="display:inline-block;margin-top:12px;color:#1EBCC8;font-size:14px;font-weight:700;text-decoration:underline;">${escapeHtml(secondaryCtaLabel)}</a>`
       : '';
 
   const noteBlock = footerNote?.trim()
@@ -211,23 +211,23 @@ export function buildPromoEmailHtml(opts: {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${escapeHtml(subject)}</title>
 </head>
-<body style="margin:0;padding:0;background-color:#0C1A23;font-family:Arial,Helvetica,sans-serif;">
+<body style="margin:0;padding:0;background-color:#0B1A2F;font-family:Arial,Helvetica,sans-serif;">
   <div style="max-width:600px;margin:0 auto;padding:32px 20px;">
 
     <div style="text-align:center;padding:32px 0 24px;">
       ${buildEmailHeader({ clubLogoUrl, clubDisplayName, subtitle: 'Catch Rate Registration' })}
     </div>
 
-    <div style="background:#162D3D;border-radius:16px;padding:28px 24px;margin-bottom:20px;text-align:center;">
-      <p style="margin:0 0 10px;color:#D4AF37;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">${escapeHtml(eyebrow)}</p>
-      <h2 style="margin:0 0 12px;color:#F5F1E6;font-size:28px;font-weight:700;line-height:1.2;font-family:Georgia,serif;">${escapeHtml(title)}</h2>
-      <p style="margin:0 auto 22px;color:#C9D3DA;font-size:15px;line-height:1.7;max-width:480px;">${escapeHtml(intro)}</p>
-      <a href="${escapeHtml(primaryCtaUrl)}" style="display:inline-block;background:#D4AF37;color:#0C1A23;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:16px;">${escapeHtml(primaryCtaLabel)}</a>
+    <div style="background:#10233C;border-radius:16px;padding:28px 24px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0 0 10px;color:#C9A646;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">${escapeHtml(eyebrow)}</p>
+      <h2 style="margin:0 0 12px;color:#EAF1F8;font-size:28px;font-weight:700;line-height:1.2;font-family:Georgia,serif;">${escapeHtml(title)}</h2>
+      <p style="margin:0 auto 22px;color:#8FA6BE;font-size:15px;line-height:1.7;max-width:480px;">${escapeHtml(intro)}</p>
+      <a href="${escapeHtml(primaryCtaUrl)}" style="display:inline-block;background:#C9A646;color:#0B1A2F;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:16px;">${escapeHtml(primaryCtaLabel)}</a>
       ${secondaryCta}
     </div>
 
-    <div style="background:#162D3D;border-radius:12px;padding:24px;margin-bottom:20px;">
-      <h2 style="color:#4FC3F7;font-size:18px;font-weight:700;margin:0 0 16px;font-family:Georgia,serif;">How it works</h2>
+    <div style="background:#10233C;border-radius:12px;padding:24px;margin-bottom:20px;">
+      <h2 style="color:#1EBCC8;font-size:18px;font-weight:700;margin:0 0 16px;font-family:Georgia,serif;">How it works</h2>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
         ${stepCards}
       </table>
@@ -275,27 +275,27 @@ export function buildSurveyEmailHtml(opts: {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${escapeHtml(title)}</title>
 </head>
-<body style="margin:0;padding:0;background-color:#0C1A23;font-family:Arial,Helvetica,sans-serif;">
+<body style="margin:0;padding:0;background-color:#0B1A2F;font-family:Arial,Helvetica,sans-serif;">
   <div style="max-width:600px;margin:0 auto;padding:32px 20px;">
 
     <!-- Header -->
     <div style="text-align:center;padding:32px 0 24px;">
       ${buildEmailHeader({ clubLogoUrl, clubDisplayName, subtitle: headerSubtitle })}
-      ${!clubLogoUrl ? `<p style="color:#C9D3DA;font-size:14px;margin:4px 0 0;">${headerSubtitle}</p>` : `<p style="color:#C9D3DA;font-size:13px;margin:6px 0 0;">${headerSubtitle}</p>`}
+      ${!clubLogoUrl ? `<p style="color:#8FA6BE;font-size:14px;margin:4px 0 0;">${headerSubtitle}</p>` : `<p style="color:#8FA6BE;font-size:13px;margin:6px 0 0;">${headerSubtitle}</p>`}
     </div>
 
     <!-- Survey Invite -->
-    <div style="background:#162D3D;border-radius:12px;padding:28px;margin-bottom:20px;">
-      <h2 style="color:#4FC3F7;font-size:20px;font-weight:700;margin:0 0 12px;font-family:Georgia,serif;">📋 ${escapeHtml(title)}</h2>
-      <p style="color:#C9D3DA;font-size:15px;line-height:1.6;margin:0 0 20px;">${escapeHtml(description)}</p>
+    <div style="background:#10233C;border-radius:12px;padding:28px;margin-bottom:20px;">
+      <h2 style="color:#1EBCC8;font-size:20px;font-weight:700;margin:0 0 12px;font-family:Georgia,serif;">📋 ${escapeHtml(title)}</h2>
+      <p style="color:#8FA6BE;font-size:15px;line-height:1.6;margin:0 0 20px;">${escapeHtml(description)}</p>
       <div style="text-align:center;">
-        <a href="${escapeHtml(surveyUrl)}" style="display:inline-block;background:#D4AF37;color:#0C1A23;font-size:16px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;font-family:Arial,Helvetica,sans-serif;">Take the Survey</a>
+        <a href="${escapeHtml(surveyUrl)}" style="display:inline-block;background:#C9A646;color:#0B1A2F;font-size:16px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;font-family:Arial,Helvetica,sans-serif;">Take the Survey</a>
       </div>
     </div>
 
     <!-- Why it matters -->
-    <div style="background:#132532;border-radius:12px;padding:24px;margin-bottom:20px;">
-      <p style="color:#C9D3DA;font-size:14px;line-height:1.6;margin:0;">${feedbackLine}</p>
+    <div style="background:#152B47;border-radius:12px;padding:24px;margin-bottom:20px;">
+      <p style="color:#8FA6BE;font-size:14px;line-height:1.6;margin:0;">${feedbackLine}</p>
     </div>
 
     <!-- Footer -->
