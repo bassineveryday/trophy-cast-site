@@ -45,7 +45,7 @@ export const CLUB_EMAIL_CONFIGS: Record<string, ClubEmailConfig> = {
     // Keep email on the white-backed export. The transparent master is fine for
     // web/light-background usage, but Gmail can render transparent club logos poorly.
     logoAbsoluteUrl: CLUB_EMAIL_LOGOS.DBM,
-    fromName: 'Tai — DBM × Trophy Cast',
+    fromName: 'Denver BassMasters via Trophy Cast',
   },
   DBMJ: {
     clubId: 'DBMJ',
@@ -55,7 +55,7 @@ export const CLUB_EMAIL_CONFIGS: Record<string, ClubEmailConfig> = {
     subjectPrefix: 'DBMJ | ',
     // URL-encoded filename — matches the file already in /public/
     logoAbsoluteUrl: CLUB_EMAIL_LOGOS.DBMJ,
-    fromName: 'Tai — DBM Juniors × Trophy Cast',
+    fromName: 'DBM Juniors via Trophy Cast',
   },
   DBMHS: {
     clubId: 'DBMHS',
@@ -65,7 +65,7 @@ export const CLUB_EMAIL_CONFIGS: Record<string, ClubEmailConfig> = {
     subjectPrefix: 'DBMHS | ',
     // Shares the Juniors logo until a dedicated one is provided
     logoAbsoluteUrl: CLUB_EMAIL_LOGOS.DBMHS,
-    fromName: 'Tai — DBM High School × Trophy Cast',
+    fromName: 'DBM High School via Trophy Cast',
   },
   TLO: {
     clubId: 'TLO',
@@ -75,7 +75,7 @@ export const CLUB_EMAIL_CONFIGS: Record<string, ClubEmailConfig> = {
     subjectPrefix: 'TLO | ',
     // Upload tlo-logo.png to /public/ to activate — gracefully falls back to TC logo
     logoAbsoluteUrl: null,
-    fromName: 'Tai — TLO × Trophy Cast',
+    fromName: 'Tightline Outdoors via Trophy Cast',
   },
 };
 

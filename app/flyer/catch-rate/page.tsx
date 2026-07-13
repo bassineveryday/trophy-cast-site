@@ -13,7 +13,7 @@ import { TC_LOGOS } from '@/lib/brandAssets';
  *  - QR links to https://trophy-cast-mvp-v2.vercel.app/
  */
 
-const GOLD = '#D4AF37';
+const GOLD = '#C9A646';
 const TEAL = '#2DD4BF';
 const GOLD_DARK = '#B8960C';   // darker gold — readable on white paper
 const TEAL_DARK = '#0D7E78';   // darker teal — readable on white paper

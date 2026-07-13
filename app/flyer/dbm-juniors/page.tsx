@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import { TC_LOGOS } from '@/lib/brandAssets';
-const GOLD = '#D4AF37';
+const GOLD = '#C9A646';
 const GREEN = '#88AC2E';
 const GREEN_DARK = '#5D6D24';
 const GOLD_DARK = '#B8960C';

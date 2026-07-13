@@ -52,18 +52,18 @@ function PasswordGate({ onUnlock }: { onUnlock: (pw: string) => void }) {
   return (
     <div className="min-h-screen bg-[#0C1A23] flex items-center justify-center p-6">
       <div className="bg-[#162D3D] rounded-xl p-8 max-w-sm w-full">
-        <h1 className="text-xl font-bold text-[#D4AF37] mb-4 font-serif">🔒 Admin Access</h1>
+        <h1 className="text-xl font-bold text-trophyGold mb-4 font-serif">🔒 Admin Access</h1>
         <input
           type="password"
           value={pw}
           onChange={(e) => setPw(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && pw && onUnlock(pw)}
           placeholder="Enter admin password"
-          className="w-full px-4 py-3 rounded-lg bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-[#D4AF37] outline-none mb-4"
+          className="w-full px-4 py-3 rounded-lg bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-trophyGold outline-none mb-4"
         />
         <button
           onClick={() => pw && onUnlock(pw)}
-          className="w-full py-3 bg-[#D4AF37] text-[#0C1A23] font-bold rounded-lg hover:bg-[#C4A030] transition-colors"
+          className="w-full py-3 bg-trophyGold text-[#0C1A23] font-bold rounded-lg hover:bg-[#B5953E] transition-colors"
         >
           Unlock
         </button>
@@ -149,7 +149,7 @@ function SurveyBuilder({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-bold text-[#D4AF37] font-serif flex items-center gap-2">
+      <h2 className="text-xl font-bold text-trophyGold font-serif flex items-center gap-2">
         <Plus className="w-5 h-5" /> Create New Survey
       </h2>
 
@@ -161,7 +161,7 @@ function SurveyBuilder({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g., Post-Doris Tournament Feedback"
-          className="w-full px-4 py-3 rounded-lg bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-[#D4AF37] outline-none"
+          className="w-full px-4 py-3 rounded-lg bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-trophyGold outline-none"
         />
       </div>
 
@@ -172,7 +172,7 @@ function SurveyBuilder({
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Brief intro for the email and survey page..."
           rows={2}
-          className="w-full px-4 py-3 rounded-lg bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-[#D4AF37] outline-none resize-none"
+          className="w-full px-4 py-3 rounded-lg bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-trophyGold outline-none resize-none"
         />
       </div>
 
@@ -188,7 +188,7 @@ function SurveyBuilder({
                     value={q.questionText}
                     onChange={(e) => updateQuestion(qIdx, { questionText: e.target.value })}
                     placeholder={`Question ${qIdx + 1}`}
-                    className="flex-1 px-3 py-2 rounded-lg bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-[#D4AF37] outline-none text-sm"
+                    className="flex-1 px-3 py-2 rounded-lg bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-trophyGold outline-none text-sm"
                   />
                   <select
                     value={q.questionType}
@@ -210,7 +210,7 @@ function SurveyBuilder({
                           value={opt}
                           onChange={(e) => updateOption(qIdx, oIdx, e.target.value)}
                           placeholder={`Option ${oIdx + 1}`}
-                          className="flex-1 px-3 py-1.5 rounded bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-[#D4AF37] outline-none text-sm"
+                          className="flex-1 px-3 py-1.5 rounded bg-[#0C1A23] text-[#F5F1E6] border border-[#2A4A5F] focus:border-trophyGold outline-none text-sm"
                         />
                         {q.options.length > 2 && (
                           <button onClick={() => removeOption(qIdx, oIdx)} className="text-red-400 hover:text-red-300">
@@ -241,7 +241,7 @@ function SurveyBuilder({
             </div>
           </div>
         ))}
-        <button onClick={addQuestion} className="flex items-center gap-2 text-sm text-[#4FC3F7] hover:text-[#D4AF37] transition-colors">
+        <button onClick={addQuestion} className="flex items-center gap-2 text-sm text-[#4FC3F7] hover:text-trophyGold transition-colors">
           <Plus className="w-4 h-4" /> Add Question
         </button>
       </div>
@@ -249,7 +249,7 @@ function SurveyBuilder({
       <button
         onClick={handleCreate}
         disabled={saving}
-        className="w-full py-3 bg-[#D4AF37] text-[#0C1A23] font-bold rounded-lg hover:bg-[#C4A030] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+        className="w-full py-3 bg-trophyGold text-[#0C1A23] font-bold rounded-lg hover:bg-[#B5953E] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
       >
         {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <ClipboardList className="w-4 h-4" />}
         {saving ? 'Creating...' : 'Create Survey'}
@@ -347,7 +347,7 @@ function SurveyList({ password }: { password: string }) {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold text-[#D4AF37] font-serif flex items-center gap-2">
+      <h2 className="text-xl font-bold text-trophyGold font-serif flex items-center gap-2">
         <ClipboardList className="w-5 h-5" /> Your Surveys
       </h2>
 
@@ -374,7 +374,7 @@ function SurveyList({ password }: { password: string }) {
               <button
                 onClick={() => handleSend(s.id)}
                 disabled={actionLoading === s.id}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-[#D4AF37] text-[#0C1A23] text-sm font-semibold rounded-lg hover:bg-[#C4A030] disabled:opacity-50"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-trophyGold text-[#0C1A23] text-sm font-semibold rounded-lg hover:bg-[#B5953E] disabled:opacity-50"
               >
                 {actionLoading === s.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
                 Send to Members
@@ -448,7 +448,7 @@ export default function SurveyAdminPage() {
           <Link href="/admin" className="text-[#546674] hover:text-[#C9D3DA]">
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <h1 className="text-2xl font-bold text-[#D4AF37] font-serif flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-trophyGold font-serif flex items-center gap-2">
             <ClipboardList className="w-6 h-6" /> Survey Manager
           </h1>
         </div>
