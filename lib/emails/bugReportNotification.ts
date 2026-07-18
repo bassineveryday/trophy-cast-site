@@ -51,7 +51,7 @@ export function bugReportHtml(data: BugReportData): string {
           <tr>
             <td align="center" style="padding:0 0 24px 0;">
               <div style="font-size:24px;font-weight:900;color:#ffffff;letter-spacing:-0.5px;">🐛 Bug Report</div>
-              <div style="font-size:12px;color:#f5c842;letter-spacing:2px;text-transform:uppercase;margin-top:6px;">Trophy Cast</div>
+              <div style="font-size:12px;color:#C9A646;letter-spacing:2px;text-transform:uppercase;margin-top:6px;">Trophy Cast</div>
             </td>
           </tr>
 
@@ -60,13 +60,13 @@ export function bugReportHtml(data: BugReportData): string {
             <td style="background:#111827;border-radius:16px;padding:32px;border:1px solid #1e2d40;">
 
               <!-- Description -->
-              <p style="margin:0 0 6px 0;font-size:11px;font-weight:700;color:#f5c842;text-transform:uppercase;letter-spacing:1px;">Description</p>
+              <p style="margin:0 0 6px 0;font-size:11px;font-weight:700;color:#C9A646;text-transform:uppercase;letter-spacing:1px;">Description</p>
               <div style="background:#0a0e1a;border-radius:10px;padding:16px;border:1px solid #1e2d40;margin:0 0 24px 0;">
                 <p style="margin:0;font-size:15px;color:#e2e8f0;line-height:1.6;white-space:pre-wrap;">${description.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
               </div>
 
               <!-- Meta -->
-              <p style="margin:0 0 10px 0;font-size:11px;font-weight:700;color:#f5c842;text-transform:uppercase;letter-spacing:1px;">Details</p>
+              <p style="margin:0 0 10px 0;font-size:11px;font-weight:700;color:#C9A646;text-transform:uppercase;letter-spacing:1px;">Details</p>
               <table cellpadding="0" cellspacing="0" width="100%">
                 ${row('Member', `${memberName} &lt;${memberEmail}&gt;`)}
                 ${row('Club', clubId)}
@@ -85,7 +85,7 @@ export function bugReportHtml(data: BugReportData): string {
           <tr>
             <td align="center" style="padding:20px 0 0 0;">
               <p style="margin:0;font-size:12px;color:#4b5563;">
-                Sent from Trophy Cast in-app bug reporting · <a href="https://trophycast.app" style="color:#f5c842;text-decoration:none;">trophycast.app</a>
+                Sent from Trophy Cast in-app bug reporting · <a href="https://trophycast.app" style="color:#C9A646;text-decoration:none;">trophycast.app</a>
               </p>
             </td>
           </tr>
