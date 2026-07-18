@@ -25,15 +25,15 @@ export function waitlistConfirmationHtml(
               <div style="font-size:20px;font-weight:800;color:#ffffff;letter-spacing:-0.3px;">${clubDisplayName ?? ''}</div>
               <div style="font-size:11px;color:#546674;letter-spacing:2px;text-transform:uppercase;margin:4px 0 12px;">presented by</div>
               <img src="${emailLogoUrl}" alt="Trophy Cast" width="48" height="48" style="display:block;margin:0 auto 8px auto;" />
-              <div style="font-size:16px;font-weight:700;color:#f5c842;">Trophy Cast</div>
-              <div style="font-size:11px;color:#f5c842;letter-spacing:2px;text-transform:uppercase;margin-top:4px;">Where Every Cast Counts.</div>`
+              <div style="font-size:16px;font-weight:700;color:#C9A646;">Trophy Cast</div>
+              <div style="font-size:11px;color:#C9A646;letter-spacing:2px;text-transform:uppercase;margin-top:4px;">Where Every Cast Counts.</div>`
     : `<img src="${emailLogoUrl}" alt="Trophy Cast" width="80" height="80" style="display:block;margin:0 auto 16px auto;" />
               <div style="font-size:28px;font-weight:900;color:#ffffff;letter-spacing:-0.5px;">Trophy Cast</div>
-              <div style="font-size:12px;color:#f5c842;letter-spacing:2px;text-transform:uppercase;margin-top:6px;">Where Every Cast Counts.</div>`;
+              <div style="font-size:12px;color:#C9A646;letter-spacing:2px;text-transform:uppercase;margin-top:6px;">Where Every Cast Counts.</div>`;
 
   const clubLine = clubName
-    ? `You're officially signed up with <strong style="color:#f5c842;">${clubName}</strong> on Trophy Cast.`
-    : `You're officially on the <strong style="color:#f5c842;">Trophy Cast waitlist</strong>.`;
+    ? `You're officially signed up with <strong style="color:#C9A646;">${clubName}</strong> on Trophy Cast.`
+    : `You're officially on the <strong style="color:#C9A646;">Trophy Cast waitlist</strong>.`;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -66,7 +66,7 @@ export function waitlistConfirmationHtml(
               </p>
 
               <div style="background:#0a0e1a;border-radius:12px;padding:24px;border:1px solid #1e2d40;margin:0 0 28px 0;">
-                <p style="margin:0 0 12px 0;font-size:13px;font-weight:700;color:#f5c842;text-transform:uppercase;letter-spacing:1px;">What to expect</p>
+                <p style="margin:0 0 12px 0;font-size:13px;font-weight:700;color:#C9A646;text-transform:uppercase;letter-spacing:1px;">What to expect</p>
                 <table cellpadding="0" cellspacing="0" width="100%">
                   <tr>
                     <td style="padding:8px 0;font-size:14px;color:#cbd5e1;">📸 &nbsp; Voice-first catch logging with TC Coach</td>
@@ -91,14 +91,14 @@ export function waitlistConfirmationHtml(
               </p>
 
               <div style="background:#0a0e1a;border-radius:12px;padding:16px;border:1px solid #1e2d40;margin:0 0 20px 0;">
-                <p style="margin:0 0 8px 0;font-size:12px;font-weight:700;color:#f5c842;text-transform:uppercase;letter-spacing:1px;">App vs Website</p>
+                <p style="margin:0 0 8px 0;font-size:12px;font-weight:700;color:#C9A646;text-transform:uppercase;letter-spacing:1px;">App vs Website</p>
                 <p style="margin:0 0 6px 0;font-size:13px;color:#cbd5e1;line-height:1.5;">
                   Use the app on phone or computer:
-                  <a href="${APP_URL}" style="color:#f5c842;text-decoration:none;"> ${APP_URL}</a>
+                  <a href="${APP_URL}" style="color:#C9A646;text-decoration:none;"> ${APP_URL}</a>
                 </p>
                 <p style="margin:0;font-size:13px;color:#94a3b8;line-height:1.5;">
                   Trophy Cast website:
-                  <a href="${WEBSITE_URL}" style="color:#f5c842;text-decoration:none;"> ${WEBSITE_URL}</a>
+                  <a href="${WEBSITE_URL}" style="color:#C9A646;text-decoration:none;"> ${WEBSITE_URL}</a>
                 </p>
               </div>
 
@@ -117,7 +117,7 @@ export function waitlistConfirmationHtml(
             <td align="center" style="padding:24px 0 0 0;">
               <p style="margin:0 0 8px 0;font-size:12px;color:#334155;">
                 You're receiving this because you joined the Trophy Cast waitlist at
-                <a href="https://trophycast.app" style="color:#f5c842;text-decoration:none;">trophycast.app</a>
+                <a href="https://trophycast.app" style="color:#C9A646;text-decoration:none;">trophycast.app</a>
               </p>
               <p style="margin:0;font-size:11px;color:#1e2d40;">
                 &copy; 2026 Trophy Cast, Inc. &middot;

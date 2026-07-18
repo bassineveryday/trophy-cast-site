@@ -74,7 +74,7 @@ Trophy Cast gets smarter the more you fish.
 ## Copy Notes for Print Designer
 
 - **QR Code links to:** https://eepurl.com/jAjfYY (Mailchimp-hosted Trophy Cast email signup)
-- **Brand colors:** Dark navy (#0a0e1a), Trophy Gold (#f5c842), White
+- **Brand colors:** Dark navy (#0a0e1a), Trophy Gold (#C9A646), White
 - **Logo:** Use transparent version if available, otherwise current logo
 - **Font feel:** Bold, clean, modern. Not outdoorsy/camo. Think tech meets fishing.
 - **Tone:** Confident but warm. Not salesy. Like a friend telling you about something legit.
