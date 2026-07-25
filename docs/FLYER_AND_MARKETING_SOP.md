@@ -206,6 +206,96 @@ Print CSS:
 `}</style>
 ```
 
+### ⚠️ Gotcha: `100vh` + flex column breaks print pagination
+
+Found 2026-07-01 in `app/flyer/catch-rate/page.tsx`: the screen preview's outer wrapper used
+`minHeight: '100vh'` with `display:'flex', flexDirection:'column'` (a common pattern for
+centering the flyer on screen). Under Chrome's print engine, `vh` does not reliably resolve to
+one physical page — combined with `overflow: hidden !important` on `html`/`body` (set globally
+in `app/globals.css` for print), this pushed the **second half-sheet onto its own separate,
+mostly-blank page** instead of stacking directly under the "cut here" line. On screen it looked
+completely fine; only the actual print/PDF output was broken.
+
+**Verified 2026-07-06 (real print-PDF render of every flyer route):**
+
+- `app/flyer/dbm-juniors/page.tsx` — **1 clean page, no bug.** It shares the unguarded
+  `.page-wrap` pattern, but its `.flyer-card` is pinned to `height: 11in !important` +
+  `overflow: hidden !important` in print, which forces exactly one page and can never spill.
+  (Trade-off: content taller than 11in would be *clipped* rather than paginated — currently it
+  fits, footer and bottom bar included.) Left as-is.
+- `app/flyer/catch-rate/page.tsx` — **1 clean page** (the original fix, re-confirmed).
+- `app/flyer/page.tsx` (general dark flyer) — **was 3 pages, now 2** (see the flyer-specific
+  notes below).
+
+**Fix:** in the page's own `@media print` block, kill the vh/flex dependency entirely for print:
+
+```css
+@media print {
+  html, body {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+  .page-wrap {
+    display: block !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+  /* also strip overflow:hidden from any wrapper div around the sheet(s) */
+  .sheet-pair { overflow: visible !important; }
+}
+```
+
+`app/flyer/dbm/print/page.tsx` already does this correctly (`.print-wrap { display: block !important; }` under `@media print`) — use it as the reference pattern for any new print-enabled flyer.
+
+#### Two more gotchas found while fixing `app/flyer/page.tsx` (2026-07-06)
+
+The general dark flyer printed as **3 pages**. Two extra causes on top of the `100vh`/flex one:
+
+1. **Hide the site chrome, or it prints on its own pages.** The layout
+   (`app/layout.tsx`) wraps every route in a sticky `header`/`nav` (Navbar) and a `footer`
+   (Footer). `app/flyer/page.tsx`'s print block only hid `.no-print`, so the nav printed on
+   page 1 and the site footer on page 3. Every flyer's `@media print` must include
+   `header, nav, footer { display: none !important; }` (catch-rate and dbm-juniors already do).
+
+2. **Never put `'`, `<`, or `>` inside a `<style>{`…`}`} child — it breaks hydration.** React's
+   SSR HTML-escapes those characters (`'` → `&#x27;`), but the browser parses `<style>` as a
+   *rawtext* element and does **not** decode entities, so server and client text differ →
+   `Text content does not match server-rendered HTML` and the whole root falls back to client
+   rendering. A CSS comment reading "the wrapper's minHeight" was enough to trigger it. Fix:
+   inject the CSS with `<style dangerouslySetInnerHTML={{ __html: `…` }} />` (same as
+   `app/flyer/dbm/print/page.tsx`), which bypasses React escaping. Screen-preview looks fine; you
+   only see it via the dev overlay's red "1 error" badge or a console/CDP check — so **run a
+   client-console/hydration check, not just a print-PDF render**, after editing an inline `<style>`.
+
+**Result:** general flyer is now **2 clean pages** with no leaked chrome and clean hydration.
+It is not 1 page because the card's real content is ~1.3 letter pages tall — a content/design
+matter, not a pagination bug. Its primary use is the **Download PNG** button (one full-height
+image, unaffected), so the 2-page PDF is acceptable; forcing 1 page would require trimming
+content or a redesign, not a CSS pagination tweak.
+
+**Verify print output for real, not just the screen preview** — the screen render can look
+perfect while the print output is broken. Render the actual print PDF and inspect it:
+
+```bash
+"C:/Program Files/Google/Chrome/Application/chrome.exe" --headless --disable-gpu --no-sandbox \
+  --print-to-pdf="C:\path\to\out.pdf" --print-to-pdf-no-header \
+  --run-all-compositor-stages-before-draw --virtual-time-budget=10000 \
+  "http://localhost:3001/flyer/<slug>"
+```
+
+Then render each page to an image to eyeball it (`pip install pymupdf` if not already installed):
+
+```python
+import fitz
+doc = fitz.open("out.pdf")
+print("pages:", len(doc))  # more pages than expected = a pagination bug
+for i, page in enumerate(doc):
+    page.get_pixmap(dpi=100).save(f"page_{i+1}.png")
+```
+
+A flyer meant to be one page that renders as 2+ pages (with blank space) is the tell.
+
 ---
 
 ## Step-by-Step: Creating a New Flyer
@@ -260,7 +350,7 @@ Check:
 - [ ] All logos load (no broken images)
 - [ ] QR code renders
 - [ ] Download PNG button works — open the downloaded file, verify it looks sharp
-- [ ] Print button → browser print preview looks correct, fits letter page
+- [ ] Print button → **render the actual print PDF and check page count/layout** (see the `100vh` + flex gotcha above) — the on-screen print preview can look correct while the real output is broken
 - [ ] No overflow / nothing cut off on mobile viewport
 
 ### 7. Commit and push

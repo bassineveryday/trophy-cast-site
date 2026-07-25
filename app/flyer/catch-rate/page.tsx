@@ -3,14 +3,25 @@
 import { TC_LOGOS } from '@/lib/brandAssets';
 
 /**
- * Catch Rate Tournament — Half-Sheet How-To Flyer (TLO Event 2, May 20 2026)
+ * Catch Rate Tournament — Half-Sheet How-To Flyer (TLO Event 8, Jul 29 2026 — Chatfield)
  * Two identical half-sheets per letter page — cut horizontally to distribute.
  * Route: /flyer/catch-rate
  *
  * Print notes:
  *  - White background, dark text via @media print overrides
  *  - Navbar hidden on print
- *  - QR links to https://trophy-cast-mvp-v2.vercel.app/
+ *  - QR is LOGIN-FIRST and event-specific (see QR_TARGET below)
+ *
+ * QR behaviour (verified live 2026-07-25 against prod):
+ *  - Already signed in  → lands straight on the catch-submit screen for this event.
+ *  - Signed out         → bounces to /auth showing "Sign In", with
+ *                         "Don't have an account? Sign Up" underneath.
+ *  Most anglers at this point in the season already have an account, so login-first
+ *  beats a sign-up form (a sign-up form is how you get duplicate accounts).
+ *  KNOWN GAP: /auth drops the eventId, so after signing in they land on Home and
+ *  tap into the event themselves — one extra tap, not a dead end.
+ *  NOTE: update QR_TARGET's eventId for every new event, or the QR points at the
+ *  previous tournament.
  */
 
 const GOLD = '#D4AF37';
@@ -18,16 +29,15 @@ const TEAL = '#2DD4BF';
 const GOLD_DARK = '#B8960C';   // darker gold — readable on white paper
 const TEAL_DARK = '#0D7E78';   // darker teal — readable on white paper
 
-// QR code pointing to the Trophy Cast app
-const QR_URL = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Ftrophy-cast-mvp-v2.vercel.app%2F&bgcolor=ffffff&color=000000&margin=4';
+// Where the QR sends people. Event-specific — CHANGE THE eventId FOR EACH EVENT.
+const QR_TARGET = 'https://trophy-cast-mvp-v2.vercel.app/submit?eventId=evt_catch_rate_20260729';
+const QR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(QR_TARGET)}&bgcolor=ffffff&color=000000&margin=4`;
 
 const STEPS = [
-  { num: '1', text: 'Find Emily at check-in · North Boat Ramp · 3:30–4:00 PM' },
-  { num: '2', text: 'Pick species ($20 each) · Pay cash · Emily taps Mark Paid' },
-  { num: '3', text: 'You get a text with 2 links — Link 1: account setup (first time only) · Link 2: submit a catch' },
-  { num: '4', text: 'Catch a fish · open app · tap Log [Species] · record video on bump board · say the CODE WORD on camera' },
-  { num: '5', text: 'Enter length · tap Submit · Emily reviews · you get a text: Approved or Rejected' },
-  { num: '6', text: 'App not working? Text Emily 720-775-7770 — send the video, fish length, and you releasing it' },
+  { num: '1', text: 'Pre-register through Trophy Cast, or find Emily at check-in · 3:00–4:00 PM · pick species ($20 each) · pay cash · Emily taps Mark Paid' },
+  { num: '2', text: 'Catch a fish · open app · tap Log [Species] · record video on bump board · make sure the CODE WORD BOARD from check-in is clearly visible in your video' },
+  { num: '3', text: 'Enter length · tap Submit · Emily reviews · you get a text: Approved or Rejected' },
+  { num: '4', text: "Trophy Cast is still in beta — if you'd rather not use the app, that's totally fine. Just text Emily 720-775-7770 the video, fish length, and you releasing it" },
 ];
 
 function HalfSheet() {
@@ -70,16 +80,16 @@ function HalfSheet() {
             textAlign: 'center',
           }}>
             <div className="codeword-label" style={{ color: GOLD, fontSize: 9, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 4 }}>
-              Tonight&apos;s Code Word
+              Code Word
             </div>
-            <div className="codeword-blank" style={{ color: '#fff', fontSize: 16, fontWeight: 900, letterSpacing: 1, minHeight: 32, lineHeight: 1.2, paddingTop: 4 }}>Taking Nates Money</div>
-            <div className="codeword-hint" style={{ color: 'rgba(200,215,225,0.4)', fontSize: 8.5, marginTop: 4 }}>Say it on camera · no word = rejection</div>
+            <div className="codeword-blank" style={{ color: '#fff', fontSize: 13.5, fontWeight: 800, letterSpacing: 0.2, minHeight: 32, lineHeight: 1.25, paddingTop: 4 }}>Check the board at check-in</div>
+            <div className="codeword-hint" style={{ color: 'rgba(200,215,225,0.4)', fontSize: 8.5, marginTop: 4 }}>Get the board clearly in your photo/video · no code = rejection</div>
           </div>
 
           {/* QR */}
           <div style={{ background: '#fff', borderRadius: 8, padding: 5, display: 'inline-block' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={QR_URL} alt="Scan to open Trophy Cast" width={85} height={85} style={{ display: 'block' }} />
+            <img src={QR_URL} alt="Scan to sign in to Trophy Cast and submit your catch" width={85} height={85} style={{ display: 'block' }} />
           </div>
           <span className="qr-label" style={{ color: 'rgba(200,215,225,0.35)', fontSize: 9, textAlign: 'center' }}>trophycast.app</span>
         </div>
@@ -89,7 +99,7 @@ function HalfSheet() {
           {/* Header */}
           <div style={{ marginBottom: 12 }}>
             <div className="event-label" style={{ color: TEAL, fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>
-              Tightline Outdoors · Catch Rate Series · Event 2 of 9
+              Tightline Outdoors · Catch Rate Series · Event 8 of 10 · Jul 29
             </div>
             <h1 className="headline" style={{
               fontSize: 30, fontWeight: 900, margin: 0, lineHeight: 1.05, letterSpacing: '-0.5px',
@@ -99,7 +109,7 @@ function HalfSheet() {
               How to Submit Your Catch
             </h1>
             <div className="subhead" style={{ color: 'rgba(200,215,225,0.55)', fontSize: 11, marginTop: 4 }}>
-              Chatfield · North Boat Ramp · 4:00–8:00 PM · Bass · Walleye · Trout · $20/species
+              Chatfield · North Boat Ramp · 4:00–9:00 PM · Bass · Walleye · Trout · Carp · $20/species
             </div>
           </div>
 
@@ -154,8 +164,28 @@ export default function CatchRateFlyerPage() {
           /* Hide site chrome */
           .no-print { display: none !important; }
           nav, header, footer { display: none !important; }
-          body { background: #fff !important; margin: 0; padding: 0; }
-          .page-wrap { padding: 0 !important; background: #fff !important; }
+          html, body {
+            background: #fff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            height: auto !important;
+            min-height: 0 !important;
+            overflow: visible !important;
+          }
+          /* Kill the 100vh + flex-centering — under print, vh is unreliable and the
+             flex column can push/split the second half-sheet onto its own page. */
+          .page-wrap {
+            display: block !important;
+            min-height: 0 !important;
+            height: auto !important;
+            padding: 0 !important;
+            background: #fff !important;
+          }
+          .sheet-pair {
+            overflow: visible !important;
+            border: none !important;
+            border-radius: 0 !important;
+          }
 
           /* Cut line */
           .cut-line { border-top: 1px dashed #aaa !important; background: #fff !important; }
@@ -232,7 +262,7 @@ export default function CatchRateFlyerPage() {
         display: 'flex', flexDirection: 'column', alignItems: 'center',
         padding: '32px 16px 64px', gap: 0,
       }}>
-        <div style={{ border: '1px solid rgba(255,255,255,0.08)', borderRadius: 4, overflow: 'hidden' }}>
+        <div className="sheet-pair" style={{ border: '1px solid rgba(255,255,255,0.08)', borderRadius: 4, overflow: 'hidden' }}>
           <HalfSheet />
           {/* Cut line */}
           <div className="cut-line" style={{
