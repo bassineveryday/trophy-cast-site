@@ -55,14 +55,40 @@ export default function FlyerPage() {
   return (
     <>
       {/* ── Page chrome (not printed) ── */}
-      <style>{`
+      {/* dangerouslySetInnerHTML (same as app/flyer/dbm/print/page.tsx): injecting
+          the CSS raw avoids React SSR-escaping quotes/brackets inside <style> text,
+          which would otherwise cause a hydration mismatch. */}
+      <style dangerouslySetInnerHTML={{ __html: `
         @media print {
+          /* Hide the site chrome — the layout wraps every page in a sticky
+             header/nav bar and a footer. Left visible, they print on their
+             own (mostly-blank) pages around the flyer. */
           .no-print { display: none !important; }
-          body { background: #0C1A23 !important; margin: 0; padding: 0; }
-          .flyer-page-wrap { display: block; padding: 0; }
+          header, nav, footer { display: none !important; }
+
+          /* Kill the 100vh + flex-column dependency for print. globals.css sets
+             html/body { overflow: hidden } for print; combined with the wrapper
+             minHeight:100vh that pushed the flyer onto extra, mostly-blank pages.
+             (Same fix pattern as app/flyer/catch-rate/page.tsx — but this flyer
+             stays dark on purpose, so we keep the midnight background.) */
+          html, body {
+            background: #0C1A23 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            height: auto !important;
+            min-height: 0 !important;
+            overflow: visible !important;
+          }
+          .flyer-page-wrap {
+            display: block !important;
+            min-height: 0 !important;
+            height: auto !important;
+            padding: 0 !important;
+            background: #0C1A23 !important;
+          }
         }
         @page { size: letter; margin: 0; }
-      `}</style>
+      ` }} />
 
       {/* Controls bar */}
       <div
