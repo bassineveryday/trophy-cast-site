@@ -1,6 +1,6 @@
 # PRD — trophycast.app Site Refresh (2026-07)
 
-_Status: DRAFT — awaiting Tai's approval before any code._
+_Status: ✅ SHIPPED 2026-07-31 — PR #19 merged, live-verified on trophycast.app._
 _Owner: Tai · Author: Claude (Fable), 2026-07-30._
 _Research basis: `docs/research/COMPETITIVE_LANDSCAPE_2026-07.md` in the app repo (PR #772) — live sweep of 15+ competitors, 2026-07-30._
 
