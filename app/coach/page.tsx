@@ -10,7 +10,7 @@ export default function CoachPage() {
     <>
       <FeaturePageHero
         eyebrow="TC Coach"
-        title={siteContent.coachInsights.title.replace("TC Coach — ", "")}
+        title="It's paying attention"
         description={siteContent.coachInsights.description}
       />
 

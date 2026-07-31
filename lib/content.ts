@@ -8,9 +8,9 @@ export const siteContent = {
       "Trophy Cast exists to get people outside, fishing, and connected — building confidence and community through a sport they love, powered by an app that learns how they fish.",
   },
   seo: {
-    title: "Trophy Cast — The Fishing App That Gets Smarter the More You Fish",
+    title: "Trophy Cast — Run Your Fishing Club From Your Pocket",
     description:
-      "Trophy Cast learns your patterns, sharpens your skills, and connects you with anglers who actually fish. Voice-first catch logging, coaching that knows YOUR water, live tournaments, and club-in-a-box. Where Every Cast Counts.",
+      "Tournaments, weigh-ins, live AOY standings, meeting minutes, and a coach that learns how you fish — in one app. Built with a real bass club on real water. Now onboarding founding clubs for the 2026 season. Where Every Cast Counts.",
   },
   waitlist: {
     email: "hello@trophycast.app",
@@ -18,63 +18,66 @@ export const siteContent = {
     body: "I would like to join the Trophy Cast waitlist.",
     primaryCta: "Join the waitlist",
     secondaryCta: "See what makes it different",
-    secondaryHref: "#what",
+    secondaryHref: "#clubs",
+    clubCta: "Bring your club",
+    clubHref:
+      "mailto:hello@trophycast.app?subject=Bring%20my%20club%20to%20Trophy%20Cast&body=Club%20name%2C%20roughly%20how%20many%20members%2C%20and%20where%20you%20fish%3A",
   },
   nav: [
-    { label: "What's different", href: "#what" },
-    { label: "How it works", href: "#how" },
-    { label: "The loop", href: "#loop" },
-    { label: "For anglers", href: "#anglers" },
-    { label: "Coaching", href: "#coach" },
     { label: "For clubs", href: "#clubs" },
+    { label: "Founding clubs", href: "#club-in-a-box" },
+    { label: "How it works", href: "#how" },
+    { label: "For anglers", href: "#anglers" },
+    { label: "TC Coach", href: "#coach" },
+    { label: "The loop", href: "#loop" },
     { label: "Screenshots", href: "#screenshots" },
     { label: "Trust", href: "#trust" },
   ],
   hero: {
-    eyebrow: "Not another fishing app.",
+    eyebrow: "Private beta · Founding clubs — 2026 season",
     brandEyebrow: "Built on the water",
-    title: "The fishing app that gets smarter the more you fish.",
+    title: "Stop running your club out of a group text and a spreadsheet.",
     description:
-      "Trophy Cast learns your patterns, sharpens your skills, and connects you with anglers who actually fish. No generic tips. No sponsored advice. Just insights from your own water.",
+      "Registration, weigh-ins, live standings, meeting minutes, and a season your members actually follow — in one app. Trophy Cast is built with a real bass club on real water, and it comes with a coach that learns how you fish.",
     highlights: [
       {
-        label: "Built with real anglers",
-        value: "Denver Bassmasters runs their entire club on Trophy Cast — tournaments, AOY standings, member management, secretary minutes, and board tools.",
+        label: "A real club runs on it today",
+        value: "Denver Bassmasters runs their entire season on Trophy Cast — every tournament, every weigh-in, every AOY standing, plus secretary minutes and board tools.",
       },
       {
-        label: "Your patterns, not someone else's",
-        value: "Every catch you log teaches the app something. Over time, it knows your techniques, your conditions, your adjustments.",
+        label: "Everything a club needs",
+        value: "Officer dashboards, treasury, meeting minutes, member management, announcements, and SMS alerts. No spreadsheets. No group texts.",
       },
       {
-        label: "Video notes & group chats",
-        value: "Record video notes on the water. Chat with your crew, share catch photos, and get SMS alerts for tournaments and announcements.",
+        label: "A coach in your corner",
+        value: "Every catch you log teaches Trophy Cast something about how YOU fish. The more you fish, the better it knows you.",
       },
     ],
-    statRibbon: "80+ screens · Voice logging · Video notes · Personal coaching · Live weather · 30 trophies · Daily missions · Group chats · SMS alerts · Card Certification · Catch Rate tournaments · Club-in-a-box · Built by fishermen, for fishermen.",
+    statRibbon: "Tournaments & live AOY · Voice logging · Video notes · Live weather · 30 trophies · Daily missions · Group chats · SMS alerts · Club-in-a-box · Built by fishermen, for fishermen.",
   },
   what: {
     id: "what",
     title: "What makes Trophy Cast different",
     summary:
-      "Every fishing app tracks your catch. Trophy Cast learns from it — your patterns, your techniques, the small adjustments that make you better on the water.",
+      "Every fishing app tracks catches. Trophy Cast runs your whole fishing life — your club, your season, your progress — and learns from every cast.",
     items: [
+      {
+        emoji: "🏆",
+        title: "Club-in-a-box",
+        description:
+          "Five friends can start a fishing club tomorrow. A 50-member organization can run tournaments, standings, treasury, and meetings from their phones. Both are real — one club already does.",
+      },
       {
         emoji: "🧠",
         title: "It learns how YOU fish",
         description:
-          "Log a catch. Tell the app what you were thinking, what you changed, what the water looked like. Over time, it starts connecting dots you'd miss — your best conditions, your go-to patterns, the adjustments that work for YOU.",
-      },
-      {
-        emoji: "🎣",
-        title: "Built on real anglers, not influencers",
-        description:
-          "The data comes from thousands of grassroots anglers actually fishing — not a sponsored pro who got paid to recommend a lure. Real patterns from real water.",
+          "Log a catch. Tell it what you were thinking, what you changed, what the water looked like. Over time it connects dots you'd miss — your best conditions, your go-to patterns, the adjustments that work for YOU.",
       },
       {
         emoji: "🤝",
-        title: "Community that gets you outside",
+        title: "Community that gets people outside",
         description:
-          "Start a club with your buddies. Join a local tournament. Five friends can build their own micro-club tomorrow. The point isn't the app — it's getting you on the water.",
+          "Kids, families, and whole clubs — fishing is better together, and almost nobody is building for the next generation of anglers. We are. The point isn't the app. It's getting people on the water.",
       },
     ],
   },
@@ -91,9 +94,9 @@ export const siteContent = {
       },
       {
         emoji: "🧠",
-        title: "Coach responds",
+        title: "TC Coach responds",
         description:
-          "Your AI coach analyzes this catch against your history, conditions, and trophy progress — then gives you one specific, data-grounded insight. Not generic tips. YOUR patterns.",
+          "Your coach reads the catch, the conditions, and your day — then gives you one specific insight. Not generic tips. YOUR patterns.",
       },
       {
         emoji: "🏆",
@@ -112,7 +115,7 @@ export const siteContent = {
       { emoji: "🎙️", text: "Voice-first logging — record catches without putting down your rod. Speak naturally and it handles the rest." },
       { emoji: "🌦️", text: "Real-time weather with barometric pressure, moon phases, and conditions scoring — know what the fish know before you hit the water." },
       { emoji: "🗺️", text: "Interactive catch map shows every fish you've logged, colored by species, with GPS pins on the water." },
-      { emoji: "�", text: "30 trophies to earn — from Photo Pro to Species Slam to Ten Bass Day. Share your unlocks with a screenshot-ready trophy card." },
+      { emoji: "🏆", text: "30 trophies to earn — from Photo Pro to Ten Bass Day. Share your unlocks with a screenshot-ready trophy card." },
       { emoji: "🎯", text: "Daily missions nudge you toward trophies: 'Add a photo (8/10 for 📸 Photo Pro!)' — small actions that build long-term skills." },
       { emoji: "🔥", text: "Fishing streaks and daily coaching check-ins keep you coming back. Log one catch a day and watch the momentum build." },
       { emoji: "🎬", text: "Video notes on the water — record a quick clip when you're on a pattern, build a personal library of techniques tied to real catches." },
@@ -121,59 +124,15 @@ export const siteContent = {
   },
   coachInsights: {
     id: "coach",
-    title: "Coaching that knows your water",
+    title: "TC Coach — it's paying attention",
     description:
-      "Most fishing advice is generic. Trophy Cast's coaching is built from YOUR data — your catches, your patterns, your adjustments. It doesn't tell you how to fish. It shows you how YOU fish, and helps you do it better.",
+      "Log a catch and something quietly gets smarter. TC Coach remembers what you throw, where your confidence is, what worked when the pressure dropped — and coaches you like it's been in the boat all season. It doesn't tell you how to fish. It shows you how YOU fish, and helps you do it better.",
     bullets: [
-      { emoji: "🎯", text: "The more you fish, the better it knows your patterns. Every catch teaches it something new about how you operate on the water." },
-      { emoji: "📊", text: "Pre-trip cards that factor in barometric pressure, temperature, wind, and moon phase — matched against YOUR catch history, not someone else's." },
-      { emoji: "🏆", text: "Your coach knows your trophy progress. Unlock Photo Pro and it celebrates. One catch away from Species Slam? It'll remind you." },
-      { emoji: "🔧", text: "Backed by 60+ fishing knowledge packs — the science of lure displacement, pressure effects on feeding, seasonal migration. Not guesses. Physics." },
-      { emoji: "⚡", text: "Performance Edge full-screen view — see your condition score broken down live: barometric pressure, wind, solunar tide, and temperature, each matched against YOUR historical catch data." },
+      { emoji: "🎯", text: "The more you fish, the better it knows you. Every catch teaches it something new about how you operate on the water." },
+      { emoji: "📊", text: "Pre-trip read-outs matched against YOUR history on YOUR water — not someone else's averages." },
+      { emoji: "🏆", text: "It knows your trophy progress. Unlock Photo Pro and it celebrates. One catch away from a milestone? It'll remind you." },
       { emoji: "🔒", text: "Your spots never go anywhere — not to the internet, not to other anglers, not to us. Only you see your coaching." },
-    ],
-  },
-  clubs: {
-    id: "clubs",
-    title: "Club-in-a-box",
-    lead:
-      "Five friends can start a fishing club tomorrow. Or run a 50-member organization with tournaments, AOY standings, treasury, and announcements — all from their phones. Denver Bassmasters does exactly that.",
-    items: [
-      {
-        emoji: "🏆",
-        title: "Tournament lifecycle",
-        description: "Create events, manage registrations, run weigh-ins with photo capture, publish results, and award AOY points — all in one place.",
-      },
-      {
-        emoji: "📈",
-        title: "Live AOY leaderboard",
-        description:
-          "Angler of the Year standings with best-4 scoring, tie-breaking, and multi-day tournament support. Always current, never manual.",
-      },
-      {
-        emoji: "📋",
-        title: "Secretary & board tools",
-        description:
-          "Create and publish meeting agendas and minutes. Board back office with task workspaces, compliance dashboard, and role-specific dashboards for every officer.",
-      },
-      {
-        emoji: "⚙️",
-        title: "Everything else a club needs",
-        description:
-          "Officer dashboard, treasury, announcements, committee chat, group chats, SMS notifications, and member management. Run your entire club from your pocket — no spreadsheets, no group texts.",
-      },
-    ],
-  },
-  clubInABox: {
-    id: "club-in-a-box",
-    badge: "Now onboarding clubs",
-    title: "Start your club today",
-    description:
-      "Everything a fishing club needs to launch — onboarding, tournament templates, scoring, leaderboards, and communication tools. Built with Denver Bassmasters, ready for your crew.",
-    checklist: [
-      "✅ Guided onboarding built from real club workflows",
-      "✅ 6 officer roles with role-specific dashboards",
-      "✅ Configurable tournament formats, divisions, and AOY scoring",
+      { emoji: "🤫", text: "How does it work? Beta members find out first." },
     ],
   },
   tightLineOutdoors: {
@@ -266,7 +225,7 @@ export const siteContent = {
         emoji: "🏆",
         title: "30 trophies to earn",
         description:
-          "Photo Pro, Ten Bass Day, Species Slam, Lake Specialist, Skunk Proof — each trophy tracks real angling milestones. Earn them through effort, not luck.",
+          "Photo Pro, Ten Bass Day, Lake Specialist, Skunk Proof — each trophy tracks real angling milestones. Earn them through effort, not luck.",
       },
       {
         emoji: "🎯",
@@ -286,6 +245,49 @@ export const siteContent = {
         description:
           "Unlock a trophy? Generate a screenshot-ready share card — your trophy name, your photo, your stats. Show your crew what you earned.",
       },
+    ],
+  },
+  clubs: {
+    id: "clubs",
+    title: "Run your whole club from your pocket",
+    lead:
+      "Registrations in a spreadsheet. Results in a group text. Minutes in someone's inbox. Dues in a shoebox. Trophy Cast replaces all of it — and Denver Bassmasters already runs their entire season this way.",
+    items: [
+      {
+        emoji: "🏆",
+        title: "Tournament lifecycle",
+        description: "Create events, manage registrations, run weigh-ins with photo capture, publish results, and award AOY points — all in one place.",
+      },
+      {
+        emoji: "📈",
+        title: "Live AOY leaderboard",
+        description:
+          "Angler of the Year standings with best-4 scoring, tie-breaking, and multi-day tournament support. Always current, never manual.",
+      },
+      {
+        emoji: "📋",
+        title: "Secretary & board tools",
+        description:
+          "Create and publish meeting agendas and minutes. Board back office with task workspaces, compliance dashboard, and role-specific dashboards for every officer.",
+      },
+      {
+        emoji: "⚙️",
+        title: "Everything else a club needs",
+        description:
+          "Officer dashboard, treasury, announcements, committee chat, group chats, SMS notifications, and member management. No spreadsheets, no group texts.",
+      },
+    ],
+  },
+  clubInABox: {
+    id: "club-in-a-box",
+    badge: "Founding clubs — 2026 season",
+    title: "Become a Founding Club",
+    description:
+      "We onboard clubs one at a time, personally — roster, schedule, and your first tournament set up with you before the next club comes in. That's why access is limited, and why founding clubs get more than early access.",
+    checklist: [
+      "🤝 Personal onboarding — we set your club up with you, start to finish",
+      "📞 A direct line to the founder while we build around your season",
+      "🏅 Founding-club status: locked founding terms and your club's name on this site",
     ],
   },
   screenshots: {
@@ -313,21 +315,21 @@ export const siteContent = {
         comingSoon: false,
       },
       {
-        src: "/screenshots/performance-edge.png",
-        alt: "Performance Edge — live condition score with barometric pressure, wind, and solunar data",
-        label: "Performance Edge",
+        src: "/screenshots/trophy-room.png",
+        alt: "Trophy Room — 30 trophies to earn, with collection progress",
+        label: "Trophy Room",
         comingSoon: false,
       },
       {
-        src: "/screenshots/tournament-profile.png",
-        alt: "Tournament profile and AOY leaderboard",
-        label: "Tournament & AOY",
+        src: "/screenshots/tournament-info.png",
+        alt: "Tournament info with schedule, launch times, and registration",
+        label: "Tournaments",
         comingSoon: false,
       },
       {
-        src: "/screenshots/review-catch.png",
-        alt: "Catch review with stats, map pin, and coaching note",
-        label: "Catch review",
+        src: "/screenshots/my-catches.png",
+        alt: "My Catches — every catch sorted and filtered by species, lure, and water",
+        label: "My Catches",
         comingSoon: false,
       },
     ],
@@ -340,13 +342,13 @@ export const siteContent = {
         emoji: "🔒",
         title: "Your spots stay yours",
         description:
-          "Your coaching stays inside your account — it never goes out to the internet. Your GPS points, your fishing spots, and your patterns are locked to you. Nobody else can see them. Not other users, not us, nobody.",
+          "Other fishing apps burn spots — yours never leave your account. Your GPS points, your fishing spots, and your patterns are locked to you. Not other users, not the internet, not us. Nobody.",
       },
       {
         emoji: "🌍",
         title: "Community patterns, not your secrets",
         description:
-          "Regional insights come from anonymized, aggregated data across all anglers. You might learn that green pumpkin is hot in Colorado this week — but nobody learns where you threw it.",
+          "Regional insights come from anonymized, aggregated data. You might learn that green pumpkin is hot in Colorado this week — but nobody learns where you threw it.",
       },
       {
         emoji: "💻",
@@ -358,13 +360,13 @@ export const siteContent = {
   },
   midCta: {
     message:
-      "Join the Trophy Cast waitlist — built by fishermen, for fishermen. Real tools for real anglers.",
+      "Officers: bring your club and we'll set your whole season up with you. Solo anglers: grab a founding spot on the waitlist.",
   },
   finalCta: {
     id: "waitlist",
-    title: "Ready to join?",
+    title: "Get in before everyone else",
     description:
-      "We're onboarding clubs and anglers now. Join the waitlist and we'll reach out with access details and onboarding support.",
+      "Trophy Cast is in private beta, onboarding founding clubs and founding anglers now. Club officers get a direct line and personal setup. Solo anglers join the waitlist and hear from us with access details.",
     message: "Tell us about your club or crew, and we'll get you set up.",
   },
   footer: {
