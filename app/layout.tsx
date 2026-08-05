@@ -6,7 +6,6 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { siteContent } from "@/lib/content";
 import { TC_LOGOS } from "@/lib/brandAssets";
-import { buildMailtoHref } from "@/lib/utils";
 
 const heading = Montserrat({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-heading" });
 const body = Raleway({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-body" });
@@ -27,7 +26,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const waitlistHref = buildMailtoHref(siteContent.waitlist);
+  const waitlistHref = "/#waitlist";
 
   return (
     <html lang="en">

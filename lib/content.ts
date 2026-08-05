@@ -20,8 +20,7 @@ export const siteContent = {
     secondaryCta: "See what makes it different",
     secondaryHref: "#clubs",
     clubCta: "Bring your club",
-    clubHref:
-      "mailto:hello@trophycast.app?subject=Bring%20my%20club%20to%20Trophy%20Cast&body=Club%20name%2C%20roughly%20how%20many%20members%2C%20and%20where%20you%20fish%3A",
+    clubHref: "#waitlist",
   },
   nav: [
     { label: "For clubs", href: "#clubs" },

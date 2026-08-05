@@ -16,11 +16,11 @@ export function ScreenshotGrid({ caption, images }: ScreenshotGridProps) {
   return (
     <div className="space-y-6">
       <p className="text-sm text-copyMuted">{caption}</p>
-      <div className="grid gap-6 sm:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {images.map((image) => (
           <figure
             key={image.src}
-            className="section-surface relative overflow-hidden rounded-3xl border border-white/5 p-6 text-center"
+            className="section-surface relative overflow-hidden rounded-3xl border border-white/5 p-5 text-center"
           >
             {image.comingSoon && (
               <div className="absolute right-0 top-0 z-10 rounded-bl-xl bg-trophyGold px-3 py-1 text-xs font-bold uppercase tracking-wider text-midnight shadow-lg">
@@ -31,9 +31,9 @@ export function ScreenshotGrid({ caption, images }: ScreenshotGridProps) {
               <Image
                 src={image.src}
                 alt={image.alt}
-                width={640}
-                height={400}
-                className={`mx-auto h-64 w-full rounded-2xl border border-white/5 bg-deepPanel object-cover ${
+                width={780}
+                height={1688}
+                className={`mx-auto h-auto w-full max-w-[280px] rounded-2xl border border-white/5 bg-deepPanel ${
                   image.comingSoon ? "opacity-60 grayscale" : ""
                 }`}
               />
