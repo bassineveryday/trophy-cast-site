@@ -34,9 +34,9 @@ const QR_TARGET = 'https://trophy-cast-mvp-v2.vercel.app/submit?eventId=evt_catc
 const QR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(QR_TARGET)}&bgcolor=ffffff&color=000000&margin=4`;
 
 const STEPS = [
-  { num: '1', text: 'Pre-register through Trophy Cast, or find Tai at check-in · 3:00–4:00 PM · pick species ($20 each) · pay cash · Tai taps Mark Paid' },
+  { num: '1', text: 'Pre-register through Trophy Cast, or find Emily at check-in · 3:00–4:00 PM · pick species ($20 each) · pay cash · Emily taps Mark Paid' },
   { num: '2', text: 'Catch a fish · open app · tap Log [Species] · record video on bump board · make sure the CODE WORD BOARD from check-in is clearly visible in your video' },
-  { num: '3', text: 'Enter length · tap Submit · Tai reviews · you get a text: Approved or Rejected' },
+  { num: '3', text: 'Enter length · tap Submit · Emily reviews · you get a text: Approved or Rejected' },
   { num: '4', text: "Trophy Cast is still in beta — if you'd rather not use the app, that's totally fine. Just text 720-775-7770 the video, fish length, and you releasing it" },
 ];
 
@@ -139,7 +139,7 @@ function HalfSheet() {
 
           {/* Footer */}
           <div className="footer-text" style={{ marginTop: 10, color: 'rgba(200,215,225,0.35)', fontSize: 9.5 }}>
-            Questions? Find Tai at check-in · tightlineoutdoors.com · 720.775.7770
+            Questions? Find Emily at check-in · tightlineoutdoors.com · 720.775.7770
           </div>
         </div>
       </div>
