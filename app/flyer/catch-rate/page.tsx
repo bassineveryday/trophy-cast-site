@@ -109,7 +109,7 @@ function HalfSheet() {
               How to Submit Your Catch
             </h1>
             <div className="subhead" style={{ color: 'rgba(200,215,225,0.55)', fontSize: 11, marginTop: 4 }}>
-              Chatfield · North Boat Ramp · 4:00–8:00 PM · Bass · Walleye · Trout · $20/species
+              Chatfield · North Boat Ramp · 4:00–8:00 PM · Bass · Walleye · Trout · Carp · $20/species
             </div>
           </div>
 
