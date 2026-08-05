@@ -12,6 +12,8 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const rawEmail = String(body?.email ?? '').trim().toLowerCase();
+    const joinAs = body?.joinAs === 'club' ? 'club' : 'waitlist';
+    const rawClubName = String(body?.clubName ?? '').trim().slice(0, 200);
 
     if (!rawEmail) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
@@ -23,7 +25,14 @@ export async function POST(request: Request) {
 
     const { error } = await supabase
       .from('waitlist_subscribers')
-      .upsert({ email: rawEmail, role: 'waitlist', club_name: 'Trophy Cast' }, { onConflict: 'email' });
+      .upsert(
+        {
+          email: rawEmail,
+          role: joinAs,
+          club_name: joinAs === 'club' && rawClubName ? rawClubName : 'Trophy Cast',
+        },
+        { onConflict: 'email' },
+      );
 
     if (error) {
       console.error('[waitlist] Supabase upsert failed:', error);
