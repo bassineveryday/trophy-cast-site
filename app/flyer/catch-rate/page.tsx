@@ -3,7 +3,7 @@
 import { TC_LOGOS } from '@/lib/brandAssets';
 
 /**
- * Catch Rate Tournament — Half-Sheet How-To Flyer (TLO Event 8, Jul 29 2026 — Chatfield)
+ * Catch Rate Tournament — Half-Sheet How-To Flyer (TLO Event 8, Aug 5 2026 — Chatfield)
  * Two identical half-sheets per letter page — cut horizontally to distribute.
  * Route: /flyer/catch-rate
  *
@@ -30,7 +30,7 @@ const GOLD_DARK = '#B8960C';   // darker gold — readable on white paper
 const TEAL_DARK = '#0D7E78';   // darker teal — readable on white paper
 
 // Where the QR sends people. Event-specific — CHANGE THE eventId FOR EACH EVENT.
-const QR_TARGET = 'https://trophy-cast-mvp-v2.vercel.app/submit?eventId=evt_catch_rate_20260729';
+const QR_TARGET = 'https://trophy-cast-mvp-v2.vercel.app/submit?eventId=evt_catch_rate_20260805';
 const QR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(QR_TARGET)}&bgcolor=ffffff&color=000000&margin=4`;
 
 const STEPS = [
@@ -99,7 +99,7 @@ function HalfSheet() {
           {/* Header */}
           <div style={{ marginBottom: 12 }}>
             <div className="event-label" style={{ color: TEAL, fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>
-              Tightline Outdoors · Catch Rate Series · Event 8 of 10 · Jul 29
+              Tightline Outdoors · Catch Rate Series · Event 8 of 10 · Aug 5 · Beat Nate in Walleye
             </div>
             <h1 className="headline" style={{
               fontSize: 30, fontWeight: 900, margin: 0, lineHeight: 1.05, letterSpacing: '-0.5px',
@@ -109,7 +109,7 @@ function HalfSheet() {
               How to Submit Your Catch
             </h1>
             <div className="subhead" style={{ color: 'rgba(200,215,225,0.55)', fontSize: 11, marginTop: 4 }}>
-              Chatfield · North Boat Ramp · 4:00–8:00 PM · Bass · Walleye · Trout · Carp · $20/species
+              Chatfield · North Boat Ramp · 4:00–8:00 PM · Bass · Walleye · Trout · $20/species
             </div>
           </div>
 
