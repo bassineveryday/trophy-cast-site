@@ -1,5 +1,7 @@
 # Trophy Cast – Website Brief
 
+> 📦 **SUPERSEDED (marked 2026-08-14) — history only, do not build from this.** Replaced by `SITE_REFRESH_PRD_2026-07.md` (shipped 2026-07-31), which reversed this doc's section order (clubs now come before coach) and by the brand migration from gold `#D4AF37` → `#C9A646`. For the current site map see `SITE_ARCHITECTURE_PRD.md`.
+
 _Last Updated: April 8, 2026_
 
 ---
