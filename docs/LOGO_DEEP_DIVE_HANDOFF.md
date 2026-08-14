@@ -1,5 +1,7 @@
 # Logo Deep Dive Handoff
 
+> 📦 **SUPERSEDED (marked 2026-08-14) — history only.** Self-declared COMPLETED 2026-05-13; `BRAND_GUIDE.md` is its successor.
+
 _Prepared: May 12, 2026_
 _Status: COMPLETED May 13, 2026 — see `docs/BRAND_GUIDE.md` → "Canonical Owner Modules" for the current source of truth. Deprecated variants now live in `public/tc-logos/_archive/` and `public/_archive/`._
 

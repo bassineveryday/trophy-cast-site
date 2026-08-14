@@ -1,5 +1,7 @@
 # Trophy Cast – Flyer Copy & Designs
 
+> 📦 **SUPERSEDED (marked 2026-08-14) — history only.** Copy options for a March 2026 expo handout; its CTA points at a retired Mailchimp URL. The live flyers are Next.js pages under `/flyer/*` — see `FLYER_AND_MARKETING_SOP.md` and `SITE_ARCHITECTURE_PRD.md`.
+
 _Created: February 25, 2026_
 _For: March 14–15 Tournament/Expo Handout_
 
