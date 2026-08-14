@@ -1,11 +1,19 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { checkSecret, rateLimit, clientKey } from "@/lib/apiAuth";
 
 export async function POST(req: Request) {
   // ── Auth check ──────────────────────────────────────────────────────────────
+  // This endpoint issues a live login link for ANY account — full impersonation.
+  // Compare in constant time (was a plain `!==`, a timing oracle) and rate-limit,
+  // because the secret is otherwise brute-forceable at HTTP speed (2026-08-14).
   const adminSecret = req.headers.get("x-admin-secret");
-  if (!adminSecret || adminSecret !== process.env.SUPPORT_ADMIN_SECRET) {
+  if (!checkSecret(adminSecret, process.env.SUPPORT_ADMIN_SECRET)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (!rateLimit(clientKey(req, "support-magic-link"), 5, 60_000)) {
+    return NextResponse.json({ error: "Too many requests." }, { status: 429 });
   }
 
   const { email: rawInput, reason } = (await req.json()) as {
@@ -29,11 +37,18 @@ export async function POST(req: Request) {
 
   if (isPhone) {
     const digits = rawInput.replace(/\D/g, "");
-    // Try to find a profile with this phone (check both raw digits and formatted)
+    // Build the filter from DIGITS ONLY — never from raw input. The previous version
+    // interpolated `rawInput` straight into the `.or()` string, which is PostgREST
+    // filter injection into a profiles query (`.` and parens are operator syntax in
+    // that grammar, and the input regex permits both). 2026-08-14.
+    if (digits.length < 7 || digits.length > 15) {
+      return NextResponse.json({ error: "Invalid phone number" }, { status: 400 });
+    }
+    const formatted = `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
     const { data: match, error: lookupErr } = await supabaseAdmin
       .from("profiles")
       .select("id")
-      .or(`mobile_phone.eq.${rawInput.trim()},mobile_phone.eq.(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`)
+      .or(`mobile_phone.eq.${digits},mobile_phone.eq.${formatted}`)
       .limit(1)
       .maybeSingle();
 

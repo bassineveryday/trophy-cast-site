@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { rateLimit, clientKey } from '@/lib/apiAuth';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,6 +48,11 @@ export async function POST(
       return NextResponse.json({ error: 'answers array is required.' }, { status: 400 });
     }
 
+    // Public unauthenticated endpoint — throttle so it can't be scripted.
+    if (!rateLimit(clientKey(request, 'survey-submit'), 10, 60_000)) {
+      return NextResponse.json({ error: 'Too many requests. Try again shortly.' }, { status: 429 });
+    }
+
     // Check survey is active
     const { data: survey } = await supabase
       .from('surveys')
@@ -74,11 +80,30 @@ export async function POST(
       return NextResponse.json({ error: 'Invalid question IDs for this survey.' }, { status: 400 });
     }
 
-    // Upsert responses (one per question per respondent)
+    // ONE SUBMISSION PER RESPONDENT — do not let a later POST overwrite an earlier one.
+    // `respondentId` is caller-supplied and unverified (the survey page is public by
+    // design, no login), so an upsert keyed on it let anyone who knew another member's
+    // email REPLACE that member's answers. Refusing the second write closes that without
+    // breaking the no-login flow; an officer can clear a row if someone must redo it.
+    // 2026-08-14.
+    const respondent = respondentId.trim();
+    const { count: existing } = await supabase
+      .from('survey_responses')
+      .select('id', { count: 'exact', head: true })
+      .eq('survey_id', surveyId)
+      .eq('respondent_id', respondent);
+
+    if ((existing ?? 0) > 0) {
+      return NextResponse.json(
+        { error: 'A response has already been recorded for this email. Contact a club officer if you need it changed.' },
+        { status: 409 }
+      );
+    }
+
     const rows = answers.map((a: { questionId: string; answer: string }) => ({
       survey_id: surveyId,
       question_id: a.questionId,
-      respondent_id: respondentId.trim(),
+      respondent_id: respondent,
       answer: a.answer,
     }));
 

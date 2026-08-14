@@ -1,15 +1,15 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import { hasAdminPassword } from '@/lib/apiAuth';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
 
 export async function POST(request: Request) {
   try {
     const { password, roughNotes } = await request.json();
 
-    // Auth
-    if (!password || password !== ADMIN_PASSWORD) {
+    // Auth — was a plain `!==`, the one drifted copy in the repo (timing oracle).
+    if (!hasAdminPassword({ password })) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

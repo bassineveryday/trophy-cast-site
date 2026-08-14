@@ -2,8 +2,24 @@ import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 import { siteContent } from '@/lib/content';
+import { rateLimit, clientKey } from '@/lib/apiAuth';
 
 export const dynamic = 'force-dynamic';
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/**
+ * Escape user input before it goes into an HTML email body. Name/phone/email used to be
+ * interpolated raw, so a registrant could inject markup into the admin's inbox. 2026-08-14.
+ */
+function esc(value: unknown): string {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 
 const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
@@ -42,6 +58,13 @@ export async function POST(request: Request) {
     if (!firstName?.trim() || !lastName?.trim() || !email?.trim()) {
       return NextResponse.json({ error: 'First name, last name, and email are required.' }, { status: 400 });
     }
+    // Public endpoint: this route had no email-format check (unlike /api/waitlist).
+    if (!EMAIL_RE.test(email.trim())) {
+      return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
+    }
+    if (!rateLimit(clientKey(request, 'tlo-register'), 5, 60_000)) {
+      return NextResponse.json({ error: 'Too many requests. Try again shortly.' }, { status: 429 });
+    }
     if (!species || species.length === 0) {
       return NextResponse.json({ error: 'Select at least one species division.' }, { status: 400 });
     }
@@ -77,9 +100,9 @@ export async function POST(request: Request) {
       const adminHtml = `
         <h2 style="font-family:sans-serif;color:#0B1A2F">New TLO Catch Rate Registration</h2>
         <table style="font-family:sans-serif;font-size:15px;border-collapse:collapse">
-          <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Name</td><td>${firstName.trim()} ${lastName.trim()}</td></tr>
-          <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Email</td><td>${emailClean}</td></tr>
-          <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Phone</td><td>${phone?.trim() || '—'}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Name</td><td>${esc(firstName.trim())} ${esc(lastName.trim())}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Email</td><td>${esc(emailClean)}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Phone</td><td>${esc(phone?.trim() || '—')}</td></tr>
           <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Species</td><td>${speciesLabels}</td></tr>
           <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Fee due</td><td><strong>$${feeTotal} cash to ${registrationContent.paymentContact} before the tournament</strong></td></tr>
           <tr><td style="padding:4px 12px 4px 0;font-weight:600;color:#555">Registered</td><td>${new Date().toLocaleString('en-US', { timeZone: 'America/Denver' })} MT</td></tr>
@@ -99,7 +122,7 @@ export async function POST(request: Request) {
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#fff">
           <h1 style="color:#0B1A2F;font-size:22px;margin:0 0 8px">You're registered! 🎣</h1>
           <p style="color:#374151;font-size:15px;line-height:1.6;margin:0 0 20px">
-            Hey ${firstName.trim()}, you're in for the <strong>2026 Tightline Outdoors Catch Rate Tournament</strong>
+            Hey ${esc(firstName.trim())}, you're in for the <strong>2026 Tightline Outdoors Catch Rate Tournament</strong>
             at ${catchRateContent.locationShort}.
           </p>
           <div style="background:#F9FAFB;border-radius:10px;padding:16px 20px;margin-bottom:24px">

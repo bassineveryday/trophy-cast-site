@@ -1,57 +1,24 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
 import OpenAI from 'openai';
 import { createClient } from '@supabase/supabase-js';
+import { requireClubOfficer, corsHeaders } from '@/lib/apiAuth';
 
 export const dynamic = 'force-dynamic';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? '';
 const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://placeholder.supabase.co',
   process.env.SUPABASE_SERVICE_ROLE_KEY ?? 'placeholder'
 );
 
-function corsHeaders(origin: string | null): Record<string, string> {
-  const isAllowed =
-    origin &&
-    (origin === 'https://trophycast.app' ||
-      origin.endsWith('.vercel.app') ||
-      /^http:\/\/localhost:\d+$/.test(origin));
-
-  const allowedOrigin = isAllowed ? origin : 'https://trophycast.app';
-  return {
-    'Access-Control-Allow-Origin': allowedOrigin,
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  };
-}
-
 export async function OPTIONS(request: Request) {
   const origin = request.headers.get('origin');
   return new NextResponse(null, { status: 204, headers: corsHeaders(origin) });
 }
 
-function checkPassword(provided: string, expected: string): boolean {
-  if (!expected || !provided) return false;
-  const a = new Uint8Array(Buffer.from(provided));
-  const b = new Uint8Array(Buffer.from(expected));
-  if (a.length !== b.length) return false;
-  return crypto.timingSafeEqual(a, b);
-}
-
-async function verifyAuth(request: Request, body: { password?: string }): Promise<boolean> {
-  if (body.password && checkPassword(String(body.password), ADMIN_PASSWORD)) return true;
-  const authHeader = request.headers.get('authorization');
-  if (authHeader?.startsWith('Bearer ')) {
-    const token = authHeader.slice(7);
-    const { data, error } = await supabase.auth.getUser(token);
-    if (!error && data.user) return true;
-  }
-  return false;
-}
-
 // ── POST: Generate AI analysis of survey results ────────────────────────────
+// Reads every open-text response, so authorization is club-scoped to the survey's
+// own club_id. A bare valid JWT is not enough (2026-08-14).
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -64,7 +31,15 @@ export async function POST(
     const body = await request.json();
     const { password } = body;
 
-    if (!await verifyAuth(request, { password })) {
+    // Resolve the survey's club BEFORE authorizing, then gate on it. Nothing is
+    // returned to the caller until the officer check passes.
+    const surveyClub = await supabase
+      .from('surveys')
+      .select('club_id')
+      .eq('id', surveyId)
+      .maybeSingle();
+
+    if (!await requireClubOfficer(request, { password }, surveyClub.data?.club_id)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: cors });
     }
 

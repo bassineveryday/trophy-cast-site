@@ -398,6 +398,7 @@ export default function WeeklyEmailAdminPage() {
         headers: { 'Content-Type': 'application/json' },
         cache: 'no-store',
         body: JSON.stringify({
+          password,
           seenBullets: suggestions.slice(0, 8).flatMap((update) => update.bullets),
           seenSubjects: suggestions.slice(0, 8).map((update) => update.suggestedSubject),
         }),
@@ -417,7 +418,7 @@ export default function WeeklyEmailAdminPage() {
     } finally {
       setRefreshing(false);
     }
-  }, [suggestions]);
+  }, [suggestions, password]);
 
   const previewBullets = useMemo(
     () =>

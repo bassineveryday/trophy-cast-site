@@ -3,6 +3,9 @@ import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 import { waitlistConfirmationHtml, waitlistConfirmationText } from '@/lib/emails/waitlistConfirmation';
 import { getClubEmailConfig } from '@/lib/clubEmailConfig';
+import { rateLimit, clientKey } from '@/lib/apiAuth';
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +33,15 @@ export async function POST(request: Request) {
 
     if (!email || !firstName) {
       return NextResponse.json({ error: 'First name and email are required.' }, { status: 400 });
+    }
+
+    // Public endpoint: validate format (this route had none, unlike /api/waitlist —
+    // a typo'd address became a dead subscriber row plus a bounced send) and throttle.
+    if (!EMAIL_RE.test(String(email).trim())) {
+      return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
+    }
+    if (!rateLimit(clientKey(request, 'dbm-subscribe'), 5, 60_000)) {
+      return NextResponse.json({ error: 'Too many requests. Try again shortly.' }, { status: 429 });
     }
 
     const emailClean = email.toLowerCase().trim();

@@ -268,7 +268,11 @@ function SurveyList({ password }: { password: string }) {
   const fetchSurveys = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/surveys?club_id=DBM');
+      // GET has no body, so the admin password travels in a header (the route is
+      // officer-gated as of 2026-08-14 — it used to be open to anyone).
+      const res = await fetch('/api/admin/surveys?club_id=DBM', {
+        headers: { 'x-admin-password': password },
+      });
       const data = await res.json();
       setSurveys(data.surveys ?? []);
     } catch {
@@ -276,7 +280,7 @@ function SurveyList({ password }: { password: string }) {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [password]);
 
   useEffect(() => { fetchSurveys(); }, [fetchSurveys]);
 
