@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 import { buildSurveyEmailHtml } from '@/lib/emailTemplate';
 import { getClubEmailConfig } from '@/lib/clubEmailConfig';
+import { requireClubOfficer, corsHeaders } from '@/lib/apiAuth';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,7 +13,6 @@ function getResend() {
   return _resend;
 }
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? '';
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://placeholder.supabase.co',
   process.env.SUPABASE_SERVICE_ROLE_KEY ?? 'placeholder'
@@ -24,48 +23,14 @@ function buildSurveySubject(title: string, clubAbbreviation?: string): string {
   return `${prefix}📋 ${title}`;
 }
 
-function corsHeaders(origin: string | null): Record<string, string> {
-  const isAllowed =
-    origin &&
-    (origin === 'https://trophycast.app' ||
-      origin.endsWith('.vercel.app') ||
-      /^http:\/\/localhost:\d+$/.test(origin));
-
-  const allowedOrigin = isAllowed ? origin : 'https://trophycast.app';
-  return {
-    'Access-Control-Allow-Origin': allowedOrigin,
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  };
-}
-
 export async function OPTIONS(request: Request) {
   const origin = request.headers.get('origin');
   return new NextResponse(null, { status: 204, headers: corsHeaders(origin) });
 }
 
-function checkPassword(provided: string, expected: string): boolean {
-  if (!expected || !provided) return false;
-  const a = new Uint8Array(Buffer.from(provided));
-  const b = new Uint8Array(Buffer.from(expected));
-  if (a.length !== b.length) return false;
-  return crypto.timingSafeEqual(a, b);
-}
-
-// Verify either admin password or a valid Supabase JWT (used by the mobile app)
-async function verifyAuth(request: Request, body: { password?: string }): Promise<boolean> {
-  if (body.password && checkPassword(String(body.password), ADMIN_PASSWORD)) return true;
-  const authHeader = request.headers.get('authorization');
-  if (authHeader?.startsWith('Bearer ')) {
-    const token = authHeader.slice(7);
-    const { data, error } = await supabase.auth.getUser(token);
-    if (!error && data.user) return true;
-  }
-  return false;
-}
-
-
-// ── POST: Send survey emailil to all subscribers ──────────────────────────────
+// ── POST: Send survey email to a club's subscribers ───────────────────────────
+// Authorization is club-scoped: the survey is fetched FIRST so the officer check can
+// key on the survey's own club_id. A bare valid JWT is not enough (2026-08-14).
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -78,16 +43,19 @@ export async function POST(
     const body = await request.json();
     const { password } = body;
 
-    if (!await verifyAuth(request, { password })) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: cors });
-    }
-
-    // Fetch survey
+    // Fetch survey FIRST so authorization can be scoped to its club. Nothing is
+    // returned to the caller until the officer check below passes.
     const { data: survey, error: sErr } = await supabase
       .from('surveys')
       .select('*')
       .eq('id', surveyId)
       .single();
+
+    // Officer of THIS survey's club, or the admin password. A valid JWT alone is not
+    // authorization — signup is open, so any member (incl. a minor) holds one.
+    if (!await requireClubOfficer(request, { password }, survey?.club_id)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: cors });
+    }
 
     if (sErr || !survey) {
       return NextResponse.json({ error: 'Survey not found.' }, { status: 404, headers: cors });

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { weeklyUpdates, type WeeklyUpdate } from '@/lib/weeklyUpdates';
+import { hasAdminPassword, rateLimit, clientKey } from '@/lib/apiAuth';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
@@ -132,6 +133,19 @@ export async function POST(request: NextRequest) {
   const apiKey = process.env.OPENAI_API_KEY;
   const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
+  // This handler drives OpenAI and makes an AUTHENTICATED GitHub fetch with
+  // TROPHY_CAST_GITHUB_TOKEN against the private app repo. It shipped with no auth
+  // check at all — anyone could spend the budget and reach the token (2026-08-14).
+  const body = (await request.json().catch(() => ({}))) as WeeklyIdeasRequest & { password?: string };
+
+  if (!hasAdminPassword(body)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  if (!rateLimit(clientKey(request, 'weekly-updates'), 10, 60_000)) {
+    return NextResponse.json({ error: 'Too many requests. Try again shortly.' }, { status: 429 });
+  }
+
   if (!apiKey) {
     return NextResponse.json({
       suggestion: buildFallbackSuggestion(today),
@@ -140,7 +154,6 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  const body = (await request.json().catch(() => ({}))) as WeeklyIdeasRequest;
   const seenBullets = Array.isArray(body.seenBullets)
     ? body.seenBullets.map((bullet) => String(bullet)).slice(0, MAX_SEEN_ITEMS)
     : [];

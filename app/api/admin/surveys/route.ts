@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
+import { checkPassword, requireClubOfficer } from '@/lib/apiAuth';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,18 +10,19 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY ?? 'placeholder'
 );
 
-function checkPassword(provided: string, expected: string): boolean {
-  if (!expected || !provided) return false;
-  const a = new Uint8Array(Buffer.from(provided));
-  const b = new Uint8Array(Buffer.from(expected));
-  if (a.length !== b.length) return false;
-  return crypto.timingSafeEqual(a, b);
-}
-
 // ── GET: List all surveys for a club ────────────────────────────────────────
+// Returns drafts, ai_summary and created_by, so it is officer-gated like its POST/PATCH
+// siblings. It shipped with no auth check at all (2026-08-14). GET carries no body, so
+// the password arrives in the `x-admin-password` header (same convention as
+// surveys/[id]/results); an officer bearer token also passes.
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const clubId = searchParams.get('club_id') ?? 'DBM';
+
+  const headerPassword = request.headers.get('x-admin-password') ?? undefined;
+  if (!await requireClubOfficer(request, { password: headerPassword }, clubId)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
   const { data, error } = await supabase
     .from('surveys')

@@ -1,54 +1,14 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
 import OpenAI from 'openai';
-import { createClient } from '@supabase/supabase-js';
+import { requireAnyOfficer, corsHeaders, rateLimit, clientKey } from '@/lib/apiAuth';
 
 export const dynamic = 'force-dynamic';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? '';
 const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://placeholder.supabase.co',
-  process.env.SUPABASE_SERVICE_ROLE_KEY ?? 'placeholder'
-);
-
-function corsHeaders(origin: string | null): Record<string, string> {
-  const isAllowed =
-    origin &&
-    (origin === 'https://trophycast.app' ||
-      origin.endsWith('.vercel.app') ||
-      /^http:\/\/localhost:\d+$/.test(origin));
-
-  const allowedOrigin = isAllowed ? origin : 'https://trophycast.app';
-  return {
-    'Access-Control-Allow-Origin': allowedOrigin,
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  };
-}
 
 export async function OPTIONS(request: Request) {
   const origin = request.headers.get('origin');
   return new NextResponse(null, { status: 204, headers: corsHeaders(origin) });
-}
-
-function checkPassword(provided: string, expected: string): boolean {
-  if (!expected || !provided) return false;
-  const a = new Uint8Array(Buffer.from(provided));
-  const b = new Uint8Array(Buffer.from(expected));
-  if (a.length !== b.length) return false;
-  return crypto.timingSafeEqual(a, b);
-}
-
-async function verifyAuth(request: Request, body: { password?: string }): Promise<boolean> {
-  if (body.password && checkPassword(String(body.password), ADMIN_PASSWORD)) return true;
-  const authHeader = request.headers.get('authorization');
-  if (authHeader?.startsWith('Bearer ')) {
-    const token = authHeader.slice(7);
-    const { data, error } = await supabase.auth.getUser(token);
-    if (!error && data.user) return true;
-  }
-  return false;
 }
 
 export type SuggestedQuestion = {
@@ -72,8 +32,15 @@ export async function POST(request: Request) {
       count?: number;
     };
 
-    if (!await verifyAuth(request, { password })) {
+    // No club scope on this action, so: admin password, or an officer of ANY club.
+    // A bare valid JWT used to pass here and bought anyone an OpenAI proxy (2026-08-14).
+    if (!await requireAnyOfficer(request, { password })) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: cors });
+    }
+
+    // `topic` is free-form text that reaches the model — cap the spend per caller.
+    if (!rateLimit(clientKey(request, 'survey-suggest'), 10, 60_000)) {
+      return NextResponse.json({ error: 'Too many requests. Try again shortly.' }, { status: 429, headers: cors });
     }
 
     if (!topic?.trim()) {

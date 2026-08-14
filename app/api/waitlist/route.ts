@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { rateLimit, clientKey } from '@/lib/apiAuth';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://placeholder.supabase.co',
@@ -21,6 +22,11 @@ export async function POST(request: Request) {
 
     if (!emailRegex.test(rawEmail)) {
       return NextResponse.json({ error: 'Please enter a valid email address' }, { status: 400 });
+    }
+
+    // Public endpoint — throttle so the subscriber list can't be scripted full.
+    if (!rateLimit(clientKey(request, 'waitlist'), 5, 60_000)) {
+      return NextResponse.json({ error: 'Too many requests. Try again shortly.' }, { status: 429 });
     }
 
     const { error } = await supabase
