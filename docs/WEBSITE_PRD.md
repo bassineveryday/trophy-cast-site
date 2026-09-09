@@ -217,11 +217,10 @@ _Verified 2026-09-09 against the app repo._
   - **New section: "If Something Goes Wrong"** — breach notification, including notifying a
     parent/guardian when a minor's data is involved. Also absent before.
   - **Both dated forward to September 9, 2026.**
-- 🔴 ⬜ **UNVERIFIED AND ONLY TAI CAN ANSWER: is "Trophy Cast, Inc." a real registered company?**
-  It is claimed as the operating legal entity **15 times** — privacy (2), terms (7), the waitlist
-  email (4), the club email template (2). If the entity does not exist or is not an Inc., every one
-  of those is a misrepresentation in a contract, and the liability cap in the Terms may not protect
-  anything. **This is the single highest-risk item left on the site.** One answer from Tai settles it.
+- ✅ **CLOSED 2026-09-09 — "Trophy Cast, Inc." is a real registered company.** Confirmed by Tai.
+  The name is claimed as the operating legal entity in 15 places (privacy ×2, terms ×7, the waitlist
+  email ×4, the club email template ×2); all are accurate. No change needed. Recorded here so this
+  does not get re-flagged as a risk by a future audit.
 - ⬜ **Still no lawyer.** ⚠️ *Assistant's note, not Tai's instruction:* everything above makes the
   pages accurate to how the system actually behaves, which is the part that gets founders in
   trouble. It is not the same as counsel. When there is budget, the two things worth paying for are
@@ -248,9 +247,13 @@ _Verified 2026-09-09 against the app repo._
   sitemap lists the 8 public pages only. Link-preview card fixed (solid image, `summary_large_image`,
   `siteName`/`url`), though the image is 300×300 where X wants ~1200×630 — a purpose-built share
   image is the finishing touch.
-- 🙋 **NEEDS TAI — stale screenshots.** 4 of 12 are from March 2026 and predate the desktop nav rail,
-  Trophy Room v2 and the one-form catch flow. Recapturing them means signing into the app, which the
-  assistant cannot do. **This is the only open item that requires Tai's hands rather than a decision.**
+- 🙋 **OPEN — stale screenshots.** 4 of 12 are from March 2026 and predate the desktop nav rail,
+  Trophy Room v2 and the one-form catch flow. **The blocker is not login** — Tai's Chrome is already
+  signed into the app. It is a Chrome permission: the Claude extension's site access for
+  `trophy-cast-mvp-v2.vercel.app` is off, so every capture returns *"Chrome blocked the extension from
+  accessing this page."* Attempted 2026-09-09 and abandoned after repeated failures. Once that site
+  access is enabled, this is a ~5 minute job: the app's desktop layout (nav rail, Trophy Room v2,
+  bite forecast, one-form catch) looks nothing like the March captures. Cosmetic only.
 - ✅ **CLOSED 2026-09-09 — a personal cell number was printed on a flyer aimed at kids' parents.**
   Removed from `/flyer/dbm-juniors`; contact is now the trophycast.app email only. Its QR and printed
   host also moved off the raw `trophy-cast-mvp-v2.vercel.app` preview address to `trophycast.app/join`.
