@@ -52,7 +52,7 @@ export const weeklyUpdates: WeeklyUpdate[] = [
     bullets: [
       'Big Fish Yearly opt-in is now in the app — sign up for the $20 annual pot right at check-in before your tournament starts',
       'Catch rate dashboard is live for TDs — real-time financial totals, Big Fish pot tracking, and per-angler catch stats all in one place',
-      'Video ruler got smarter — AI now picks the sharpest frames from anywhere in your video for more accurate fish length reads',
+      'Video ruler got smarter — it now picks the sharpest frames from anywhere in your video for more accurate fish length reads',
     ],
   },
   {

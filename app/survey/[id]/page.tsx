@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
 import { TC_MASTER_LOGO } from '@/lib/brandAssets';
+import { getClubEmailConfig } from '@/lib/clubEmailConfig';
 
 interface Question {
   id: string;
@@ -105,6 +106,9 @@ export default function SurveyPage() {
     }
   };
 
+  // Club name for the copy below — resolved from the survey's own club_id.
+  const clubName = getClubEmailConfig(data?.survey.club_id)?.displayName ?? null;
+
   // ─── Loading state ────────────────────────────────────────────────────────
   if (loading) {
     return (
@@ -137,8 +141,8 @@ export default function SurveyPage() {
           <CheckCircle2 className="w-16 h-16 text-green-400 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-trophyGold font-serif mb-2">Thank You!</h1>
           <p className="text-[#C9D3DA]">
-            Your feedback has been recorded. The Denver Bassmasters board will review all responses
-            and Trophy Cast&apos;s AI will compile a full analysis report.
+            Your feedback has been recorded. The {clubName ?? 'club'} board will review every
+            response, and Trophy Cast pulls it all together into one report so nothing gets missed.
           </p>
           <a href="https://trophycast.app" className="inline-block mt-6 px-6 py-3 bg-trophyGold text-[#0C1A23] font-bold rounded-lg hover:bg-[#B5953E]">
             Back to Trophy Cast
@@ -166,7 +170,7 @@ export default function SurveyPage() {
           {data.survey.description && (
             <p className="text-[#C9D3DA] mt-2 text-sm">{data.survey.description}</p>
           )}
-          <p className="text-[#546674] text-xs mt-2">Denver Bassmasters · Powered by Trophy Cast</p>
+          <p className="text-[#546674] text-xs mt-2">{clubName ? `${clubName} · ` : ''}Powered by Trophy Cast</p>
         </div>
 
         {error && (

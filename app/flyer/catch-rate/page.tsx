@@ -30,6 +30,7 @@ const GOLD_DARK = '#B8960C';   // darker gold — readable on white paper
 const TEAL_DARK = '#0D7E78';   // darker teal — readable on white paper
 
 // Where the QR sends people. Event-specific — CHANGE THE eventId FOR EACH EVENT.
+// ⚠️ STALE: the 2026 Catch Rate season ended 2026-08-19. This eventId (July 29) never matched the Aug 12 headline. Update BOTH the eventId and the copy before reusing this flyer for a 2027 event.
 const QR_TARGET = 'https://trophy-cast-mvp-v2.vercel.app/submit?eventId=evt_catch_rate_20260729';
 const QR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(QR_TARGET)}&bgcolor=ffffff&color=000000&margin=4`;
 

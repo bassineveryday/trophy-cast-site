@@ -401,7 +401,7 @@ function FlyerCard() {
             { num: '03', title: 'Memory that never forgets.', desc: 'Every catch, every lure, every condition — logged and remembered. Your coach pulls from ALL of it to give you smarter advice every time out.' },
             { num: '04', title: 'Today\'s conditions vs. your history.', desc: 'Pressure dropping? Front moving in? TC Coach looks back at every time you fished conditions just like today — and tells you what worked.' },
             { num: '05', title: 'One app runs your whole club.', desc: 'Tournaments, meetings, Angler of the Year, live scoring, team chat — all in one spot. Never miss a tournament update again.' },
-            { num: '06', title: 'Built by anglers. Your grind stays yours.', desc: 'Trained by real fishermen. Not algorithms. Not influencers. And your GPS locations, sweet spots, practice routes? They live on your phone. Only.' },
+            { num: '06', title: 'Built by anglers. Your grind stays yours.', desc: 'Built by real fishermen. Not influencers. And your GPS locations, sweet spots, practice routes? Sealed to your account. Nobody else sees them — not other anglers, not us.' },
           ].map((f, i, arr) => (
             <div key={f.num} style={{
               display: 'flex', gap: 6, alignItems: 'flex-start',

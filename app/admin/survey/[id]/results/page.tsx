@@ -179,7 +179,7 @@ export default function SurveyResultsPage() {
         setError(json.error);
       }
     } catch {
-      setError('AI analysis failed.');
+      setError('Analysis failed.');
     } finally {
       setAnalyzing(false);
     }
@@ -221,7 +221,7 @@ export default function SurveyResultsPage() {
             <div className="bg-[#0C1A23] border border-purple-800/40 rounded-xl p-5">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold text-purple-300 flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4" /> Ask DBM — AI Intelligence Report
+                  <Sparkles className="w-4 h-4" /> Ask DBM — Intelligence Report
                 </h3>
                 <button
                   onClick={handleAnalyze}
@@ -236,7 +236,7 @@ export default function SurveyResultsPage() {
                 <div className="text-sm text-[#C9D3DA] whitespace-pre-wrap leading-relaxed">{data.survey.ai_summary}</div>
               ) : (
                 <p className="text-sm text-[#546674] italic">
-                  No AI analysis yet. Click &ldquo;Generate Analysis&rdquo; to have Ask DBM compile a full report from all responses.
+                  No analysis yet. Click &ldquo;Generate Analysis&rdquo; to have Ask DBM compile a full report from all responses.
                 </p>
               )}
             </div>

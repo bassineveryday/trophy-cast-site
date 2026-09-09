@@ -356,8 +356,8 @@ export default function PrivacyPage() {
                 opted-in members (twilio.com)
               </li>
               <li>
-                <strong className="text-copyLight">OpenAI / Anthropic</strong> — powers TC Coach
-                responses using anonymized prompts (no personal identifiers sent)
+                <strong className="text-copyLight">Google Cloud (Vertex AI)</strong> — powers TC Coach
+                responses and speech using anonymized prompts (no personal identifiers sent)
               </li>
             </ul>
             <p className="mt-3">

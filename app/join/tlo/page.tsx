@@ -120,6 +120,68 @@ export default function TLOJoinPage() {
 
   const fieldGroup: React.CSSProperties = { marginBottom: 18 };
 
+  // ── Season closed ──────────────────────────────────────────────────────────
+  // The 2026 Catch Rate season ran May 6 – Aug 19, 2026 and is over. Until a
+  // 2027 season is scheduled, this page must NOT take registrations or quote a
+  // fee — it was still collecting names, emails, phone numbers and $20/species
+  // three weeks after the final event (found 2026-09-09).
+  // TO REOPEN: set SEASON_OPEN to true and update catchRateContent.season +
+  // the schedule in lib/content.ts to the new season's dates.
+  const SEASON_OPEN = false;
+
+  if (!SEASON_OPEN) {
+    return (
+      <div style={page}>
+        <div style={{ textAlign: 'center', marginBottom: 24 }}>
+          <p style={{ color: '#C9A646', fontWeight: 700, fontSize: 13, letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 6px' }}>
+            Tightline Outdoors
+          </p>
+          <h1 style={{ color: '#fff', fontSize: 26, fontWeight: 900, margin: '0 0 6px', lineHeight: 1.2 }}>
+            The 2026 Catch Rate season is complete
+          </h1>
+          <p style={{ color: '#94A3B8', fontSize: 14, margin: 0 }}>
+            {catchRateContent.locationShort} · {catchRateContent.season}
+          </p>
+        </div>
+
+        <div style={card}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0B1A2F', margin: '0 0 12px' }}>
+            That&apos;s a wrap on 2026
+          </h2>
+          <p style={{ fontSize: 15, color: '#374151', lineHeight: 1.6, margin: '0 0 16px' }}>
+            Registration for the 2026 season is closed — the final event was August 19. Thanks to
+            everyone who fished it.
+          </p>
+          <p style={{ fontSize: 15, color: '#374151', lineHeight: 1.6, margin: '0 0 20px' }}>
+            Want to know when the 2027 series opens? Reach out to Tightline Outdoors, or open
+            Trophy Cast to see your season.
+          </p>
+          <a
+            href="https://trophy-cast-mvp-v2.vercel.app"
+            style={{
+              display: 'inline-block',
+              background: '#C9A646',
+              color: '#0B1A2F',
+              fontWeight: 800,
+              fontSize: 15,
+              padding: '12px 22px',
+              borderRadius: 8,
+              textDecoration: 'none',
+            }}
+          >
+            Open Trophy Cast
+          </a>
+          <p style={{ fontSize: 13, color: '#6B7280', margin: '18px 0 0' }}>
+            Questions about the series?{' '}
+            <a href="https://tightlineoutdoors.com" style={{ color: '#0B6E8C' }}>
+              tightlineoutdoors.com
+            </a>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // ── Success state ──────────────────────────────────────────────────────────
   if (status === 'success' && result) {
     return (

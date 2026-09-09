@@ -265,8 +265,8 @@ export function buildSurveyEmailHtml(opts: {
   const { title, description, surveyUrl, clubName, clubLogoUrl, clubDisplayName } = opts;
   const headerSubtitle = clubName ? escapeHtml(clubName) + ' Survey' : 'Denver Bassmasters Survey';
   const feedbackLine = clubName
-    ? `Your feedback directly shapes how ${escapeHtml(clubName)} runs. The board reviews every response — and Trophy Cast&apos;s AI compiles everything into an actionable report so nothing gets missed.`
-    : `Your feedback directly shapes how Denver Bassmasters runs. The board reviews every response — and Trophy Cast&apos;s AI compiles everything into an actionable report so nothing gets missed.`;
+    ? `Your feedback directly shapes how ${escapeHtml(clubName)} runs. The board reviews every response — and Trophy Cast pulls every response together into one report so nothing gets missed.`
+    : `Your feedback directly shapes how Denver Bassmasters runs. The board reviews every response — and Trophy Cast pulls every response together into one report so nothing gets missed.`;
 
   return `<!DOCTYPE html>
 <html lang="en">

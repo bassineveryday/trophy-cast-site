@@ -67,8 +67,8 @@ export default function Page() {
                 <p className="max-w-2xl text-xl leading-relaxed text-copyMuted">{siteContent.hero.description}</p>
               </div>
               <div className="flex flex-wrap gap-4">
-                <CTAButton href={siteContent.waitlist.clubHref} label={siteContent.waitlist.clubCta} variant="primary" />
-                <CTAButton href={waitlistHref} label="Fish solo? Join the waitlist" variant="secondary" />
+                <CTAButton href={waitlistHref} label={siteContent.waitlist.primaryCta} variant="primary" />
+                <CTAButton href={siteContent.waitlist.clubHref} label={siteContent.waitlist.clubCta} variant="secondary" />
               </div>
               <div className="grid gap-4 rounded-3xl border border-trophyGold/15 bg-deepPanel/50 p-6 text-sm text-copyMuted backdrop-blur-sm sm:grid-cols-2">
                 {siteContent.hero.highlights.map((highlight) => (
@@ -108,40 +108,18 @@ export default function Page() {
       {/* ── Gold divider ─────────────────────────────────────── */}
       <div className="gold-divider" />
 
-      {/* ── FOR CLUBS ────────────────────────────────────────── */}
-      <Section id={siteContent.clubs.id} variant="surface">
-        <div className="space-y-10">
-          <div className="space-y-3">
-            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.clubs.title}</p>
-            <p className="text-lg leading-relaxed text-copyLight">{siteContent.clubs.lead}</p>
+      {/* ── TC COACH ─────────────────────────────────────────── */}
+      <Section id={siteContent.coachInsights.id} variant="surfaceLifted">
+        <div className="grid gap-12 lg:grid-cols-2">
+          <div className="space-y-5">
+            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.coachInsights.title}</p>
+            <p className="text-lg leading-relaxed text-copyLight">{siteContent.coachInsights.description}</p>
           </div>
-          <div className="grid gap-6 lg:grid-cols-3">
-            {siteContent.clubs.items.map((item) => (
-              <div key={item.title} className="card-hover gold-top-bar rounded-2xl border border-white/5 bg-deepPanel/80 p-6">
-                <span className="emoji-icon-lg">{item.emoji}</span>
-                <p className="mt-3 font-heading text-xl font-bold text-copyLight">{item.title}</p>
-                <p className="mt-2 text-copyMuted">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* ── Gold divider ─────────────────────────────────────── */}
-      <div className="gold-divider" />
-
-      {/* ── CLUB IN A BOX ────────────────────────────────────── */}
-      <Section id={siteContent.clubInABox.id} variant="accent">
-        <div className="space-y-8">
-          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-trophyGold/40 bg-trophyGold/10 px-5 py-1.5 text-xs font-bold uppercase tracking-[0.45em] text-trophyGold shadow-glow">
-            🚀 {siteContent.clubInABox.badge}
-          </span>
-          <h2 className="font-heading text-4xl font-extrabold text-copyLight sm:text-5xl">{siteContent.clubInABox.title}</h2>
-          <p className="max-w-3xl text-lg text-copyMuted">{siteContent.clubInABox.description}</p>
-          <ul className="grid gap-4 sm:grid-cols-3">
-            {siteContent.clubInABox.checklist.map((item) => (
-              <li key={item} className="card-hover rounded-2xl border border-trophyGold/20 bg-deepPanel/70 p-5 text-sm font-medium text-copyLight">
-                {item}
+          <ul className="space-y-4">
+            {siteContent.coachInsights.bullets.map((bullet) => (
+              <li key={bullet.text} className="card-hover flex items-start gap-4 rounded-2xl border border-white/5 bg-deepPanel/80 p-5">
+                <span className="emoji-icon shrink-0">{bullet.emoji}</span>
+                <span className="text-copyMuted">{bullet.text}</span>
               </li>
             ))}
           </ul>
@@ -188,24 +166,6 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* ── TC COACH ─────────────────────────────────────────── */}
-      <Section id={siteContent.coachInsights.id} variant="surfaceLifted">
-        <div className="grid gap-12 lg:grid-cols-2">
-          <div className="space-y-5">
-            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.coachInsights.title}</p>
-            <p className="text-lg leading-relaxed text-copyLight">{siteContent.coachInsights.description}</p>
-          </div>
-          <ul className="space-y-4">
-            {siteContent.coachInsights.bullets.map((bullet) => (
-              <li key={bullet.text} className="card-hover flex items-start gap-4 rounded-2xl border border-white/5 bg-deepPanel/80 p-5">
-                <span className="emoji-icon shrink-0">{bullet.emoji}</span>
-                <span className="text-copyMuted">{bullet.text}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
-
       {/* ── THE ENGAGEMENT LOOP ──────────────────────────────── */}
       <Section id={siteContent.gamificationLoop.id} variant="surface">
         <div className="space-y-10">
@@ -226,6 +186,49 @@ export default function Page() {
           <div className="text-center">
             <CTAButton href={waitlistHref} label={siteContent.waitlist.primaryCta} variant="primary" />
           </div>
+        </div>
+      </Section>
+
+      {/* ── Gold divider ─────────────────────────────────────── */}
+      <div className="gold-divider" />
+
+      {/* ── FOR CLUBS ────────────────────────────────────────── */}
+      <Section id={siteContent.clubs.id} variant="surface">
+        <div className="space-y-10">
+          <div className="space-y-3">
+            <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">{siteContent.clubs.title}</p>
+            <p className="text-lg leading-relaxed text-copyLight">{siteContent.clubs.lead}</p>
+          </div>
+          <div className="grid gap-6 lg:grid-cols-3">
+            {siteContent.clubs.items.map((item) => (
+              <div key={item.title} className="card-hover gold-top-bar rounded-2xl border border-white/5 bg-deepPanel/80 p-6">
+                <span className="emoji-icon-lg">{item.emoji}</span>
+                <p className="mt-3 font-heading text-xl font-bold text-copyLight">{item.title}</p>
+                <p className="mt-2 text-copyMuted">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* ── Gold divider ─────────────────────────────────────── */}
+      <div className="gold-divider" />
+
+      {/* ── CLUB IN A BOX ────────────────────────────────────── */}
+      <Section id={siteContent.clubInABox.id} variant="accent">
+        <div className="space-y-8">
+          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-trophyGold/40 bg-trophyGold/10 px-5 py-1.5 text-xs font-bold uppercase tracking-[0.45em] text-trophyGold shadow-glow">
+            🚀 {siteContent.clubInABox.badge}
+          </span>
+          <h2 className="font-heading text-4xl font-extrabold text-copyLight sm:text-5xl">{siteContent.clubInABox.title}</h2>
+          <p className="max-w-3xl text-lg text-copyMuted">{siteContent.clubInABox.description}</p>
+          <ul className="grid gap-4 sm:grid-cols-3">
+            {siteContent.clubInABox.checklist.map((item) => (
+              <li key={item} className="card-hover rounded-2xl border border-trophyGold/20 bg-deepPanel/70 p-5 text-sm font-medium text-copyLight">
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
       </Section>
 

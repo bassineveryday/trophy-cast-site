@@ -15,8 +15,8 @@ export const metadata: Metadata = {
   title: siteContent.seo.title,
   description: siteContent.seo.description,
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: "/tc-logos/trophy-cast-logo-48.png",
+    apple: "/tc-logos/trophy-cast-logo-256.png",
   },
   openGraph: {
     title: siteContent.seo.title,

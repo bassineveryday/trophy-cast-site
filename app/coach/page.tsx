@@ -55,19 +55,20 @@ export default function CoachPage() {
         <div className="space-y-5">
           <div className="space-y-1">
             <p className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-trophyGold">
-              What the product is actually doing
+              What TC Coach will and won&apos;t do
             </p>
             <p className="max-w-3xl text-sm text-copyMuted">
-              The current coach experience is deliberately narrow: it restructures logs, surfaces
-              confidence-oriented observations, and avoids pretending it can predict a bite.
+              Straight answer: TC Coach reads what you logged and what the day looks like, and tells
+              you what it sees in your own fishing. It will not tell you the fish are biting, and it
+              will not hand you somebody else&apos;s spot.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { title: "Optional", detail: "TC Coach assists the log. It is not required to use the product well." },
-              { title: "Grounded", detail: "Insights come from your own logging history and current entry context." },
-              { title: "Non-prescriptive", detail: "No secret spots, no hard promises, no fake certainty." },
-              { title: "Transparent", detail: "The site now frames this as confidence-building support, not magic coaching." },
+              { title: "Yours", detail: "It coaches off your catches and your water — not a national average." },
+              { title: "Honest", detail: "When it isn't sure, it says so instead of inventing a hot pattern." },
+              { title: "No fake certainty", detail: "No secret spots, no guaranteed limits, no promises about the bite." },
+              { title: "Optional", detail: "Log your fish and never open the Coach if you don't want to. It still works." },
             ].map((chip) => (
               <div key={chip.title} className="card-hover gold-top-bar rounded-2xl border border-trophyGold/10 bg-deepPanel/70 p-4">
                 <p className="mt-2 font-heading text-sm font-bold text-trophyGold">{chip.title}</p>
@@ -76,8 +77,8 @@ export default function CoachPage() {
             ))}
           </div>
           <p className="max-w-3xl text-xs text-copyMuted">
-            The marketing copy and UI now line up with that boundary so the public site does not
-            over-claim what the app is doing.
+            We&apos;d rather under-promise here than sell you a coach that pretends to know
+            something it doesn&apos;t. The more you fish, the more it actually has to work with.
           </p>
         </div>
       </Section>

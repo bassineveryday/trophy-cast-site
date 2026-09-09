@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     const clampedCount = Math.min(Math.max(Number(count) || 8, 3), 15);
     const club = clubName?.trim() || 'Denver Bassmasters fishing club';
 
-    const systemPrompt = `You are Ask DBM, an AI intelligence analyst for the ${club}. 
+    const systemPrompt = `You are Ask DBM, the intelligence analyst for the ${club}.
 Your job is to generate practical, clear survey questions for club officers.
 Return ONLY a JSON array of question objects. No markdown, no explanation.
 Each object must have exactly these fields:
@@ -106,7 +106,7 @@ These will be sent to members of ${club}.`;
         })
         .slice(0, clampedCount);
     } catch {
-      return NextResponse.json({ error: 'Failed to parse AI response.' }, { status: 500, headers: cors });
+      return NextResponse.json({ error: 'Failed to parse the response.' }, { status: 500, headers: cors });
     }
 
     return NextResponse.json({ questions }, { headers: cors });

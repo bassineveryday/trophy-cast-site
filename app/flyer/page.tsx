@@ -16,7 +16,7 @@ import { TC_LOGOS } from '@/lib/brandAssets';
  * Visit /flyer, zoom to fit the card on screen, then screenshot.
  * Or use Ctrl+P → Save as PDF → import into Canva.
  *
- * QR code points to https://trophycast.app/signup
+ * QR code points to https://trophycast.app/join (see lib/flyerSignup.ts — /signup redirects there)
  */
 
 const JOIN_URL = FLYER_SIGNUP_URL;
@@ -446,7 +446,7 @@ export default function FlyerPage() {
                 <span style={{ color: '#4FC3F7' }}>smarter.</span>
               </h2>
               <p style={{ color: '#8BA3B5', fontSize: 14, margin: '0 0 20px', lineHeight: 1.6 }}>
-                Trophy Cast is launching soon. Join the signup at{' '}
+                Trophy Cast is in private beta. Join the waitlist at{' '}
                 <strong style={{ color: '#F5F1E6' }}>{JOIN_LABEL}</strong> and be the
                 first angler to experience coaching that actually knows your water.
               </p>
