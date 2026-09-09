@@ -64,7 +64,7 @@ const DEFAULT_PROMO_STEPS: PromoEmailStep[] = [
   },
 ];
 
-const DEFAULT_PROMO_PRIMARY_CTA_URL = 'https://trophycast.app/join/tlo?source=catch-rate-email-2026-05-20';
+const DEFAULT_PROMO_PRIMARY_CTA_URL = 'https://trophycast.app';
 const DEFAULT_PROMO_SECONDARY_CTA_URL = 'https://tightlineoutdoors.com/catch-rate-tournament';
 
 function getNextSundayLocal(): string {

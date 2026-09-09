@@ -76,7 +76,7 @@ export async function POST(request: Request) {
             ? promoSteps
             : [{ title: 'Register for Catch Rate', body: 'Tap below and lock in your spot.' }],
           primaryCtaLabel: promoPayload.primaryCtaLabel?.trim() || 'Register for Catch Rate',
-          primaryCtaUrl: promoPayload.primaryCtaUrl?.trim() || 'https://trophycast.app/join/tlo',
+          primaryCtaUrl: promoPayload.primaryCtaUrl?.trim() || 'https://trophycast.app',
           secondaryCtaLabel: promoPayload.secondaryCtaLabel?.trim() || undefined,
           secondaryCtaUrl: promoPayload.secondaryCtaUrl?.trim() || undefined,
           footerNote: promoPayload.footerNote?.trim() || undefined,

@@ -48,6 +48,21 @@ The order below is the site's argument. Every page, every section, every nav ite
   inversion this doc exists to prevent.)
 - Clubs **always** get a real section — demoting them is not the goal. Reframing them is.
 
+### 2.1 ⛔ Nobody joins another organization through trophycast.app
+
+**Tai, 2026-09-09:** *"We do not run all these clubs… they're not gonna join a club through Trophy Cast. It's only for Trophy Cast."*
+
+- This site has exactly **one** signup: **Trophy Cast**. `/join` means join Trophy Cast.
+- We do **not** host another club's membership form, mailing list, or paid tournament
+  registration. We do not publish their guides, their phone numbers, or their entry fees.
+- **Deleted 2026-09-09:** `/join/dbm`, `/join/tlo`, `/api/dbm/subscribe`, `/api/tlo/register`,
+  and the third-party promo sections on `/clubs`.
+- Clubs appear on this site **only** as evidence that real clubs run their season on Trophy Cast —
+  never as an audience being recruited to something else.
+- ⬜ **Still on the site:** `/flyer/dbm`, `/flyer/dbm/print`, `/flyer/dbm-juniors`,
+  `/flyer/catch-rate` — these are print-generation tools, not signup paths. **Tai has not ruled on
+  them.** They do not collect anything; they render a flyer to print.
+
 ---
 
 ## 3. ⛔ The voice rule: we never say "AI"
@@ -93,8 +108,7 @@ user-visible hits. Run it before any PR that touches copy.
 | `/coach` | The deep TC Coach story **and the honesty floor**. | Coach-first | **this doc** |
 | `/anglers` | The individual angler's day: log it, see it, chase it. | Angler-growth | **this doc** |
 | `/clubs` | Your people — family clubs, a crew, a full club season. | Connection-first | **this doc** |
-| `/join` | DBM club mailing list. ⚠️ Also the target of every flyer QR. | Club (correct) | `SIGNIN_AND_REGISTRATION_PRD` |
-| `/join/tlo` | TLO season registration. **Closed — season ended 2026-08-19.** | Tournament (correct) | `SIGNUP_AND_REGISTRATION_PRD.md` |
+| `/join` | **Trophy Cast only.** Where every flyer and QR lands. | Coach-first | **this doc** |
 | `/privacy`, `/terms`, `/sms-consent`, `/sms-optin-proof` | Legal + carrier compliance. | Neutral | ⬜ **unowned — see §7** |
 | `/support` | Staff impersonation tool at a public, guessable URL. | Internal | `ADMIN_AND_SUPPORT_TOOLS_PRD.md` |
 | `/flyer/*` | Print + screen flyers. | Per-flyer | `FLYER_AND_MARKETING_SOP.md` |
@@ -157,7 +171,10 @@ _Verified 2026-09-09 against the app repo._
 | Hero *"Stop running your club out of a group text and a spreadsheet."* | *"Every cast teaches your coach something."* |
 | Nav: clubs slots 1-2, TC Coach slot 5 | TC Coach slot 1; nav links to the real pages |
 | `/coach`, `/clubs`, `/anglers` had **zero** inbound links | Linked from nav and footer |
-| `/join/tlo` taking registrations + $20/species for a season that ended Aug 19 | Season-complete state; `SEASON_OPEN = false` |
+| `/join` **was the Denver BassMasters signup form** — every Trophy Cast path (`/signup`, `/sign-up`, the flyer QR) landed there | `/join` is Trophy Cast and nothing else |
+| `/join/tlo` taking registrations + $20/species for a season that ended Aug 19 | **Route deleted** |
+| `/join/dbm`, `/api/tlo/register`, `/api/dbm/subscribe` | **Deleted** — see §2.1 |
+| `/clubs` was ~60% a third-party guide service's ad — their guides, stats, phone number, entry fees | **Removed** |
 | Privacy policy: *"**OpenAI / Anthropic** — powers TC Coach"* | **Google Cloud (Vertex AI)** — the actual vendor. The old line was factually false. |
 | "30 trophies" ×3 | 19 |
 | DBM logo 404 on `/join` + 2 flyers | Restored from `public/_archive/` |
