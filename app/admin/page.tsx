@@ -2024,7 +2024,7 @@ export default function AdminDashboardPage() {
                     Survey Manager
                   </p>
                   <p className="text-copyMuted text-sm mt-2 leading-relaxed">
-                    Create surveys, email them to members, collect responses, and get AI-powered analysis from Ask DBM
+                    Create surveys, email them to members, collect responses, and get a full written analysis from Ask DBM
                   </p>
                 </div>
                 <span className="text-copyMuted/30 group-hover:text-purple-400/50 text-xl transition-colors ml-4 shrink-0">

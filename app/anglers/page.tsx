@@ -10,7 +10,7 @@ export default function AnglersPage() {
       <FeaturePageHero
         eyebrow="Built for anglers first"
         title={siteContent.anglers.description}
-        description="Whether you fish bass, walleye, trout, or everything in between — Trophy Cast adapts to how you fish. The more you use it, the more it gives back."
+        description="Log it in one breath. See your own patterns come into focus. Chase the next trophy. The app gets more useful the longer you use it."
       />
 
       {/* ── Feature bullets ──────────────────────────────────── */}

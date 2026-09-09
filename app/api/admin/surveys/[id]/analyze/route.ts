@@ -116,7 +116,7 @@ Your report should include:
 2. **Strengths** — What the club is doing well (backed by data)
 3. **Areas for Improvement** — Where members want changes (backed by data)
 4. **Key Themes** — Common threads across open-text responses
-5. **AI Recommendations** — Your specific, actionable suggestions for the board based on the data
+5. **Recommendations** — Your specific, actionable suggestions for the board based on the data
 6. **Notable Quotes** — 2–3 standout member comments (if open-text responses exist)
 
 Rules:
@@ -145,6 +145,6 @@ Rules:
     return NextResponse.json({ ok: true, aiSummary }, { headers: cors });
   } catch (error) {
     console.error('[survey-analyze] error:', error);
-    return NextResponse.json({ error: 'AI analysis failed. Try again.' }, { status: 500, headers: cors });
+    return NextResponse.json({ error: 'Analysis failed. Try again.' }, { status: 500, headers: cors });
   }
 }

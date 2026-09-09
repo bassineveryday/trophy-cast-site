@@ -4,7 +4,7 @@ import { Container } from "@/components/Container";
 export const metadata = {
   title: "SMS Consent & Program Details — Trophy Cast",
   description:
-    "Public SMS program details for Trophy Cast, including the current in-app opt-in flow, message samples, HELP/STOP instructions, and privacy disclosures.",
+    "Public SMS program details for Trophy Cast, including both opt-in methods (in-app toggle and officer welcome blast), message samples, HELP/STOP instructions, and privacy disclosures.",
 };
 
 const sampleMessages = [
@@ -25,9 +25,21 @@ const consentSteps = [
   "The member can opt out at any time by turning the toggle off or replying STOP to any Trophy Cast SMS.",
 ];
 
+const welcomeBlastSteps = [
+  "Eligibility: the member must be an existing member of an active club in Trophy Cast with a phone number on file and no prior STOP reply.",
+  "A club officer sends a one-time welcome SMS to those members inviting them to reply YES to enroll in club alerts.",
+  "Message sent to member: \"[Trophy Cast] [Club Name]: Club alerts are live! Reply YES to get tournament updates & announcements by text. Visit trophycast.app to manage. Msg & data rates may apply. Reply STOP to decline.\"",
+  "Opt-in action: the member replies YES.",
+  "Confirmation sent immediately after YES: \"Trophy Cast: You're now opted in to club SMS alerts. Msg frequency varies. Msg & data rates may apply. Reply HELP for help, STOP to cancel.\"",
+  "STOP protection: members who previously replied STOP are permanently excluded from welcome blasts.",
+  "Idempotency: each phone number can only receive one welcome blast per club per 30 days.",
+  "The member can opt out at any time by replying STOP to any Trophy Cast SMS.",
+];
+
 const programRules = [
   "Program name: Trophy Cast SMS Notifications.",
-  "Audience: opted-in Denver BassMasters members using the Trophy Cast app.",
+  "Audience: opted-in members of any active fishing club on the Trophy Cast platform.",
+  "Opt-in methods: (1) in-app toggle at Settings → Trust Center → SMS Notifications; (2) reply YES to an officer welcome blast.",
   "Use case: transactional club-management alerts only. No marketing campaigns.",
   "Frequency: message frequency varies based on club activity and typically ranges from 5 to 20 messages per month across all recipients.",
   "Support: reply HELP or email hello@trophycast.app.",
@@ -48,8 +60,10 @@ export default function SmsConsentPage() {
             </h1>
             <p className="max-w-3xl text-sm sm:text-base">
               This public page documents the Trophy Cast SMS Notifications program and mirrors the
-              current in-app opt-in flow used for transactional club-management messages. It is
-              intended to make the consent flow, disclosures, and sample content easy to verify.
+              two opt-in methods used for transactional club-management messages: the in-app Trust
+              Center toggle, and an officer-initiated welcome blast the member joins by replying
+              YES. It is intended to make the consent flow, disclosures, and sample content easy to
+              verify.
             </p>
           </div>
 
@@ -112,6 +126,10 @@ export default function SmsConsentPage() {
                 <li className="rounded-2xl border border-white/8 bg-midnight/50 p-4 text-copyLight">
                   Members can opt out at any time with STOP or by disabling the setting in the app.
                 </li>
+                <li className="rounded-2xl border border-white/8 bg-midnight/50 p-4 text-copyLight">
+                  Members who previously replied STOP are permanently excluded from officer welcome
+                  blasts.
+                </li>
               </ul>
             </div>
           </div>
@@ -119,7 +137,7 @@ export default function SmsConsentPage() {
           <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div className="space-y-4 rounded-3xl border border-white/8 bg-deepPanel/55 p-6">
               <p className="font-heading text-xs font-bold uppercase tracking-[0.28em] text-trophyGold">
-                Current In-App Flow
+                Method 1 — Current In-App Flow
               </p>
               <h2 className="font-heading text-2xl font-extrabold text-white">
                 Trust Center SMS opt-in path
@@ -163,11 +181,44 @@ export default function SmsConsentPage() {
             </div>
           </div>
 
+          <div className="space-y-4 rounded-3xl border border-white/8 bg-deepPanel/55 p-6">
+            <p className="font-heading text-xs font-bold uppercase tracking-[0.28em] text-trophyGold">
+              Method 2 — Officer Welcome Blast
+            </p>
+            <h2 className="font-heading text-2xl font-extrabold text-white">
+              Reply YES opt-in path
+            </h2>
+            <p className="max-w-3xl">
+              Club officers may send a one-time welcome SMS to existing club members who have a
+              phone number on file in Trophy Cast but have not yet opted in. The message invites the
+              member to reply YES to enroll in club alerts.
+            </p>
+            <ol className="space-y-3">
+              {welcomeBlastSteps.map((step, index) => (
+                <li key={step} className="flex gap-3">
+                  <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-trophyGold/20 text-xs font-bold text-trophyGold">
+                    {index + 1}
+                  </span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
+            <div className="rounded-2xl border border-trophyGold/15 bg-trophyGold/6 p-4">
+              <p className="font-semibold text-copyLight">What the member sees when consenting</p>
+              <p className="mt-2">
+                The welcome message names Trophy Cast and the member&rsquo;s club, states the opt-in
+                action, and carries the disclosure: &ldquo;Msg &amp; data rates may apply. Reply
+                STOP to decline.&rdquo; Consent is recorded only when the member replies YES, and
+                the opt-in confirmation SMS is sent immediately after that reply.
+              </p>
+            </div>
+          </div>
+
           {/* Video walkthrough */}
           <div className="space-y-4 rounded-3xl border border-white/8 bg-deepPanel/55 p-6">
             <div>
               <p className="font-heading text-xs font-bold uppercase tracking-[0.28em] text-trophyGold">
-                Video Walkthrough
+                Method 1 — Video Walkthrough
               </p>
               <h2 className="mt-2 font-heading text-2xl font-extrabold text-white">
                 SMS toggle — on and off
@@ -221,8 +272,9 @@ export default function SmsConsentPage() {
               <div className="rounded-2xl border border-trophyGold/15 bg-trophyGold/6 p-5">
                 <p className="font-semibold text-copyLight">Opt-in confirmation message</p>
                 <p className="mt-2 text-sm text-copyMuted">
-                  Every member who enables SMS Notifications receives this confirmation immediately
-                  at the moment they turn the toggle on:
+                  Every member who opts in receives this confirmation immediately &mdash; at the
+                  moment they turn the toggle on, or immediately after they reply YES to an officer
+                  welcome blast:
                 </p>
                 <div className="mt-3 rounded-xl border border-white/8 bg-white/5 p-3 text-sm text-copyLight font-mono">
                   Trophy Cast: You&rsquo;re now opted in to club SMS alerts. Msg frequency varies. Msg &amp; data rates may apply. Reply HELP for help, STOP to cancel.

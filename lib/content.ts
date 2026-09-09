@@ -8,9 +8,9 @@ export const siteContent = {
       "Trophy Cast exists to get people outside, fishing, and connected — building confidence and community through a sport they love, powered by an app that learns how they fish.",
   },
   seo: {
-    title: "Trophy Cast — Run Your Fishing Club From Your Pocket",
+    title: "Trophy Cast — Become a Better Angler",
     description:
-      "Tournaments, weigh-ins, live AOY standings, meeting minutes, and a coach that learns how you fish — in one app. Built with a real bass club on real water. Now onboarding founding clubs for the 2026 season. Where Every Cast Counts.",
+      "TC Coach learns how you fish and gets smarter every time you go. Log a catch, see your patterns, chase 19 trophies, and fish alongside your people — your club, your family, your crew. Built with real anglers on real water. Where Every Cast Counts.",
   },
   waitlist: {
     email: "hello@trophycast.app",
@@ -23,49 +23,42 @@ export const siteContent = {
     clubHref: "#waitlist",
   },
   nav: [
-    { label: "For clubs", href: "#clubs" },
-    { label: "Founding clubs", href: "#club-in-a-box" },
-    { label: "How it works", href: "#how" },
-    { label: "For anglers", href: "#anglers" },
-    { label: "TC Coach", href: "#coach" },
-    { label: "The loop", href: "#loop" },
-    { label: "Screenshots", href: "#screenshots" },
-    { label: "Trust", href: "#trust" },
+    { label: "TC Coach", href: "/coach" },
+    { label: "For anglers", href: "/anglers" },
+    { label: "How it works", href: "/#how" },
+    { label: "Your people", href: "/clubs" },
+    { label: "The loop", href: "/#loop" },
+    { label: "Screenshots", href: "/#screenshots" },
+    { label: "Trust", href: "/#trust" },
   ],
   hero: {
-    eyebrow: "Private beta · Founding clubs — 2026 season",
+    eyebrow: "Private beta · Founding anglers & clubs",
     brandEyebrow: "Built on the water",
-    title: "Stop running your club out of a group text and a spreadsheet.",
+    title: "Every cast teaches your coach something.",
     description:
-      "Registration, weigh-ins, live standings, meeting minutes, and a season your members actually follow — in one app. Trophy Cast is built with a real bass club on real water, and it comes with a coach that learns how you fish.",
+      "TC Coach learns how YOU fish — your water, your patterns, the adjustments that actually work for you — and gets smarter every time you go. Log a fish in one breath, watch your own game come into focus, and fish it alongside your people.",
     highlights: [
       {
-        label: "A real club runs on it today",
-        value: "Denver Bassmasters runs their entire season on Trophy Cast — every tournament, every weigh-in, every AOY standing, plus secretary minutes and board tools.",
-      },
-      {
-        label: "Everything a club needs",
-        value: "Officer dashboards, treasury, meeting minutes, member management, announcements, and SMS alerts. No spreadsheets. No group texts.",
-      },
-      {
         label: "A coach in your corner",
-        value: "Every catch you log teaches Trophy Cast something about how YOU fish. The more you fish, the better it knows you.",
+        value: "Every catch you log teaches TC Coach something about how YOU fish. It doesn't hand you generic tips — it shows you your own patterns and helps you fish them better.",
+      },
+      {
+        label: "Proof you're getting better",
+        value: "Your catches become your record: 19 trophies to chase, your personal bests, your best conditions, and a home water that fills in as you fish it.",
+      },
+      {
+        label: "You don't fish alone",
+        value: "Start a club with five friends, fish a family club with your kid three states away, or run a full season with 50 members. Same app, whoever your people are.",
       },
     ],
-    statRibbon: "Tournaments & live AOY · Voice logging · Video notes · Live weather · 30 trophies · Daily missions · Group chats · SMS alerts · Club-in-a-box · Built by fishermen, for fishermen.",
+    statRibbon: "TC Coach voice calls · Bite forecast · One-breath catch logging · Your photo becomes the trophy · 19 trophies · Live tournament standings · Family clubs · Your spots stay yours.",
   },
   what: {
     id: "what",
     title: "What makes Trophy Cast different",
     summary:
-      "Every fishing app tracks catches. Trophy Cast runs your whole fishing life — your club, your season, your progress — and learns from every cast.",
+      "Every fishing app tracks catches. Trophy Cast learns from them — so the time you put in actually makes you better.",
     items: [
-      {
-        emoji: "🏆",
-        title: "Club-in-a-box",
-        description:
-          "Five friends can start a fishing club tomorrow. A 50-member organization can run tournaments, standings, treasury, and meetings from their phones. Both are real — one club already does.",
-      },
       {
         emoji: "🧠",
         title: "It learns how YOU fish",
@@ -73,10 +66,16 @@ export const siteContent = {
           "Log a catch. Tell it what you were thinking, what you changed, what the water looked like. Over time it connects dots you'd miss — your best conditions, your go-to patterns, the adjustments that work for YOU.",
       },
       {
-        emoji: "🤝",
-        title: "Community that gets people outside",
+        emoji: "📈",
+        title: "You can see yourself getting better",
         description:
-          "Kids, families, and whole clubs — fishing is better together, and almost nobody is building for the next generation of anglers. We are. The point isn't the app. It's getting people on the water.",
+          "Your own catch photos become your trophies. Your waters fill in. Your personal bests move. It's the proof that the hours are adding up to something.",
+      },
+      {
+        emoji: "🤝",
+        title: "Fishing is better with your people",
+        description:
+          "A family club so a kid can fish 'with' grandpa three states away. A crew of five friends. A 50-member club running a full season. Fishing gets people outside and together — the app is just how you stay connected between trips.",
       },
     ],
   },
@@ -114,9 +113,9 @@ export const siteContent = {
       { emoji: "🎙️", text: "Voice-first logging — record catches without putting down your rod. Speak naturally and it handles the rest." },
       { emoji: "🌦️", text: "Real-time weather with barometric pressure, moon phases, and conditions scoring — know what the fish know before you hit the water." },
       { emoji: "🗺️", text: "Interactive catch map shows every fish you've logged, colored by species, with GPS pins on the water." },
-      { emoji: "🏆", text: "30 trophies to earn — from Photo Pro to Ten Bass Day. Share your unlocks with a screenshot-ready trophy card." },
+      { emoji: "🏆", text: "19 trophies to chase — from Photo Pro to Ten Bass Day. Your own catch photo becomes the trophy, and the room shows you the three you're closest to." },
       { emoji: "🎯", text: "Daily missions nudge you toward trophies: 'Add a photo (8/10 for 📸 Photo Pro!)' — small actions that build long-term skills." },
-      { emoji: "🔥", text: "Fishing streaks and daily coaching check-ins keep you coming back. Log one catch a day and watch the momentum build." },
+      { emoji: "🌅", text: "A bite forecast on your home screen — one honest verdict on whether today is worth fishing, one reason why, and your best window." },
       { emoji: "🎬", text: "Video notes on the water — record a quick clip when you're on a pattern, build a personal library of techniques tied to real catches." },
       { emoji: "💬", text: "Group chats for your crew — create public or private groups like 'Jig Fishing Crew' or 'Boaters 2026', share catch photos, and get SMS alerts for tournaments and announcements." },
     ],
@@ -133,85 +132,6 @@ export const siteContent = {
       { emoji: "🔒", text: "Your spots never go anywhere — not to the internet, not to other anglers, not to us. Only you see your coaching." },
       { emoji: "🤫", text: "How does it work? Beta members find out first." },
     ],
-  },
-  tightLineOutdoors: {
-    id: "tight-line-outdoors",
-    badge: "Now live on Trophy Cast",
-    logoUrl: "https://tightlineoutdoors.com/hubfs/TLO-logo-fullcolor-200.png",
-    description:
-      "Tightline Outdoors is Colorado's premier guided fishing and tournament operation — 24+ years on the water, 5 expert guides, 12+ permitted bodies of water, and the largest ice fishing tournament series west of the Mississippi.",
-    stats: [
-      { label: "24+ Years", sub: "guiding on Colorado water" },
-      { label: "1,371+", sub: "clients guided" },
-      { label: "5 Guides", sub: "expert, permitted professionals" },
-      { label: "10+ State Records", sub: "caught with TLO clients" },
-      { label: "CPW Partner of the Year", sub: "Colorado Parks & Wildlife" },
-      { label: "12+ Waters", sub: "open water & ice, year-round" },
-    ],
-    guides: [
-      {
-        name: "Nate Zelinsky",
-        species: "Walleye · Ice School",
-        note: "Founder · 104.3 FM Radio Host · Pro Tournament Angler",
-      },
-      {
-        name: "Matt Endsley",
-        species: "Trout · Panfish",
-        note: "Colorado seasonal bite specialist",
-      },
-      {
-        name: "TJ Miranda",
-        species: "Walleye · Electronics",
-        note: "Forward-facing sonar · Garmin & Humminbird",
-      },
-      {
-        name: "Dustin Sigler",
-        species: "Pike · Fly Fishing",
-        note: "Trophy pike & still-water fly specialist",
-      },
-      {
-        name: "Rhett Feltman",
-        species: "All-Season Guide",
-        note: "Multi-species Colorado angler",
-      },
-    ],
-    catchRate: {
-      badge: "2026 Multi-Species Tournament Series",
-      season: "May 6 – August 19, 2026",
-      kickoff: "Saturday April 18 · 7am–3pm · Beat Nate in Trout",
-      format: "Select Wednesdays · 4pm–8pm · 9 total events",
-      checkin: "Mandatory check-in 3:30pm–4:00pm",
-      locationShort: "Chatfield Reservoir",
-      location: "Chatfield Reservoir · North Boat Ramp · Littleton, CO",
-      entry: "$20 per angler / per species",
-      registration: {
-        paymentContact: "Emily",
-        paymentInstruction: "Pay Emily before the tournament at check-in.",
-        followUpInstruction: "Once Emily has your payment, open Trophy Cast and you are good to go.",
-      },
-      species: ["Walleye", "Bass", "Trout", "Carp (4 events)"],
-      prizes:
-        "Cash payouts 1st–5th · Eagle Claw Prize Pack · $100 Bass Pro/Cabela's gift card for 1st in each category weekly",
-      beatNate: "4× $250 Beat Nate bonus events",
-      url: "https://tightlineoutdoors.com/catch-rate-tournament",
-      schedule: [
-        { date: "Apr 18", label: "Kickoff Event", note: "Saturday 7am–3pm · Beat Nate in Trout · Carp eligible" },
-        { date: "May 6", label: "Event 1", note: "Beat Nate in Carp · Carp eligible" },
-        { date: "May 20", label: "Event 2", note: "Beat Nate in Bass" },
-        { date: "Jun 3", label: "Youth Night", note: "Kids 12 & under fish free · Carp eligible" },
-        { date: "Jun 17", label: "Carp Included", note: "4th carp event" },
-        { date: "Jul 1", label: "USA Night", note: "Most American display angler bonus" },
-        { date: "Jul 22", label: "JJ Branson Event", note: "$250 if winning Bass breaks 18.25\"" },
-        { date: "Aug 5", label: "Event 7", note: "Beat Nate in Walleye" },
-        { date: "Aug 19", label: "Final Event + Awards", note: "Angler Champions of the Year announced" },
-      ],
-    },
-    contact: {
-      phone: "720.775.7770",
-      email: "tightlinecs@gmail.com",
-      website: "tightlineoutdoors.com",
-      facebook: "https://www.facebook.com/TightlineOutdoors/",
-    },
   },
   gamificationLoop: {
     id: "loop",
@@ -248,9 +168,9 @@ export const siteContent = {
   },
   clubs: {
     id: "clubs",
-    title: "Run your whole club from your pocket",
+    title: "Fish with your people",
     lead:
-      "Registrations in a spreadsheet. Results in a group text. Minutes in someone's inbox. Dues in a shoebox. Trophy Cast replaces all of it — and Denver Bassmasters already runs their entire season this way.",
+      "Nobody gets better alone. Start a club with five friends, fish a family club with your kid three states away, or run a full 50-member season — and when your club runs on Trophy Cast, the season runs itself instead of living in a spreadsheet and a group text. Denver Bassmasters already does it this way.",
     items: [
       {
         emoji: "🏆",
@@ -359,7 +279,7 @@ export const siteContent = {
   },
   midCta: {
     message:
-      "Officers: bring your club and we'll set your whole season up with you. Solo anglers: grab a founding spot on the waitlist.",
+      "Anglers: grab a founding spot on the waitlist. Officers: bring your club and we'll set your whole season up with you.",
   },
   finalCta: {
     id: "waitlist",
@@ -372,7 +292,15 @@ export const siteContent = {
     motto: "Where Every Cast Counts.",
     tagline: "Fish more. Learn faster. Connect deeper.",
     aiDisclaimer: "Trophy Cast is in private beta and active testing.",
-    links: [{ label: "Email", href: "mailto:hello@trophycast.app" }],
+    links: [
+      { label: "TC Coach", href: "/coach" },
+      { label: "For anglers", href: "/anglers" },
+      { label: "Your people", href: "/clubs" },
+      { label: "Privacy", href: "/privacy" },
+      { label: "Terms", href: "/terms" },
+      { label: "SMS consent", href: "/sms-consent" },
+      { label: "Email", href: "mailto:hello@trophycast.app" },
+    ],
   },
 };
 

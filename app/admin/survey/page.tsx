@@ -331,7 +331,7 @@ function SurveyList({ password }: { password: string }) {
       });
       const data = await res.json();
       if (!res.ok) { setMessage(`❌ ${data.error}`); return; }
-      setMessage('✅ AI analysis complete!');
+      setMessage('✅ Analysis complete!');
       fetchSurveys();
     } catch {
       setMessage('❌ Network error.');
@@ -419,7 +419,7 @@ function SurveyList({ password }: { password: string }) {
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-800 text-purple-100 text-sm font-semibold rounded-lg hover:bg-purple-700 disabled:opacity-50"
               >
                 {actionLoading === s.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
-                Ask DBM — AI Analysis
+                Ask DBM — Analysis
               </button>
             )}
           </div>
@@ -427,7 +427,7 @@ function SurveyList({ password }: { password: string }) {
           {s.ai_summary && (
             <div className="mt-4 bg-[#0C1A23] border border-purple-800/40 rounded-lg p-4">
               <h4 className="text-sm font-semibold text-purple-300 mb-2 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5" /> Ask DBM — AI Analysis
+                <Sparkles className="w-3.5 h-3.5" /> Ask DBM — Analysis
               </h4>
               <div className="text-sm text-[#C9D3DA] whitespace-pre-wrap leading-relaxed">{s.ai_summary}</div>
             </div>

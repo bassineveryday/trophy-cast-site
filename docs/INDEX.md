@@ -6,6 +6,7 @@
 **Status key:** ✅ current · ⚠️ current + carries live warnings · 📖 reference · 📦 superseded (history only)
 
 ## 🧭 Start here
+- ✅ **[WEBSITE_PRD.md](WEBSITE_PRD.md) — THE LIVING DOC. Read before touching any public copy.** Owns the positioning spine (TC Coach first, clubs as distribution), the ⛔ never-say-"AI" voice rule, the feature-truth table of what the site may claim, and page ownership. **Updated every time a feature ships.** Parent authority = the app repo's `BRAND_AND_VISION_MASTER.md`.
 - ⚠️ [SITE_SECURITY_MODEL_PRD.md](SITE_SECURITY_MODEL_PRD.md) — how auth actually works here (service-role everywhere, no officer concept) + the ranked backlog of live holes. **Read before touching any API route.**
 - ✅ [SITE_ARCHITECTURE_PRD.md](SITE_ARCHITECTURE_PRD.md) — the whole map: 22 pages, 21 API routes, the tables and services this site touches, AGENTS.md rules and where the code deviates.
 
@@ -18,7 +19,7 @@
 - 📖 [FLYER_AND_MARKETING_SOP.md](FLYER_AND_MARKETING_SOP.md) — how flyers are built as Next.js pages, `/flyer/<slug>` + `/flyer/<slug>/print` convention. ⚠️ Stale in two ways: its route table misses `/flyer/dbm-juniors` and `/flyer/catch-rate`, and its gold token `#D4AF37` was replaced by `#C9A646`.
 
 ## 📄 Page-specific PRDs
-- ✅ [SITE_REFRESH_PRD_2026-07.md](SITE_REFRESH_PRD_2026-07.md) — owns the root `/` page: club-first repositioning, section order, coach copy rules. SHIPPED 2026-07-31 (PR #19).
+- 📦 [SITE_REFRESH_PRD_2026-07.md](SITE_REFRESH_PRD_2026-07.md) — **SUPERSEDED on positioning 2026-09-09 by [WEBSITE_PRD.md](WEBSITE_PRD.md).** Its "lead with clubs" repositioning (SHIPPED 2026-07-31, PR #19) put the site in conflict with the brand SSOT's hard rule *"Clubs are distribution; the Coach is the product"* — by 09-09 the SEO title read "Run Your Fishing Club From Your Pocket." Tai reversed it. Its page inventory and "no mechanism words" rule are still useful; **do not build positioning or section order from it.**
 
 ## 📦 Superseded — history only, do not build from these
 - 📦 [WEBSITE_BRIEF.md](WEBSITE_BRIEF.md) — 2026-04-08 site outline. Its section order (coach before clubs) and gold `#D4AF37` were both reversed by SITE_REFRESH_PRD_2026-07.
