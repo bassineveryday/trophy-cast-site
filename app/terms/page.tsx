@@ -114,8 +114,14 @@ export default function TermsPage() {
                 another person or using a false identity is prohibited.
               </li>
               <li>
-                You must be at least 13 years old to use Trophy Cast. If you are under 18, you
-                confirm that you have parental consent.
+                You must be at least 13 years old to use Trophy Cast. Accounts for anyone under 13
+                are blocked at sign-up. If you are under 18, you confirm that you have permission
+                from a parent or guardian. How we handle a minor&apos;s information is set out in
+                our{" "}
+                <a href="/privacy" className="text-trophyGold hover:underline">
+                  Privacy Policy
+                </a>
+                .
               </li>
               <li>
                 You are responsible for all activity that occurs under your account.

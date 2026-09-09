@@ -1,7 +1,7 @@
 # Trophy Cast Website — Living PRD
 
 _Owner: the public marketing site at **trophycast.app** (this repo)._
-_Created: 2026-09-09 · Status: ✅ current · **This doc is LIVING — it is updated every time a feature ships.**_
+_Created: 2026-09-09 · **Status: ⚠️ current on positioning, voice and feature-truth (§2-§5) — §7 carries open items that are NOT resolved.** This doc is LIVING: it is updated every time a feature ships, and its status stays ⚠️ until §7 is empty or every item is explicitly punted with a reason._
 
 > **Parent authority:** `Trophy-Cast-MVP-v2-1/docs/product/BRAND_AND_VISION_MASTER.md` is the SSOT for
 > brand, mission, and audience. This doc does not restate it — it applies it to the website. **If this
@@ -188,10 +188,25 @@ _Verified 2026-09-09 against the app repo._
 
 ## 7. Open — needs a decision or a follow-up PR
 
-- ⬜ **No doc owns the legal pages.** `/privacy` + `/terms` are effective-dated **March 12, 2026** and
-  have drifted: Cloudinary processes catch photos and is not in the third-party list; `/terms` §3 sets
-  a 13+ floor while `/join` offers a DBM Juniors option for **ages 8-14**. **Needs Tai + a lawyer's
-  eye — not a copy edit.**
+- ✅ **CLOSED 2026-09-09 — the under-13 collection path.** `/terms` set a 13+ floor while `/join`
+  collected a first name, last name and email for a **DBM Juniors, ages 8-14** program. That route was
+  deleted the same day (§2.1). **Verified:** the only public forms left on the site are the waitlist
+  (club name + email) and the member survey — neither asks for or implies an under-13 user.
+- ✅ **CLOSED 2026-09-09 — `/privacy` had NO children's section at all.** Verified by word-boundary
+  grep: zero occurrences of `child`, `minor`, `under 13`, `parental`, `guardian`, or `COPPA` in the
+  entire policy, on a service whose users include 13-17 year olds. That was a larger exposure than the
+  contradiction above. Added **"Children & Anglers Under 18"**, written to match what the app actually
+  enforces (`lib/ageRule.ts`, `utils/ageGate.ts`, 7 restrictive DB policies): under 13 gets no account;
+  confirmed 13-17 use the full app; unknown age fails closed; minors are excluded from all model
+  training; youth surfaces show first names only and never a location; and a parent/guardian route to
+  review or delete. `/terms` now cross-links it.
+- ⬜ **A lawyer still has not read either page.** The additions above describe real, verified system
+  behaviour — they are **not** a substitute for counsel reviewing a policy that governs minors in
+  Colorado. ⚠️ *Assistant's note, not Tai's instruction:* the Colorado Privacy Act's minor provisions
+  and COPPA's "actual knowledge" standard are the two things worth a professional read.
+- ⬜ **Both pages are still effective-dated March 12, 2026** and Cloudinary — which processes catch
+  photos — is still missing from the third-party processor list. Dating them forward is a decision,
+  not a cleanup: a new effective date is a representation about when the terms changed.
 - ⬜ **`/sms-consent` vs `/sms-optin-proof` contradict each other** on the number of opt-in methods
   (one vs two) and the audience (DBM only vs any club). A carrier reading both sees two programs.
 - ⬜ **`/support` is a member-impersonation console at a public, guessable URL** with no `noindex`.

@@ -254,6 +254,67 @@ export default function PrivacyPage() {
             </div>
           </div>
 
+          {/* Children & Minors */}
+          <div>
+            <h2 className="font-heading text-lg font-bold text-trophyGold mb-3">
+              Children &amp; Anglers Under 18
+            </h2>
+            <p className="mb-4">
+              Trophy Cast is used by teenagers, and we treat that as a responsibility rather than a
+              footnote.
+            </p>
+            <ul className="space-y-3">
+              <li>
+                <p className="font-semibold text-copyLight mb-1">Nobody under 13 gets an account</p>
+                <p>
+                  You must be at least 13 years old to create a Trophy Cast account. Sign-up blocks
+                  anyone younger, and that block is enforced in our database as well as in the app —
+                  not just on a form. We do not knowingly collect personal information from anyone
+                  under 13. If we learn that we have, we delete it.
+                </p>
+              </li>
+              <li>
+                <p className="font-semibold text-copyLight mb-1">
+                  Anglers 13 to 17 use the full app
+                </p>
+                <p>
+                  A confirmed 13-to-17-year-old angler uses Trophy Cast the same way an adult does.
+                  Until an angler confirms their age, age-dependent features stay switched off.
+                </p>
+              </li>
+              <li>
+                <p className="font-semibold text-copyLight mb-1">
+                  A minor&rsquo;s data is never used to train anything
+                </p>
+                <p>
+                  Minors are excluded from all model training, without exception. Raw locations,
+                  coordinates, and personal notes never enter any learning pipeline for any angler,
+                  of any age.
+                </p>
+              </li>
+              <li>
+                <p className="font-semibold text-copyLight mb-1">
+                  Shared youth surfaces show first names only
+                </p>
+                <p>
+                  Where catches appear to a club or a family group, minors are shown by first name
+                  only, and a catch location is never included.
+                </p>
+              </li>
+              <li>
+                <p className="font-semibold text-copyLight mb-1">Parents and guardians</p>
+                <p>
+                  A parent or guardian may contact us at{" "}
+                  <a href="mailto:hello@trophycast.app" className="text-trophyGold hover:underline">
+                    hello@trophycast.app
+                  </a>{" "}
+                  to review, correct, or delete their child&rsquo;s information, or to close the
+                  account. We will act on that request.
+                </p>
+              </li>
+            </ul>
+          </div>
+
           {/* Data Storage */}
           <div>
             <h2 className="font-heading text-lg font-bold text-trophyGold mb-3">
