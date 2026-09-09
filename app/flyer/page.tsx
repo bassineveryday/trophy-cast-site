@@ -69,8 +69,7 @@ export default function FlyerPage() {
           /* Kill the 100vh + flex-column dependency for print. globals.css sets
              html/body { overflow: hidden } for print; combined with the wrapper
              minHeight:100vh that pushed the flyer onto extra, mostly-blank pages.
-             (Same fix pattern as app/flyer/catch-rate/page.tsx — but this flyer
-             stays dark on purpose, so we keep the midnight background.) */
+             This flyer stays dark on purpose, so we keep the midnight background. */
           html, body {
             background: #0C1A23 !important;
             margin: 0 !important;

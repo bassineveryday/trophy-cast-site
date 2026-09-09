@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { toPng } from 'html-to-image';
 import { TC_LOGOS } from '@/lib/brandAssets';
+import { FLYER_SIGNUP_LABEL, FLYER_SIGNUP_QR_IMAGE } from '@/lib/flyerSignup';
 
 /* ═══════════════════════════════════════════════════════════
    Trophy Cast — Print Flyer (2-up landscape)
@@ -438,8 +439,8 @@ function FlyerCard() {
           </p>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://trophycast.app&color=0C1A23&bgcolor=FFFFFF&qzone=2"
-            alt="QR — trophycast.app"
+            src={FLYER_SIGNUP_QR_IMAGE}
+            alt={`QR — ${FLYER_SIGNUP_LABEL}`}
             width={84}
             height={84}
             style={{
@@ -447,8 +448,8 @@ function FlyerCard() {
               borderRadius: 8, marginBottom: 6,
             }}
           />
-          <p style={{ fontSize: 13, fontWeight: 800, color: NAVY, margin: '0 0 2px' }}>
-            trophycast.app
+          <p style={{ fontSize: 10, fontWeight: 800, color: NAVY, margin: '0 0 2px', letterSpacing: '-0.2px', whiteSpace: 'nowrap' }}>
+            {FLYER_SIGNUP_LABEL}
           </p>
           <p style={{ fontSize: 9, color: GOLD, fontWeight: 700, margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Free early access

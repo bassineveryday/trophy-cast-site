@@ -22,7 +22,7 @@ export default function PrivacyPage() {
               Privacy Policy
             </h1>
             <p className="text-sm">
-              <strong className="text-copyLight">Effective Date:</strong> March 12, 2026
+              <strong className="text-copyLight">Effective Date:</strong> September 9, 2026
               &nbsp;·&nbsp;
               <strong className="text-copyLight">Operator:</strong> Trophy Cast, Inc.
               &nbsp;·&nbsp;
@@ -44,7 +44,7 @@ export default function PrivacyPage() {
               This app was built by a tournament angler who knows exactly what it costs when your practice gets out. We&rsquo;ve pre-fished the night before weigh-in. We know what it means to protect water. Your spots, your routes, your strategy — that&rsquo;s not our data to share. The Vault is Sealed.
             </p>
             <p className="text-sm text-copyMuted">
-              The legal sections below say the same thing in terms lawyers approved. But the commitment above is the one we actually mean.
+              The sections below say the same thing in the language a policy has to use. The commitment above is the one we actually mean.
             </p>
           </div>
 
@@ -324,11 +324,59 @@ export default function PrivacyPage() {
               Your data is stored securely via{" "}
               <strong className="text-copyLight">Supabase</strong> on servers located in the United
               States. We use industry-standard encryption for data in transit and at rest. We do not
-              transfer your personal data outside the United States.
+              sell, rent, or hand your personal data to anyone for their own use. Some of the
+              providers listed below deliver content over global networks, so a photo or page you
+              request may be served from an edge location near you.
             </p>
             <p className="mt-3">
               Row-level security (RLS) policies ensure that each user can only access their own
               data. Club data is scoped to club members only.
+            </p>
+          </div>
+
+          {/* Retention */}
+          <div>
+            <h2 className="font-heading text-lg font-bold text-trophyGold mb-3">
+              How Long We Keep Your Data
+            </h2>
+            <p className="mb-3">
+              Your catch history is the point of Trophy Cast — it is what lets TC Coach learn how you
+              fish — so we keep it for as long as your account is open.
+            </p>
+            <ul className="space-y-2">
+              <li>
+                <strong className="text-copyLight">While your account is open</strong> — catches,
+                photos, and the patterns built from them are retained so your history and your
+                coaching stay intact.
+              </li>
+              <li>
+                <strong className="text-copyLight">When you delete your account</strong> — we delete
+                your personal information and your catch data, including photos, within 30 days.
+              </li>
+              <li>
+                <strong className="text-copyLight">What can outlive deletion</strong> — results and
+                standings from a tournament you competed in remain part of that club&rsquo;s official
+                record, and anonymized, aggregated statistics that cannot identify you may be
+                retained. We may also keep information we are legally required to keep.
+              </li>
+              <li>
+                <strong className="text-copyLight">Backups</strong> — deleted data may persist in
+                encrypted backups for a short period before those backups age out.
+              </li>
+            </ul>
+          </div>
+
+          {/* Breach */}
+          <div>
+            <h2 className="font-heading text-lg font-bold text-trophyGold mb-3">
+              If Something Goes Wrong
+            </h2>
+            <p>
+              If we discover a breach affecting your personal information, we will notify affected
+              anglers without undue delay by email and in-app notice, and we will tell you what
+              happened, what was involved, and what we are doing about it. If a minor&rsquo;s
+              information is involved, we will notify the parent or guardian on file where we have
+              one.
             </p>
           </div>
 
@@ -374,7 +422,7 @@ export default function PrivacyPage() {
                 <span className="text-trophyGold shrink-0 mt-0.5">→</span>
                 <span>
                   <strong className="text-copyLight">Delete</strong> your account and all associated
-                  data. We will process deletion requests immediately upon verification.
+                  data. We act on deletion requests as soon as we verify them, and complete deletion within 30 days.
                 </span>
               </li>
               <li className="flex gap-2">
@@ -420,7 +468,21 @@ export default function PrivacyPage() {
                 <strong className="text-copyLight">Google Cloud (Vertex AI)</strong> — powers TC Coach
                 responses and speech using anonymized prompts (no personal identifiers sent)
               </li>
+              <li>
+                <strong className="text-copyLight">Cloudinary</strong> — stores and delivers your
+                catch photos and videos. Media is served through expiring signed links, not public
+                URLs (cloudinary.com)
+              </li>
+              <li>
+                <strong className="text-copyLight">Resend</strong> — delivers transactional email
+                such as club announcements, weekly updates, and account notices (resend.com)
+              </li>
             </ul>
+            <p className="mt-3 text-xs text-copyMuted">
+              These providers process data on our behalf and are not permitted to use it for their
+              own purposes. We do not use advertising networks, data brokers, or social media
+              tracking pixels.
+            </p>
             <p className="mt-3">
               We do not use advertising networks, sell data to data brokers, or integrate with social
               media tracking platforms.

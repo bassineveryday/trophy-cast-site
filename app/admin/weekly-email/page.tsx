@@ -65,7 +65,7 @@ const DEFAULT_PROMO_STEPS: PromoEmailStep[] = [
 ];
 
 const DEFAULT_PROMO_PRIMARY_CTA_URL = 'https://trophycast.app';
-const DEFAULT_PROMO_SECONDARY_CTA_URL = 'https://tightlineoutdoors.com/catch-rate-tournament';
+const DEFAULT_PROMO_SECONDARY_CTA_URL = 'https://trophycast.app';
 
 function getNextSundayLocal(): string {
   const now = new Date();

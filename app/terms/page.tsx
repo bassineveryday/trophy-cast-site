@@ -22,7 +22,7 @@ export default function TermsPage() {
               Terms of Service
             </h1>
             <p className="text-sm">
-              <strong className="text-copyLight">Effective Date:</strong> March 12, 2026
+              <strong className="text-copyLight">Effective Date:</strong> September 9, 2026
               &nbsp;·&nbsp;
               <strong className="text-copyLight">Operator:</strong> Trophy Cast, Inc.
               &nbsp;·&nbsp;
@@ -156,7 +156,7 @@ export default function TermsPage() {
                 never identifies you individually.
               </li>
               <li>
-                If you delete your account, your personal data is deleted immediately. Anonymized
+                If you delete your account, we act on it as soon as we verify the request and complete deletion within 30 days, as described in our Privacy Policy. Anonymized
                 aggregate contributions may remain in aggregate models but cannot be traced back to
                 you.
               </li>

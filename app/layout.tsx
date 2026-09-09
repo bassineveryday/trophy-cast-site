@@ -5,10 +5,18 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { siteContent } from "@/lib/content";
-import { TC_LOGOS } from "@/lib/brandAssets";
+import { TC_EMAIL_LOGOS } from "@/lib/brandAssets";
 
 const heading = Montserrat({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-heading" });
 const body = Raleway({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-body" });
+
+/** Link-preview image: solid background so it reads on any chat app's canvas. */
+const SHARE_IMAGE = {
+  url: TC_EMAIL_LOGOS.emailHeader,
+  width: 300,
+  height: 300,
+  alt: "Trophy Cast",
+} as const;
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://trophycast.app"),
@@ -19,9 +27,20 @@ export const metadata: Metadata = {
     apple: "/tc-logos/trophy-cast-logo-256.png",
   },
   openGraph: {
+    type: "website",
+    siteName: "Trophy Cast",
+    url: "https://trophycast.app",
     title: siteContent.seo.title,
     description: siteContent.seo.description,
-    images: [TC_LOGOS.fishMark],
+    // Solid-background mark. The transparent fish mark used to land here and
+    // rendered against whatever colour the messaging app happened to use.
+    images: [SHARE_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteContent.seo.title,
+    description: siteContent.seo.description,
+    images: [SHARE_IMAGE.url],
   },
 };
 

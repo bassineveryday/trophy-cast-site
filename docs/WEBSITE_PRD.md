@@ -200,25 +200,71 @@ _Verified 2026-09-09 against the app repo._
   confirmed 13-17 use the full app; unknown age fails closed; minors are excluded from all model
   training; youth surfaces show first names only and never a location; and a parent/guardian route to
   review or delete. `/terms` now cross-links it.
-- ⬜ **A lawyer still has not read either page.** The additions above describe real, verified system
-  behaviour — they are **not** a substitute for counsel reviewing a policy that governs minors in
-  Colorado. ⚠️ *Assistant's note, not Tai's instruction:* the Colorado Privacy Act's minor provisions
-  and COPPA's "actual knowledge" standard are the two things worth a professional read.
-- ⬜ **Both pages are still effective-dated March 12, 2026** and Cloudinary — which processes catch
-  photos — is still missing from the third-party processor list. Dating them forward is a decision,
-  not a cleanup: a new effective date is a representation about when the terms changed.
-- ⬜ **`/sms-consent` vs `/sms-optin-proof` contradict each other** on the number of opt-in methods
-  (one vs two) and the audience (DBM only vs any club). A carrier reading both sees two programs.
-- ⬜ **`/support` is a member-impersonation console at a public, guessable URL** with no `noindex`.
-- ⬜ **Stale screenshots** — 4 of 12 are from March 2026 and predate the desktop rail, Trophy Room v2,
-  and the new catch form.
-- ⬜ **The DBM Juniors flyer publishes a personal mobile number** and points its QR at the raw
-  `trophy-cast-mvp-v2.vercel.app` host.
-- ⬜ **`/flyer` prints the DBM QR under a "Scan to join Trophy Cast" label.** `public/trophycast-qr.svg`
-  exists and is referenced nowhere.
-- ⬜ **No `robots.txt`, no `sitemap.ts`, no OG card.** Nothing stops `/admin` or `/support` indexing.
-- ⬜ **Dead weight:** `components/LogoGrid.tsx` (no importers), 8 unused `content.ts` keys, ~840 KB of
-  flyer PNGs at the repo root, `desktop.ini` committed.
+- ✅ **CLOSED 2026-09-09 — accuracy pass on both legal pages.** Tai: *"I do not and cannot afford a
+  lawyer right now… I'm asking you to protect me by running the law skills and double checking it."*
+  Fixed, in both pages:
+  - **A false claim removed.** The privacy policy said *"the legal sections below say the same thing
+    in terms **lawyers approved**."* No lawyer has read it. Line rewritten.
+  - **Deletion timeline contradicted itself** — "immediately" in two places vs. the real 30-day
+    window. Both pages now say: we act on the request as soon as we verify it, deletion completes
+    within 30 days.
+  - **"We do not transfer your personal data outside the United States"** is not defensible when
+    photos are delivered by a global CDN. Rewritten to what is actually true: storage is US, we
+    never hand data to anyone for their own use, and some providers serve from an edge near you.
+  - **Missing processors added:** Cloudinary (catch photos/video, signed links) and Resend
+    (transactional email) — both were live and neither was disclosed.
+  - **New section: "How Long We Keep Your Data"** — the policy had no retention terms at all.
+  - **New section: "If Something Goes Wrong"** — breach notification, including notifying a
+    parent/guardian when a minor's data is involved. Also absent before.
+  - **Both dated forward to September 9, 2026.**
+- 🔴 ⬜ **UNVERIFIED AND ONLY TAI CAN ANSWER: is "Trophy Cast, Inc." a real registered company?**
+  It is claimed as the operating legal entity **15 times** — privacy (2), terms (7), the waitlist
+  email (4), the club email template (2). If the entity does not exist or is not an Inc., every one
+  of those is a misrepresentation in a contract, and the liability cap in the Terms may not protect
+  anything. **This is the single highest-risk item left on the site.** One answer from Tai settles it.
+- ⬜ **Still no lawyer.** ⚠️ *Assistant's note, not Tai's instruction:* everything above makes the
+  pages accurate to how the system actually behaves, which is the part that gets founders in
+  trouble. It is not the same as counsel. When there is budget, the two things worth paying for are
+  the Colorado Privacy Act's minor provisions and COPPA's "actual knowledge" standard.
+- ✅ **CLOSED 2026-09-09 — the two SMS compliance pages agreed.** `/sms-consent` documented ONE
+  opt-in method and a DBM-only audience; `/sms-optin-proof` documented TWO and "any active club".
+  `/sms-consent` now carries both methods, worded verbatim from the proof page, and the wider
+  audience. Message frequency, STOP/HELP language and the carrier-liability line were NOT touched —
+  those are filed with Twilio.
+  - ⬜ Still open: `/sms-optin-proof` renders on hardcoded hex outside the design system while
+    inheriting the marketing nav, so a carrier reviewer sees two pages that look like two sites.
+- ⚠️ **PARTLY CLOSED 2026-09-09 — `/support` is a member-impersonation console at a public,
+  guessable URL.** It now returns `noindex, nofollow` (as do all `/admin/*` and `/survey/*`), and
+  `robots.txt` disallows them. **That stops search engines; it does not stop a person who guesses the
+  URL.** The page still has no server-side auth — the admin secret is only checked by the API it
+  calls. Proper fix is a server-side gate on the route itself.
+- 🔴 ✅ **FOUND AND REMOVED 2026-09-09 — a live Cloudinary API secret was committed in a PUBLIC repo.**
+  Three one-off logo scripts (`fix-eagle-claw.mjs`, `fix-dbm-logos.mjs`, `remove-logo-backgrounds.mjs`)
+  hardcoded `CLOUD_NAME`, `API_KEY` and `API_SECRET` as plaintext literals — no `process.env` anywhere.
+  `gh repo view` confirms this repo is **PUBLIC**. All three deleted. ⛔ **Deleting them does NOT undo
+  the exposure — the secret is still in git history and must be assumed compromised. Tai must rotate
+  the Cloudinary API secret.** That is the one item here only he can do.
+- ⬜ **No `robots.txt`** — ✅ closed; `app/robots.ts` and `app/sitemap.ts` now build as real routes,
+  sitemap lists the 8 public pages only. Link-preview card fixed (solid image, `summary_large_image`,
+  `siteName`/`url`), though the image is 300×300 where X wants ~1200×630 — a purpose-built share
+  image is the finishing touch.
+- 🙋 **NEEDS TAI — stale screenshots.** 4 of 12 are from March 2026 and predate the desktop nav rail,
+  Trophy Room v2 and the one-form catch flow. Recapturing them means signing into the app, which the
+  assistant cannot do. **This is the only open item that requires Tai's hands rather than a decision.**
+- ✅ **CLOSED 2026-09-09 — a personal cell number was printed on a flyer aimed at kids' parents.**
+  Removed from `/flyer/dbm-juniors`; contact is now the trophycast.app email only. Its QR and printed
+  host also moved off the raw `trophy-cast-mvp-v2.vercel.app` preview address to `trophycast.app/join`.
+- ✅ **CLOSED 2026-09-09 — every Trophy Cast flyer printed the wrong QR, or fetched one at render
+  time.** `/flyer` printed the **Denver BassMasters** QR under "Scan to join Trophy Cast"; `/flyer/print`
+  and `/flyer/dbm-juniors` generated theirs live from `api.qrserver.com`, so a print run during an
+  outage would ship a blank square. All three now use one committed asset,
+  `public/trophycast-join-qr.svg`, generated from `https://trophycast.app/join`.
+  **Verified: zero `qrserver` references remain anywhere in the codebase.**
+
+- ✅ **CLOSED 2026-09-09 — dead weight removed:** `components/LogoGrid.tsx` (zero importers),
+  ~840 KB of stray flyer PNGs at the repo root, 4 scaffold placeholder SVGs, and a committed
+  `desktop.ini`. Also deleted `/flyer/catch-rate` — a flyer for a tournament series that ended
+  2026-08-19, for a club we no longer host anything for.
 
 ---
 

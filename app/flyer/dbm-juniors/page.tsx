@@ -7,9 +7,10 @@ const GREEN_DARK = '#5D6D24';
 const GOLD_DARK = '#B8960C';
 const GREEN_LIGHT = '#B5D45A';
 
-const QR_URL =
-  'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Ftrophy-cast-mvp-v2.vercel.app%2F&bgcolor=ffffff&color=000000&margin=6';
-const APP_HOST = 'trophy-cast-mvp-v2.vercel.app';
+// Committed static QR (encodes https://trophycast.app/join) so a printed flyer never
+// depends on a third-party QR service being up at render time.
+const QR_URL = '/trophycast-join-qr.svg';
+const APP_HOST = 'trophycast.app/join';
 const WEBSITE_HOST = 'trophycast.app';
 const DBMJ_HEADER_LOGO = '/DBMJ%20Long%20Logo%20(2).jpg';
 const DBM_LOGO = '/dbm-logo-transparent.png';
@@ -17,7 +18,6 @@ const CATCH_RATE_LOGO = '/tlo-logo.jpg';
 const HIGH_SCHOOL_LOGO = '/FRBC%20Logo.png';
 const CONTACT_NAME = 'Tai Hunt';
 const CONTACT_EMAIL = 'tai@trophycast.app';
-const CONTACT_PHONE = '(480) 720-4705';
 
 const STEPS = [
   {
@@ -155,9 +155,8 @@ function FlyerPage() {
           <div className="qr-label" style={{ color: GREEN_LIGHT, fontSize: 12, fontWeight: 800, marginTop: 6 }}>
             Scan to open the app
           </div>
-          <div style={{ color: '#94a3b8', fontSize: 11, marginTop: 2 }}>{APP_HOST}</div>
-          <div style={{ color: '#475569', fontSize: 10.5, marginTop: 2 }}>
-            Computer login: {APP_HOST}
+          <div style={{ color: '#475569', fontSize: 10.5, marginTop: 4 }}>
+            Phone or computer: {APP_HOST}
           </div>
           <div style={{ color: '#64748b', fontSize: 10.5, marginTop: 1 }}>
             Website: {WEBSITE_HOST}
@@ -254,10 +253,8 @@ function FlyerPage() {
           </div>
           <div style={{ height: 1, background: 'rgba(136,172,46,0.22)', marginBottom: 8 }} />
           <div style={{ fontSize: 12, lineHeight: 1.35, color: '#334155' }}>
-            Text or call <strong style={{ color: '#111827' }}>{CONTACT_NAME}</strong> at <strong style={{ color: '#111827', whiteSpace: 'nowrap' }}>{CONTACT_PHONE}</strong>
-          </div>
-          <div style={{ marginTop: 4, fontSize: 12, lineHeight: 1.35, color: '#334155' }}>
-            Email: {CONTACT_EMAIL}
+            Email <strong style={{ color: '#111827' }}>{CONTACT_NAME}</strong> at{' '}
+            <strong style={{ color: '#111827', whiteSpace: 'nowrap' }}>{CONTACT_EMAIL}</strong>
           </div>
         </div>
       </div>
