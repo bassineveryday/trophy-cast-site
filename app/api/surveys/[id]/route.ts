@@ -16,8 +16,18 @@ export async function GET(
 ) {
   const { id } = await params;
 
+  // ⛔ NEVER `select('*')` here. This route is PUBLIC and unauthenticated — anyone
+  // holding a survey link can call it. `surveys.ai_summary` is the board's private
+  // written analysis of every member's answers, and `select('*')` handed it straight
+  // to the respondent. Found 2026-09-10 (no survey rows existed yet, so nothing
+  // leaked). Name the columns a respondent legitimately needs and nothing else.
   const [surveyRes, questionsRes] = await Promise.all([
-    supabase.from('surveys').select('*').eq('id', id).eq('status', 'active').single(),
+    supabase
+      .from('surveys')
+      .select('id, club_id, title, description, status, closes_at')
+      .eq('id', id)
+      .eq('status', 'active')
+      .single(),
     supabase.from('survey_questions').select('*').eq('survey_id', id).order('sort_order'),
   ]);
 
