@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Montserrat, Raleway } from "next/font/google";
 import "./globals.css";
 
@@ -61,6 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <main>{children}</main>
         <Footer {...siteContent.footer} />
+        <Analytics />
       </body>
     </html>
   );
