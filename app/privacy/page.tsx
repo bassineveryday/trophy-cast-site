@@ -22,7 +22,7 @@ export default function PrivacyPage() {
               Privacy Policy
             </h1>
             <p className="text-sm">
-              <strong className="text-copyLight">Effective Date:</strong> September 9, 2026
+              <strong className="text-copyLight">Effective Date:</strong> October 26, 2026
               &nbsp;·&nbsp;
               <strong className="text-copyLight">Operator:</strong> Trophy Cast, Inc.
               &nbsp;·&nbsp;
@@ -467,6 +467,10 @@ export default function PrivacyPage() {
               <li>
                 <strong className="text-copyLight">Google Cloud (Vertex AI)</strong> — powers TC Coach
                 responses and speech using anonymized prompts (no personal identifiers sent)
+              </li>
+              <li>
+                <strong className="text-copyLight">Anthropic (Claude)</strong> — powers TC Coach
+                chat using anonymized prompts (no personal identifiers sent)
               </li>
               <li>
                 <strong className="text-copyLight">Cloudinary</strong> — stores and delivers your
