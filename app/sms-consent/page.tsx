@@ -244,6 +244,58 @@ export default function SmsConsentPage() {
             </div>
           </div>
 
+          <div className="space-y-5 rounded-3xl border border-white/8 bg-deepPanel/50 p-6">
+            <div>
+              <p className="font-heading text-xs font-bold uppercase tracking-[0.28em] text-trophyGold">
+                Hard Water Hunters
+              </p>
+              <h2 className="mt-2 font-heading text-2xl font-extrabold text-white">
+                Hard Water Hunters tournament texts
+              </h2>
+              <p className="mt-2">
+                Anglers who register for a Hard Water Hunters event can also choose to receive
+                event texts from Trophy Cast. This is a separate, optional opt-in.
+              </p>
+            </div>
+            <div className="grid gap-4 lg:grid-cols-2">
+              <div className="rounded-2xl border border-white/8 bg-midnight/55 p-5">
+                <p className="font-semibold text-copyLight">Where people opt in</p>
+                <ul className="mt-3 space-y-3 text-sm text-copyMuted">
+                  <li>
+                    The opt-in is a checkbox on the Hard Water Hunters registration page. It is
+                    not ticked by default.
+                  </li>
+                  <li>
+                    The checkbox is shown only to anglers who tick that they are 18 or older.
+                  </li>
+                  <li>A phone number is optional.</li>
+                </ul>
+                <p className="mt-4 font-semibold text-copyLight">Checkbox wording</p>
+                <div className="mt-3 rounded-xl border border-white/8 bg-white/5 p-3 text-sm text-copyLight">
+                  &ldquo;Text me Hard Water Hunters event updates from Trophy Cast, up to 5 event
+                  texts. Msg &amp; data rates may apply. Reply STOP to cancel, HELP for help. We
+                  never share your number.&rdquo;
+                </div>
+              </div>
+              <div className="rounded-2xl border border-trophyGold/15 bg-trophyGold/6 p-5">
+                <p className="font-semibold text-copyLight">What opted-in anglers receive</p>
+                <ul className="mt-3 space-y-3 text-sm text-copyMuted">
+                  <li>A sign-up text with their account setup link.</li>
+                  <li>
+                    Up to 5 event texts: confirmation that you are in, check-in and ice safety
+                    notes, a day-before go/no-go and start time, and results after the event.
+                  </li>
+                </ul>
+                <p className="mt-4 font-semibold text-copyLight">Opt out and help</p>
+                <p className="mt-2 text-sm text-copyMuted">
+                  Reply <strong className="text-copyLight">STOP</strong> at any time to cancel, or{" "}
+                  <strong className="text-copyLight">HELP</strong> for help. Msg &amp; data rates
+                  may apply. Trophy Cast never shares or sells your number.
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div className="space-y-5 rounded-3xl border border-white/8 bg-liftedPanel/40 p-6">
             <div>
               <p className="font-heading text-xs font-bold uppercase tracking-[0.28em] text-trophyGold">
